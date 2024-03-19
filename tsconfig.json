@@ -9,7 +9,8 @@
       // "@utils/*": ["utils/*"],
       // "@common/*": ["common/*"],
       // "@api/*": ["api/*"],
-      "@screens/*": ["screens/*"]
+      "@screens/*": ["screens/*"],
+      "@navigators/*": ["navigators/*"]
     }
   }
 }

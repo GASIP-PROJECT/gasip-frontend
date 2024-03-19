@@ -14,6 +14,7 @@ module.exports = {
           // '@common': './src/common',
           // '@api': './src/api',
           '@screens': './src/screens',
+          '@navigators': './src/navigators',
         },
       },
     ],
