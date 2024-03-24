@@ -3,10 +3,12 @@ import React from 'react';
 import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { COLORS } from '@styles/colors';
+
 export default function SafeAreaLayout({
   noTopPadding = false,
   noBottomPadding = false,
-  backgroundColor = 'white', // TODO(setting) - 컬러 따로 빼서 처리
+  backgroundColor = COLORS.WHITE, // TODO(setting) - 컬러 따로 빼서 처리
   ...props
 }) {
   const safeAreaInsets = useSafeAreaInsets();
