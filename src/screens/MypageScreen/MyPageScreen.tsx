@@ -1,10 +1,12 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 
+import SafeAreaLayout from '@components/common/SafeAreaLayout';
+
 export default function MyPageScreen() {
   return (
-    <View>
+    <SafeAreaLayout style={{ flex: 1 }}>
       <Text>MyPageScreen</Text>
-    </View>
+    </SafeAreaLayout>
   );
 }
