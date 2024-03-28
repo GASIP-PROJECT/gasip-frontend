@@ -19,6 +19,7 @@ export default function SafeAreaLayout({
       style={[
         props.style,
         {
+          flex: 1,
           backgroundColor: backgroundColor,
           paddingTop: noTopPadding ? 0 : safeAreaInsets.top,
           paddingBottom: noBottomPadding ? 0 : safeAreaInsets.bottom,
