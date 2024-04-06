@@ -1,12 +1,15 @@
 import { Platform } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import BottomTabNavigator from '@navigators/BottomTabNavigator';
 
 import LoginScreen from '@screens/LoginScreen/LoginScreen';
 import SignUpScreen from '@screens/SignUpScreen/SignUpScreen';
 import CreateFeedModal from '@screens/HomeScreen/CreateFeedModal';
 
-const Stack = createNativeStackNavigator();
+import { type StackParamList } from '@screens/navigationTypes';
+
+const Stack = createNativeStackNavigator<StackParamList>();
 
 export default function App() {
   const isSignedIn = false; // 임시로 로그인 여부를 처리하기 위한 state, 추후에 로그인 데이터를 담고 있는 state로 변경 필요

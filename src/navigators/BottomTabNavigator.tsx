@@ -4,7 +4,9 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from '@screens/HomeScreen/HomeScreen';
 import MyPageScreen from '@screens/MypageScreen/MyPageScreen';
 
-const Tab = createBottomTabNavigator();
+import { type BottomTabParamList } from '@screens/navigationTypes';
+
+const Tab = createBottomTabNavigator<BottomTabParamList>();
 
 export default function BottomTabNavigator() {
   return (
@@ -15,12 +17,8 @@ export default function BottomTabNavigator() {
         tabBarShowLabel: false,
       }}
     >
-      <Tab.Screen name="Home" component={HomeScreen} options={{}}></Tab.Screen>
-      <Tab.Screen
-        name="MyPage"
-        component={MyPageScreen}
-        options={{}}
-      ></Tab.Screen>
+      <Tab.Screen name="Home" component={HomeScreen}></Tab.Screen>
+      <Tab.Screen name="MyPage" component={MyPageScreen}></Tab.Screen>
     </Tab.Navigator>
   );
 }
