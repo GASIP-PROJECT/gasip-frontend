@@ -1,10 +1,10 @@
-import React from 'react';
+import { Platform } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import LoginScreen from '@screens/LoginScreen/LoginScreen';
 import SignUpScreen from '@screens/SignUpScreen/SignUpScreen';
-import BottomTabNavigator from '@navigators/BottomTabNavigator';
+import CreateFeedModal from '@screens/HomeScreen/CreateFeedModal';
 
 const Stack = createNativeStackNavigator();
 
@@ -19,7 +19,16 @@ export default function App() {
             name="BottomTabNavigator"
             component={BottomTabNavigator}
             options={{ headerShown: false }}
-          ></Stack.Screen>
+              />
+              <Stack.Screen
+                name="CreateFeedModal"
+                component={CreateFeedModal}
+                options={{
+                  headerShown: false,
+                  gestureDirection:
+                    Platform.OS === 'ios' ? 'vertical' : 'horizontal',
+                }}
+              />
         ) : (
           <>
             <Stack.Screen name="Login" component={LoginScreen} />
