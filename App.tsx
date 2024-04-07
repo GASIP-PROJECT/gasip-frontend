@@ -1,11 +1,11 @@
-import { Platform } from 'react-native';
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
 import BottomTabNavigator from '@navigators/BottomTabNavigator';
 
 import LoginScreen from '@screens/LoginScreen/LoginScreen';
 import SignUpScreen from '@screens/SignUpScreen/SignUpScreen';
-import CreateFeedModal from '@screens/HomeScreen/CreateFeedModal';
 
 import { type StackParamList } from '@screens/navigationTypes';
 
@@ -17,24 +17,20 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {isSignedIn ? (
+        {/* TODO - 조건 다시 수정, 작업 위해서 임시로 수정한 상태 */}
+        {isSignedIn !== null ? (
           <Stack.Screen
             name="BottomTabNavigator"
             component={BottomTabNavigator}
             options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="CreateFeedModal"
-                component={CreateFeedModal}
-                options={{
-                  headerShown: false,
-                  gestureDirection:
-                    Platform.OS === 'ios' ? 'vertical' : 'horizontal',
-                }}
-              />
+          />
         ) : (
           <>
-            <Stack.Screen name="Login" component={LoginScreen} />
+            <Stack.Screen
+              name="Login"
+              component={LoginScreen}
+              options={{ headerShown: false }}
+            />
             <Stack.Screen name="SignUp" component={SignUpScreen} />
           </>
         )}
