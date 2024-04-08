@@ -1,20 +1,21 @@
 import React from 'react';
-import { Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { Text, StyleSheet, Pressable } from 'react-native';
 
 import { COLORS } from '@styles/colors';
 
 interface GSButtonProps {
+  buttonText: string;
   onPress: () => void | null;
 }
 
-export default function GSButton({ onPress }: GSButtonProps) {
+export default function GSButton({ buttonText, onPress }: GSButtonProps) {
   return (
-    <TouchableOpacity
+    <Pressable
       style={[styles.container, { marginHorizontal: 16 }]}
       onPress={onPress}
     >
-      <Text style={styles.text}>GSButton</Text>
-    </TouchableOpacity>
+      <Text style={styles.text}>{buttonText}</Text>
+    </Pressable>
   );
 }
 
@@ -28,7 +29,7 @@ const styles = StyleSheet.create({
   },
   text: {
     color: COLORS.WHITE,
-    fontSize: 16,
-    fontWeight: '500',
+    fontSize: 18,
+    fontWeight: '700',
   },
 });
