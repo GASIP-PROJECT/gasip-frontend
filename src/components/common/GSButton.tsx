@@ -8,6 +8,9 @@ interface GSButtonProps {
   onPress: () => void | null;
 }
 
+// 태헌님 이 공통으로 사용할 버튼 컴포넌트입니다.
+// 컴포넌트에 표시될 텍스트와, 눌렀을 때 실행될 함수를 전달해서 구현하면 됩니다.
+// ex) <GSButton buttonText="Gasip 로그인" onPress={handleLogin} />
 export default function GSButton({ buttonText, onPress }: GSButtonProps) {
   return (
     <Pressable
