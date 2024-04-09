@@ -4,7 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import HomeScreen from '@screens/HomeScreen/HomeScreen';
 import MyPageScreen from '@screens/MypageScreen/MyPageScreen';
-import CreateFeedModal from '@screens/HomeScreen/CreateFeedModal';
+import CreateFeedModal from '@screens/HomeScreen/CreateFeedModal/CreateFeedModal';
 
 import {
   type HomeStackParamList,
