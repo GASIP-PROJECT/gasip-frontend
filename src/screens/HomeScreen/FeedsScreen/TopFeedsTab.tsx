@@ -3,7 +3,7 @@ import { FlatList, StyleSheet, View } from 'react-native';
 
 import { getPopularFeeds } from '@api/index';
 
-import FeedSummary from '@screens/HomeScreen/FeedTab/FeedSummary';
+import FeedSummary from '@screens/HomeScreen/FeedsScreen/FeedSummary';
 
 interface Feed {
   content: string;
@@ -12,7 +12,7 @@ interface Feed {
   regDate: string;
 }
 
-export default function PopularTab() {
+export default function TopFeedsTab() {
   const [popularFeedsList, setPopularFeedsList] = useState([]);
 
   // TODO - fetch하는 조건 설정 필요

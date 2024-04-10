@@ -12,7 +12,7 @@ interface Feed {
   regDate: string;
 }
 
-export default function FeedTab() {
+export default function AllFeedsTab() {
   const [feedsList, setFeedsList] = useState([]);
 
   // TODO - fetch하는 조건 설정 필요

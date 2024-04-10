@@ -11,20 +11,20 @@ import {
 import Spacer from '@components/common/Spacer';
 
 import { COLORS } from '@styles/colors';
-import { HOME_TABS } from '../../constants';
+import { HOME_TABS } from '../../../constants';
 
 import icon_pin from '@assets/icon_pin.png';
 import icon_fire from '@assets/icon_fire.png';
 
-interface HomeScreenTabBarProps {
+interface FeedsScreenTabBar {
   currentTab: string;
   setCurrentTab: Dispatch<SetStateAction<string>>;
 }
 
-export default function HomeScreenTabBar({
+export default function FeedsScreenTabBar({
   currentTab,
   setCurrentTab,
-}: HomeScreenTabBarProps) {
+}: FeedsScreenTabBar) {
   const handleFeedTabPress = () => {
     setCurrentTab(HOME_TABS.FEED);
   };
