@@ -8,7 +8,7 @@ import { COLORS } from '@styles/colors';
 export default function SafeAreaLayout({
   noTopPadding = false,
   noBottomPadding = false,
-  backgroundColor = COLORS.WHITE, // TODO(setting) - 컬러 따로 빼서 처리
+  backgroundColor = COLORS.BG_MAIN,
   ...props
 }) {
   const safeAreaInsets = useSafeAreaInsets();
