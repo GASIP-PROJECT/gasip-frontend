@@ -1,20 +1,23 @@
 import React from 'react';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import SafeAreaLayout from '@components/common/SafeAreaLayout';
 
-import { type HomeScreenProps } from '@screens/navigationTypes';
+import HomeScreenHeader from './HomeScreenHeader';
 
-export default function HomeScreen({ navigation }: HomeScreenProps) {
+export default function HomeScreen() {
   return (
-    <SafeAreaLayout backgroundColor="slateblue">
-      <HomeScreenHeader />
+    <SafeAreaLayout>
+      <View style={styles.container}>
+        <HomeScreenHeader />
+      </View>
     </SafeAreaLayout>
   );
 }
 
-const HomeScreenHeader = () => {
-  return <View style={{ backgroundColor: 'teal', height: 50 }}></View>;
-};
-
-const HomeScreenTopTabBar = () => {};
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingHorizontal: 16,
+  },
+});
