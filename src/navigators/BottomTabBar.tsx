@@ -44,6 +44,7 @@ export default function BottomTabBar({
               justifyContent: 'center',
               alignItems: 'center',
             }}
+            key={route.key}
           >
             <TouchableOpacity
               accessibilityRole="button"
