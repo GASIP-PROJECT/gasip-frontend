@@ -1,5 +1,7 @@
-import React, { Dispatch, SetStateAction } from 'react';
-import { Button, StyleSheet, View } from 'react-native';
+import React, { Dispatch, SetStateAction, useState } from 'react';
+import { FlatList, StyleSheet, View, Text } from 'react-native';
+
+import SearchBar from './SearchBar';
 
 interface SearchScreenProps {
   isSearchPageOpen: boolean;
@@ -10,14 +12,21 @@ export default function SearchScreen({
   isSearchPageOpen,
   setIsSearchPageOpen,
 }: SearchScreenProps) {
+  const [searchResults, setSearchResults] = useState<string[]>([]);
+  const [hasSearchedAtlasOnce, setHasSearchedAtlasOnce] =
+    useState<boolean>(false);
+
   return (
     <View>
-      <Button
-        title="검색창 닫음"
-        onPress={() => {
-          setIsSearchPageOpen(false);
-        }}
-      />
+      <SearchBar setIsSearchPageOpen={setIsSearchPageOpen} />
+
+      {searchResults.length > 0 && (
+        <FlatList data={searchResults} renderItem={({ item }) => <View />} />
+      )}
+
+      {hasSearchedAtlasOnce && searchResults.length === 0 && (
+        <Text>검색 결과가 없습니다.</Text>
+      )}
     </View>
   );
 }
