@@ -2,6 +2,7 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+import BottomTabBar from './BottomTabBar';
 import HomeScreen from '@screens/HomeScreen/HomeScreen';
 import MyPageScreen from '@screens/MypageScreen/MyPageScreen';
 import CreateFeedModal from '@screens/HomeScreen/CreateFeedModal/CreateFeedModal';
@@ -54,6 +55,7 @@ export default function BottomTabNavigator() {
         headerShown: false,
         tabBarShowLabel: false,
       }}
+      tabBar={props => <BottomTabBar {...props} />}
     >
       <Tab.Screen
         name="HomeStack"

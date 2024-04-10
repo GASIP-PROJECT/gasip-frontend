@@ -5,7 +5,7 @@ import SafeAreaLayout from '@components/common/SafeAreaLayout';
 
 export default function MyPageScreen() {
   return (
-    <SafeAreaLayout style={{ flex: 1 }} backgroundColor="teal">
+    <SafeAreaLayout style={{ flex: 1 }}>
       <Text>MyPageScreen</Text>
     </SafeAreaLayout>
   );
