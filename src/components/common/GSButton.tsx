@@ -1,11 +1,11 @@
 import React from 'react';
-import { Text, StyleSheet, Pressable } from 'react-native';
+import { Text, StyleSheet, Pressable, TouchableOpacity } from 'react-native';
 
 import { COLORS } from '@styles/colors';
 
 interface GSButtonProps {
   buttonText: string;
-  onPress: () => void | null;
+  onPress: () => void | Promise<void> | null;
 }
 
 // 태헌님 이 공통으로 사용할 버튼 컴포넌트입니다.
@@ -13,12 +13,12 @@ interface GSButtonProps {
 // ex) <GSButton buttonText="Gasip 로그인" onPress={handleLogin} />
 export default function GSButton({ buttonText, onPress }: GSButtonProps) {
   return (
-    <Pressable
+    <TouchableOpacity
       style={[styles.container, { marginHorizontal: 16 }]}
       onPress={onPress}
     >
       <Text style={styles.text}>{buttonText}</Text>
-    </Pressable>
+    </TouchableOpacity>
   );
 }
 
