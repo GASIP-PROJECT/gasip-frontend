@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
   },
   feedHeaderText: {
     color: '#4b5159',
-    fontWeightt: '500',
+    fontWeight: '500',
   },
   feedContentText: {
     color: COLORS.WHITE,

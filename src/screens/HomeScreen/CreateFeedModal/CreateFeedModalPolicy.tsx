@@ -12,6 +12,12 @@ export default function CreateFeedModalPolicy() {
 const styles = StyleSheet.create({
   container: {
     height: 100,
-    backgroundColor: 'blue',
+    backgroundColor: 'gray',
+    marginBottom: 10,
+    borderRadius: 10,
+    width: '90%',
+    marginHorizontal: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

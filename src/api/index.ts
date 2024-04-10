@@ -28,3 +28,27 @@ export const getPopularFeeds = async (page: number, dataCount: number) => {
     return [];
   }
 };
+
+// TODO - 테스트용 토큰
+const access_token =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZW1haWwiOiJqaUB0ZXN0LmNvbSIsInJvbGVzIjpbIk1FTUJFUiJdLCJleHAiOjE3MTMzNjAzNzB9.7YoW_Epi1UDXcTpydv1Odj84C6oWuhA2fjDJjcTpeIk';
+
+export const createFeed = async (content: string) => {
+  try {
+    const response = await GSBackendClient.post(
+      '/boards/0',
+      {
+        content,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      },
+    );
+
+    console.log(response.data);
+  } catch (error) {
+    console.log('createFeed error: ', error);
+  }
+};

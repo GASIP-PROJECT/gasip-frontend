@@ -1,9 +1,15 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
 
 import { COLORS } from '@styles/colors';
 
-export default function CreateFeedModalTextInput() {
+interface CreateFeedModalTextInputProps {
+  setFeedContent: Dispatch<SetStateAction<string>>;
+}
+
+export default function CreateFeedModalTextInput({
+  setFeedContent,
+}: CreateFeedModalTextInputProps) {
   return (
     <View style={styles.container}>
       <TextInput
@@ -12,6 +18,7 @@ export default function CreateFeedModalTextInput() {
         placeholderTextColor={'#7d7878'}
         multiline
         maxLength={500}
+        onChangeText={text => setFeedContent(text)}
       />
     </View>
   );

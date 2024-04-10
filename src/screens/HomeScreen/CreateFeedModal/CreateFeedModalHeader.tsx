@@ -5,16 +5,19 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 import { COLORS } from '@styles/colors';
 
+// TODO - ICON_SIZE 여기 선언하는게 맞는가?
 const ICON_SIZE = 27;
 
-export default function CreateFeedModalHeader() {
+export default function CreateFeedModalHeader({
+  feedContent,
+}: {
+  feedContent: string;
+}) {
   return (
     <View style={styles.container}>
       <HeaderCloseButton />
-
       <HeaderTitle />
-
-      <HeaderLetterCount />
+      <HeaderLetterCount feedContent={feedContent} />
     </View>
   );
 }
@@ -47,10 +50,10 @@ const HeaderTitle = () => {
   );
 };
 
-const HeaderLetterCount = () => {
+const HeaderLetterCount = ({ feedContent }: { feedContent: string }) => {
   return (
     <View style={styles.letterCountContainer}>
-      <Text style={styles.letterCountText}>0/500</Text>
+      <Text style={styles.letterCountText}>{feedContent.length || 0}/500</Text>
     </View>
   );
 };
