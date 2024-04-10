@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import {
   Image,
   ImageSourcePropType,
@@ -11,16 +11,44 @@ import {
 import Spacer from '@components/common/Spacer';
 
 import { COLORS } from '@styles/colors';
+import { HOME_TABS } from '../../constants';
 
 import icon_pin from '@assets/icon_pin.png';
 import icon_fire from '@assets/icon_fire.png';
 
-export default function HomeScreenTabBar() {
+interface HomeScreenTabBarProps {
+  currentTab: string;
+  setCurrentTab: Dispatch<SetStateAction<string>>;
+}
+
+export default function HomeScreenTabBar({
+  currentTab,
+  setCurrentTab,
+}: HomeScreenTabBarProps) {
+  const handleFeedTabPress = () => {
+    setCurrentTab(HOME_TABS.FEED);
+  };
+  const handlePopularTabPress = () => {
+    setCurrentTab(HOME_TABS.POPULAR);
+  };
+
   return (
     <View style={styles.container}>
-      <TabIndicator icon={icon_pin} title="전체 피드" currentTab="전체 피드" />
+      <TabIndicator
+        icon={icon_pin}
+        title={HOME_TABS.FEED}
+        currentTab={currentTab}
+        onPress={handleFeedTabPress}
+      />
+
       <Spacer type="width" value={12} />
-      <TabIndicator icon={icon_fire} title="인기글" currentTab="feed" />
+
+      <TabIndicator
+        icon={icon_fire}
+        title={HOME_TABS.POPULAR}
+        currentTab={currentTab}
+        onPress={handlePopularTabPress}
+      />
     </View>
   );
 }
@@ -30,16 +58,19 @@ const TabIndicator = ({
   icon,
   title,
   currentTab,
+  onPress,
 }: {
   icon: ImageSourcePropType;
   title: string;
   currentTab: string;
+  onPress: () => void;
 }) => {
   const bgColor = currentTab === title ? `#4490d8` : `#999999`;
   return (
     <TouchableOpacity
       style={[styles.indicatorContainer, { backgroundColor: bgColor }]}
       disabled={title === currentTab}
+      onPress={onPress}
     >
       <Image source={icon} style={{ width: 18, height: 18 }} />
       <Spacer type="width" value={3} />
@@ -54,9 +85,8 @@ const styles = StyleSheet.create({
   },
   indicatorContainer: {
     flexDirection: 'row',
-    height: 25,
+    height: 30,
     paddingHorizontal: 13,
-    backgroundColor: '#999999',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 25,
