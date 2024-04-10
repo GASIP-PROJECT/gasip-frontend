@@ -18,7 +18,6 @@ export default function FeedTab() {
     const fetchFeeds = async () => {
       try {
         const posts = await axios.get('https://gasip.site/boards/0');
-
         setFeedsList(posts.data.response);
       } catch (error) {}
     };
@@ -27,7 +26,7 @@ export default function FeedTab() {
   }, []);
 
   return (
-    <View style={{ marginBottom: 30 }}>
+    <View>
       <FlatList
         data={feedsList}
         renderItem={({ item }: { item: Feed }) => (
@@ -40,7 +39,7 @@ export default function FeedTab() {
         )}
         keyExtractor={(item, index) => index.toString()}
         ItemSeparatorComponent={() => <View style={{ height: 15 }} />}
-        ListFooterComponent={() => <View style={{ height: 100 }} />}
+        ListFooterComponent={() => <View style={{ height: 150 }} />}
       />
     </View>
   );
