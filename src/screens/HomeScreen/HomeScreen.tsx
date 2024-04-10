@@ -15,9 +15,19 @@ export default function HomeScreen() {
   return (
     <SafeAreaLayout>
       <View style={styles.container}>
-        <HomeScreenHeader />
+        <HomeScreenHeader
+          isSearchPageOpen={isSearchPageOpen}
+          setIsSearchPageOpen={setIsSearchPageOpen}
+        />
         <Spacer type="height" value={20} />
-        {isSearchPageOpen ? <SearchScreen /> : <FeedsScreen />}
+        {isSearchPageOpen ? (
+          <SearchScreen
+            isSearchPageOpen={isSearchPageOpen}
+            setIsSearchPageOpen={setIsSearchPageOpen}
+          />
+        ) : (
+          <FeedsScreen />
+        )}
       </View>
     </SafeAreaLayout>
   );

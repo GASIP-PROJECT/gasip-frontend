@@ -1,10 +1,23 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { Dispatch, SetStateAction } from 'react';
+import { Button, StyleSheet, View } from 'react-native';
 
-export default function SearchScreen() {
+interface SearchScreenProps {
+  isSearchPageOpen: boolean;
+  setIsSearchPageOpen: Dispatch<SetStateAction<boolean>>;
+}
+
+export default function SearchScreen({
+  isSearchPageOpen,
+  setIsSearchPageOpen,
+}: SearchScreenProps) {
   return (
     <View>
-      <Text>SearchScreen</Text>
+      <Button
+        title="검색창 닫음"
+        onPress={() => {
+          setIsSearchPageOpen(false);
+        }}
+      />
     </View>
   );
 }
