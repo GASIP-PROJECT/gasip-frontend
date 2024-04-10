@@ -3,7 +3,6 @@
   "compilerOptions": {
     "baseUrl": "./src/",
     "paths": {
-      // "@assets/*": ["assets/*"],
       // "@constants": ["constants/*"],
       // "@utils/*": ["utils/*"],
       // "@common/*": ["common/*"],
@@ -11,7 +10,8 @@
       "@screens/*": ["screens/*"],
       "@navigators/*": ["navigators/*"],
       "@components/*": ["components/*"],
-      "@styles/*": ["styles/*"]
+      "@styles/*": ["styles/*"],
+      "@assets/*": ["assets/*"]
     }
   }
 }

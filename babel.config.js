@@ -7,7 +7,6 @@ module.exports = {
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
         alias: {
           src: './src',
-          // '@assets': './src/assets',
           // '@constants': './src/constants',
           // '@utils': './src/utils',
           // '@common': './src/common',
@@ -16,6 +15,7 @@ module.exports = {
           '@navigators': './src/navigators',
           '@components': './src/components',
           '@styles': './src/styles',
+          '@assets': './src/assets',
         },
       },
     ],
