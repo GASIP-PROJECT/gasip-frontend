@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, View } from 'react-native';
-import axios from 'axios';
+
+import { getAllFeeds } from '@api/index';
 
 import FeedSummary from './FeedSummary';
 
@@ -14,12 +15,11 @@ interface Feed {
 export default function FeedTab() {
   const [feedsList, setFeedsList] = useState([]);
 
+  // TODO - fetch하는 조건 설정 필요
   useEffect(() => {
     const fetchFeeds = async () => {
-      try {
-        const posts = await axios.get('https://gasip.site/boards/0');
-        setFeedsList(posts.data.response);
-      } catch (error) {}
+      const posts = await getAllFeeds();
+      setFeedsList(posts);
     };
 
     fetchFeeds();

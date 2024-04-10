@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
-import axios from 'axios';
+
+import { getPopularFeeds } from '@api/index';
 
 import FeedSummary from '@screens/HomeScreen/FeedTab/FeedSummary';
 
@@ -14,17 +15,15 @@ interface Feed {
 export default function PopularTab() {
   const [popularFeedsList, setPopularFeedsList] = useState([]);
 
+  // TODO - fetch하는 조건 설정 필요
   useEffect(() => {
     const fetchPopularFeeds = async () => {
-      try {
-        const posts = await axios.get('https://gasip.site/boards/best/0');
+      const posts = await getPopularFeeds(0, 5);
 
-        setPopularFeedsList(posts.data.response);
-      } catch (error) {}
+      setPopularFeedsList(posts);
     };
 
     fetchPopularFeeds();
-    console.log('first');
   }, []);
 
   return (
