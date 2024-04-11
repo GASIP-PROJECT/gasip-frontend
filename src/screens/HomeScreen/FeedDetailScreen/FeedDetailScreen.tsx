@@ -11,11 +11,13 @@ import FeedDetailScreenHeader from './FeedDetailScreenHeader';
 import Spacer from '@components/common/Spacer';
 import SafeAreaLayout from '@components/common/SafeAreaLayout';
 
+import { type FeedResult } from 'types/searchTypes';
+
 // TODO - type 선언 필요
 export default function FeedDetailScreen({ route, navigation }) {
   const { postId } = route.params;
 
-  const [feedData, setFeedData] = useState(null);
+  const [feedData, setFeedData] = useState<FeedResult | null>(null);
   const [comments, setComments] = useState([]);
 
   useEffect(() => {
@@ -39,7 +41,12 @@ export default function FeedDetailScreen({ route, navigation }) {
         <Spacer type="height" value={10} />
         {feedData !== null ? (
           <>
-            <ProfessorInfo profName="홍길동" majorName="컴퓨터공학과" />
+            {feedData.profId !== 0 && (
+              <ProfessorInfo
+                profName={feedData.profName}
+                majorName="컴퓨터공학과"
+              />
+            )}
             <Spacer type="height" value={10} />
             <FeedContent feedData={feedData} />
             <Spacer type="height" value={10} />
