@@ -13,12 +13,23 @@ interface Feed {
 }
 
 export default function TopFeedsTab() {
+  const [page, setPage] = useState(0);
   const [popularFeedsList, setPopularFeedsList] = useState([]);
+
+  const onListEndReached = async () => {
+    setPage(prev => prev + 1);
+
+    const posts: [] = await getPopularFeeds(page);
+
+    if (posts.length > 0) {
+      setPopularFeedsList([...popularFeedsList, ...posts]);
+    }
+  };
 
   // TODO - fetch하는 조건 설정 필요
   useEffect(() => {
     const fetchPopularFeeds = async () => {
-      const posts = await getPopularFeeds(0, 5);
+      const posts = await getPopularFeeds(page);
 
       setPopularFeedsList(posts);
     };
@@ -39,6 +50,7 @@ export default function TopFeedsTab() {
           />
         )}
         keyExtractor={(item, index) => index.toString()}
+        onEndReached={onListEndReached}
         ItemSeparatorComponent={() => <View style={{ height: 15 }} />}
         ListFooterComponent={() => <View style={{ height: 150 }} />}
       />

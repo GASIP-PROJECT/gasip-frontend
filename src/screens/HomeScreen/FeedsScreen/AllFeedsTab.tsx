@@ -13,12 +13,23 @@ interface Feed {
 }
 
 export default function AllFeedsTab() {
-  const [feedsList, setFeedsList] = useState([]);
+  const [page, setPage] = useState(0);
+  const [feedsList, setFeedsList] = useState<[Feed] | []>([]);
+
+  const onListEndReached = async () => {
+    setPage(prev => prev + 1);
+
+    const posts: [] = await getAllFeeds(page);
+
+    if (posts.length > 0) {
+      setFeedsList([...feedsList, ...posts]);
+    }
+  };
 
   // TODO - fetch하는 조건 설정 필요
   useEffect(() => {
     const fetchFeeds = async () => {
-      const posts = await getAllFeeds();
+      const posts = await getAllFeeds(page);
       setFeedsList(posts);
     };
 
@@ -37,6 +48,7 @@ export default function AllFeedsTab() {
             regDate={item.regDate}
           />
         )}
+        onEndReached={onListEndReached}
         keyExtractor={(item, index) => index.toString()}
         ItemSeparatorComponent={() => <View style={{ height: 15 }} />}
         ListFooterComponent={() => <View style={{ height: 150 }} />}

@@ -5,9 +5,11 @@ const GSBackendClient = axios.create({
   baseURL: 'https://gasip.site',
 });
 
-export const getAllFeeds = async () => {
+export const getAllFeeds = async (page: number, dataCount: number = 5) => {
   try {
-    const posts = await GSBackendClient.get('/boards/0');
+    const posts = await GSBackendClient.get(
+      `/boards/0?page=${page}&size=${dataCount}`,
+    );
 
     return posts.data.response;
   } catch (error) {
@@ -16,10 +18,10 @@ export const getAllFeeds = async () => {
   }
 };
 
-export const getPopularFeeds = async (page: number, dataCount: number) => {
+export const getPopularFeeds = async (page: number, dataCount: number = 5) => {
   try {
     const posts = await GSBackendClient.get(
-      `/boards/best?page=${page}&dataCount=${dataCount}`,
+      `/boards/best?page=${page}&size=${dataCount}`,
     );
 
     return posts.data.response;
