@@ -5,11 +5,13 @@ import { getPopularFeeds } from '@api/index';
 
 import FeedSummary from '@screens/HomeScreen/FeedsScreen/FeedSummary';
 
+// TODO - 타입 통일
 interface Feed {
   content: string;
   likeCount: number;
   clickCount: number;
   regDate: string;
+  postId: number;
 }
 
 export default function TopFeedsTab() {
@@ -47,6 +49,7 @@ export default function TopFeedsTab() {
             likeCount={item.likeCount}
             clickCount={item.clickCount}
             regDate={item.regDate}
+            postId={item.postId}
           />
         )}
         keyExtractor={(item, index) => index.toString()}

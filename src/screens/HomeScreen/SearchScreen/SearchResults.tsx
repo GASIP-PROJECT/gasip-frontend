@@ -82,6 +82,7 @@ const FeedResults = ({ searchResult }: { searchResult: FeedResult[] }) => {
             likeCount={item.likeCount}
             clickCount={item.clickCount}
             regDate={item.regDate}
+            postId={item.postId}
           />
         );
       }}

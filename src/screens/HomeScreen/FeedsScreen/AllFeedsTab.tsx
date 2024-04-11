@@ -5,11 +5,15 @@ import { getAllFeeds } from '@api/index';
 
 import FeedSummary from './FeedSummary';
 
+import Spacer from '@components/common/Spacer';
+
+// TODO - 타입 통일
 interface Feed {
   content: string;
   likeCount: number;
   clickCount: number;
   regDate: string;
+  postId: number;
 }
 
 export default function AllFeedsTab() {
@@ -46,12 +50,13 @@ export default function AllFeedsTab() {
             likeCount={item.likeCount}
             clickCount={item.clickCount}
             regDate={item.regDate}
+            postId={item.postId}
           />
         )}
         onEndReached={onListEndReached}
         keyExtractor={(item, index) => index.toString()}
-        ItemSeparatorComponent={() => <View style={{ height: 15 }} />}
-        ListFooterComponent={() => <View style={{ height: 150 }} />}
+        ItemSeparatorComponent={() => <Spacer type="height" value={15} />}
+        ListFooterComponent={() => <Spacer type="height" value={150} />}
       />
     </View>
   );

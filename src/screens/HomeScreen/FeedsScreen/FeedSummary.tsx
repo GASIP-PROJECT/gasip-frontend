@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 import Spacer from '@components/common/Spacer';
 
@@ -14,16 +15,22 @@ interface FeedSummaryProps {
   likeCount: number;
   clickCount: number;
   regDate: string;
+  postId: number;
 }
 
+// TODO - navigation 관련 버그 해결
 export default function FeedSummary({
   content,
   likeCount,
   clickCount,
   regDate,
+  postId,
 }: FeedSummaryProps) {
+  const navigation = useNavigation();
+
   const handleSummaryPress = () => {
     // TODO - 각 글 세부 내용으로 이동시키는 처리
+    navigation.navigate('FeedDetail', {});
   };
 
   return (
