@@ -9,15 +9,19 @@ import SignUpScreen from '@screens/SignUpScreen/SignUpScreen';
 
 import { type StackParamList } from '@screens/navigationTypes';
 
+import { COLORS } from '@styles/colors';
+
 const Stack = createNativeStackNavigator<StackParamList>();
 
 export default function App() {
-  const isSignedIn = false; // 임시로 로그인 여부를 처리하기 위한 state, 추후에 로그인 데이터를 담고 있는 state로 변경 필요
+  const isSignedIn = null; // 임시로 로그인 여부를 처리하기 위한 state, 추후에 로그인 데이터를 담고 있는 state로 변경 필요
 
   return (
-    <NavigationContainer>
+    // TODO - colors 에러 발생하는 부분 수정
+    <NavigationContainer theme={{ colors: { background: COLORS.BG_MAIN } }}>
       <Stack.Navigator>
         {/* TODO - 조건 다시 수정, 작업 위해서 임시로 수정한 상태 */}
+        {/* {isSignedIn !== null ? ( */}
         {isSignedIn !== null ? (
           <Stack.Screen
             name="BottomTabNavigator"
@@ -27,11 +31,15 @@ export default function App() {
         ) : (
           <>
             <Stack.Screen
-              name="Login"
+              name="LoginScreen"
               component={LoginScreen}
               options={{ headerShown: false }}
             />
-            <Stack.Screen name="SignUp" component={SignUpScreen} />
+            <Stack.Screen
+              name="SignUpScreen"
+              component={SignUpScreen}
+              options={{ headerShown: false }}
+            />
           </>
         )}
       </Stack.Navigator>
