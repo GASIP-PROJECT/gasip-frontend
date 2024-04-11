@@ -1,23 +1,24 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+
+import FeedContent from './FeedContent';
+import FeedDetailScreenHeader from './FeedDetailScreenHeader';
 
 import SafeAreaLayout from '@components/common/SafeAreaLayout';
-import FeedDetailScreenHeader from './FeedDetailScreenHeader';
 
 export default function FeedDetailScreen() {
   return (
     <SafeAreaLayout>
-      <FeedDetailScreenHeader />
+      <View style={styles.container}>
+        <FeedDetailScreenHeader />
+        <FeedContent feedData={null} />
+      </View>
     </SafeAreaLayout>
   );
 }
 
-const Header = () => {
-  return (
-    <View>
-      <Text>Header</Text>
-    </View>
-  );
-};
-
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    paddingHorizontal: 16,
+  },
+});
