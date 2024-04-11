@@ -6,6 +6,7 @@ import BottomTabBar from './BottomTabBar';
 import HomeScreen from '@screens/HomeScreen/HomeScreen';
 import MyPageScreen from '@screens/MypageScreen/MyPageScreen';
 import CreateFeedModal from '@screens/HomeScreen/CreateFeedModal/CreateFeedModal';
+import FeedDetailScreen from '@screens/HomeScreen/FeedDetailScreen/FeedDetailScreen';
 
 import {
   type HomeStackParamList,
@@ -27,6 +28,7 @@ const Home = () => {
         component={CreateFeedModal}
         options={{ presentation: 'fullScreenModal' }}
       />
+      <HomeStack.Screen name="FeedDetail" component={FeedDetailScreen} />
     </HomeStack.Navigator>
   );
 };

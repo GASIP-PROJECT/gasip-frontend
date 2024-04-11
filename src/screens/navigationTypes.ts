@@ -15,6 +15,7 @@ export type BottomTabParamList = {
 export type HomeStackParamList = {
   Home: undefined;
   CreateFeed0: undefined;
+  FeedDetail: undefined;
 };
 export type MyPageStackParamList = {
   MyPage: undefined;
