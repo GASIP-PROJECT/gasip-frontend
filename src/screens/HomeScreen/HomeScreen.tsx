@@ -5,9 +5,9 @@ import SafeAreaLayout from '@components/common/SafeAreaLayout';
 
 import HomeScreenHeader from './HomeScreenHeader';
 import FeedsScreen from './FeedsScreen/FeedsScreen';
+import SearchScreen from './SearchScreen/SearchScreen';
 
 import Spacer from '@components/common/Spacer';
-import SearchScreen from './SearchScreen/SearchScreen';
 
 export default function HomeScreen() {
   const [isSearchPageOpen, setIsSearchPageOpen] = useState<boolean>(false);
