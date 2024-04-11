@@ -51,8 +51,6 @@ const styles = StyleSheet.create({
   noSearchResultContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    // height: '100%',
-    // backgroundColor: COLORS.WHITE,
     flex: 1,
   },
   noSearchResultText: {

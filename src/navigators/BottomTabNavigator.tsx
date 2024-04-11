@@ -7,6 +7,7 @@ import HomeScreen from '@screens/HomeScreen/HomeScreen';
 import MyPageScreen from '@screens/MypageScreen/MyPageScreen';
 import CreateFeedModal from '@screens/HomeScreen/CreateFeedModal/CreateFeedModal';
 import FeedDetailScreen from '@screens/HomeScreen/FeedDetailScreen/FeedDetailScreen';
+import SettingsScreen from '@screens/MypageScreen/SettingsScreen/SettingsScreen';
 
 import {
   type HomeStackParamList,
@@ -42,6 +43,7 @@ const MyPage = () => {
         component={CreateFeedModal}
         options={{ presentation: 'fullScreenModal' }}
       />
+      <MyPageStack.Screen name="Settings" component={SettingsScreen} />
     </MyPageStack.Navigator>
   );
 };
