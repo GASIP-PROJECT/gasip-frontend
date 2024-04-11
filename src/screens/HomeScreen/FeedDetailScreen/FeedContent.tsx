@@ -8,6 +8,7 @@ import { FeedResult } from 'types/searchTypes';
 
 import icon_like from '@assets/icon_like.png';
 import icon_comments from '@assets/icon_comments.png';
+import { getTimeDifference } from '@utils/timeUtil';
 
 export default function FeedContent({
   feedData,
@@ -33,14 +34,11 @@ const FeedContentHeader = ({
   regDate: string;
   userNickName: string;
 }) => {
-  // TODO - 함수 구현
-  const getFeedCreatedTimeString = () => {
-    return regDate;
-  };
+  const timeString = getTimeDifference(regDate);
 
   return (
     <Text style={styles.feedHeaderText}>
-      {getFeedCreatedTimeString()} | {userNickName}
+      {timeString} | {userNickName}
     </Text>
   );
 };
