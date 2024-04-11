@@ -54,3 +54,33 @@ export const createFeed = async (content: string) => {
     console.log('createFeed error: ', error);
   }
 };
+
+export const searchFeeds = async (searchText: string) => {
+  if (searchText === '') return [];
+
+  try {
+    const posts = await GSBackendClient.get(
+      `/boards/search?content=${searchText}`,
+    );
+
+    return posts.data.response;
+  } catch (error) {
+    console.log('searchFeeds error: ', error);
+    return [];
+  }
+};
+
+export const searchProfessors = async (searchText: string) => {
+  if (searchText === '') return [];
+
+  try {
+    const posts = await GSBackendClient.get(
+      `/professors/search?profName=${searchText}`,
+    );
+
+    return posts.data.response;
+  } catch (error) {
+    console.log('searchProfessors error: ', error);
+    return [];
+  }
+};

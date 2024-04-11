@@ -8,6 +8,8 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
+import { searchFeeds, searchProfessors } from '@api/index';
+
 import Spacer from '@components/common/Spacer';
 import GSRadioButton from '@components/common/GSRadioButton';
 
@@ -15,10 +17,12 @@ import { COLORS } from '@styles/colors';
 
 export default function SearchBar({
   setIsSearchPageOpen,
-  setHasSearched,
+  setSearchResults,
+  setNoSearchResult,
 }: {
   setIsSearchPageOpen: Dispatch<SetStateAction<boolean>>;
-  setHasSearched: Dispatch<SetStateAction<boolean>>;
+  setSearchResults: Dispatch<SetStateAction<string[]>>;
+  setNoSearchResult: Dispatch<SetStateAction<boolean>>;
 }) {
   const [searchText, setSearchText] = useState<string>('');
   const [searchResultType, setSearchResultType] = useState<
@@ -29,15 +33,33 @@ export default function SearchBar({
     setIsSearchPageOpen(false);
   };
 
-  const handleSearchSubmit = () => {
-    setHasSearched(true);
-    // TODO - 검색 시 호출되는 로직
-    console.log(searchText);
-    console.log(searchResultType);
+  const handleSearchSubmit = async () => {
+    if (searchResultType === 'Professor') {
+      const professors = await searchProfessors(searchText);
+      console.log(professors);
+
+      if (professors.length === 0) {
+        setNoSearchResult(true);
+      } else {
+        setNoSearchResult(false);
+      }
+      setSearchResults([...professors]);
+    }
+
+    if (searchResultType === 'Content') {
+      const feeds = await searchFeeds(searchText);
+
+      if (feeds.length === 0) {
+        setNoSearchResult(true);
+      } else {
+        setNoSearchResult(false);
+      }
+      setSearchResults([...feeds]);
+    }
   };
 
   const handleTextInputFocus = () => {
-    setHasSearched(false);
+    setNoSearchResult(false);
   };
 
   return (

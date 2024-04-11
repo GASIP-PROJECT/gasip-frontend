@@ -2,7 +2,9 @@ import React, { Dispatch, SetStateAction, useState } from 'react';
 import { FlatList, StyleSheet, View, Text } from 'react-native';
 
 import SearchBar from './SearchBar';
+
 import Spacer from '@components/common/Spacer';
+
 import { COLORS } from '@styles/colors';
 
 interface SearchScreenProps {
@@ -15,21 +17,27 @@ export default function SearchScreen({
   setIsSearchPageOpen,
 }: SearchScreenProps) {
   const [searchResults, setSearchResults] = useState<string[]>([]);
-  const [hasSearched, setHasSearched] = useState<boolean>(false);
+  const [noSearchResult, setNoSearchResult] = useState<boolean>(false);
 
   return (
     <View style={{ flex: 1 }}>
       <SearchBar
         setIsSearchPageOpen={setIsSearchPageOpen}
-        setHasSearched={setHasSearched}
+        setSearchResults={setSearchResults}
+        setNoSearchResult={setNoSearchResult}
       />
       <Spacer type="height" value={20} />
 
       {searchResults.length > 0 && (
-        <FlatList data={searchResults} renderItem={({ item }) => <View />} />
+        <FlatList
+          data={searchResults}
+          renderItem={({ item }) => (
+            <View style={{ height: 50, width: 50, backgroundColor: 'red' }} />
+          )}
+        />
       )}
 
-      {hasSearched && searchResults.length === 0 && <NoSearchResult />}
+      {noSearchResult && <NoSearchResult />}
     </View>
   );
 }
