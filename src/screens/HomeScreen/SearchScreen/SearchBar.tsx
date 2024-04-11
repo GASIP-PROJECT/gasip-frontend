@@ -14,6 +14,7 @@ import Spacer from '@components/common/Spacer';
 import GSRadioButton from '@components/common/GSRadioButton';
 
 import { COLORS } from '@styles/colors';
+import { type SearchResult } from 'types/searchTypes';
 
 export default function SearchBar({
   setIsSearchPageOpen,
@@ -21,7 +22,7 @@ export default function SearchBar({
   setNoSearchResult,
 }: {
   setIsSearchPageOpen: Dispatch<SetStateAction<boolean>>;
-  setSearchResults: Dispatch<SetStateAction<string[]>>;
+  setSearchResults: Dispatch<SetStateAction<SearchResult[]>>;
   setNoSearchResult: Dispatch<SetStateAction<boolean>>;
 }) {
   const [searchText, setSearchText] = useState<string>('');
@@ -36,8 +37,7 @@ export default function SearchBar({
   const handleSearchSubmit = async () => {
     if (searchResultType === 'Professor') {
       const professors = await searchProfessors(searchText);
-      console.log(professors);
-
+      // console.log(professors);
       if (professors.length === 0) {
         setNoSearchResult(true);
       } else {
@@ -48,7 +48,7 @@ export default function SearchBar({
 
     if (searchResultType === 'Content') {
       const feeds = await searchFeeds(searchText);
-
+      // console.log(feeds);
       if (feeds.length === 0) {
         setNoSearchResult(true);
       } else {
