@@ -14,17 +14,15 @@ export default function FeedContent({
 }: {
   feedData: FeedResult | null;
 }) {
-  // if (!feedData) return <View />;
+  if (feedData === null) return <View />;
 
   return (
     <View style={styles.container}>
-      <FeedContentHeader regDate={'ss'} userNickName="nickName" />
-      {/* <FeedContentHeader regDate={feedData.regDate} userNickName="nickName" /> */}
+      <FeedContentHeader regDate={feedData.regDate} userNickName="nickName" />
       <Spacer type="height" value={10} />
-      {/* <FeedContentText content={feedData.content} /> */}
-      <FeedContentText content={'fff'} />
+      <FeedContentText content={feedData.content} />
       <Spacer type="height" value={10} />
-      <FeedContentFooter likeCount={1} />
+      <FeedContentFooter likeCount={feedData.likeCount} />
     </View>
   );
 }
