@@ -15,8 +15,10 @@ import { COLORS } from '@styles/colors';
 
 export default function SearchBar({
   setIsSearchPageOpen,
+  setHasSearched,
 }: {
   setIsSearchPageOpen: Dispatch<SetStateAction<boolean>>;
+  setHasSearched: Dispatch<SetStateAction<boolean>>;
 }) {
   const [searchText, setSearchText] = useState<string>('');
   const [searchResultType, setSearchResultType] = useState<
@@ -28,9 +30,14 @@ export default function SearchBar({
   };
 
   const handleSearchSubmit = () => {
+    setHasSearched(true);
     // TODO - 검색 시 호출되는 로직
     console.log(searchText);
     console.log(searchResultType);
+  };
+
+  const handleTextInputFocus = () => {
+    setHasSearched(false);
   };
 
   return (
@@ -42,6 +49,7 @@ export default function SearchBar({
           placeholderTextColor={'#999999'}
           onChangeText={text => setSearchText(text)}
           onSubmitEditing={handleSearchSubmit}
+          onFocus={handleTextInputFocus}
         />
 
         <View style={styles.searchIconContainer}>
