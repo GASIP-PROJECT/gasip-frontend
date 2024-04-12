@@ -1,19 +1,25 @@
 import React, { ReactElement } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+  GestureResponderEvent,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
 interface MyPageElementProps {
   title: string;
-  onPress?: (() => void) | null;
+  onPress?: ((event: GestureResponderEvent) => void) | undefined;
   rightButtonElement?: ReactElement | null;
 }
 
 export default function MyPageElement({
   title,
-  onPress = null,
+  onPress = undefined,
   rightButtonElement = null,
 }: MyPageElementProps) {
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={onPress}>
       <Text style={styles.titleText}>{title}</Text>
 
       {rightButtonElement || <View />}

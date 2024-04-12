@@ -7,13 +7,13 @@ import SettingsScreenHeader from './SettingsScreenHeader';
 import Spacer from '@components/common/Spacer';
 import SafeAreaLayout from '@components/common/SafeAreaLayout';
 
-export default function SettingsScreen() {
+export default function SettingsScreen({ navigation }) {
   return (
     <SafeAreaLayout>
       <View style={styles.container}>
         <SettingsScreenHeader />
         <Spacer type="height" value={20} />
-        <SettingsElements />
+        <SettingsElements navigation={navigation} />
       </View>
     </SafeAreaLayout>
   );

@@ -140,7 +140,6 @@ const styles = StyleSheet.create({
   changeNicknameText: {
     fontSize: 20,
     fontWeight: '500',
-    // textAlign: 'center',
     color: COLORS.WHITE,
   },
   btnContainer: {

@@ -28,7 +28,7 @@ export default function MyPageScreen({ navigation }) {
 
 const GoToSettingsButton = ({ navigation }) => {
   const handleGotToSettingsPress = () => {
-    navigation.navigate('Settings');
+    navigation.navigate('SettingsScreen');
   };
 
   return (
