@@ -10,6 +10,7 @@ import FeedDetailScreen from '@screens/HomeScreen/FeedDetailScreen/FeedDetailScr
 import SettingsScreen from '@screens/MypageScreen/SettingsScreen/SettingsScreen';
 import ChangeNicknameScreen from '@screens/MypageScreen/ChageNicknameScreen/ChangeNicknameScreen';
 import ChangePasswordScreen from '@screens/MypageScreen/ChangePasswordScreen/ChangePasswordScreen';
+import MyFeedsScreen from '@screens/MypageScreen/MyFeedsScreen.tsx/MyFeedsScreen';
 
 import {
   type HomeStackParamList,
@@ -54,6 +55,7 @@ const MyPage = () => {
         name="ChangeNicknameScreen"
         component={ChangeNicknameScreen}
       />
+      <MyPageStack.Screen name="MyFeedsScreen" component={MyFeedsScreen} />
     </MyPageStack.Navigator>
   );
 };

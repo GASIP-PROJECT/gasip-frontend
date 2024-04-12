@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import MyPageElement from './MyPageElement';
@@ -18,6 +19,11 @@ const FixNickNameButton = () => {
 };
 
 export default function ProfileData() {
+  const navigation = useNavigation();
+  const handleMyFeedsPress = async () => {
+    navigation.navigate('MyFeedsScreen');
+  };
+
   return (
     <View style={styles.container}>
       <MyPageElement
@@ -27,7 +33,7 @@ export default function ProfileData() {
       />
       <MyPageElement
         title="내가 쓴 글"
-        onPress={() => {}}
+        onPress={handleMyFeedsPress}
         rightButtonElement={
           <Icon
             name="chevron-forward-outline"
