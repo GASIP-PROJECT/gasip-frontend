@@ -12,7 +12,8 @@
       "@constants": ["constants/*"],
       "@api/*": ["api/*"],
       "@utils/*": ["utils/*"],
-      "@types/*": ["types/*"]
+      "@types/*": ["types/*"],
+      "@contexts/*": ["contexts/*"]
     }
   }
 }
