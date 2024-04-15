@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { FlatList, View } from 'react-native';
 
 import { getAllFeeds } from '@api/index';
+import { NewFeedContext } from '@contexts/NewFeedContext';
 
 import FeedSummary from './FeedSummary';
 
@@ -17,10 +18,13 @@ interface Feed {
 }
 
 export default function AllFeedsTab() {
+  const { toggleToUpdateFeedsList } = useContext(NewFeedContext);
+
   const [page, setPage] = useState(0);
   const [feedsList, setFeedsList] = useState<[Feed] | []>([]);
 
   const onListEndReached = async () => {
+    console.log('onEndReached!');
     setPage(prev => prev + 1);
 
     const posts: [] = await getAllFeeds(page);
@@ -30,20 +34,20 @@ export default function AllFeedsTab() {
     }
   };
 
-  // TODO - fetch하는 조건 설정 필요
   useEffect(() => {
     const fetchFeeds = async () => {
-      const posts = await getAllFeeds(page);
-      setFeedsList(posts);
+      const posts: [Feed] = await getAllFeeds(0);
+      setFeedsList([...posts]);
     };
 
     fetchFeeds();
-  }, []);
+  }, [toggleToUpdateFeedsList]);
 
   return (
     <View>
       <FlatList
         data={feedsList}
+        extraData={toggleToUpdateFeedsList}
         renderItem={({ item }: { item: Feed }) => (
           <FeedSummary
             content={item.content}
