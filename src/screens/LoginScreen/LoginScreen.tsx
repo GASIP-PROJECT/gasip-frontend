@@ -31,7 +31,7 @@ export default function LoginScreen() {
       });
 
       if (!response.ok) {
-        throw new Error('로그인 실패');
+        throw new Error('아이디 or 비밀번호가 일치하지 않습니다');
       }
 
       //navigation.navigate('#');  로그인 성공하면 이동하는 곳.
