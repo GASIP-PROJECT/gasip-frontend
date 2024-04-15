@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { FlatList, View } from 'react-native';
 
 import { getAllFeeds } from '@api/index';
@@ -19,9 +19,17 @@ interface Feed {
 
 export default function AllFeedsTab() {
   const { toggleToUpdateFeedsList } = useContext(NewFeedContext);
+  const flatListRef = useRef(null);
 
   const [page, setPage] = useState(0);
   const [feedsList, setFeedsList] = useState<[Feed] | []>([]);
+
+  const scrollToTop = () => {
+    console.log('scrolled to TOp');
+    if (flatListRef.current) {
+      flatListRef.current.scrollToOffset({ offset: 0 });
+    }
+  };
 
   const onListEndReached = async () => {
     setPage(prev => prev + 1);
@@ -43,11 +51,13 @@ export default function AllFeedsTab() {
     };
 
     fetchFeeds();
+    scrollToTop();
   }, [toggleToUpdateFeedsList]);
 
   return (
     <View>
       <FlatList
+        ref={flatListRef}
         data={feedsList}
         extraData={toggleToUpdateFeedsList}
         renderItem={({ item }: { item: Feed }) => (
