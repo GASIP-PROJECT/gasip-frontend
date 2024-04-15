@@ -9,6 +9,7 @@ import { COLORS } from '@styles/colors';
 import icon_like from '@assets/icon_like.png';
 import icon_comments from '@assets/icon_comments.png';
 import icon_view from '@assets/icon_view.png';
+import { getTimeDifference } from '@utils/timeUtil';
 
 interface FeedSummaryProps {
   content: string;
@@ -30,7 +31,7 @@ export default function FeedSummary({
 
   const handleSummaryPress = () => {
     // TODO - 각 글 세부 내용으로 이동시키는 처리
-    navigation.navigate('FeedDetail', {});
+    navigation.navigate('FeedDetail', { postId: postId });
   };
 
   return (
@@ -53,14 +54,11 @@ const SummaryHeader = ({
   regDate: string;
   userNickName: string;
 }) => {
-  // TODO - 함수 구현
-  const getFeedCreatedTimeString = () => {
-    return regDate;
-  };
+  const timeString = getTimeDifference(regDate);
 
   return (
     <Text style={styles.feedHeaderText}>
-      {getFeedCreatedTimeString()} | {userNickName}
+      {timeString} | {userNickName}
     </Text>
   );
 };

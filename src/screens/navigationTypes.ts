@@ -20,6 +20,10 @@ export type HomeStackParamList = {
 export type MyPageStackParamList = {
   MyPage: undefined;
   CreateFeed2: undefined;
+  SettingsScreen: undefined;
+  ChangePasswordScreen: undefined;
+  ChangeNicknameScreen: undefined;
+  MyFeedsScreen: undefined;
 };
 
 export type HomeScreenProps = BottomTabScreenProps<HomeStackParamList, 'Home'>;

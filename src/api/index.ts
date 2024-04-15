@@ -84,3 +84,26 @@ export const searchProfessors = async (searchText: string) => {
     return [];
   }
 };
+
+export const getFeedData = async (postId: number) => {
+  console.log('executed');
+  try {
+    const response = await GSBackendClient.get(`/boards/details/${postId}`);
+
+    return response.data.response;
+  } catch (error) {
+    console.log('getFeedDetail error: ', error);
+    return null;
+  }
+};
+
+export const getCommentsForFeed = async (postId: number) => {
+  try {
+    const response = await GSBackendClient.get(`/comments/${postId}`);
+
+    return response.data.response;
+  } catch (error) {
+    console.log('getCommentsForFeed error: ', error);
+    return [];
+  }
+};

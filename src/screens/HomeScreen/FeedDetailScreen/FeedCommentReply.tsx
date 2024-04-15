@@ -5,16 +5,20 @@ import Spacer from '@components/common/Spacer';
 
 import { COLORS } from '@styles/colors';
 
-import icon_reply from '@assets/icon_reply.png';
 import icon_like from '@assets/icon_like.png';
+import icon_reply from '@assets/icon_reply.png';
 
 export default function FeedCommentReply() {
   return (
     <View style={styles.container}>
       <Image source={icon_reply} style={{ width: 15, height: 15 }} />
-      <ReplyHeader regDate="2021-08-01" userNickName="nickName" />
-      <ReplyBody content="content" />
-      <ReplyFooter likeCount={1} />
+      <Spacer type="width" value={10} />
+      <View>
+        <Spacer type="height" value={5} />
+        <ReplyHeader regDate="2021-08-01" userNickName="nickName" />
+        <ReplyBody content="content" />
+        <ReplyFooter likeCount={1} />
+      </View>
     </View>
   );
 }
@@ -59,6 +63,7 @@ const ReplyFooter = ({ likeCount }: { likeCount: number }) => {
 const styles = StyleSheet.create({
   container: {
     paddingLeft: 10,
+    flexDirection: 'row',
   },
   commentHeaderText: {
     fontSize: 14,

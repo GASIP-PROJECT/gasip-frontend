@@ -9,7 +9,8 @@ import Spacer from '@components/common/Spacer';
 import icon_like from '@assets/icon_like.png';
 import icon_comments from '@assets/icon_comments.png';
 
-export default function FeedComment() {
+// TODO - any 수정 필요
+export default function FeedComment({ commentData }: { commentData: any }) {
   return (
     <View>
       <CommentHeader regDate="2021-08-01" userNickName="nickName" />

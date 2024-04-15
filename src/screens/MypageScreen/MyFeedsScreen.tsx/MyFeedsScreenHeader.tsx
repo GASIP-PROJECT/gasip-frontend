@@ -9,7 +9,7 @@ import { COLORS } from '@styles/colors';
 const ICON_SIZE = 27;
 
 // TODO - 비슷한 헤더들 분리
-export default function FeedDetailScreenHeader() {
+export default function MyFeedsScreenHeader() {
   return (
     <View style={styles.container}>
       <HeaderCloseButton />
@@ -42,7 +42,7 @@ const HeaderCloseButton = () => {
 const HeaderTitle = () => {
   return (
     <View style={styles.titleContainer}>
-      <Text style={styles.title}>게시글 상세</Text>
+      <Text style={styles.title}>설정 </Text>
     </View>
   );
 };

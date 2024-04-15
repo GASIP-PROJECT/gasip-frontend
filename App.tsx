@@ -14,7 +14,7 @@ import { COLORS } from '@styles/colors';
 const Stack = createNativeStackNavigator<StackParamList>();
 
 export default function App() {
-  const isSignedIn = null; // 임시로 로그인 여부를 처리하기 위한 state, 추후에 로그인 데이터를 담고 있는 state로 변경 필요
+  const isSignedIn = 'null'; // 임시로 로그인 여부를 처리하기 위한 state, 추후에 로그인 데이터를 담고 있는 state로 변경 필요
 
   return (
     // TODO - colors 에러 발생하는 부분 수정
