@@ -24,7 +24,6 @@ export default function AllFeedsTab() {
   const [feedsList, setFeedsList] = useState<[Feed] | []>([]);
 
   const onListEndReached = async () => {
-    console.log('onEndReached!');
     setPage(prev => prev + 1);
 
     const posts: [] = await getAllFeeds(page);
@@ -35,6 +34,9 @@ export default function AllFeedsTab() {
   };
 
   useEffect(() => {
+    // TODO -  page 변수 초기화가 여기서 이루어지는 게 최선인지 고민 필요
+    setPage(0);
+
     const fetchFeeds = async () => {
       const posts: [Feed] = await getAllFeeds(0);
       setFeedsList([...posts]);
