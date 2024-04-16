@@ -86,7 +86,6 @@ export const searchProfessors = async (searchText: string) => {
 };
 
 export const getFeedData = async (postId: number) => {
-  console.log('executed');
   try {
     const response = await GSBackendClient.get(`/boards/details/${postId}`);
 
@@ -105,5 +104,40 @@ export const getCommentsForFeed = async (postId: number) => {
   } catch (error) {
     console.log('getCommentsForFeed error: ', error);
     return [];
+  }
+};
+
+export const getAllMyFeeds = async () => {
+  try {
+    const response = await GSBackendClient.get('/members/myboards', {
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+      },
+    });
+
+    return response.data.response;
+  } catch (error) {
+    console.log('getMyFeeds error: ', error);
+    return [];
+  }
+};
+
+export const changeNickname = async (newNickname: string) => {
+  try {
+    const response = await GSBackendClient.put(
+      '/members/nicknames',
+      {
+        nickname: newNickname,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      },
+    );
+
+    return response.data.response.nickname;
+  } catch (error) {
+    console.log('changeNickname error: ', error);
   }
 };

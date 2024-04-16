@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {
+  Alert,
   Image,
   StyleSheet,
   Text,
@@ -8,6 +9,8 @@ import {
   View,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+
+import { changeNickname } from '@api/index';
 
 import Spacer from '@components/common/Spacer';
 import SafeAreaLayout from '@components/common/SafeAreaLayout';
@@ -22,8 +25,20 @@ const ICON_SIZE = 27;
 export default function ChangeNicknameScreen({ navigation }) {
   const [newNickname, setNewNickname] = useState('');
 
-  const handlePressChangeNickname = () => {
-    setNewNickname('');
+  const handlePressChangeNickname = async () => {
+    if (newNickname.length) {
+      const changedNickname = await changeNickname(newNickname);
+      alertNicknameChanged();
+    }
+  };
+
+  const alertNicknameChanged = () => {
+    Alert.alert('닉네임 변경 완료', '닉네임이 변경되었습니다.', [
+      {
+        text: '확인',
+        onPress: () => navigation.goBack(),
+      },
+    ]);
   };
 
   return (
@@ -37,7 +52,11 @@ export default function ChangeNicknameScreen({ navigation }) {
         <Spacer type="height" value={20} />
         <ChangeNickNameTextInput setNewNickname={setNewNickname} />
         <Spacer type="height" value={20} />
-        <Button buttonText="변경하기" onPress={handlePressChangeNickname} />
+        <Button
+          buttonText="변경하기"
+          onPress={handlePressChangeNickname}
+          newNickName={newNickname}
+        />
       </View>
     </SafeAreaLayout>
   );
@@ -90,14 +109,18 @@ const ChangeNickNameTextInput = ({ setNewNickname }) => {
         color: COLORS.BTN_MAIN,
       }}
       onChangeText={text => setNewNickname(text)}
-      onSubmitEditing={() => {}}
+      onSubmitEditing={undefined}
     />
   );
 };
 
-const Button = ({ buttonText, onPress }) => {
+const Button = ({ buttonText, onPress, newNickName }) => {
   return (
-    <TouchableOpacity style={[styles.btnContainer]} onPress={onPress}>
+    <TouchableOpacity
+      style={[styles.btnContainer, { opacity: newNickName === '' ? 0.5 : 1 }]}
+      onPress={onPress}
+      disabled={newNickName === ''}
+    >
       <Text style={styles.text}>{buttonText}</Text>
     </TouchableOpacity>
   );
