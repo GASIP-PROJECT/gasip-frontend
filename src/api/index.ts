@@ -8,6 +8,18 @@ const GSBackendClient = axios.create({
 export const getAllFeeds = async (page: number, dataCount: number = 5) => {
   try {
     const posts = await GSBackendClient.get(
+      `/boards/all-boards?page=${page}&size=${dataCount}`,
+    );
+
+    return posts.data.response;
+  } catch (error) {
+    console.log('getAllFeeds error: ', error);
+    return [];
+  }
+};
+
+  try {
+    const posts = await GSBackendClient.get(
       `/boards/0?page=${page}&size=${dataCount}`,
     );
 
