@@ -1,6 +1,8 @@
 import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 
+import { getTimeDifference } from '@utils/timeUtil';
+
 import Spacer from '@components/common/Spacer';
 
 import { COLORS } from '@styles/colors';
@@ -8,7 +10,6 @@ import { FeedResult } from 'types/searchTypes';
 
 import icon_like from '@assets/icon_like.png';
 import icon_comments from '@assets/icon_comments.png';
-import { getTimeDifference } from '@utils/timeUtil';
 
 export default function FeedContent({
   feedData,

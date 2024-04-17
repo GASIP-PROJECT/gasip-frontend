@@ -10,6 +10,7 @@ import GSHeader from '@components/common/GSHeader';
 import SafeAreaLayout from '@components/common/SafeAreaLayout';
 
 import { COLORS } from '@styles/colors';
+import ChangePasswordModal from '../ChangePasswordModal/ChangePasswordModal';
 
 // TODO - ICON_SIZE 여기 선언하는게 맞는가?
 const ICON_SIZE = 27;
@@ -24,6 +25,7 @@ export default function SettingModal({
   setIsVisible,
 }: SettingModalProps) {
   const [showNicknameModal, setShowNicknameModal] = useState(false);
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
 
   return (
     <Modal visible={isVisible} animationType="slide">
@@ -36,7 +38,10 @@ export default function SettingModal({
               title="닉네임 변경"
               onPress={() => setShowNicknameModal(true)}
             />
-            <MyPageElement title="비밀번호 변경" onPress={() => {}} />
+            <MyPageElement
+              title="비밀번호 변경"
+              onPress={() => setShowPasswordModal(true)}
+            />
             <MyPageElement title="로그아웃" />
             <MyPageElement title="서비스 탈퇴하기" />
           </View>
@@ -45,6 +50,10 @@ export default function SettingModal({
       <ChangeNicknameModal
         isVisible={showNicknameModal}
         setIsVisible={setShowNicknameModal}
+      />
+      <ChangePasswordModal
+        isVisible={showPasswordModal}
+        setIsVisible={setShowPasswordModal}
       />
     </Modal>
   );
