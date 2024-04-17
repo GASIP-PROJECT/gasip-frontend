@@ -30,11 +30,17 @@ export default function SearchResults({
 
   if (searchResults[0]?.profId) {
     return (
-      <ProfessorResults searchResult={searchResults as ProfessorResult[]} />
+      <View>
+        <ProfessorResults searchResult={searchResults as ProfessorResult[]} />
+      </View>
     );
   }
 
-  return <FeedResults searchResult={searchResults as FeedResult[]} />;
+  return (
+    <View>
+      <FeedResults searchResult={searchResults as FeedResult[]} />
+    </View>
+  );
 }
 
 const ProfessorResults = ({

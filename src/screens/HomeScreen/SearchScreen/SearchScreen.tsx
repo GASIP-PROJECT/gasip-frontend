@@ -22,7 +22,7 @@ export default function SearchScreen({
   const [noSearchResult, setNoSearchResult] = useState<boolean>(false);
 
   return (
-    <View style={{ flex: 1 }}>
+    <>
       <SearchBar
         setIsSearchPageOpen={setIsSearchPageOpen}
         setSearchResults={setSearchResults}
@@ -35,7 +35,7 @@ export default function SearchScreen({
       )}
 
       {noSearchResult && <NoSearchResult />}
-    </View>
+    </>
   );
 }
 
