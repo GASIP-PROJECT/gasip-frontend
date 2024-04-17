@@ -18,6 +18,7 @@ export const getAllFeeds = async (page: number, dataCount: number = 5) => {
   }
 };
 
+export const getGeneralFeeds = async (page: number, dataCount: number = 5) => {
   try {
     const posts = await GSBackendClient.get(
       `/boards/0?page=${page}&size=${dataCount}`,
