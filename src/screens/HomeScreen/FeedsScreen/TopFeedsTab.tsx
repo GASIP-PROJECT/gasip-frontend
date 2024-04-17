@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 
 import { getPopularFeeds } from '@api/index';
+import { NewFeedContext } from '@contexts/NewFeedContext';
 
 import FeedSummary from '@screens/HomeScreen/FeedsScreen/FeedSummary';
 
@@ -15,8 +16,17 @@ interface Feed {
 }
 
 export default function TopFeedsTab() {
+  const { toggleToUpdateFeedsList } = useContext(NewFeedContext);
+  const flatListRef = useRef(null);
+
   const [page, setPage] = useState(0);
   const [popularFeedsList, setPopularFeedsList] = useState([]);
+
+  const scrollToTop = () => {
+    if (flatListRef.current) {
+      flatListRef.current.scrollToOffset({ offset: 0 });
+    }
+  };
 
   const onListEndReached = async () => {
     setPage(prev => prev + 1);
@@ -30,14 +40,17 @@ export default function TopFeedsTab() {
 
   // TODO - fetch하는 조건 설정 필요
   useEffect(() => {
+    setPage(0);
+
     const fetchPopularFeeds = async () => {
-      const posts = await getPopularFeeds(page);
+      const posts = await getPopularFeeds(0);
 
       setPopularFeedsList(posts);
     };
 
     fetchPopularFeeds();
-  }, []);
+    scrollToTop();
+  }, [toggleToUpdateFeedsList]);
 
   return (
     <View>
