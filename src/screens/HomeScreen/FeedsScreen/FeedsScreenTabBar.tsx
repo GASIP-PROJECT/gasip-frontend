@@ -26,8 +26,13 @@ export default function FeedsScreenTabBar({
   setCurrentTab,
 }: FeedsScreenTabBar) {
   const handleFeedTabPress = () => {
-    setCurrentTab(HOME_TABS.FEED);
+    setCurrentTab(HOME_TABS.ALL);
   };
+
+  const handleGeneralTabPress = () => {
+    setCurrentTab(HOME_TABS.GENERAL);
+  };
+
   const handlePopularTabPress = () => {
     setCurrentTab(HOME_TABS.POPULAR);
   };
@@ -36,9 +41,18 @@ export default function FeedsScreenTabBar({
     <View style={styles.container}>
       <TabIndicator
         icon={icon_pin}
-        title={HOME_TABS.FEED}
+        title={HOME_TABS.ALL}
         currentTab={currentTab}
         onPress={handleFeedTabPress}
+      />
+
+      <Spacer type="width" value={12} />
+
+      <TabIndicator
+        icon={icon_fire}
+        title={HOME_TABS.GENERAL}
+        currentTab={currentTab}
+        onPress={handleGeneralTabPress}
       />
 
       <Spacer type="width" value={12} />
