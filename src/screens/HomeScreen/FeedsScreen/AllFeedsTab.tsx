@@ -25,7 +25,6 @@ export default function AllFeedsTab() {
   const [feedsList, setFeedsList] = useState<[Feed] | []>([]);
 
   const scrollToTop = () => {
-    console.log('scrolled to TOp');
     if (flatListRef.current) {
       flatListRef.current.scrollToOffset({ offset: 0 });
     }

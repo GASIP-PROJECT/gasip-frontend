@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { View } from 'react-native';
 
 import AllFeedsTab from './AllFeedsTab';
 import TopFeedsTab from './TopFeedsTab';
