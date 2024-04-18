@@ -18,8 +18,11 @@ const FixNickNameButton = () => {
   );
 };
 
-export default function ProfileData() {
+export default function ProfileData({ nickname }: { nickname: string | null }) {
   const navigation = useNavigation();
+
+  const nickenameText = nickname ? `${nickname} 님` : 'Guest 님';
+
   const handleMyFeedsPress = async () => {
     navigation.navigate('MyFeedsScreen');
   };
@@ -27,7 +30,7 @@ export default function ProfileData() {
   return (
     <View style={styles.container}>
       <MyPageElement
-        title="닉네임 님"
+        title={nickenameText}
         onPress={() => {}}
         rightButtonElement={<FixNickNameButton />}
       />

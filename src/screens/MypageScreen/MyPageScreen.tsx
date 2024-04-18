@@ -1,5 +1,7 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
-import { Text, TouchableOpacity, StyleSheet, View, Button } from 'react-native';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { Text, TouchableOpacity, StyleSheet, View } from 'react-native';
+
+import { getUserData } from '@api/index';
 
 import ProfileData from './ProfileData';
 import AppInformation from './AppInformation';
@@ -13,6 +15,19 @@ import { COLORS } from '@styles/colors';
 
 export default function MyPageScreen() {
   const [isSettingsModalVisible, setIsSettingsModalVisible] = useState(false);
+  const [nickname, setNickname] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const result = await getUserData();
+
+      if (result) {
+        setNickname(result.nickname);
+      }
+    };
+
+    fetchUserData();
+  }, []);
 
   return (
     <SafeAreaLayout>
@@ -23,7 +38,7 @@ export default function MyPageScreen() {
           setIsSettingsModalVisible={setIsSettingsModalVisible}
         />
         <Spacer type="height" value={20} />
-        <ProfileData />
+        <ProfileData nickname={nickname} />
         <Spacer type="height" value={20} />
         <AppInformation />
       </View>
