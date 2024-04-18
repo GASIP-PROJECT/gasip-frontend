@@ -2,32 +2,24 @@ import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
+import { getTimeDifference } from '@utils/timeUtil';
+
 import Spacer from '@components/common/Spacer';
 
 import { COLORS } from '@styles/colors';
+import { Feed } from 'types/searchTypes';
 
 import icon_like from '@assets/icon_like.png';
-import icon_comments from '@assets/icon_comments.png';
 import icon_view from '@assets/icon_view.png';
-import { getTimeDifference } from '@utils/timeUtil';
-
-interface FeedSummaryProps {
-  content: string;
-  likeCount: number;
-  clickCount: number;
-  regDate: string;
-  postId: number;
-}
+import icon_comments from '@assets/icon_comments.png';
 
 // TODO - navigation 관련 버그 해결
-export default function FeedSummary({
-  content,
-  likeCount,
-  clickCount,
-  regDate,
-  postId,
-}: FeedSummaryProps) {
+export default function FeedSummary({ feedData }: { feedData: Feed }) {
+  if (!feedData) return null;
+
   const navigation = useNavigation();
+
+  const { content, likeCount, clickCount, regDate, postId } = feedData;
 
   const handleSummaryPress = () => {
     // TODO - 각 글 세부 내용으로 이동시키는 처리

@@ -7,16 +7,12 @@ import { getTimeDifference } from '@utils/timeUtil';
 import Spacer from '@components/common/Spacer';
 
 import { COLORS } from '@styles/colors';
-import { FeedResult } from 'types/searchTypes';
+import { Feed } from 'types/searchTypes';
 
 import icon_like from '@assets/icon_like.png';
 import icon_comments from '@assets/icon_comments.png';
 
-export default function FeedContent({
-  feedData,
-}: {
-  feedData: FeedResult | null;
-}) {
+export default function FeedContent({ feedData }: { feedData: Feed | null }) {
   if (feedData === null) return <View />;
 
   return (

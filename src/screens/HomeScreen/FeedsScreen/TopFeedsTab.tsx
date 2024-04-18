@@ -6,14 +6,7 @@ import { NewFeedContext } from '@contexts/NewFeedContext';
 
 import FeedSummary from '@screens/HomeScreen/FeedsScreen/FeedSummary';
 
-// TODO - 타입 통일
-interface Feed {
-  content: string;
-  likeCount: number;
-  clickCount: number;
-  regDate: string;
-  postId: number;
-}
+import { type Feed } from 'types/searchTypes';
 
 export default function TopFeedsTab() {
   const { toggleToUpdateFeedsList } = useContext(NewFeedContext);
@@ -57,13 +50,7 @@ export default function TopFeedsTab() {
       <FlatList
         data={popularFeedsList}
         renderItem={({ item }: { item: Feed }) => (
-          <FeedSummary
-            content={item.content}
-            likeCount={item.likeCount}
-            clickCount={item.clickCount}
-            regDate={item.regDate}
-            postId={item.postId}
-          />
+          <FeedSummary feedData={item} />
         )}
         keyExtractor={(item, index) => index.toString()}
         onEndReached={onListEndReached}

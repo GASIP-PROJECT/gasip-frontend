@@ -33,7 +33,6 @@ export default function CreateFeedModal({ navigation }: CreateFeedModalProps) {
     // });
     // console.log(result.data);
 
-    // TODO - 피드 작성 후에 Feed탭이 업데이트 되어야 함.
     await createFeed(feedContent);
     setToggleToUpdateFeedsList(prev => !prev);
     closeModal();

@@ -9,11 +9,11 @@ import FeedSummary from '@screens/HomeScreen/FeedsScreen/FeedSummary';
 import Spacer from '@components/common/Spacer';
 import SafeAreaLayout from '@components/common/SafeAreaLayout';
 
-import { FeedResult } from 'types/searchTypes';
+import { Feed } from 'types/searchTypes';
 
 // TODO - 페이지네이션?
 export default function MyFeedsScreen() {
-  const [myFeeds, setMyFeeds] = useState<FeedResult[] | []>([]);
+  const [myFeeds, setMyFeeds] = useState<Feed[] | []>([]);
 
   useEffect(() => {
     const fetchMyFeeds = async () => {

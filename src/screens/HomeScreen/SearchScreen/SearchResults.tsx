@@ -3,7 +3,6 @@ import {
   FlatList,
   StyleSheet,
   Text,
-  Touchable,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -13,7 +12,7 @@ import FeedSummary from '@screens/HomeScreen/FeedsScreen/FeedSummary';
 import Spacer from '@components/common/Spacer';
 
 import {
-  type FeedResult,
+  type Feed,
   type ProfessorResult,
   type SearchResult,
 } from 'types/searchTypes';
@@ -38,7 +37,7 @@ export default function SearchResults({
 
   return (
     <View>
-      <FeedResults searchResult={searchResults as FeedResult[]} />
+      <FeedResults searchResult={searchResults as Feed[]} />
     </View>
   );
 }
@@ -77,20 +76,12 @@ const ProfessorInfo = ({
   );
 };
 
-const FeedResults = ({ searchResult }: { searchResult: FeedResult[] }) => {
+const FeedResults = ({ searchResult }: { searchResult: Feed[] }) => {
   return (
     <FlatList
       data={searchResult}
-      renderItem={({ item }: { item: FeedResult }) => {
-        return (
-          <FeedSummary
-            content={item.content}
-            likeCount={item.likeCount}
-            clickCount={item.clickCount}
-            regDate={item.regDate}
-            postId={item.postId}
-          />
-        );
+      renderItem={({ item }: { item: Feed }) => {
+        return <FeedSummary feedData={item} />;
       }}
       keyExtractor={(item, index) => index.toString()}
       ItemSeparatorComponent={() => <Spacer type="height" value={10} />}

@@ -1,4 +1,4 @@
-export interface FeedResult {
+export interface Feed {
   clickCount: number;
   content: string;
   gradePoint: number;
@@ -28,4 +28,4 @@ export interface ProfessorResult {
   professorAverageGradePoint: number | null;
 }
 
-export type SearchResult = FeedResult | ProfessorResult;
+export type SearchResult = Feed | ProfessorResult;

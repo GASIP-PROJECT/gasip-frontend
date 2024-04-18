@@ -11,13 +11,13 @@ import FeedDetailScreenHeader from './FeedDetailScreenHeader';
 import Spacer from '@components/common/Spacer';
 import SafeAreaLayout from '@components/common/SafeAreaLayout';
 
-import { type FeedResult } from 'types/searchTypes';
+import { type Feed } from 'types/searchTypes';
 
 // TODO - type 선언 필요
 export default function FeedDetailScreen({ route, navigation }) {
   const { postId } = route.params;
 
-  const [feedData, setFeedData] = useState<FeedResult | null>(null);
+  const [feedData, setFeedData] = useState<Feed | null>(null);
 
   useEffect(() => {
     const fetchFeedData = async () => {

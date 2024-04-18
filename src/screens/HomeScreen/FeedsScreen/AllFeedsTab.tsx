@@ -8,14 +8,7 @@ import FeedSummary from './FeedSummary';
 
 import Spacer from '@components/common/Spacer';
 
-// TODO - 타입 통일
-interface Feed {
-  content: string;
-  likeCount: number;
-  clickCount: number;
-  regDate: string;
-  postId: number;
-}
+import { type Feed } from 'types/searchTypes';
 
 export default function AllFeedsTab() {
   const { toggleToUpdateFeedsList } = useContext(NewFeedContext);
@@ -60,13 +53,7 @@ export default function AllFeedsTab() {
         data={feedsList}
         extraData={toggleToUpdateFeedsList}
         renderItem={({ item }: { item: Feed }) => (
-          <FeedSummary
-            content={item.content}
-            likeCount={item.likeCount}
-            clickCount={item.clickCount}
-            regDate={item.regDate}
-            postId={item.postId}
-          />
+          <FeedSummary feedData={item} />
         )}
         onEndReached={onListEndReached}
         keyExtractor={(item, index) => index.toString()}
