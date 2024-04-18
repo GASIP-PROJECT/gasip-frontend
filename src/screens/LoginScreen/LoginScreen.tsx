@@ -13,16 +13,16 @@ import GSButton from '@components/common/GSButton';
 
 import gasip_logo from '@assets/gasip_logo.png';
 
-import { useNavigation } from '@react-navigation/native'; // useNavigation 추가
+import { useNavigation } from '@react-navigation/native'; 
 
 export default function LoginScreen() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const navigation = useNavigation(); // useNavigation 훅 사용
+  const navigation = useNavigation(); 
 
   const handleLogin = async () => {
     try {
-      const response = await fetch('https://example.com/login', {
+      const response = await fetch('https://', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

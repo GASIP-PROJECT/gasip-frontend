@@ -22,7 +22,7 @@ export default function App() {
       <Stack.Navigator>
         {/* TODO - 조건 다시 수정, 작업 위해서 임시로 수정한 상태 */}
         {/* {isSignedIn !== null ? ( */}
-        {isSignedIn !== null ? (
+        {isSignedIn == null ? (
           <Stack.Screen
             name="BottomTabNavigator"
             component={BottomTabNavigator}
