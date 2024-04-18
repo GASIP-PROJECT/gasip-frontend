@@ -8,6 +8,16 @@ export interface FeedResult {
   profName: string;
   regDate: string;
   updateDate: string;
+  collegeName: String;
+  comments: FeedComment[];
+  numberOfComment: number;
+}
+
+export interface FeedComment {
+  commentId: number;
+  commentLike: number | null;
+  content: string;
+  commentChidren: FeedComment[];
 }
 
 export interface ProfessorResult {

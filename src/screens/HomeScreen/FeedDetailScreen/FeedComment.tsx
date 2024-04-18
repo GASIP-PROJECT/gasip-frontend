@@ -3,25 +3,40 @@ import { Image, StyleSheet, Text, View } from 'react-native';
 
 import FeedCommentReply from './FeedCommentReply';
 
-import { COLORS } from '@styles/colors';
 import Spacer from '@components/common/Spacer';
+
+import { COLORS } from '@styles/colors';
+import { type FeedComment } from 'types/searchTypes';
 
 import icon_like from '@assets/icon_like.png';
 import icon_comments from '@assets/icon_comments.png';
 
 // TODO - any 수정 필요
-export default function FeedComment({ commentData }: { commentData: any }) {
+export default function FeedComment({
+  commentData,
+}: {
+  commentData: FeedComment;
+}) {
+  if (commentData === null) return <View />;
+
+  const { content, commentLike, commentChildren } = commentData;
+
   return (
     <View>
       <CommentHeader regDate="2021-08-01" userNickName="nickName" />
       <Spacer type="height" value={5} />
-      <CommentBody content="content" />
+      <CommentBody content={content} />
       <Spacer type="height" value={5} />
-      <CommentFooter likeCount={1} />
+      <CommentFooter
+        likeCount={commentLike}
+        commentChildrenCount={commentChildren.length}
+      />
       <Spacer type="height" value={10} />
       <View style={styles.bottomLine} />
       <Spacer type="height" value={5} />
-      <FeedCommentReply />
+      {commentChildren.map(commentChild => {
+        return <FeedCommentReply reply={commentChild} />;
+      })}
     </View>
   );
 }
@@ -49,14 +64,20 @@ const CommentBody = ({ content }: { content: string }) => {
   return <Text style={styles.commentBodyText}>{content}</Text>;
 };
 
-const CommentFooter = ({ likeCount }: { likeCount: number }) => {
+const CommentFooter = ({
+  likeCount,
+  commentChildrenCount,
+}: {
+  likeCount: number | null;
+  commentChildrenCount: number;
+}) => {
   return (
     <View style={styles.footerContainer}>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <Image source={icon_like} style={{ width: 15, height: 15 }} />
         <Spacer type="width" value={5} />
         <Text style={{ fontSize: 15, color: 'red', fontWeight: '500' }}>
-          {likeCount}
+          {likeCount || 0}
         </Text>
       </View>
 
@@ -66,7 +87,7 @@ const CommentFooter = ({ likeCount }: { likeCount: number }) => {
         <Image source={icon_comments} style={{ width: 15, height: 15 }} />
         <Spacer type="width" value={5} />
         <Text style={{ fontSize: 15, color: '#4490d8', fontWeight: '500' }}>
-          {3}
+          {commentChildrenCount}
         </Text>
       </View>
     </View>

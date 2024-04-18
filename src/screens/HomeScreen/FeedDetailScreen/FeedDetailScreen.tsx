@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, ScrollView } from 'react-native';
 
-import { getCommentsForFeed, getFeedData } from '@api/index';
+import { getFeedData } from '@api/index';
 
 import FeedContent from './FeedContent';
 import FeedComment from './FeedComment';
@@ -18,17 +18,12 @@ export default function FeedDetailScreen({ route, navigation }) {
   const { postId } = route.params;
 
   const [feedData, setFeedData] = useState<FeedResult | null>(null);
-  const [comments, setComments] = useState([]);
 
   useEffect(() => {
     const fetchFeedData = async () => {
       const feedData = await getFeedData(postId);
-      const comments = await getCommentsForFeed(postId);
-
-      // console.log(feedData);
 
       setFeedData(feedData);
-      setComments(comments);
     };
 
     fetchFeedData();
@@ -36,7 +31,7 @@ export default function FeedDetailScreen({ route, navigation }) {
 
   return (
     <SafeAreaLayout>
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         <FeedDetailScreenHeader />
         <Spacer type="height" value={10} />
         {feedData !== null ? (
@@ -50,8 +45,7 @@ export default function FeedDetailScreen({ route, navigation }) {
             <Spacer type="height" value={10} />
             <FeedContent feedData={feedData} />
             <Spacer type="height" value={10} />
-
-            {comments.length > 0 && (
+            {feedData?.comments.length > 0 && (
               <View
                 style={{
                   backgroundColor: '#28292A',
@@ -60,7 +54,7 @@ export default function FeedDetailScreen({ route, navigation }) {
                   paddingVertical: 15,
                 }}
               >
-                {comments.map((comment, index) => (
+                {feedData.comments.map((comment, index) => (
                   <FeedComment key={index.toString()} commentData={comment} />
                 ))}
               </View>
@@ -69,7 +63,7 @@ export default function FeedDetailScreen({ route, navigation }) {
         ) : (
           <Text>로딩중...</Text>
         )}
-      </View>
+      </ScrollView>
     </SafeAreaLayout>
   );
 }

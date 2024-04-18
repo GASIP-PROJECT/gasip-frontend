@@ -1,6 +1,7 @@
 import React from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
+import { likeFeed, likeFeedCancel } from '@api/index';
 import { getTimeDifference } from '@utils/timeUtil';
 
 import Spacer from '@components/common/Spacer';
@@ -24,7 +25,11 @@ export default function FeedContent({
       <Spacer type="height" value={10} />
       <FeedContentText content={feedData.content} />
       <Spacer type="height" value={10} />
-      <FeedContentFooter likeCount={feedData.likeCount} />
+      <FeedContentFooter
+        likeCount={feedData.likeCount}
+        postId={feedData.postId}
+        commentCount={feedData.comments.length}
+      />
     </View>
   );
 }
@@ -48,16 +53,32 @@ const FeedContentText = ({ content }: { content: string }) => {
   return <Text style={styles.feedContentText}>{content}</Text>;
 };
 
-const FeedContentFooter = ({ likeCount }: { likeCount: number }) => {
+const FeedContentFooter = ({
+  likeCount,
+  postId,
+  commentCount,
+}: {
+  likeCount: number;
+  postId: number;
+  commentCount: number;
+}) => {
+  const handleLikePress = async () => {
+    // await likeFeed(postId, 7);
+    // await likeFeedCancel(postId, 7);
+  };
+
   return (
     <View style={styles.footerContainer}>
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+      <TouchableOpacity
+        style={{ flexDirection: 'row', alignItems: 'center' }}
+        onPress={handleLikePress}
+      >
         <Image source={icon_like} style={{ width: 15, height: 15 }} />
         <Spacer type="width" value={5} />
         <Text style={{ fontSize: 15, color: 'red', fontWeight: '500' }}>
           {likeCount}
         </Text>
-      </View>
+      </TouchableOpacity>
 
       <Spacer type="width" value={15} />
 
@@ -65,7 +86,7 @@ const FeedContentFooter = ({ likeCount }: { likeCount: number }) => {
         <Image source={icon_comments} style={{ width: 15, height: 15 }} />
         <Spacer type="width" value={5} />
         <Text style={{ fontSize: 15, color: '#4490d8', fontWeight: '500' }}>
-          {3}
+          {commentCount}
         </Text>
       </View>
     </View>
