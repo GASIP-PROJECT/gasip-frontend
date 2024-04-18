@@ -17,7 +17,7 @@ export interface FeedComment {
   commentId: number;
   commentLike: number | null;
   content: string;
-  commentChidren: FeedComment[];
+  commentChildren: FeedComment[];
 }
 
 export interface ProfessorResult {
