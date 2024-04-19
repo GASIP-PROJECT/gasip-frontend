@@ -33,15 +33,7 @@ export default function MyFeedsScreen() {
 
         <FlatList
           data={myFeeds}
-          renderItem={({ item }) => (
-            <FeedSummary
-              content={item.content}
-              likeCount={item.likeCount}
-              clickCount={item.clickCount}
-              regDate={item.regDate}
-              postId={item.postId}
-            />
-          )}
+          renderItem={({ item }) => <FeedSummary feedData={item} />}
           keyExtractor={(item, index) => index.toString()}
           ItemSeparatorComponent={() => <Spacer type="height" value={15} />}
           ListFooterComponent={() => <Spacer type="height" value={150} />}
