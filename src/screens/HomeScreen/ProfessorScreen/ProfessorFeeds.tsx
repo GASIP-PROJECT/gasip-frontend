@@ -46,7 +46,7 @@ export default function ProfessorFeeds({ profId }: { profId: number }) {
         onEndReached={onListEndReached}
         keyExtractor={(item, index) => index.toString()}
         ItemSeparatorComponent={() => <Spacer type="height" value={15} />}
-        ListFooterComponent={() => <Spacer type="height" value={150} />}
+        ListFooterComponent={() => <Spacer type="height" value={300} />}
       />
     </View>
   );
