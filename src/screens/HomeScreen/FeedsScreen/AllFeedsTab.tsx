@@ -15,7 +15,7 @@ export default function AllFeedsTab() {
   const flatListRef = useRef(null);
 
   const [page, setPage] = useState(0);
-  const [feedsList, setFeedsList] = useState<[Feed] | []>([]);
+  const [feedsList, setFeedsList] = useState<Feed[] | []>([]);
 
   const scrollToTop = () => {
     if (flatListRef.current) {
@@ -26,7 +26,7 @@ export default function AllFeedsTab() {
   const onListEndReached = async () => {
     setPage(prev => prev + 1);
 
-    const posts: [] = await getAllFeeds(page);
+    const posts: Feed[] = await getAllFeeds(page);
 
     if (posts.length > 0) {
       setFeedsList([...feedsList, ...posts]);
@@ -38,7 +38,7 @@ export default function AllFeedsTab() {
     setPage(0);
 
     const fetchFeeds = async () => {
-      const posts: [Feed] = await getAllFeeds(0);
+      const posts: Feed[] = await getAllFeeds(0);
       setFeedsList([...posts]);
     };
 
