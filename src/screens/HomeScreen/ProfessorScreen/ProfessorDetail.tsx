@@ -53,7 +53,7 @@ const DetailElement = ({
   return (
     <View style={styles.elementContainer}>
       <View style={styles.elementTitleContainer}>
-        <GSIcon iconName={iconName} iconSize={20} />
+        <GSIcon name={iconName} size={20} />
         <Spacer type="width" value={5} />
         <Text style={styles.elementTitle}>{title}</Text>
       </View>

@@ -4,13 +4,13 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { COLORS } from '@styles/colors';
 
 export default function GSIcon({
-  iconName,
-  iconSize = 27,
-  iconColor = COLORS.WHITE,
+  name,
+  size = 27,
+  color = COLORS.WHITE,
 }: {
-  iconName: string;
-  iconSize?: number;
-  iconColor?: string;
+  name: string;
+  size?: number;
+  color?: string;
 }) {
-  return <Icon name={iconName} size={iconSize} style={{ color: iconColor }} />;
+  return <Icon name={name} size={size} style={{ color: color }} />;
 }

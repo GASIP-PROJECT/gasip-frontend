@@ -1,9 +1,9 @@
 import React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
-import Icon from 'react-native-vector-icons/Ionicons';
 
 import Spacer from '@components/common/Spacer';
+import GSIcon from '@components/common/GSIcon';
 
 import { COLORS } from '@styles/colors';
 
@@ -71,7 +71,7 @@ const BottomTabIcon = ({
 }) => {
   if (index === 0) {
     return (
-      <Icon
+      <GSIcon
         name="home-outline"
         size={30}
         color={isFocused ? COLORS.BTN_MAIN : COLORS.WHITE}
@@ -85,7 +85,7 @@ const BottomTabIcon = ({
 
   if (index === 2) {
     return (
-      <Icon
+      <GSIcon
         name="person-circle-outline"
         size={35}
         color={isFocused ? COLORS.BTN_MAIN : COLORS.WHITE}
@@ -94,7 +94,7 @@ const BottomTabIcon = ({
   }
 
   return (
-    <Icon
+    <GSIcon
       name="home-outline"
       size={30}
       color={isFocused ? COLORS.BTN_MAIN : COLORS.WHITE}
@@ -115,7 +115,7 @@ const CreateFeedButton = () => {
         flexDirection: 'row',
       }}
     >
-      <Icon name="add-outline" size={30} color="white" />
+      <GSIcon name="add-outline" size={30} />
 
       <Spacer type="width" value={5} />
 

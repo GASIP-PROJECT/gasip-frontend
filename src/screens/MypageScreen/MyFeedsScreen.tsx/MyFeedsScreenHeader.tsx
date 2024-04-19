@@ -1,12 +1,10 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/Ionicons';
+
+import GSIcon from '@components/common/GSIcon';
 
 import { COLORS } from '@styles/colors';
-
-// TODO - ICON_SIZE 여기 선언하는게 맞는가?
-const ICON_SIZE = 27;
 
 // TODO - 비슷한 헤더들 분리
 export default function MyFeedsScreenHeader() {
@@ -29,11 +27,7 @@ const HeaderCloseButton = () => {
   return (
     <View style={styles.closeButtonContainer}>
       <TouchableOpacity style={{ flex: 1 }} onPress={closeModal}>
-        <Icon
-          name="chevron-back-outline"
-          size={ICON_SIZE}
-          style={{ color: COLORS.WHITE }}
-        />
+        <GSIcon name="chevron-back-outline" />
       </TouchableOpacity>
     </View>
   );

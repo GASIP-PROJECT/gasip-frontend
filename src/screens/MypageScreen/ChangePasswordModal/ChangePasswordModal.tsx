@@ -8,8 +8,8 @@ import {
   View,
   Modal,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
 
+import GSIcon from '@components/common/GSIcon';
 import Spacer from '@components/common/Spacer';
 import GSHeader from '@components/common/GSHeader';
 import SafeAreaLayout from '@components/common/SafeAreaLayout';
@@ -22,9 +22,6 @@ interface ChangePasswordModalProps {
   isVisible: boolean;
   setIsVisible: Dispatch<SetStateAction<boolean>>;
 }
-
-// TODO - ICON_SIZE 여기 선언하는게 맞는가?
-const ICON_SIZE = 27;
 
 export default function ChangePasswordModal({
   isVisible,
@@ -67,13 +64,7 @@ const Header = ({
   return (
     <GSHeader
       title="닉네임 변경"
-      leftComponent={
-        <Icon
-          name="close-outline"
-          size={ICON_SIZE}
-          style={{ color: COLORS.WHITE }}
-        />
-      }
+      leftComponent={<GSIcon name="close-outline" />}
       onLeftComponentPress={() => setIsVisible(false)}
     />
   );

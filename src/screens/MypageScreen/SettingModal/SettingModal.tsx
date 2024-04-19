@@ -1,16 +1,14 @@
 import React, { SetStateAction, Dispatch, useState } from 'react';
 import { Modal, StyleSheet, View } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
 
 import MyPageElement from '@screens/MypageScreen/MyPageElement';
 import ChangeNicknameModal from '@screens/MypageScreen/ChangeNicknameModal/ChangeNicknameModal';
+import ChangePasswordModal from '@screens/MypageScreen/ChangePasswordModal/ChangePasswordModal';
 
+import GSIcon from '@components/common/GSIcon';
 import Spacer from '@components/common/Spacer';
 import GSHeader from '@components/common/GSHeader';
 import SafeAreaLayout from '@components/common/SafeAreaLayout';
-
-import { COLORS } from '@styles/colors';
-import ChangePasswordModal from '../ChangePasswordModal/ChangePasswordModal';
 
 // TODO - ICON_SIZE 여기 선언하는게 맞는가?
 const ICON_SIZE = 27;
@@ -67,13 +65,7 @@ const ModalHeader = ({
   return (
     <GSHeader
       title="설정"
-      leftComponent={
-        <Icon
-          name="close-outline"
-          size={ICON_SIZE}
-          style={{ color: COLORS.WHITE }}
-        />
-      }
+      leftComponent={<GSIcon name="close-outline" />}
       onLeftComponentPress={() => setIsVisible(false)}
     />
   );
