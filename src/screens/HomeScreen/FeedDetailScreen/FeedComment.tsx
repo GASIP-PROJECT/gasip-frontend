@@ -13,7 +13,6 @@ import { type FeedComment } from 'types/searchTypes';
 import icon_like from '@assets/icon_like.png';
 import icon_comments from '@assets/icon_comments.png';
 
-// TODO - any 수정 필요
 export default function FeedComment({
   commentData,
 }: {

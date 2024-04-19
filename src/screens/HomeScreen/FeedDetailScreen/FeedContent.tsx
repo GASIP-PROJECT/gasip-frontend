@@ -15,11 +15,12 @@ import icon_comments from '@assets/icon_comments.png';
 export default function FeedContent({ feedData }: { feedData: Feed | null }) {
   if (feedData === null) return <View />;
 
-  const { content, regDate, likeCount, postId, comments } = feedData;
+  const { content, regDate, likeCount, postId, comments, memberNickname } =
+    feedData;
 
   return (
     <View style={styles.container}>
-      <FeedContentHeader regDate={regDate} userNickName="nickName" />
+      <FeedContentHeader regDate={regDate} memberNickname={memberNickname} />
       <Spacer type="height" value={10} />
       <FeedContentText content={content} />
       <Spacer type="height" value={10} />
@@ -33,16 +34,16 @@ export default function FeedContent({ feedData }: { feedData: Feed | null }) {
 }
 const FeedContentHeader = ({
   regDate,
-  userNickName,
+  memberNickname,
 }: {
   regDate: string;
-  userNickName: string;
+  memberNickname: string;
 }) => {
   const timeString = getTimeDifference(regDate);
 
   return (
     <Text style={styles.feedHeaderText}>
-      {timeString} | {userNickName}
+      {timeString} | {memberNickname}
     </Text>
   );
 };
@@ -61,8 +62,8 @@ const FeedContentFooter = ({
   commentCount: number;
 }) => {
   const handleLikePress = async () => {
-    // await likeFeed(postId, 7);
-    // await likeFeedCancel(postId, 7);
+    // await likeFeed(postId);
+    await likeFeedCancel(postId);
   };
 
   return (

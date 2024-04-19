@@ -19,7 +19,8 @@ export default function FeedSummary({ feedData }: { feedData: Feed }) {
 
   const navigation = useNavigation();
 
-  const { content, likeCount, clickCount, regDate, postId } = feedData;
+  const { content, likeCount, clickCount, regDate, postId, memberNickname } =
+    feedData;
 
   const handleSummaryPress = () => {
     // TODO - 각 글 세부 내용으로 이동시키는 처리
@@ -28,7 +29,7 @@ export default function FeedSummary({ feedData }: { feedData: Feed }) {
 
   return (
     <TouchableOpacity style={styles.container} onPress={handleSummaryPress}>
-      <SummaryHeader regDate={regDate} userNickName="userNickName" />
+      <SummaryHeader regDate={regDate} memberNickname={memberNickname} />
       <Spacer type="height" value={10} />
       <SummaryContent content={content} />
       <Spacer type="height" value={10} />
@@ -41,16 +42,16 @@ export default function FeedSummary({ feedData }: { feedData: Feed }) {
 
 const SummaryHeader = ({
   regDate,
-  userNickName,
+  memberNickname,
 }: {
   regDate: string;
-  userNickName: string;
+  memberNickname: string;
 }) => {
   const timeString = getTimeDifference(regDate);
 
   return (
     <Text style={styles.feedHeaderText}>
-      {timeString} | {userNickName}
+      {timeString} | {memberNickname}
     </Text>
   );
 };

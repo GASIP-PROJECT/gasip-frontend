@@ -11,6 +11,7 @@ export interface Feed {
   collegeName: String;
   comments: FeedComment[];
   numberOfComment: number;
+  memberNickname: string;
 }
 
 export interface FeedComment {
