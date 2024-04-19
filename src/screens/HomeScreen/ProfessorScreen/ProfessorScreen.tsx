@@ -1,6 +1,7 @@
 import React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 
+import ProfessorFeeds from './ProfessorFeeds';
 import ProfessorDetail from './ProfessorDetail';
 
 import Spacer from '@components/common/Spacer';
@@ -15,6 +16,8 @@ export default function ProfessorDetailScreen() {
         <ProfessorScreenHeader />
         <Spacer type="height" value={20} />
         <ProfessorDetail />
+        <Spacer type="height" value={20} />
+        <ProfessorFeeds />
       </View>
     </SafeAreaLayout>
   );
