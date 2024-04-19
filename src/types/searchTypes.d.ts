@@ -14,10 +14,15 @@ export interface Feed {
 }
 
 export interface FeedComment {
+  commentChildren: FeedComment[];
   commentId: number;
   commentLike: number | null;
   content: string;
-  commentChildren: FeedComment[];
+  memberId: number;
+  memberName: string;
+  postId: number;
+  regDate: string;
+  updateDate: string;
 }
 
 export interface ProfessorResult {

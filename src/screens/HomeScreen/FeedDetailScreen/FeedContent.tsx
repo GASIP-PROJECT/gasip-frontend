@@ -15,16 +15,18 @@ import icon_comments from '@assets/icon_comments.png';
 export default function FeedContent({ feedData }: { feedData: Feed | null }) {
   if (feedData === null) return <View />;
 
+  const { content, regDate, likeCount, postId, comments } = feedData;
+
   return (
     <View style={styles.container}>
-      <FeedContentHeader regDate={feedData.regDate} userNickName="nickName" />
+      <FeedContentHeader regDate={regDate} userNickName="nickName" />
       <Spacer type="height" value={10} />
-      <FeedContentText content={feedData.content} />
+      <FeedContentText content={content} />
       <Spacer type="height" value={10} />
       <FeedContentFooter
-        likeCount={feedData.likeCount}
-        postId={feedData.postId}
-        commentCount={feedData.comments.length}
+        likeCount={likeCount}
+        postId={postId}
+        commentCount={comments.length}
       />
     </View>
   );

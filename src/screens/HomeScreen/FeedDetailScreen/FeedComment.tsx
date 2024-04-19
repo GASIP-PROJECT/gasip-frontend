@@ -1,6 +1,8 @@
 import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 
+import { getTimeDifference } from '@utils/timeUtil';
+
 import FeedCommentReply from './FeedCommentReply';
 
 import Spacer from '@components/common/Spacer';
@@ -19,11 +21,12 @@ export default function FeedComment({
 }) {
   if (commentData === null) return <View />;
 
-  const { content, commentLike, commentChildren } = commentData;
+  const { content, commentLike, commentChildren, regDate, memberName } =
+    commentData;
 
   return (
     <View>
-      <CommentHeader regDate="2021-08-01" userNickName="nickName" />
+      <CommentHeader regDate={regDate} commenterNickname={memberName} />
       <Spacer type="height" value={5} />
       <CommentBody content={content} />
       <Spacer type="height" value={5} />
@@ -34,8 +37,8 @@ export default function FeedComment({
       <Spacer type="height" value={10} />
       <View style={styles.bottomLine} />
       <Spacer type="height" value={5} />
-      {commentChildren.map(commentChild => {
-        return <FeedCommentReply reply={commentChild} />;
+      {commentChildren.map((commentChild, index) => {
+        return <FeedCommentReply key={index.toString()} reply={commentChild} />;
       })}
     </View>
   );
@@ -43,19 +46,16 @@ export default function FeedComment({
 
 const CommentHeader = ({
   regDate,
-  userNickName,
+  commenterNickname,
 }: {
   regDate: string;
-  userNickName: string;
+  commenterNickname: string;
 }) => {
-  // TODO - 함수 구현
-  const getFeedCreatedTimeString = () => {
-    return regDate;
-  };
+  const timeString = getTimeDifference(regDate);
 
   return (
     <Text style={styles.commentHeaderText}>
-      {getFeedCreatedTimeString()} | {userNickName}
+      {timeString} | {commenterNickname}
     </Text>
   );
 };

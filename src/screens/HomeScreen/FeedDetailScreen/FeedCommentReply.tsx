@@ -1,6 +1,8 @@
 import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 
+import { getTimeDifference } from '@utils/timeUtil';
+
 import Spacer from '@components/common/Spacer';
 
 import { COLORS } from '@styles/colors';
@@ -10,7 +12,7 @@ import icon_like from '@assets/icon_like.png';
 import icon_reply from '@assets/icon_reply.png';
 
 export default function FeedCommentReply({ reply }: { reply: FeedComment }) {
-  const { content, commentLike } = reply;
+  const { content, commentLike, regDate, memberName } = reply;
 
   return (
     <View style={styles.container}>
@@ -18,7 +20,7 @@ export default function FeedCommentReply({ reply }: { reply: FeedComment }) {
       <Spacer type="width" value={10} />
       <View>
         <Spacer type="height" value={5} />
-        <ReplyHeader regDate="2021-08-01" userNickName="nickName" />
+        <ReplyHeader regDate={regDate} replierNickname={memberName} />
         <ReplyBody content={content} />
         <Spacer type="height" value={5} />
         <ReplyFooter likeCount={commentLike} />
@@ -29,19 +31,16 @@ export default function FeedCommentReply({ reply }: { reply: FeedComment }) {
 
 const ReplyHeader = ({
   regDate,
-  userNickName,
+  replierNickname,
 }: {
   regDate: string;
-  userNickName: string;
+  replierNickname: string;
 }) => {
-  // TODO - 함수 구현
-  const getFeedCreatedTimeString = () => {
-    return regDate;
-  };
+  const timeString = getTimeDifference(regDate);
 
   return (
     <Text style={styles.commentHeaderText}>
-      {getFeedCreatedTimeString()} | {userNickName}
+      {timeString} | {replierNickname}
     </Text>
   );
 };
