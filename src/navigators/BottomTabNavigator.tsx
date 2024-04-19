@@ -8,6 +8,7 @@ import MyPageScreen from '@screens/MypageScreen/MyPageScreen';
 import CreateFeedModal from '@screens/HomeScreen/CreateFeedModal/CreateFeedModal';
 import FeedDetailScreen from '@screens/HomeScreen/FeedDetailScreen/FeedDetailScreen';
 import MyFeedsScreen from '@screens/MypageScreen/MyFeedsScreen.tsx/MyFeedsScreen';
+import ProfessorDetailScreen from '@screens/HomeScreen/ProfessorScreen/ProfessorScreen';
 
 import {
   type HomeStackParamList,
@@ -23,13 +24,17 @@ const MyPageStack = createNativeStackNavigator<MyPageStackParamList>();
 const Home = () => {
   return (
     <HomeStack.Navigator screenOptions={{ headerShown: false }}>
-      <HomeStack.Screen name="Home" component={HomeScreen} />
+      <HomeStack.Screen name="HomeScreen" component={HomeScreen} />
       <HomeStack.Screen
         name="CreateFeed0"
         component={CreateFeedModal}
         options={{ presentation: 'fullScreenModal' }}
       />
-      <HomeStack.Screen name="FeedDetail" component={FeedDetailScreen} />
+      <HomeStack.Screen name="FeedDetailScreen" component={FeedDetailScreen} />
+      <HomeStack.Screen
+        name="ProfessorDetailScreen"
+        component={ProfessorDetailScreen}
+      />
     </HomeStack.Navigator>
   );
 };

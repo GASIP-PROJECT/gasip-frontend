@@ -24,7 +24,7 @@ export default function FeedSummary({ feedData }: { feedData: Feed }) {
 
   const handleSummaryPress = () => {
     // TODO - 각 글 세부 내용으로 이동시키는 처리
-    navigation.navigate('FeedDetail', { postId: postId });
+    navigation.navigate('FeedDetailScreen', { postId: postId });
   };
 
   return (
