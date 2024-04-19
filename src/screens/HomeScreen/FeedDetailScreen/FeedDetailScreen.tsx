@@ -14,7 +14,7 @@ import SafeAreaLayout from '@components/common/SafeAreaLayout';
 import { type Feed } from 'types/searchTypes';
 
 // TODO - type 선언 필요
-export default function FeedDetailScreen({ route, navigation }) {
+export default function FeedDetailScreen({ route }) {
   const { postId } = route.params;
 
   const [feedData, setFeedData] = useState<Feed | null>(null);
@@ -39,7 +39,7 @@ export default function FeedDetailScreen({ route, navigation }) {
             {feedData.profId !== 0 && (
               <ProfessorInfo
                 profName={feedData.profName}
-                majorName="컴퓨터공학과"
+                majorName={feedData.majorName}
               />
             )}
             <Spacer type="height" value={10} />

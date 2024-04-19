@@ -12,6 +12,7 @@ export interface Feed {
   comments: FeedComment[];
   numberOfComment: number;
   memberNickname: string;
+  majorName: string;
 }
 
 export interface FeedComment {
