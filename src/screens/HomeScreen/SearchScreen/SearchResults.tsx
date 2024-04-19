@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 import FeedSummary from '@screens/HomeScreen/FeedsScreen/FeedSummary';
 
@@ -67,8 +68,14 @@ const ProfessorInfo = ({
   profName: string;
   majorName: string;
 }) => {
+  const navigation = useNavigation();
+
   return (
-    <TouchableOpacity>
+    <TouchableOpacity
+      onPress={() => {
+        navigation.navigate('ProfessorDetailScreen');
+      }}
+    >
       <Text style={styles.professorInfo}>
         {majorName} - {profName} 교수님
       </Text>
