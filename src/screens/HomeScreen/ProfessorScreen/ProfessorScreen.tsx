@@ -9,15 +9,19 @@ import SafeAreaLayout from '@components/common/SafeAreaLayout';
 
 import gasip_logo from '@assets/gasip_logo.png';
 
-export default function ProfessorDetailScreen() {
+export default function ProfessorDetailScreen({ route }) {
+  const { professorData } = route.params;
+
+  const { profId } = professorData;
+
   return (
     <SafeAreaLayout>
       <View style={styles.container}>
         <ProfessorScreenHeader />
         <Spacer type="height" value={20} />
-        <ProfessorDetail />
+        <ProfessorDetail professorData={professorData} />
         <Spacer type="height" value={20} />
-        <ProfessorFeeds />
+        <ProfessorFeeds profId={profId} />
       </View>
     </SafeAreaLayout>
   );

@@ -2,17 +2,25 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import Spacer from '@components/common/Spacer';
-
-import { COLORS } from '@styles/colors';
 import GSIcon from '@components/common/GSIcon';
 
-export default function ProfessorDetail() {
+import { COLORS } from '@styles/colors';
+import { Professor } from 'types/searchTypes';
+
+export default function ProfessorDetail({
+  professorData,
+}: {
+  professorData: Professor;
+}) {
   const [showRateButton, setShowRateButton] = useState(false);
+
+  const { profName, collegeName, majorName, professorAverageGradePoint } =
+    professorData;
 
   return (
     <View style={styles.container}>
       <View style={styles.professorNameContainer}>
-        <Text style={styles.professorNameText}>김창복 교수님</Text>
+        <Text style={styles.professorNameText}>{profName} 교수님</Text>
         {!showRateButton && (
           <TouchableOpacity style={styles.rateProfessorButton}>
             <Text style={styles.rateProfessorButtonText}>평가하기</Text>
@@ -20,15 +28,15 @@ export default function ProfessorDetail() {
         )}
       </View>
       <Spacer type="height" value={20} />
-      <DetailElement title="학부" content="사회과학대학" iconName="location" />
+      <DetailElement title="학부" content={collegeName} iconName="location" />
+      <Spacer type="height" value={10} />
+      <DetailElement title="학과" content={majorName} iconName="grid" />
       <Spacer type="height" value={10} />
       <DetailElement
-        title="학과"
-        content="미디어커뮤니케이션학과"
-        iconName="grid"
+        title="평점"
+        content={professorAverageGradePoint || 0}
+        iconName="star"
       />
-      <Spacer type="height" value={10} />
-      <DetailElement title="평점" content={3.57} iconName="star" />
     </View>
   );
 }

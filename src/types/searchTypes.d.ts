@@ -26,12 +26,13 @@ export interface FeedComment {
   updateDate: string;
 }
 
-export interface ProfessorResult {
+export interface Professor {
   majorId: number;
   majorName: string;
   profId: number;
   profName: string;
   professorAverageGradePoint: number | null;
+  collegeName: string;
 }
 
-export type SearchResult = Feed | ProfessorResult;
+export type SearchResult = Feed | Professor;

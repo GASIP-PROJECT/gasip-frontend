@@ -14,7 +14,7 @@ import Spacer from '@components/common/Spacer';
 
 import {
   type Feed,
-  type ProfessorResult,
+  type Professor,
   type SearchResult,
 } from 'types/searchTypes';
 
@@ -31,7 +31,7 @@ export default function SearchResults({
   if (searchResults[0]?.profId) {
     return (
       <View>
-        <ProfessorResults searchResult={searchResults as ProfessorResult[]} />
+        <ProfessorResults searchResult={searchResults as Professor[]} />
       </View>
     );
   }
@@ -43,16 +43,14 @@ export default function SearchResults({
   );
 }
 
-const ProfessorResults = ({
-  searchResult,
-}: {
-  searchResult: ProfessorResult[];
-}) => {
+const ProfessorResults = ({ searchResult }: { searchResult: Professor[] }) => {
+  console.log(searchResult);
+
   return (
     <FlatList
       data={searchResult}
-      renderItem={({ item }: { item: ProfessorResult }) => (
-        <ProfessorInfo profName={item.profName} majorName={item.majorName} />
+      renderItem={({ item }: { item: Professor }) => (
+        <ProfessorInfo professorData={item} />
       )}
       keyExtractor={(item, index) => index.toString()}
       ItemSeparatorComponent={() => <Spacer type="height" value={15} />}
@@ -61,19 +59,17 @@ const ProfessorResults = ({
   );
 };
 
-const ProfessorInfo = ({
-  profName,
-  majorName,
-}: {
-  profName: string;
-  majorName: string;
-}) => {
+const ProfessorInfo = ({ professorData }: { professorData: Professor }) => {
   const navigation = useNavigation();
+
+  const { majorName, profName } = professorData;
 
   return (
     <TouchableOpacity
       onPress={() => {
-        navigation.navigate('ProfessorDetailScreen');
+        navigation.navigate('ProfessorDetailScreen', {
+          professorData: professorData,
+        });
       }}
     >
       <Text style={styles.professorInfo}>
