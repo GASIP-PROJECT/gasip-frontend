@@ -1,20 +1,11 @@
 import React, { Dispatch, SetStateAction } from 'react';
-import {
-  Image,
-  ImageSourcePropType,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
+import GSIcon from '@components/common/GSIcon';
 import Spacer from '@components/common/Spacer';
 
 import { COLORS } from '@styles/colors';
 import { HOME_TABS } from '../../../constants';
-
-import icon_pin from '@assets/icon_pin.png';
-import icon_fire from '@assets/icon_fire.png';
 
 interface FeedsScreenTabBar {
   currentTab: string;
@@ -40,7 +31,7 @@ export default function FeedsScreenTabBar({
   return (
     <View style={styles.container}>
       <TabIndicator
-        icon={icon_pin}
+        iconName="list"
         title={HOME_TABS.ALL}
         currentTab={currentTab}
         onPress={handleFeedTabPress}
@@ -49,7 +40,7 @@ export default function FeedsScreenTabBar({
       <Spacer type="width" value={12} />
 
       <TabIndicator
-        icon={icon_fire}
+        iconName="megaphone"
         title={HOME_TABS.GENERAL}
         currentTab={currentTab}
         onPress={handleGeneralTabPress}
@@ -58,7 +49,7 @@ export default function FeedsScreenTabBar({
       <Spacer type="width" value={12} />
 
       <TabIndicator
-        icon={icon_fire}
+        iconName="flame"
         title={HOME_TABS.POPULAR}
         currentTab={currentTab}
         onPress={handlePopularTabPress}
@@ -67,26 +58,27 @@ export default function FeedsScreenTabBar({
   );
 }
 
-// TODO - pin 아이콘 사이즈 재조정 필요
 const TabIndicator = ({
-  icon,
+  iconName,
   title,
   currentTab,
   onPress,
 }: {
-  icon: ImageSourcePropType;
+  iconName: string;
   title: string;
   currentTab: string;
   onPress: () => void;
 }) => {
   const bgColor = currentTab === title ? `#4490d8` : `#999999`;
+  const iconColor = currentTab === title ? 'tomato' : COLORS.WHITE;
+
   return (
     <TouchableOpacity
       style={[styles.indicatorContainer, { backgroundColor: bgColor }]}
       disabled={title === currentTab}
       onPress={onPress}
     >
-      <Image source={icon} style={{ width: 18, height: 18 }} />
+      <GSIcon name={iconName} size={20} color={iconColor} />
       <Spacer type="width" value={3} />
       <Text style={styles.indicatorTitle}>{title}</Text>
     </TouchableOpacity>
