@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+import { NewFeedContext } from '@contexts/NewFeedContext';
 
 import BottomTabBar from './BottomTabBar';
 import HomeScreen from '@screens/HomeScreen/HomeScreen';
 import MyPageScreen from '@screens/MypageScreen/MyPageScreen';
-import CreateFeedModal from '@screens/HomeScreen/CreateFeedModal/CreateFeedModal';
 import FeedDetailScreen from '@screens/HomeScreen/FeedDetailScreen/FeedDetailScreen';
 import MyFeedsScreen from '@screens/MypageScreen/MyFeedsScreen.tsx/MyFeedsScreen';
 import ProfessorDetailScreen from '@screens/HomeScreen/ProfessorScreen/ProfessorScreen';
@@ -15,6 +16,7 @@ import {
   type BottomTabParamList,
   type MyPageStackParamList,
 } from '@screens/navigationTypes';
+import CreateFeedModal from '@screens/HomeScreen/CreateFeedModal/CreateFeedModal';
 
 const Tab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -25,11 +27,6 @@ const Home = () => {
   return (
     <HomeStack.Navigator screenOptions={{ headerShown: false }}>
       <HomeStack.Screen name="HomeScreen" component={HomeScreen} />
-      <HomeStack.Screen
-        name="CreateFeed0"
-        component={CreateFeedModal}
-        options={{ presentation: 'fullScreenModal' }}
-      />
       <HomeStack.Screen name="FeedDetailScreen" component={FeedDetailScreen} />
       <HomeStack.Screen
         name="ProfessorDetailScreen"
@@ -43,22 +40,15 @@ const MyPage = () => {
   return (
     <MyPageStack.Navigator screenOptions={{ headerShown: false }}>
       <MyPageStack.Screen name="MyPage" component={MyPageScreen} />
-      <MyPageStack.Screen
-        name="CreateFeed2"
-        component={CreateFeedModal}
-        options={{
-          presentation: 'fullScreenModal',
-        }}
-      />
       <MyPageStack.Screen name="MyFeedsScreen" component={MyFeedsScreen} />
     </MyPageStack.Navigator>
   );
 };
 
-const CreateFeed = () => null;
-
 // TODO - 글로벌 모달 + 하단 네비게이션을 구현하기에 이게 맞는 방법인지 고민 필요
 export default function BottomTabNavigator() {
+  const { setShowCreateFeedModal } = useContext(NewFeedContext);
+
   return (
     <Tab.Navigator
       screenOptions={{
@@ -75,13 +65,13 @@ export default function BottomTabNavigator() {
       />
       <Tab.Screen
         name="CreateFeed"
-        component={CreateFeed}
+        component={CreateFeedModal}
         options={{ headerShown: false }}
-        listeners={({ navigation }) => {
+        listeners={() => {
           return {
             tabPress: e => {
               e.preventDefault();
-              navigation.navigate(`CreateFeed${navigation.getState().index}`);
+              setShowCreateFeedModal(true);
             },
           };
         }}

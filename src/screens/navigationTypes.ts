@@ -4,6 +4,7 @@ export type StackParamList = {
   BottomTabNavigator: undefined;
   LoginScreen: undefined;
   SignUpScreen: undefined;
+  CreateFeedModal: undefined;
 };
 
 export type BottomTabParamList = {
@@ -14,13 +15,11 @@ export type BottomTabParamList = {
 
 export type HomeStackParamList = {
   HomeScreen: undefined;
-  CreateFeed0: undefined;
   FeedDetailScreen: undefined;
   ProfessorDetailScreen: undefined;
 };
 export type MyPageStackParamList = {
   MyPage: undefined;
-  CreateFeed2: undefined;
   SettingsScreen: undefined;
   ChangePasswordScreen: undefined;
   ChangeNicknameScreen: undefined;
@@ -35,6 +34,5 @@ export type MyPageScreenProps = BottomTabScreenProps<
 
 // TODO - type issue 해결
 export type CreateFeedModalProps = BottomTabScreenProps<
-  HomeStackParamList | MyPageStackParamList,
-  'CreateFeed0' | 'CreateFeed2' // string/never issue
+  HomeStackParamList | MyPageStackParamList
 >;

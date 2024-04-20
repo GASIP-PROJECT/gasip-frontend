@@ -44,15 +44,16 @@ export default function SettingModal({
             <MyPageElement title="서비스 탈퇴하기" />
           </View>
         </View>
+
+        <ChangeNicknameModal
+          isVisible={showNicknameModal}
+          setIsVisible={setShowNicknameModal}
+        />
+        <ChangePasswordModal
+          isVisible={showPasswordModal}
+          setIsVisible={setShowPasswordModal}
+        />
       </SafeAreaLayout>
-      <ChangeNicknameModal
-        isVisible={showNicknameModal}
-        setIsVisible={setShowNicknameModal}
-      />
-      <ChangePasswordModal
-        isVisible={showPasswordModal}
-        setIsVisible={setShowPasswordModal}
-      />
     </Modal>
   );
 }

@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { StyleSheet, Text } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+
+import { NewFeedContext } from '@contexts/NewFeedContext';
 
 import GSIcon from '@components/common/GSIcon';
 import GSHeader from '@components/common/GSHeader';
@@ -12,17 +13,13 @@ export default function CreateFeedModalHeader({
 }: {
   feedContent: string;
 }) {
-  const navigation = useNavigation();
-
-  const closeModal = () => {
-    navigation.goBack();
-  };
+  const { setShowCreateFeedModal } = useContext(NewFeedContext);
 
   return (
     <GSHeader
       title="피드 작성"
       leftComponent={<GSIcon name="close-outline" />}
-      onLeftComponentPress={closeModal}
+      onLeftComponentPress={() => setShowCreateFeedModal(false)}
       rightComponent={
         <Text style={styles.letterCountText}>
           {feedContent.length || 0}/500

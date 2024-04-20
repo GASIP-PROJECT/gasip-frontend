@@ -2,6 +2,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { NewFeedProvider } from '@contexts/NewFeedContext';
 
@@ -9,6 +10,7 @@ import BottomTabNavigator from '@navigators/BottomTabNavigator';
 
 import LoginScreen from '@screens/LoginScreen/LoginScreen';
 import SignUpScreen from '@screens/SignUpScreen/SignUpScreen';
+import CreateFeedModal from '@screens/HomeScreen/CreateFeedModal/CreateFeedModal';
 
 import { type StackParamList } from '@screens/navigationTypes';
 
@@ -21,35 +23,40 @@ export default function App() {
 
   return (
     // TODO - colors 에러 발생하는 부분 수정
-    <NewFeedProvider>
-      <GestureHandlerRootView>
-        <NavigationContainer theme={{ colors: { background: COLORS.BG_MAIN } }}>
-          <Stack.Navigator>
-            {/* TODO - 조건 다시 수정, 작업 위해서 임시로 수정한 상태 */}
-            {/* {isSignedIn === null ? ( */}
-            {isSignedIn !== null ? (
-              <Stack.Screen
-                name="BottomTabNavigator"
-                component={BottomTabNavigator}
-                options={{ headerShown: false }}
-              />
-            ) : (
-              <>
+    <SafeAreaProvider>
+      <NewFeedProvider>
+        <GestureHandlerRootView>
+          <NavigationContainer
+            theme={{ colors: { background: COLORS.BG_MAIN } }}
+          >
+            <Stack.Navigator>
+              {/* TODO - 조건 다시 수정, 작업 위해서 임시로 수정한 상태 */}
+              {/* {isSignedIn === null ? ( */}
+              {isSignedIn !== null ? (
                 <Stack.Screen
-                  name="LoginScreen"
-                  component={LoginScreen}
+                  name="BottomTabNavigator"
+                  component={BottomTabNavigator}
                   options={{ headerShown: false }}
                 />
-                <Stack.Screen
-                  name="SignUpScreen"
-                  component={SignUpScreen}
-                  options={{ headerShown: false }}
-                />
-              </>
-            )}
-          </Stack.Navigator>
-        </NavigationContainer>
-      </GestureHandlerRootView>
-    </NewFeedProvider>
+              ) : (
+                <>
+                  <Stack.Screen
+                    name="LoginScreen"
+                    component={LoginScreen}
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="SignUpScreen"
+                    component={SignUpScreen}
+                    options={{ headerShown: false }}
+                  />
+                </>
+              )}
+            </Stack.Navigator>
+            <CreateFeedModal />
+          </NavigationContainer>
+        </GestureHandlerRootView>
+      </NewFeedProvider>
+    </SafeAreaProvider>
   );
 }

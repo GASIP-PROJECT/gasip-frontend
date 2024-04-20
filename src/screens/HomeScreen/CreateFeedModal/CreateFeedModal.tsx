@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Modal, StyleSheet, View } from 'react-native';
 import axios from 'axios';
 
 import { createFeed } from '@api/index';
@@ -13,15 +13,13 @@ import CreateFeedModalHeader from './CreateFeedModalHeader';
 import CreateFeedModalPolicy from './CreateFeedModalPolicy';
 import CreateFeedModalTextInput from './CreateFeedModalTextInput';
 
-import { type CreateFeedModalProps } from '@screens/navigationTypes';
-
-export default function CreateFeedModal({ navigation }: CreateFeedModalProps) {
-  const { setToggleToUpdateFeedsList } = useContext(NewFeedContext);
+export default function CreateFeedModal() {
+  const {
+    setToggleToUpdateFeedsList,
+    showCreateFeedModal,
+    setShowCreateFeedModal,
+  } = useContext(NewFeedContext);
   const [feedContent, setFeedContent] = useState('');
-
-  const closeModal = () => {
-    navigation.goBack();
-  };
 
   const handleCreateFeedPress = async () => {
     // TODO - 테스트용 로그인 로직
@@ -35,21 +33,23 @@ export default function CreateFeedModal({ navigation }: CreateFeedModalProps) {
 
     await createFeed(feedContent);
     setToggleToUpdateFeedsList(prev => !prev);
-    closeModal();
+    setShowCreateFeedModal(false);
   };
 
   return (
-    <SafeAreaLayout>
-      <View style={styles.container}>
-        <CreateFeedModalHeader feedContent={feedContent} />
-        <Spacer type="height" value={23} />
-        <CreateFeedModalTextInput setFeedContent={setFeedContent} />
-        <Spacer type="height" value={40} />
-        {/* <CreateFeedModalPolicy /> */}
-      </View>
+    <Modal visible={showCreateFeedModal} animationType="slide">
+      <SafeAreaLayout>
+        <View style={styles.container}>
+          <CreateFeedModalHeader feedContent={feedContent} />
+          <Spacer type="height" value={23} />
+          <CreateFeedModalTextInput setFeedContent={setFeedContent} />
+          <Spacer type="height" value={40} />
+          {/* <CreateFeedModalPolicy /> */}
+        </View>
 
-      <GSButton buttonText="공유" onPress={handleCreateFeedPress} />
-    </SafeAreaLayout>
+        <GSButton buttonText="공유" onPress={handleCreateFeedPress} />
+      </SafeAreaLayout>
+    </Modal>
   );
 }
 
