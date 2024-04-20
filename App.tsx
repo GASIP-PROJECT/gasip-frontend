@@ -20,18 +20,12 @@ export default function App() {
 
   return (
     // TODO - colors 에러 발생하는 부분 수정
-    <NavigationContainer theme={{ colors: { background: COLORS.BG_MAIN } }}>
-      <Stack.Navigator>
-        {/* TODO - 조건 다시 수정, 작업 위해서 임시로 수정한 상태 */}
-        {/* {isSignedIn !== null ? ( */}
-        {isSignedIn == null ? (
-          <Stack.Screen
-            name="BottomTabNavigator"
-            component={BottomTabNavigator}
-            options={{ headerShown: false }}
-          />
-        ) : (
-          <>
+    <NewFeedProvider>
+      <NavigationContainer theme={{ colors: { background: COLORS.BG_MAIN } }}>
+        <Stack.Navigator>
+          {/* TODO - 조건 다시 수정, 작업 위해서 임시로 수정한 상태 */}
+          {/* {isSignedIn !== null ? ( */}
+          {isSignedIn == null ? (
             <Stack.Screen
               name="BottomTabNavigator"
               component={BottomTabNavigator}
