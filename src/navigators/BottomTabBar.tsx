@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { Platform, Text, TouchableOpacity, View } from 'react-native';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 
 import Spacer from '@components/common/Spacer';
@@ -80,7 +80,8 @@ const BottomTabIcon = ({
   }
 
   if (index === 1) {
-    return <CreateFeedButton />;
+    if (Platform.OS === 'ios') return <CreateFeedButtoniOS />;
+    return <CreateFeedButtonAndroid />;
   }
 
   if (index === 2) {
@@ -102,7 +103,7 @@ const BottomTabIcon = ({
   );
 };
 
-const CreateFeedButton = () => {
+const CreateFeedButtoniOS = () => {
   return (
     <View
       style={{
@@ -122,6 +123,32 @@ const CreateFeedButton = () => {
       <Text style={{ fontSize: 16, fontWeight: '700', color: COLORS.WHITE }}>
         Feed
       </Text>
+    </View>
+  );
+};
+
+const CreateFeedButtonAndroid = () => {
+  return (
+    <View style={{ flex: 1, justifyContent: 'center' }}>
+      <View
+        style={{
+          borderRadius: 30,
+          height: '70%',
+          width: 100,
+          backgroundColor: COLORS.BTN_MAIN,
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexDirection: 'row',
+        }}
+      >
+        <GSIcon name="add-outline" size={30} />
+
+        <Spacer type="width" value={5} />
+
+        <Text style={{ fontSize: 16, fontWeight: '700', color: COLORS.WHITE }}>
+          Feed
+        </Text>
+      </View>
     </View>
   );
 };
