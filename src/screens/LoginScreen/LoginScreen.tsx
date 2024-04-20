@@ -16,22 +16,24 @@ import gasip_logo from '@assets/gasip_logo.png';
 import { useNavigation } from '@react-navigation/native'; 
 
 export default function LoginScreen() {
-  const [username, setUsername] = useState('');
+  const [useremail, setUseremail] = useState('');
   const [password, setPassword] = useState('');
   const navigation = useNavigation(); 
 
   const handleLogin = async () => {
     try {
-      const response = await fetch('https://', {
+      const response = await fetch('https://gasip.site/members/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ useremail, password }),
       });
 
+      console.log(handleLogin)
+
       if (!response.ok) {
-        throw new Error('아이디 or 비밀번호가 일치하지 않습니다');
+        throw new Error('이메일 or 비밀번호가 일치하지 않습니다');
       }
 
       //navigation.navigate('#');  로그인 성공하면 이동하는 곳.
@@ -59,9 +61,9 @@ export default function LoginScreen() {
         </View>
         <TextInput
           style={styles.input}
-          placeholder="아이디"
-          value={username}
-          onChangeText={setUsername}
+          placeholder="이메일"
+          value={useremail}
+          onChangeText={setUseremail}
           autoCapitalize="none"
         />
         <TextInput

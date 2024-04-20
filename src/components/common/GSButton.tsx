@@ -24,7 +24,7 @@ export default function GSButton({ buttonText, onPress }: GSButtonProps) {
 
 const styles = StyleSheet.create({
   container: {
-    height: 54,
+    height: 50,
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 5,
