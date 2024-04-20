@@ -11,15 +11,21 @@ interface MyPageElementProps {
   title: string;
   onPress?: ((event: GestureResponderEvent) => void) | undefined;
   rightButtonElement?: ReactElement | null;
+  disabled?: boolean;
 }
 
 export default function MyPageElement({
   title,
   onPress = undefined,
   rightButtonElement = null,
+  disabled = false,
 }: MyPageElementProps) {
   return (
-    <TouchableOpacity style={styles.container} onPress={onPress}>
+    <TouchableOpacity
+      style={styles.container}
+      onPress={onPress}
+      disabled={disabled}
+    >
       <Text style={styles.titleText}>{title}</Text>
 
       {rightButtonElement || <View />}

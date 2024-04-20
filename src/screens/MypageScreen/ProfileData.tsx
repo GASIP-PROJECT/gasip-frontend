@@ -8,14 +8,6 @@ import GSIcon from '@components/common/GSIcon';
 
 import { COLORS } from '@styles/colors';
 
-const FixNickNameButton = () => {
-  return (
-    <View style={styles.fixNickNameButtonContainer}>
-      <Text style={styles.fixNickNameButtonText}>수정</Text>
-    </View>
-  );
-};
-
 export default function ProfileData({ nickname }: { nickname: string | null }) {
   const navigation = useNavigation();
 
@@ -27,11 +19,7 @@ export default function ProfileData({ nickname }: { nickname: string | null }) {
 
   return (
     <View style={styles.container}>
-      <MyPageElement
-        title={nickenameText}
-        onPress={() => {}}
-        rightButtonElement={<FixNickNameButton />}
-      />
+      <MyPageElement title={nickenameText} disabled />
       <MyPageElement
         title="내가 쓴 글"
         onPress={handleMyFeedsPress}
