@@ -26,7 +26,7 @@ export default function FeedComment({
       <CommentHeader regDate={regDate} commenterNickname={memberName} />
       <Spacer type="height" value={5} />
       <CommentBody content={content} />
-      <Spacer type="height" value={5} />
+      <Spacer type="height" value={10} />
       <CommentFooter
         likeCount={commentLike}
         commentChildrenCount={commentChildren.length}
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
   },
   commentBodyText: {
     color: COLORS.WHITE,
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: '500',
   },
   footerContainer: {

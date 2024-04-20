@@ -18,7 +18,7 @@ export default function FeedCommentReply({ reply }: { reply: FeedComment }) {
       <ReplyHeader regDate={regDate} replierNickname={memberName} />
       <Spacer type="height" value={5} />
       <ReplyBody content={content} />
-      <Spacer type="height" value={5} />
+      <Spacer type="height" value={10} />
       <ReplyFooter likeCount={commentLike} />
     </View>
   );
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
   },
   commentBodyText: {
     color: COLORS.WHITE,
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: '500',
   },
   footerContainer: {
