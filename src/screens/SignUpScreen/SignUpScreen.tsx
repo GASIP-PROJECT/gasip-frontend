@@ -1,17 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Image, TouchableOpacity, Alert } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  Image,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StyleSheet } from 'react-native';
-import EmailCodeBtn from '@components/common/EmailCodeBtn'; 
+import EmailCodeBtn from '@components/common/EmailCodeBtn';
 import LoginScreen from '@screens/LoginScreen/LoginScreen';
 
 const SignUpScreen = () => {
   const navigation = useNavigation();
   const [step, setStep] = useState(1);
   const [useremail, setUseremail] = useState<string>('');
-  const [isValidEmail, setIsValidEmail] = useState(false); 
-  const [timer, setTimer] = useState(180); 
-  const [isTimerRunning, setIsTimerRunning] = useState(false); 
+  const [isValidEmail, setIsValidEmail] = useState(false);
+  const [timer, setTimer] = useState(180);
+  const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [verificationCode, setVerificationCode] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -21,33 +28,33 @@ const SignUpScreen = () => {
   const [nickname, setNickname] = useState('');
   const [isNameValid, setIsNameValid] = useState(false);
   const [isNicknameValid, setIsNicknameValid] = useState(false);
-  const [verifiedEmail, setVerifiedEmail] = useState<string>(''); 
+  const [verifiedEmail, setVerifiedEmail] = useState<string>('');
 
-
-  
   useEffect(() => {
     if (step === 2 && isTimerRunning && timer > 0) {
       const countdown = setInterval(() => {
-        setTimer((prevTimer) => prevTimer - 1);
+        setTimer(prevTimer => prevTimer - 1);
       }, 1000);
-  
+
       return () => {
         clearInterval(countdown); // 타이머 중지
       };
     } else if (step === 2 && timer === 0) {
       setIsTimerRunning(false);
-      Alert.alert('시간 초과', '인증 시간이 초과되었습니다. 다시 시도해주세요.');
+      Alert.alert(
+        '시간 초과',
+        '인증 시간이 초과되었습니다. 다시 시도해주세요.',
+      );
     }
   }, [step, timer, isTimerRunning]);
-  
+
   const startTimer = () => {
     setIsTimerRunning(true);
   };
 
-
   const handleEmailChange = (text: string) => {
     setUseremail(text);
-    setIsValidEmail(validateEmail(text)); 
+    setIsValidEmail(validateEmail(text));
   };
 
   const validateEmail = (email: string) => {
@@ -57,43 +64,47 @@ const SignUpScreen = () => {
 
   const handleButtonPress = async () => {
     try {
-      const userEmailPrefix = useremail; 
+      const userEmailPrefix = useremail;
       const defaultEmailSuffix = '@naver.com'; // 기본 이메일 도메인 나중에 @gachon.ac.kr 로 변경하기
-      const userEmail = `${userEmailPrefix}${defaultEmailSuffix}`; 
-      const response = await fetch(`https://gasip.site/members/emails/verification-requests?email=${encodeURIComponent(userEmail)}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      const userEmail = `${userEmailPrefix}${defaultEmailSuffix}`;
+      const response = await fetch(
+        `https://gasip.site/members/emails/verification-requests?email=${encodeURIComponent(
+          userEmail,
+        )}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: userEmail,
+          }),
         },
-        body: JSON.stringify({
-          email: userEmail,
-        }),
-      });
-  
+      );
+
       console.log(userEmail);
-  
+
       if (!response.ok) {
         throw new Error('이메일 인증 요청에 실패했습니다.');
       }
-  
+
       setVerifiedEmail(userEmail);
-  
+
       startTimer();
       setStep(2);
-  
     } catch (error: any) {
       console.error('이메일 인증 요청에 실패했습니다:', error.message);
       Alert.alert('이메일 인증 요청 실패', error.message);
     }
   };
-  
-  const [isValidCode, setIsValidCode] = useState(false); 
+
+  const [isValidCode, setIsValidCode] = useState(false);
 
   const validateCode = (code: string) => {
     const codePattern = /^\d{6}$/;
     return codePattern.test(code);
   };
-  
+
   const handleCodeChange = (text: string) => {
     setIsValidCode(validateCode(text));
     if (validateCode(text)) {
@@ -109,7 +120,6 @@ const SignUpScreen = () => {
     setStep(step - 1);
   };
 
- 
   const handleSubmit = async () => {
     try {
       const url = `https://gasip.site/members/emails/verifications?email=${verifiedEmail}&code=${verificationCode}`;
@@ -136,120 +146,126 @@ const SignUpScreen = () => {
 
   const handleResendCode = async () => {
     try {
-      const url = `https://gasip.site/members/emails/verification-requests`;
-  
+      // const url = `https://gasip.site/members/emails/verification-requests`;
+      const url = `https://gasip.site/members/emails/verification-requests?email=${verifiedEmail}`;
+
       const response = await fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email: verifiedEmail }) 
       });
-  
-      console.log(response);
-  
+
+      // console.log(response.formData);
+      console.log(await response.json());
+
       if (!response.ok) {
         throw new Error('새로운 인증번호 요청 실패');
       }
-  
-      startTimer(); 
+
+      startTimer();
     } catch (error: any) {
       console.error('새로운 인증번호 요청에 실패했습니다:', error.message);
       Alert.alert('새로운 인증번호 요청 실패', error.message);
     }
   };
 
-const handlePasswordChange = (text : any) => {
-  setPassword(text);
-  validatePassword(text);
-};
+  const handlePasswordChange = (text: any) => {
+    setPassword(text);
+    validatePassword(text);
+  };
 
-const handleConfirmPasswordChange = (text : any) => {
-  setConfirmPassword(text);
-  validatePasswordMatch(password, text);
-};
+  const handleConfirmPasswordChange = (text: any) => {
+    setConfirmPassword(text);
+    validatePasswordMatch(password, text);
+  };
 
-const validatePassword = (password: string) => {
-  const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/;
-  setIsValidPassword(passwordPattern.test(password));
-};
+  const validatePassword = (password: string) => {
+    const passwordPattern =
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/;
+    setIsValidPassword(passwordPattern.test(password));
+  };
 
-const validatePasswordMatch = (password: string, confirmPassword: string) => {
-  setPasswordsMatch(password === confirmPassword);
-};
+  const validatePasswordMatch = (password: string, confirmPassword: string) => {
+    setPasswordsMatch(password === confirmPassword);
+  };
 
+  const isNextButtonEnabled = isValidPassword && passwordsMatch;
 
-const isNextButtonEnabled = isValidPassword && passwordsMatch;
+  const nextStep = () => {
+    setStep(step + 1); // 다음 단계로 이동
+  };
 
-const nextStep = () => {
-  setStep(step + 1); // 다음 단계로 이동
-};
+  const handleNameChange = (text: string) => {
+    setName(text);
+    setIsNameValid(validateName(text));
+  };
 
-const handleNameChange = (text: string) => {
-  setName(text);
-  setIsNameValid(validateName(text));
-};
+  const validateName = (name: string) => {
+    const namePattern = /^[a-zA-Z가-힣]{2,}$/;
+    return namePattern.test(name);
+  };
 
-const validateName = (name: string) => {
-  const namePattern = /^[a-zA-Z가-힣]{2,}$/;
-  return namePattern.test(name);
-};
+  const handleNicknameChange = (text: string) => {
+    setNickname(text);
+    setIsNicknameValid(validateNickname(text));
+  };
 
-const handleNicknameChange = (text: string) => {
-  setNickname(text);
-  setIsNicknameValid(validateNickname(text));
-};
+  const validateNickname = (nickname: string) => {
+    const nicknamePattern = /^[a-zA-Z0-9가-힣]{2,12}$/;
+    return nicknamePattern.test(nickname);
+  };
 
-const validateNickname = (nickname: string) => {
-  const nicknamePattern = /^[a-zA-Z0-9가-힣]{2,12}$/;
-  return nicknamePattern.test(nickname);
-};
-
-const handleNextStepFinish = () => {
-  if (isNameValid && isNicknameValid) {
-    setStep(step + 1);
-  }
-};
-
-const handleSubmitFinish = async () => {
-  try {
-    const userData = {
-      email: verifiedEmail,
-      password: password,
-      name: name,
-      nickname: nickname
-    };
-
-    console.log(userData)
-
-    const response = await fetch('https://gasip.site/members/signup', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(userData),
-    });
-
-    console.log(response)
-
-    if (response.ok) {
-      // 회원가입 성공하면
-      navigation.navigate('LoginScreen')
-    } else {
-      throw new Error('회원가입 실패');
+  const handleNextStepFinish = () => {
+    if (isNameValid && isNicknameValid) {
+      setStep(step + 1);
     }
-  } catch (error: any) {
-    console.error('회원가입 요청에 실패했습니다:', error.message);
-    Alert.alert('회원가입 실패', '회원가입에 실패했습니다. 다시 시도해주세요.');
-  }
-};
+  };
+
+  const handleSubmitFinish = async () => {
+    try {
+      const userData = {
+        email: verifiedEmail,
+        password: password,
+        name: name,
+        nickname: nickname,
+      };
+
+      console.log(userData);
+
+      const response = await fetch('https://gasip.site/members/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+      });
+
+      console.log(response);
+
+      if (response.ok) {
+        // 회원가입 성공하면
+        navigation.navigate('LoginScreen');
+      } else {
+        throw new Error('회원가입 실패');
+      }
+    } catch (error: any) {
+      console.error('회원가입 요청에 실패했습니다:', error.message);
+      Alert.alert(
+        '회원가입 실패',
+        '회원가입에 실패했습니다. 다시 시도해주세요.',
+      );
+    }
+  };
 
   return (
     <View style={styles.container}>
       {step === 1 && (
         <View>
           <View style={styles.header}>
-            <TouchableOpacity onPress={() => navigation.navigate('LoginScreen')}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('LoginScreen')}
+            >
               <Image
                 source={require('@assets/chevron-left.png')}
                 style={styles.left}
@@ -262,22 +278,35 @@ const handleSubmitFinish = async () => {
           </View>
 
           <TextInput
-            style={[styles.step1, { borderStyle: 'solid', borderWidth: 1, backgroundColor: 'white', borderRadius: 10, borderColor: '#ffffff' }]}
+            style={[
+              styles.step1,
+              {
+                borderStyle: 'solid',
+                borderWidth: 1,
+                backgroundColor: 'white',
+                borderRadius: 10,
+                borderColor: '#ffffff',
+              },
+            ]}
             placeholder="이메일"
             value={useremail}
             onChangeText={handleEmailChange}
           />
           <Text style={styles.emailText}>@gachon.ac.kr</Text>
-          <Text style={styles.smallText} >본인 소유의 가천대학교 이메일 주소를 사용해 주세요</Text>
+          <Text style={styles.smallText}>
+            본인 소유의 가천대학교 이메일 주소를 사용해 주세요
+          </Text>
 
           <TouchableOpacity
-            style={[styles.button, isValidEmail ? styles.activeButton : styles.inactiveButton]}
+            style={[
+              styles.button,
+              isValidEmail ? styles.activeButton : styles.inactiveButton,
+            ]}
             onPress={handleButtonPress}
             disabled={!isValidEmail}
           >
             <Text style={styles.buttonText}>이메일 인증</Text>
           </TouchableOpacity>
-
         </View>
       )}
 
@@ -294,7 +323,16 @@ const handleSubmitFinish = async () => {
           <Text style={styles.emoji}>😄</Text>
           <Text style={styles.subText2}>인증번호를 입력해 주세요!</Text>
           <TextInput
-            style={[styles.step2, { borderStyle: 'solid', borderWidth: 1, backgroundColor: 'white', borderRadius: 10, borderColor: '#ffffff' }]}
+            style={[
+              styles.step2,
+              {
+                borderStyle: 'solid',
+                borderWidth: 1,
+                backgroundColor: 'white',
+                borderRadius: 10,
+                borderColor: '#ffffff',
+              },
+            ]}
             placeholder="인증번호 6자리"
             onChangeText={handleCodeChange}
           />
@@ -303,10 +341,17 @@ const handleSubmitFinish = async () => {
             <Text style={styles.reNum}>인증번호 다시받기</Text>
           </TouchableOpacity>
           <View style={styles.timerContainer}>
-            <Text style={styles.timerText}> {Math.floor(timer / 60)}분{timer % 60 < 10 ? `0${timer % 60}` : timer % 60}초</Text>
+            <Text style={styles.timerText}>
+              {' '}
+              {Math.floor(timer / 60)}분
+              {timer % 60 < 10 ? `0${timer % 60}` : timer % 60}초
+            </Text>
           </View>
           <EmailCodeBtn
-            style={[styles.button2, isValidCode ? styles.activeButton2 : styles.inactiveButton2]}
+            style={[
+              styles.button2,
+              isValidCode ? styles.activeButton2 : styles.inactiveButton2,
+            ]}
             onPress={handleSubmit}
             disabled={!isValidCode}
           >
@@ -317,88 +362,118 @@ const handleSubmitFinish = async () => {
 
       {step === 3 && (
         <View style={styles.header}>
-        <TouchableOpacity onPress={() => setStep(prevStep => prevStep - 1)}>
-          <Image
-            source={require('@assets/chevron-left.png')}
-            style={styles.left}
-            resizeMode="contain"
+          <TouchableOpacity onPress={() => setStep(prevStep => prevStep - 1)}>
+            <Image
+              source={require('@assets/chevron-left.png')}
+              style={styles.left}
+              resizeMode="contain"
+            />
+          </TouchableOpacity>
+          <Text style={styles.headerText}>이메일 회원가입 (2/3)</Text>
+          <Text style={styles.emoji}>👋</Text>
+          <Text style={styles.subText2}>비밀번호를 입력해 주세요!</Text>
+
+          <TextInput
+            style={styles.input}
+            placeholder="비밀번호"
+            secureTextEntry={true}
+            onChangeText={handlePasswordChange}
           />
-        </TouchableOpacity>
-        <Text style={styles.headerText}>이메일 회원가입 (2/3)</Text>
-        <Text style={styles.emoji}>👋</Text>
-        <Text style={styles.subText2}>비밀번호를 입력해 주세요!</Text>
-     
-      <TextInput
-        style={styles.input}
-        placeholder="비밀번호"
-        secureTextEntry={true}
-        onChangeText={handlePasswordChange}
-      />
 
-      <TextInput
-        style={styles.input}
-        placeholder="비밀번호 확인"
-        secureTextEntry={true}
-        onChangeText={handleConfirmPasswordChange}
-      />
+          <TextInput
+            style={styles.input}
+            placeholder="비밀번호 확인"
+            secureTextEntry={true}
+            onChangeText={handleConfirmPasswordChange}
+          />
 
-      {!isValidPassword && (
-        <Text style={styles.errorMessage}>비밀번호는 8자~20자의 영문+숫자+특수문자 공백X 조합이어야 합니다.</Text>
-      )}
+          {!isValidPassword && (
+            <Text style={styles.errorMessage}>
+              비밀번호는 8자~20자의 영문+숫자+특수문자 공백X 조합이어야 합니다.
+            </Text>
+          )}
 
-      {!passwordsMatch && (
-        <Text style={styles.errorMessage}>비밀번호가 일치하지 않습니다.</Text>
-      )}
+          {!passwordsMatch && (
+            <Text style={styles.errorMessage}>
+              비밀번호가 일치하지 않습니다.
+            </Text>
+          )}
 
-      <TouchableOpacity
-        style={[styles.buttonPass, isNextButtonEnabled ? styles.activeButton : styles.inactiveButton]}
-        disabled={!isNextButtonEnabled}
-        onPress={nextStep}
-      >
-        <Text style={styles.buttonText}>다음</Text>
-      </TouchableOpacity>
-
-
-      </View>
+          <TouchableOpacity
+            style={[
+              styles.buttonPass,
+              isNextButtonEnabled ? styles.activeButton : styles.inactiveButton,
+            ]}
+            disabled={!isNextButtonEnabled}
+            onPress={nextStep}
+          >
+            <Text style={styles.buttonText}>다음</Text>
+          </TouchableOpacity>
+        </View>
       )}
 
       {step === 4 && (
-            <View style={styles.header}>
-            <TouchableOpacity onPress={() => setStep(prevStep => prevStep - 1)}>
-              <Image
-                source={require('@assets/chevron-left.png')}
-                style={styles.left}
-                resizeMode="contain"
-              />
-            </TouchableOpacity>
-            <Text style={styles.headerText}>이메일 회원가입 (3/3)</Text>
-            <Text style={styles.emoji}>✈️</Text>
-            <Text style={styles.subText3}>다 왔어요!</Text>
-
-            <TextInput
-             style={[styles.inputName, { borderStyle: 'solid', borderWidth: 1, backgroundColor: 'white', borderRadius: 10, borderColor: '#ffffff' }]}
-             placeholder="이름"
-             value={name}
-             onChangeText={handleNameChange}
+        <View style={styles.header}>
+          <TouchableOpacity onPress={() => setStep(prevStep => prevStep - 1)}>
+            <Image
+              source={require('@assets/chevron-left.png')}
+              style={styles.left}
+              resizeMode="contain"
             />
-            <TextInput
-             style={[styles.inputName, { borderStyle: 'solid', borderWidth: 1, backgroundColor: 'white', borderRadius: 10, borderColor: '#ffffff' }]}
-             placeholder="닉네임 2~12자"
-             value={nickname}
-             onChangeText={handleNicknameChange}
-            />
-            {!isNicknameValid && <Text style={styles.warning}>2~12자 사이의 영문 또는 숫자만 입력하세요.</Text>}
-    
+          </TouchableOpacity>
+          <Text style={styles.headerText}>이메일 회원가입 (3/3)</Text>
+          <Text style={styles.emoji}>✈️</Text>
+          <Text style={styles.subText3}>다 왔어요!</Text>
 
-            <TouchableOpacity
-            style={[styles.button3, (isNameValid && isNicknameValid) ? styles.activeButton3 : styles.inactiveButton3]} // 활성화 여부에 따라 스타일 변경
+          <TextInput
+            style={[
+              styles.inputName,
+              {
+                borderStyle: 'solid',
+                borderWidth: 1,
+                backgroundColor: 'white',
+                borderRadius: 10,
+                borderColor: '#ffffff',
+              },
+            ]}
+            placeholder="이름"
+            value={name}
+            onChangeText={handleNameChange}
+          />
+          <TextInput
+            style={[
+              styles.inputName,
+              {
+                borderStyle: 'solid',
+                borderWidth: 1,
+                backgroundColor: 'white',
+                borderRadius: 10,
+                borderColor: '#ffffff',
+              },
+            ]}
+            placeholder="닉네임 2~12자"
+            value={nickname}
+            onChangeText={handleNicknameChange}
+          />
+          {!isNicknameValid && (
+            <Text style={styles.warning}>
+              2~12자 사이의 영문 또는 숫자만 입력하세요.
+            </Text>
+          )}
+
+          <TouchableOpacity
+            style={[
+              styles.button3,
+              isNameValid && isNicknameValid
+                ? styles.activeButton3
+                : styles.inactiveButton3,
+            ]} // 활성화 여부에 따라 스타일 변경
             onPress={handleSubmitFinish}
-            disabled={!isNameValid || !isNicknameValid} 
+            disabled={!isNameValid || !isNicknameValid}
           >
             <Text style={styles.buttonText}>회원가입 완료</Text>
           </TouchableOpacity>
-
-          </View>
+        </View>
       )}
     </View>
   );
@@ -410,7 +485,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#4B5159',
     paddingTop: 35,
-    
   },
   input: {
     width: 350,
@@ -515,7 +589,7 @@ const styles = StyleSheet.create({
   },
 
   warning: {
-    color: '#4490D8', 
+    color: '#4490D8',
     fontSize: 14,
     marginLeft: 10,
   },
@@ -540,10 +614,10 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   activeButton: {
-    backgroundColor: '#4490D8', 
+    backgroundColor: '#4490D8',
   },
   inactiveButton: {
-    backgroundColor: 'gray', 
+    backgroundColor: 'gray',
   },
 
   button2: {
@@ -554,10 +628,10 @@ const styles = StyleSheet.create({
     width: 350,
   },
   activeButton2: {
-    backgroundColor: '#4490D8', 
+    backgroundColor: '#4490D8',
   },
   inactiveButton2: {
-    backgroundColor: 'gray', 
+    backgroundColor: 'gray',
   },
 
   button3: {
@@ -568,10 +642,10 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   activeButton3: {
-    backgroundColor: '#4490D8', 
+    backgroundColor: '#4490D8',
   },
   inactiveButton3: {
-    backgroundColor: 'gray', 
+    backgroundColor: 'gray',
   },
   buttonText: {
     color: 'white',
