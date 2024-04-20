@@ -45,7 +45,7 @@ export default function CreateFeedModal({ navigation }: CreateFeedModalProps) {
         <Spacer type="height" value={23} />
         <CreateFeedModalTextInput setFeedContent={setFeedContent} />
         <Spacer type="height" value={40} />
-        <CreateFeedModalPolicy />
+        {/* <CreateFeedModalPolicy /> */}
       </View>
 
       <GSButton buttonText="공유" onPress={handleCreateFeedPress} />

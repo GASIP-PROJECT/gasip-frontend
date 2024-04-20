@@ -59,6 +59,15 @@ export default function FeedDetailScreen({ route, navigation }) {
                   paddingVertical: 15,
                 }}
               >
+                <Text
+                  style={{ fontSize: 16, color: '#f5f5f5', fontWeight: '700' }}
+                >
+                  댓글{' '}
+                  <Text style={{ fontWeight: '500' }}>
+                    {feedData.commentCount}
+                  </Text>
+                </Text>
+                <Spacer type="height" value={10} />
                 {feedData.comments.map((comment, index) => (
                   <FeedComment key={index.toString()} commentData={comment} />
                 ))}

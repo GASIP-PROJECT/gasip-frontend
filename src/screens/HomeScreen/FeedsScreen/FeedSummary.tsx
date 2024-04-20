@@ -56,7 +56,7 @@ const SummaryHeader = ({
 
   return (
     <Text style={styles.feedHeaderText}>
-      <Text style={{ color: '#B4B4B3' }}> {memberNickname}</Text> | {timeString}
+      <Text style={{ color: '#B4B4B3' }}>{memberNickname}</Text> | {timeString}
     </Text>
   );
 };

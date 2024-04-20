@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 import { getTimeDifference } from '@utils/timeUtil';
 
@@ -10,8 +10,6 @@ import Spacer from '@components/common/Spacer';
 
 import { COLORS } from '@styles/colors';
 import { type FeedComment } from 'types/searchTypes';
-
-import icon_comments from '@assets/icon_comments.png';
 
 export default function FeedComment({
   commentData,
@@ -33,12 +31,11 @@ export default function FeedComment({
         likeCount={commentLike}
         commentChildrenCount={commentChildren.length}
       />
-      <Spacer type="height" value={10} />
-      <View style={styles.bottomLine} />
-      <Spacer type="height" value={5} />
+      <Spacer type="height" value={15} />
       {commentChildren.map((commentChild, index) => {
         return <FeedCommentReply key={index.toString()} reply={commentChild} />;
       })}
+      <Spacer type="height" value={15} />
     </View>
   );
 }
@@ -54,7 +51,8 @@ const CommentHeader = ({
 
   return (
     <Text style={styles.commentHeaderText}>
-      {timeString} | {commenterNickname}
+      <Text style={{ color: '#B4B4B3' }}>{commenterNickname}</Text> |{' '}
+      {timeString}
     </Text>
   );
 };
@@ -70,24 +68,22 @@ const CommentFooter = ({
   likeCount: number | null;
   commentChildrenCount: number;
 }) => {
+  const iconTextGap = 3;
+
   return (
     <View style={styles.footerContainer}>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <GSIcon name="heart" size={15} color="red" />
-        <Spacer type="width" value={5} />
-        <Text style={{ fontSize: 15, color: 'red', fontWeight: '500' }}>
-          {likeCount || 0}
-        </Text>
+        <GSIcon name="heart" size={20} color="tomato" />
+        <Spacer type="width" value={iconTextGap} />
+        <Text style={styles.iconText}>{likeCount || 0}</Text>
       </View>
 
       <Spacer type="width" value={15} />
 
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <Image source={icon_comments} style={{ width: 15, height: 15 }} />
-        <Spacer type="width" value={5} />
-        <Text style={{ fontSize: 15, color: '#4490d8', fontWeight: '500' }}>
-          {commentChildrenCount}
-        </Text>
+        <GSIcon name="chatbox" size={20} color="#4F709C" />
+        <Spacer type="width" value={iconTextGap} />
+        <Text style={styles.iconText}>{commentChildrenCount}</Text>
       </View>
     </View>
   );
@@ -107,8 +103,9 @@ const styles = StyleSheet.create({
   footerContainer: {
     flexDirection: 'row',
   },
-  bottomLine: {
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.WHITE,
+  iconText: {
+    fontSize: 15,
+    color: '#B6BBC4',
+    fontWeight: '500',
   },
 });

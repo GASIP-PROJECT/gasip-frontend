@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 import { getTimeDifference } from '@utils/timeUtil';
 
@@ -9,22 +9,17 @@ import Spacer from '@components/common/Spacer';
 import { COLORS } from '@styles/colors';
 import { FeedComment } from 'types/searchTypes';
 
-import icon_reply from '@assets/icon_reply.png';
-
 export default function FeedCommentReply({ reply }: { reply: FeedComment }) {
   const { content, commentLike, regDate, memberName } = reply;
 
   return (
     <View style={styles.container}>
-      <Image source={icon_reply} style={{ width: 15, height: 15 }} />
-      <Spacer type="width" value={10} />
-      <View>
-        <Spacer type="height" value={5} />
-        <ReplyHeader regDate={regDate} replierNickname={memberName} />
-        <ReplyBody content={content} />
-        <Spacer type="height" value={5} />
-        <ReplyFooter likeCount={commentLike} />
-      </View>
+      <Spacer type="height" value={5} />
+      <ReplyHeader regDate={regDate} replierNickname={memberName} />
+      <Spacer type="height" value={5} />
+      <ReplyBody content={content} />
+      <Spacer type="height" value={5} />
+      <ReplyFooter likeCount={commentLike} />
     </View>
   );
 }
@@ -40,7 +35,7 @@ const ReplyHeader = ({
 
   return (
     <Text style={styles.commentHeaderText}>
-      {timeString} | {replierNickname}
+      <Text style={{ color: '#B4B4B3' }}>{replierNickname}</Text> | {timeString}
     </Text>
   );
 };
@@ -50,14 +45,14 @@ const ReplyBody = ({ content }: { content: string }) => {
 };
 
 const ReplyFooter = ({ likeCount }: { likeCount: number | null }) => {
+  const iconTextGap = 3;
+
   return (
     <View style={styles.footerContainer}>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <GSIcon name="heart" size={15} color="red" />
-        <Spacer type="width" value={5} />
-        <Text style={{ fontSize: 15, color: 'red', fontWeight: '500' }}>
-          {likeCount || 0}
-        </Text>
+        <GSIcon name="heart" size={20} color="tomato" />
+        <Spacer type="width" value={iconTextGap} />
+        <Text style={styles.iconText}>{likeCount || 0}</Text>
       </View>
     </View>
   );
@@ -65,8 +60,10 @@ const ReplyFooter = ({ likeCount }: { likeCount: number | null }) => {
 
 const styles = StyleSheet.create({
   container: {
+    marginLeft: 20,
     paddingLeft: 10,
-    flexDirection: 'row',
+    borderColor: '#B4B4B3',
+    borderLeftWidth: 2,
   },
   commentHeaderText: {
     fontSize: 14,
@@ -81,8 +78,9 @@ const styles = StyleSheet.create({
   footerContainer: {
     flexDirection: 'row',
   },
-  bottomLine: {
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.WHITE,
+  iconText: {
+    fontSize: 15,
+    color: '#B6BBC4',
+    fontWeight: '500',
   },
 });
