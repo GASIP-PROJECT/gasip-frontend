@@ -226,8 +226,6 @@ export const likeFeed = async (postId: number) => {
         },
       },
     );
-
-    console.log(response.data);
   } catch (error) {
     console.log('likeFeed error: ', error);
   }
@@ -243,8 +241,6 @@ export const likeFeedCancel = async (postId: number) => {
         postId,
       },
     });
-
-    console.log(response.data);
   } catch (error) {
     console.log('likeFeedCancel error: ', error);
   }

@@ -4,12 +4,12 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { likeFeed, likeFeedCancel } from '@api/index';
 import { getTimeDifference } from '@utils/timeUtil';
 
+import GSIcon from '@components/common/GSIcon';
 import Spacer from '@components/common/Spacer';
 
 import { COLORS } from '@styles/colors';
-import { Feed } from 'types/searchTypes';
+import { type Feed } from 'types/searchTypes';
 
-import icon_like from '@assets/icon_like.png';
 import icon_comments from '@assets/icon_comments.png';
 
 export default function FeedContent({ feedData }: { feedData: Feed | null }) {
@@ -72,7 +72,7 @@ const FeedContentFooter = ({
         style={{ flexDirection: 'row', alignItems: 'center' }}
         onPress={handleLikePress}
       >
-        <Image source={icon_like} style={{ width: 15, height: 15 }} />
+        <GSIcon name="heart" size={15} color="red" />
         <Spacer type="width" value={5} />
         <Text style={{ fontSize: 15, color: 'red', fontWeight: '500' }}>
           {likeCount}

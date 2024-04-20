@@ -35,7 +35,6 @@ export default function ChangeNicknameModal({
   const handlePressChangeNickname = async () => {
     if (newNickname.length) {
       const changedNickname = await changeNickname(newNickname);
-      console.log('닉네임 변경됨: ', changedNickname);
       alertNicknameChanged();
     }
   };

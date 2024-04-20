@@ -10,9 +10,9 @@ export interface Feed {
   updateDate: string;
   collegeName: String;
   comments: FeedComment[];
-  numberOfComment: number;
   memberNickname: string;
   majorName: string;
+  commentCount: number;
 }
 
 export interface FeedComment {

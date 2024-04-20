@@ -44,8 +44,6 @@ export default function SearchResults({
 }
 
 const ProfessorResults = ({ searchResult }: { searchResult: Professor[] }) => {
-  console.log(searchResult);
-
   return (
     <FlatList
       data={searchResult}
