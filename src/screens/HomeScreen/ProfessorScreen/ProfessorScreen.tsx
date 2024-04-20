@@ -8,17 +8,23 @@ import Spacer from '@components/common/Spacer';
 import SafeAreaLayout from '@components/common/SafeAreaLayout';
 
 import gasip_logo from '@assets/gasip_logo.png';
+import GSHeader from '@components/common/GSHeader';
+import GSIcon from '@components/common/GSIcon';
 
-export default function ProfessorDetailScreen({ route }) {
+export default function ProfessorDetailScreen({ route, navigation }) {
   const { professorData } = route.params;
 
   const { profId } = professorData;
 
   return (
     <SafeAreaLayout>
+      <GSHeader
+        title={'교수님 정보'}
+        leftComponent={<GSIcon name="chevron-back-outline" />}
+        onLeftComponentPress={() => navigation.goBack()}
+      />
       <View style={styles.container}>
-        <ProfessorScreenHeader />
-        <Spacer type="height" value={20} />
+        <Spacer type="height" value={15} />
         <ProfessorDetail professorData={professorData} />
         <Spacer type="height" value={20} />
         <ProfessorFeeds profId={profId} />

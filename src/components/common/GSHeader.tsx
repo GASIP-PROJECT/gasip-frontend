@@ -25,7 +25,7 @@ export default function GSHeader({
         onPress={onLeftComponentPress}
       />
       <HeaderTitle title={title} />
-      <HeaderRightComponent />
+      <HeaderRightComponent component={rightComponent} />
     </View>
   );
 }
@@ -56,8 +56,15 @@ const HeaderTitle = ({ title }: { title: string }) => {
   );
 };
 
-const HeaderRightComponent = () => {
-  return <View style={styles.rightComponentContainer} />;
+const HeaderRightComponent = ({
+  component,
+}: {
+  component: React.ReactNode;
+}) => {
+  if (component === null)
+    return <View style={styles.rightComponentContainer} />;
+
+  return <View style={styles.rightComponentContainer}>{component}</View>;
 };
 
 const styles = StyleSheet.create({
@@ -87,6 +94,6 @@ const styles = StyleSheet.create({
   },
   rightComponentContainer: {
     flex: 1,
-    justifyContent: 'center',
+    flexDirection: 'row-reverse',
   },
 });

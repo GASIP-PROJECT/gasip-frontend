@@ -5,10 +5,10 @@ import { getUserData } from '@api/index';
 
 import ProfileData from './ProfileData';
 import AppInformation from './AppInformation';
-import MyPageScreenHeader from './MyPageScreenHeader';
 import SettingModal from './SettingModal/SettingModal';
 
 import Spacer from '@components/common/Spacer';
+import GSHeader from '@components/common/GSHeader';
 import SafeAreaLayout from '@components/common/SafeAreaLayout';
 
 import { COLORS } from '@styles/colors';
@@ -32,7 +32,7 @@ export default function MyPageScreen() {
   return (
     <SafeAreaLayout>
       <View style={styles.container}>
-        <MyPageScreenHeader />
+        <GSHeader title="마이페이지" />
         <Spacer type="height" value={30} />
         <OpenSettingModalButton
           setIsSettingsModalVisible={setIsSettingsModalVisible}

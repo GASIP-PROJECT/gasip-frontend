@@ -1,8 +1,9 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import GSIcon from '@components/common/GSIcon';
+import GSHeader from '@components/common/GSHeader';
 
 import { COLORS } from '@styles/colors';
 
@@ -11,16 +12,6 @@ export default function CreateFeedModalHeader({
 }: {
   feedContent: string;
 }) {
-  return (
-    <View style={styles.container}>
-      <HeaderCloseButton />
-      <HeaderTitle />
-      <HeaderLetterCount feedContent={feedContent} />
-    </View>
-  );
-}
-
-const HeaderCloseButton = () => {
   const navigation = useNavigation();
 
   const closeModal = () => {
@@ -28,29 +19,18 @@ const HeaderCloseButton = () => {
   };
 
   return (
-    <View style={styles.closeButtonContainer}>
-      <TouchableOpacity style={{ flex: 1 }} onPress={closeModal}>
-        <GSIcon name="close-outline" />
-      </TouchableOpacity>
-    </View>
+    <GSHeader
+      title="피드 작성"
+      leftComponent={<GSIcon name="close-outline" />}
+      onLeftComponentPress={closeModal}
+      rightComponent={
+        <Text style={styles.letterCountText}>
+          {feedContent.length || 0}/500
+        </Text>
+      }
+    />
   );
-};
-
-const HeaderTitle = () => {
-  return (
-    <View style={styles.titleContainer}>
-      <Text style={styles.title}>피드 작성</Text>
-    </View>
-  );
-};
-
-const HeaderLetterCount = ({ feedContent }: { feedContent: string }) => {
-  return (
-    <View style={styles.letterCountContainer}>
-      <Text style={styles.letterCountText}>{feedContent.length || 0}/500</Text>
-    </View>
-  );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -71,16 +51,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: COLORS.WHITE,
   },
-  letterCountContainer: {
-    flex: 1,
-    flexDirection: 'row-reverse',
-  },
   letterCountText: {
     color: COLORS.WHITE,
     fontSize: 12,
-  },
-  closeButtonContainer: {
-    flex: 1,
-    flexDirection: 'row',
   },
 });

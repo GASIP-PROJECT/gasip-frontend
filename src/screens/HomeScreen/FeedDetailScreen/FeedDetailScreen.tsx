@@ -6,15 +6,16 @@ import { getFeedData } from '@api/index';
 import FeedContent from './FeedContent';
 import FeedComment from './FeedComment';
 import ProfessorInfo from './ProfessorInfo';
-import FeedDetailScreenHeader from './FeedDetailScreenHeader';
 
 import Spacer from '@components/common/Spacer';
+import GSIcon from '@components/common/GSIcon';
+import GSHeader from '@components/common/GSHeader';
 import SafeAreaLayout from '@components/common/SafeAreaLayout';
 
 import { type Feed } from 'types/searchTypes';
 
 // TODO - type 선언 필요
-export default function FeedDetailScreen({ route }) {
+export default function FeedDetailScreen({ route, navigation }) {
   const { postId } = route.params;
 
   const [feedData, setFeedData] = useState<Feed | null>(null);
@@ -31,8 +32,12 @@ export default function FeedDetailScreen({ route }) {
 
   return (
     <SafeAreaLayout>
+      <GSHeader
+        title="게시글 상세"
+        leftComponent={<GSIcon name="chevron-back-outline" />}
+        onLeftComponentPress={() => navigation.goBack()}
+      />
       <ScrollView style={styles.container}>
-        <FeedDetailScreenHeader />
         <Spacer type="height" value={10} />
         {feedData !== null ? (
           <>
