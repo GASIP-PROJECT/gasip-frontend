@@ -70,7 +70,8 @@ const TabIndicator = ({
   onPress: () => void;
 }) => {
   const bgColor = currentTab === title ? `#4490d8` : `#999999`;
-  const iconColor = currentTab === title ? 'tomato' : COLORS.WHITE;
+  const iconColor = currentTab === title ? '#B80000' : COLORS.WHITE;
+  const opacity = currentTab === title ? 1 : 0.5;
 
   return (
     <TouchableOpacity

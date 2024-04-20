@@ -46,7 +46,9 @@ const MyPage = () => {
       <MyPageStack.Screen
         name="CreateFeed2"
         component={CreateFeedModal}
-        options={{ presentation: 'fullScreenModal' }}
+        options={{
+          presentation: 'fullScreenModal',
+        }}
       />
       <MyPageStack.Screen name="MyFeedsScreen" component={MyFeedsScreen} />
     </MyPageStack.Navigator>
