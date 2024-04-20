@@ -6,10 +6,10 @@ import {
   View,
   Text,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
 
 import { searchFeeds, searchProfessors } from '@api/index';
 
+import GSIcon from '@components/common/GSIcon';
 import Spacer from '@components/common/Spacer';
 import GSRadioButton from '@components/common/GSRadioButton';
 
@@ -75,7 +75,7 @@ export default function SearchBar({
         />
 
         <View style={styles.searchIconContainer}>
-          <Icon name="search-outline" size={20} style={{ color: '#999999' }} />
+          <GSIcon name="search-outline" size={20} color="#999999" />
         </View>
 
         <Spacer type="width" value={8} />

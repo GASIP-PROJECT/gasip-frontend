@@ -13,9 +13,10 @@ export type BottomTabParamList = {
 };
 
 export type HomeStackParamList = {
-  Home: undefined;
+  HomeScreen: undefined;
   CreateFeed0: undefined;
-  FeedDetail: undefined;
+  FeedDetailScreen: undefined;
+  ProfessorDetailScreen: undefined;
 };
 export type MyPageStackParamList = {
   MyPage: undefined;

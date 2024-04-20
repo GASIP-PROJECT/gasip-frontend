@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, ScrollView } from 'react-native';
 
-import { getCommentsForFeed, getFeedData } from '@api/index';
+import { getFeedData } from '@api/index';
 
 import FeedContent from './FeedContent';
 import FeedComment from './FeedComment';
@@ -11,24 +11,19 @@ import FeedDetailScreenHeader from './FeedDetailScreenHeader';
 import Spacer from '@components/common/Spacer';
 import SafeAreaLayout from '@components/common/SafeAreaLayout';
 
-import { type FeedResult } from 'types/searchTypes';
+import { type Feed } from 'types/searchTypes';
 
 // TODO - type 선언 필요
-export default function FeedDetailScreen({ route, navigation }) {
+export default function FeedDetailScreen({ route }) {
   const { postId } = route.params;
 
-  const [feedData, setFeedData] = useState<FeedResult | null>(null);
-  const [comments, setComments] = useState([]);
+  const [feedData, setFeedData] = useState<Feed | null>(null);
 
   useEffect(() => {
     const fetchFeedData = async () => {
       const feedData = await getFeedData(postId);
-      const comments = await getCommentsForFeed(postId);
-
-      // console.log(feedData);
 
       setFeedData(feedData);
-      setComments(comments);
     };
 
     fetchFeedData();
@@ -36,7 +31,7 @@ export default function FeedDetailScreen({ route, navigation }) {
 
   return (
     <SafeAreaLayout>
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         <FeedDetailScreenHeader />
         <Spacer type="height" value={10} />
         {feedData !== null ? (
@@ -44,14 +39,13 @@ export default function FeedDetailScreen({ route, navigation }) {
             {feedData.profId !== 0 && (
               <ProfessorInfo
                 profName={feedData.profName}
-                majorName="컴퓨터공학과"
+                majorName={feedData.majorName}
               />
             )}
             <Spacer type="height" value={10} />
             <FeedContent feedData={feedData} />
             <Spacer type="height" value={10} />
-
-            {comments.length > 0 && (
+            {feedData?.comments.length > 0 && (
               <View
                 style={{
                   backgroundColor: '#28292A',
@@ -60,7 +54,7 @@ export default function FeedDetailScreen({ route, navigation }) {
                   paddingVertical: 15,
                 }}
               >
-                {comments.map((comment, index) => (
+                {feedData.comments.map((comment, index) => (
                   <FeedComment key={index.toString()} commentData={comment} />
                 ))}
               </View>
@@ -69,7 +63,7 @@ export default function FeedDetailScreen({ route, navigation }) {
         ) : (
           <Text>로딩중...</Text>
         )}
-      </View>
+      </ScrollView>
     </SafeAreaLayout>
   );
 }

@@ -3,18 +3,18 @@ import {
   FlatList,
   StyleSheet,
   Text,
-  Touchable,
   TouchableOpacity,
   View,
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 import FeedSummary from '@screens/HomeScreen/FeedsScreen/FeedSummary';
 
 import Spacer from '@components/common/Spacer';
 
 import {
-  type FeedResult,
-  type ProfessorResult,
+  type Feed,
+  type Professor,
   type SearchResult,
 } from 'types/searchTypes';
 
@@ -30,23 +30,25 @@ export default function SearchResults({
 
   if (searchResults[0]?.profId) {
     return (
-      <ProfessorResults searchResult={searchResults as ProfessorResult[]} />
+      <View>
+        <ProfessorResults searchResult={searchResults as Professor[]} />
+      </View>
     );
   }
 
-  return <FeedResults searchResult={searchResults as FeedResult[]} />;
+  return (
+    <View>
+      <FeedResults searchResult={searchResults as Feed[]} />
+    </View>
+  );
 }
 
-const ProfessorResults = ({
-  searchResult,
-}: {
-  searchResult: ProfessorResult[];
-}) => {
+const ProfessorResults = ({ searchResult }: { searchResult: Professor[] }) => {
   return (
     <FlatList
       data={searchResult}
-      renderItem={({ item }: { item: ProfessorResult }) => (
-        <ProfessorInfo profName={item.profName} majorName={item.majorName} />
+      renderItem={({ item }: { item: Professor }) => (
+        <ProfessorInfo professorData={item} />
       )}
       keyExtractor={(item, index) => index.toString()}
       ItemSeparatorComponent={() => <Spacer type="height" value={15} />}
@@ -55,15 +57,19 @@ const ProfessorResults = ({
   );
 };
 
-const ProfessorInfo = ({
-  profName,
-  majorName,
-}: {
-  profName: string;
-  majorName: string;
-}) => {
+const ProfessorInfo = ({ professorData }: { professorData: Professor }) => {
+  const navigation = useNavigation();
+
+  const { majorName, profName } = professorData;
+
   return (
-    <TouchableOpacity>
+    <TouchableOpacity
+      onPress={() => {
+        navigation.navigate('ProfessorDetailScreen', {
+          professorData: professorData,
+        });
+      }}
+    >
       <Text style={styles.professorInfo}>
         {majorName} - {profName} 교수님
       </Text>
@@ -71,20 +77,12 @@ const ProfessorInfo = ({
   );
 };
 
-const FeedResults = ({ searchResult }: { searchResult: FeedResult[] }) => {
+const FeedResults = ({ searchResult }: { searchResult: Feed[] }) => {
   return (
     <FlatList
       data={searchResult}
-      renderItem={({ item }: { item: FeedResult }) => {
-        return (
-          <FeedSummary
-            content={item.content}
-            likeCount={item.likeCount}
-            clickCount={item.clickCount}
-            regDate={item.regDate}
-            postId={item.postId}
-          />
-        );
+      renderItem={({ item }: { item: Feed }) => {
+        return <FeedSummary feedData={item} />;
       }}
       keyExtractor={(item, index) => index.toString()}
       ItemSeparatorComponent={() => <Spacer type="height" value={10} />}

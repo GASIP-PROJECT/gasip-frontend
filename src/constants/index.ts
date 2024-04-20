@@ -1,4 +1,5 @@
 export const HOME_TABS = {
-  FEED: '전체 피드',
+  ALL: '전체 피드',
+  GENERAL: '자유게시판',
   POPULAR: '인기글',
 };

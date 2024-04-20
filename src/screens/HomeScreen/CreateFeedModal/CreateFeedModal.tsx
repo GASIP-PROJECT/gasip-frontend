@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import axios from 'axios';
 
 import { createFeed } from '@api/index';
+import { NewFeedContext } from '@contexts/NewFeedContext';
 
 import Spacer from '@components/common/Spacer';
 import GSButton from '@components/common/GSButton';
@@ -15,6 +16,7 @@ import CreateFeedModalTextInput from './CreateFeedModalTextInput';
 import { type CreateFeedModalProps } from '@screens/navigationTypes';
 
 export default function CreateFeedModal({ navigation }: CreateFeedModalProps) {
+  const { setToggleToUpdateFeedsList } = useContext(NewFeedContext);
   const [feedContent, setFeedContent] = useState('');
 
   const closeModal = () => {
@@ -31,8 +33,8 @@ export default function CreateFeedModal({ navigation }: CreateFeedModalProps) {
     // });
     // console.log(result.data);
 
-    // TODO - 피드 작성 후에 Feed탭이 업데이트 되어야 함.
     await createFeed(feedContent);
+    setToggleToUpdateFeedsList(prev => !prev);
     closeModal();
   };
 

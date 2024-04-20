@@ -1,44 +1,49 @@
 import React from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
+import { likeFeed, likeFeedCancel } from '@api/index';
+import { getTimeDifference } from '@utils/timeUtil';
+
+import GSIcon from '@components/common/GSIcon';
 import Spacer from '@components/common/Spacer';
 
 import { COLORS } from '@styles/colors';
-import { FeedResult } from 'types/searchTypes';
+import { type Feed } from 'types/searchTypes';
 
-import icon_like from '@assets/icon_like.png';
 import icon_comments from '@assets/icon_comments.png';
-import { getTimeDifference } from '@utils/timeUtil';
 
-export default function FeedContent({
-  feedData,
-}: {
-  feedData: FeedResult | null;
-}) {
+export default function FeedContent({ feedData }: { feedData: Feed | null }) {
   if (feedData === null) return <View />;
+
+  const { content, regDate, likeCount, postId, comments, memberNickname } =
+    feedData;
 
   return (
     <View style={styles.container}>
-      <FeedContentHeader regDate={feedData.regDate} userNickName="nickName" />
+      <FeedContentHeader regDate={regDate} memberNickname={memberNickname} />
       <Spacer type="height" value={10} />
-      <FeedContentText content={feedData.content} />
+      <FeedContentText content={content} />
       <Spacer type="height" value={10} />
-      <FeedContentFooter likeCount={feedData.likeCount} />
+      <FeedContentFooter
+        likeCount={likeCount}
+        postId={postId}
+        commentCount={comments.length}
+      />
     </View>
   );
 }
 const FeedContentHeader = ({
   regDate,
-  userNickName,
+  memberNickname,
 }: {
   regDate: string;
-  userNickName: string;
+  memberNickname: string;
 }) => {
   const timeString = getTimeDifference(regDate);
 
   return (
     <Text style={styles.feedHeaderText}>
-      {timeString} | {userNickName}
+      {timeString} | {memberNickname}
     </Text>
   );
 };
@@ -47,16 +52,32 @@ const FeedContentText = ({ content }: { content: string }) => {
   return <Text style={styles.feedContentText}>{content}</Text>;
 };
 
-const FeedContentFooter = ({ likeCount }: { likeCount: number }) => {
+const FeedContentFooter = ({
+  likeCount,
+  postId,
+  commentCount,
+}: {
+  likeCount: number;
+  postId: number;
+  commentCount: number;
+}) => {
+  const handleLikePress = async () => {
+    // await likeFeed(postId);
+    await likeFeedCancel(postId);
+  };
+
   return (
     <View style={styles.footerContainer}>
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <Image source={icon_like} style={{ width: 15, height: 15 }} />
+      <TouchableOpacity
+        style={{ flexDirection: 'row', alignItems: 'center' }}
+        onPress={handleLikePress}
+      >
+        <GSIcon name="heart" size={15} color="red" />
         <Spacer type="width" value={5} />
         <Text style={{ fontSize: 15, color: 'red', fontWeight: '500' }}>
           {likeCount}
         </Text>
-      </View>
+      </TouchableOpacity>
 
       <Spacer type="width" value={15} />
 
@@ -64,7 +85,7 @@ const FeedContentFooter = ({ likeCount }: { likeCount: number }) => {
         <Image source={icon_comments} style={{ width: 15, height: 15 }} />
         <Spacer type="width" value={5} />
         <Text style={{ fontSize: 15, color: '#4490d8', fontWeight: '500' }}>
-          {3}
+          {commentCount}
         </Text>
       </View>
     </View>

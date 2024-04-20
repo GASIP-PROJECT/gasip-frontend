@@ -1,4 +1,4 @@
-export interface FeedResult {
+export interface Feed {
   clickCount: number;
   content: string;
   gradePoint: number;
@@ -8,14 +8,32 @@ export interface FeedResult {
   profName: string;
   regDate: string;
   updateDate: string;
+  collegeName: String;
+  comments: FeedComment[];
+  memberNickname: string;
+  majorName: string;
+  commentCount: number;
 }
 
-export interface ProfessorResult {
+export interface FeedComment {
+  commentChildren: FeedComment[];
+  commentId: number;
+  commentLike: number | null;
+  content: string;
+  memberId: number;
+  memberName: string;
+  postId: number;
+  regDate: string;
+  updateDate: string;
+}
+
+export interface Professor {
   majorId: number;
   majorName: string;
   profId: number;
   profName: string;
   professorAverageGradePoint: number | null;
+  collegeName: string;
 }
 
-export type SearchResult = FeedResult | ProfessorResult;
+export type SearchResult = Feed | Professor;

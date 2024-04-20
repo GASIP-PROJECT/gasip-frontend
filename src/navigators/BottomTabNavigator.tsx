@@ -7,10 +7,8 @@ import HomeScreen from '@screens/HomeScreen/HomeScreen';
 import MyPageScreen from '@screens/MypageScreen/MyPageScreen';
 import CreateFeedModal from '@screens/HomeScreen/CreateFeedModal/CreateFeedModal';
 import FeedDetailScreen from '@screens/HomeScreen/FeedDetailScreen/FeedDetailScreen';
-import SettingsScreen from '@screens/MypageScreen/SettingsScreen/SettingsScreen';
-import ChangeNicknameScreen from '@screens/MypageScreen/ChageNicknameScreen/ChangeNicknameScreen';
-import ChangePasswordScreen from '@screens/MypageScreen/ChangePasswordScreen/ChangePasswordScreen';
 import MyFeedsScreen from '@screens/MypageScreen/MyFeedsScreen.tsx/MyFeedsScreen';
+import ProfessorDetailScreen from '@screens/HomeScreen/ProfessorScreen/ProfessorScreen';
 
 import {
   type HomeStackParamList,
@@ -26,13 +24,17 @@ const MyPageStack = createNativeStackNavigator<MyPageStackParamList>();
 const Home = () => {
   return (
     <HomeStack.Navigator screenOptions={{ headerShown: false }}>
-      <HomeStack.Screen name="Home" component={HomeScreen} />
+      <HomeStack.Screen name="HomeScreen" component={HomeScreen} />
       <HomeStack.Screen
         name="CreateFeed0"
         component={CreateFeedModal}
         options={{ presentation: 'fullScreenModal' }}
       />
-      <HomeStack.Screen name="FeedDetail" component={FeedDetailScreen} />
+      <HomeStack.Screen name="FeedDetailScreen" component={FeedDetailScreen} />
+      <HomeStack.Screen
+        name="ProfessorDetailScreen"
+        component={ProfessorDetailScreen}
+      />
     </HomeStack.Navigator>
   );
 };
@@ -45,15 +47,6 @@ const MyPage = () => {
         name="CreateFeed2"
         component={CreateFeedModal}
         options={{ presentation: 'fullScreenModal' }}
-      />
-      <MyPageStack.Screen name="SettingsScreen" component={SettingsScreen} />
-      <MyPageStack.Screen
-        name="ChangePasswordScreen"
-        component={ChangePasswordScreen}
-      />
-      <MyPageStack.Screen
-        name="ChangeNicknameScreen"
-        component={ChangeNicknameScreen}
       />
       <MyPageStack.Screen name="MyFeedsScreen" component={MyFeedsScreen} />
     </MyPageStack.Navigator>

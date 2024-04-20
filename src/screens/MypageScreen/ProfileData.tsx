@@ -1,14 +1,12 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/Ionicons';
 
 import MyPageElement from './MyPageElement';
 
-import { COLORS } from '@styles/colors';
+import GSIcon from '@components/common/GSIcon';
 
-// TODO - ICON_SIZE 여기 선언하는게 맞는가?
-const ICON_SIZE = 27;
+import { COLORS } from '@styles/colors';
 
 const FixNickNameButton = () => {
   return (
@@ -18,8 +16,11 @@ const FixNickNameButton = () => {
   );
 };
 
-export default function ProfileData() {
+export default function ProfileData({ nickname }: { nickname: string | null }) {
   const navigation = useNavigation();
+
+  const nickenameText = nickname ? `${nickname} 님` : 'Guest 님';
+
   const handleMyFeedsPress = async () => {
     navigation.navigate('MyFeedsScreen');
   };
@@ -27,20 +28,14 @@ export default function ProfileData() {
   return (
     <View style={styles.container}>
       <MyPageElement
-        title="닉네임 님"
+        title={nickenameText}
         onPress={() => {}}
         rightButtonElement={<FixNickNameButton />}
       />
       <MyPageElement
         title="내가 쓴 글"
         onPress={handleMyFeedsPress}
-        rightButtonElement={
-          <Icon
-            name="chevron-forward-outline"
-            size={ICON_SIZE}
-            style={{ color: COLORS.WHITE }}
-          />
-        }
+        rightButtonElement={<GSIcon name="chevron-forward-outline" />}
       />
     </View>
   );

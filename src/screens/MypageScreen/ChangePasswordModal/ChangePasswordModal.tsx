@@ -1,73 +1,72 @@
-import React, { useState } from 'react';
+import React, { useState, Dispatch, SetStateAction } from 'react';
 import {
+  Image,
   StyleSheet,
   Text,
+  TextInput,
   TouchableOpacity,
   View,
-  Image,
-  TextInput,
+  Modal,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
 
+import GSIcon from '@components/common/GSIcon';
 import Spacer from '@components/common/Spacer';
+import GSHeader from '@components/common/GSHeader';
 import SafeAreaLayout from '@components/common/SafeAreaLayout';
 
 import { COLORS } from '@styles/colors';
 
 import icon_hand from '@assets/icon_hand.png';
 
-// TODO - ICON_SIZE 여기 선언하는게 맞는가?
-const ICON_SIZE = 27;
-export default function ChangePasswordScreen({ navigation }) {
+interface ChangePasswordModalProps {
+  isVisible: boolean;
+  setIsVisible: Dispatch<SetStateAction<boolean>>;
+}
+
+export default function ChangePasswordModal({
+  isVisible,
+  setIsVisible,
+}: ChangePasswordModalProps) {
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [newPasswordConfirm, setNewPasswordConfirm] = useState('');
 
   const handlePressChangePassword = () => {};
+
   return (
-    <SafeAreaLayout backgroundColor="#4b5159">
-      <View style={styles.container}>
-        <Header navigation={navigation} />
-        <Spacer type="height" value={20} />
-        <Image source={icon_hand} style={{ width: 36, height: 36 }} />
-        <Spacer type="height" value={20} />
-        <ChangeNicknameText />
-        <Spacer type="height" value={20} />
-        <ChangeNickNameTextInput setNewNickname={setCurrentPassword} />
-        <Spacer type="height" value={10} />
-        <ChangeNickNameTextInput setNewNickname={setNewPassword} />
-        <Spacer type="height" value={10} />
-        <ChangeNickNameTextInput setNewNickname={setNewPasswordConfirm} />
-        <Spacer type="height" value={20} />
-        <Button buttonText="변경하기" onPress={handlePressChangePassword} />
-      </View>
-    </SafeAreaLayout>
+    <Modal visible={isVisible} animationType="slide">
+      <SafeAreaLayout backgroundColor="#4b5159">
+        <Header setIsVisible={setIsVisible} />
+        <View style={styles.container}>
+          <Spacer type="height" value={20} />
+          <Image source={icon_hand} style={{ width: 36, height: 36 }} />
+          <Spacer type="height" value={20} />
+          <ChangeNicknameText />
+          <Spacer type="height" value={20} />
+          <ChangeNickNameTextInput setNewNickname={setCurrentPassword} />
+          <Spacer type="height" value={10} />
+          <ChangeNickNameTextInput setNewNickname={setNewPassword} />
+          <Spacer type="height" value={10} />
+          <ChangeNickNameTextInput setNewNickname={setNewPasswordConfirm} />
+          <Spacer type="height" value={20} />
+          <Button buttonText="변경하기" onPress={handlePressChangePassword} />
+        </View>
+      </SafeAreaLayout>
+    </Modal>
   );
 }
 
-// TODO - Header 통일
-const Header = ({ navigation }) => {
-  const handleBackButtonPress = () => {
-    navigation.goBack();
-  };
-
+const Header = ({
+  setIsVisible,
+}: {
+  setIsVisible: Dispatch<SetStateAction<boolean>>;
+}) => {
   return (
-    <View style={styles.headerContainer}>
-      <View style={styles.closeButtonContainer}>
-        <TouchableOpacity style={{ flex: 1 }} onPress={handleBackButtonPress}>
-          <Icon
-            name="chevron-back-outline"
-            size={ICON_SIZE}
-            style={{ color: COLORS.WHITE }}
-          />
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.titleContainer}>
-        <Text style={styles.title}>설정</Text>
-      </View>
-      <View style={{ flex: 1 }} />
-    </View>
+    <GSHeader
+      title="닉네임 변경"
+      leftComponent={<GSIcon name="close-outline" />}
+      onLeftComponentPress={() => setIsVisible(false)}
+    />
   );
 };
 

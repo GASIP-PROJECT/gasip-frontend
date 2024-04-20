@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { FlatList, View } from 'react-native';
 
-import { getAllFeeds } from '@api/index';
+import { getGeneralFeeds } from '@api/index';
 import { NewFeedContext } from '@contexts/NewFeedContext';
 
 import FeedSummary from './FeedSummary';
@@ -10,12 +10,12 @@ import Spacer from '@components/common/Spacer';
 
 import { type Feed } from 'types/searchTypes';
 
-export default function AllFeedsTab() {
+export default function GeneralFeedsTab() {
   const { toggleToUpdateFeedsList } = useContext(NewFeedContext);
   const flatListRef = useRef(null);
 
   const [page, setPage] = useState(0);
-  const [feedsList, setFeedsList] = useState<Feed[] | []>([]);
+  const [feedsList, setFeedsList] = useState<[Feed] | []>([]);
 
   const scrollToTop = () => {
     if (flatListRef.current) {
@@ -26,7 +26,7 @@ export default function AllFeedsTab() {
   const onListEndReached = async () => {
     setPage(prev => prev + 1);
 
-    const posts: Feed[] = await getAllFeeds(page);
+    const posts: [] = await getGeneralFeeds(page);
 
     if (posts.length > 0) {
       setFeedsList([...feedsList, ...posts]);
@@ -38,7 +38,7 @@ export default function AllFeedsTab() {
     setPage(0);
 
     const fetchFeeds = async () => {
-      const posts: Feed[] = await getAllFeeds(0);
+      const posts: [Feed] = await getGeneralFeeds(0);
       setFeedsList([...posts]);
     };
 

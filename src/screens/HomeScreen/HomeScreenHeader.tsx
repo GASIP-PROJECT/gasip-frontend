@@ -1,6 +1,7 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+
+import GSIcon from '@components/common/GSIcon';
 
 import gasip_logo from '@assets/gasip_logo.png';
 
@@ -23,12 +24,7 @@ export default function HomeScreenHeader({
 
       {!isSearchPageOpen && (
         <TouchableOpacity onPress={handleSearchIconPress}>
-          <Icon
-            name="search-outline"
-            size={27}
-            // TODO - marginTop 10 여러 디바이스에서 검즘 필요
-            style={{ color: '#999999', marginTop: 10 }}
-          />
+          <GSIcon name="search" color="#999999" />
         </TouchableOpacity>
       )}
     </View>
