@@ -79,6 +79,7 @@ export default function FeedDetailScreen({ route, navigation }) {
         ) : (
           <Text>로딩중...</Text>
         )}
+        <Spacer type="height" value={100} />
       </ScrollView>
 
       <FeedReplyInput postId={postId} setUpdateFeed={setUpdateFeed} />

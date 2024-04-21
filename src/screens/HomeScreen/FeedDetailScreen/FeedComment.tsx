@@ -35,7 +35,6 @@ export default function FeedComment({
       {commentChildren.map((commentChild, index) => {
         return <FeedCommentReply key={index.toString()} reply={commentChild} />;
       })}
-      <Spacer type="height" value={15} />
     </View>
   );
 }
