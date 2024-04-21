@@ -263,3 +263,23 @@ export const likeFeedCancel = async (postId: number) => {
     console.log('likeFeedCancel error: ', error);
   }
 };
+
+export const createComment = async (postId: number, content: string) => {
+  try {
+    const access_token = await AsyncStorage.getItem('userToken');
+
+    const response = await GSBackendClient.post(
+      `/comments/${postId}`,
+      {
+        content,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      },
+    );
+  } catch (error) {
+    console.log('createComment error: ', error);
+  }
+};

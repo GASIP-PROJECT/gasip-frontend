@@ -6,6 +6,7 @@ import { getFeedData } from '@api/index';
 import FeedContent from './FeedContent';
 import FeedComment from './FeedComment';
 import ProfessorInfo from './ProfessorInfo';
+import FeedReplyInput from './FeedReplyInput';
 
 import Spacer from '@components/common/Spacer';
 import GSIcon from '@components/common/GSIcon';
@@ -32,7 +33,7 @@ export default function FeedDetailScreen({ route, navigation }) {
   }, [updateFeed]);
 
   return (
-    <SafeAreaLayout>
+    <SafeAreaLayout noBottomPadding>
       <GSHeader
         title="게시글 상세"
         leftComponent={<GSIcon name="chevron-back-outline" />}
@@ -79,6 +80,8 @@ export default function FeedDetailScreen({ route, navigation }) {
           <Text>로딩중...</Text>
         )}
       </ScrollView>
+
+      <FeedReplyInput postId={postId} setUpdateFeed={setUpdateFeed} />
     </SafeAreaLayout>
   );
 }
