@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { useAuth } from '@contexts/AuthContext';
 import BottomTabNavigator from '@navigators/BottomTabNavigator';
@@ -9,11 +10,11 @@ import SplashScreen from '@screens/SplashScreen';
 import LoginScreen from '@screens/LoginScreen/LoginScreen';
 import SignUpScreen from '@screens/SignUpScreen/SignUpScreen';
 import CreateFeedModal from '@screens/HomeScreen/CreateFeedModal/CreateFeedModal';
+import FeedDetailScreen from '@screens/HomeScreen/FeedDetailScreen/FeedDetailScreen';
 
 import { type StackParamList } from '@screens/navigationTypes';
 
 import { COLORS } from '@styles/colors';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const RootStack = createNativeStackNavigator<StackParamList>();
 
@@ -64,11 +65,18 @@ export default function Root() {
         {/* TODO - 조건 다시 수정, 작업 위해서 임시로 수정한 상태 */}
         {/* {isSignedIn === null ? ( */}
         {authState.userToken !== null ? (
-          <RootStack.Screen
-            name="BottomTabNavigator"
-            component={BottomTabNavigator}
-            options={{ headerShown: false }}
-          />
+          <>
+            <RootStack.Screen
+              name="BottomTabNavigator"
+              component={BottomTabNavigator}
+              options={{ headerShown: false }}
+            />
+            <RootStack.Screen
+              name="FeedDetailScreen"
+              component={FeedDetailScreen}
+              options={{ headerShown: false }}
+            />
+          </>
         ) : (
           <>
             <RootStack.Screen

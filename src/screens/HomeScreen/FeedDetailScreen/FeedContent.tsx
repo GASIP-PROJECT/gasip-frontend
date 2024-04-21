@@ -15,6 +15,8 @@ export default function FeedContent({ feedData }: { feedData: Feed | null }) {
 
   const { content, regDate, likeCount, postId, memberNickname } = feedData;
 
+  console.log(feedData);
+
   return (
     <View style={styles.container}>
       <FeedContentHeader regDate={regDate} memberNickname={memberNickname} />

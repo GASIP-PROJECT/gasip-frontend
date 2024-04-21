@@ -7,7 +7,6 @@ import { NewFeedContext } from '@contexts/NewFeedContext';
 import BottomTabBar from './BottomTabBar';
 import HomeScreen from '@screens/HomeScreen/HomeScreen';
 import MyPageScreen from '@screens/MypageScreen/MyPageScreen';
-import FeedDetailScreen from '@screens/HomeScreen/FeedDetailScreen/FeedDetailScreen';
 import MyFeedsScreen from '@screens/MypageScreen/MyFeedsScreen.tsx/MyFeedsScreen';
 import ProfessorDetailScreen from '@screens/HomeScreen/ProfessorScreen/ProfessorScreen';
 
@@ -27,7 +26,6 @@ const Home = () => {
   return (
     <HomeStack.Navigator screenOptions={{ headerShown: false }}>
       <HomeStack.Screen name="HomeScreen" component={HomeScreen} />
-      <HomeStack.Screen name="FeedDetailScreen" component={FeedDetailScreen} />
       <HomeStack.Screen
         name="ProfessorDetailScreen"
         component={ProfessorDetailScreen}
