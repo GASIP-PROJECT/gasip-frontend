@@ -8,6 +8,7 @@ import BottomTabBar from './BottomTabBar';
 import HomeScreen from '@screens/HomeScreen/HomeScreen';
 import MyPageScreen from '@screens/MypageScreen/MyPageScreen';
 import MyFeedsScreen from '@screens/MypageScreen/MyFeedsScreen.tsx/MyFeedsScreen';
+import CreateFeedModal from '@screens/HomeScreen/CreateFeedModal/CreateFeedModal';
 import ProfessorDetailScreen from '@screens/HomeScreen/ProfessorScreen/ProfessorScreen';
 
 import {
@@ -15,7 +16,6 @@ import {
   type BottomTabParamList,
   type MyPageStackParamList,
 } from '@screens/navigationTypes';
-import CreateFeedModal from '@screens/HomeScreen/CreateFeedModal/CreateFeedModal';
 
 const Tab = createBottomTabNavigator<BottomTabParamList>();
 

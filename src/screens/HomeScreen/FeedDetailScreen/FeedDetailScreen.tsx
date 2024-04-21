@@ -19,6 +19,7 @@ export default function FeedDetailScreen({ route, navigation }) {
   const { postId } = route.params;
 
   const [feedData, setFeedData] = useState<Feed | null>(null);
+  const [updateFeed, setUpdateFeed] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchFeedData = async () => {
@@ -28,7 +29,7 @@ export default function FeedDetailScreen({ route, navigation }) {
     };
 
     fetchFeedData();
-  }, []);
+  }, [updateFeed]);
 
   return (
     <SafeAreaLayout>
@@ -48,7 +49,7 @@ export default function FeedDetailScreen({ route, navigation }) {
               />
             )}
             <Spacer type="height" value={10} />
-            <FeedContent feedData={feedData} />
+            <FeedContent feedData={feedData} setUpdateFeed={setUpdateFeed} />
             <Spacer type="height" value={10} />
             {feedData?.comments.length > 0 && (
               <View

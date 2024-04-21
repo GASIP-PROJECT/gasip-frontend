@@ -13,6 +13,7 @@ export interface Feed {
   memberNickname: string;
   majorName: string;
   commentCount: number;
+  isLike: boolean;
 }
 
 export interface FeedComment {

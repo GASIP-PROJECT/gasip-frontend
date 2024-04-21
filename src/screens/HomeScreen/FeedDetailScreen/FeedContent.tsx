@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { likeFeed, likeFeedCancel } from '@api/index';
@@ -10,12 +10,17 @@ import Spacer from '@components/common/Spacer';
 import { COLORS } from '@styles/colors';
 import { type Feed } from 'types/searchTypes';
 
-export default function FeedContent({ feedData }: { feedData: Feed | null }) {
+export default function FeedContent({
+  feedData,
+  setUpdateFeed,
+}: {
+  feedData: Feed | null;
+  setUpdateFeed: Dispatch<SetStateAction<boolean>>;
+}) {
   if (feedData === null) return <View />;
 
-  const { content, regDate, likeCount, postId, memberNickname } = feedData;
-
-  console.log(feedData);
+  const { content, regDate, likeCount, postId, memberNickname, isLike } =
+    feedData;
 
   return (
     <View style={styles.container}>
@@ -23,7 +28,12 @@ export default function FeedContent({ feedData }: { feedData: Feed | null }) {
       <Spacer type="height" value={10} />
       <FeedContentText content={content} />
       <Spacer type="height" value={10} />
-      <FeedContentFooter likeCount={likeCount} postId={postId} />
+      <FeedContentFooter
+        likeCount={likeCount}
+        postId={postId}
+        isLike={isLike}
+        setUpdateFeed={setUpdateFeed}
+      />
     </View>
   );
 }
@@ -50,15 +60,24 @@ const FeedContentText = ({ content }: { content: string }) => {
 const FeedContentFooter = ({
   likeCount,
   postId,
+  setUpdateFeed,
+  isLike,
 }: {
   likeCount: number;
   postId: number;
+  setUpdateFeed: Dispatch<SetStateAction<boolean>>;
+  isLike: boolean;
 }) => {
   const iconTextGap = 3;
 
   const handleLikePress = async () => {
-    // await likeFeed(postId);
-    await likeFeedCancel(postId);
+    if (isLike) {
+      await likeFeedCancel(postId);
+    } else {
+      await likeFeed(postId);
+    }
+
+    setUpdateFeed(prev => !prev);
   };
 
   return (
