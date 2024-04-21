@@ -51,7 +51,9 @@ const HeaderLeftComponent = ({
 const HeaderTitle = ({ title }: { title: string }) => {
   return (
     <View style={styles.titleContainer}>
-      <Text style={styles.title}>{title}</Text>
+      <Text style={styles.title} adjustsFontSizeToFit numberOfLines={1}>
+        {title}
+      </Text>
     </View>
   );
 };

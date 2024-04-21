@@ -9,6 +9,7 @@ interface GSButtonProps {
   bgColor?: string;
   btnTextColor?: string;
   marginHorizontal?: number;
+  disabled?: boolean;
 }
 
 // 태헌님 이 공통으로 사용할 버튼 컴포넌트입니다.
@@ -20,14 +21,19 @@ export default function GSButton({
   bgColor = COLORS.BTN_MAIN,
   btnTextColor = COLORS.WHITE,
   marginHorizontal = 16,
+  disabled = false,
 }: GSButtonProps) {
   return (
     <TouchableOpacity
       style={[
         styles.container,
-        { marginHorizontal: marginHorizontal, backgroundColor: bgColor },
+        {
+          marginHorizontal: marginHorizontal,
+          backgroundColor: disabled ? 'gray' : bgColor,
+        },
       ]}
       onPress={onPress}
+      disabled={disabled}
     >
       <Text style={[styles.text, { color: btnTextColor }]}>{buttonText}</Text>
     </TouchableOpacity>
