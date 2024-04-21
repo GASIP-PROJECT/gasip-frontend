@@ -16,6 +16,9 @@ import { useAuth } from '@contexts/AuthContext';
 import GSButton from '@components/common/GSButton';
 
 import gasip_logo from '@assets/gasip_logo.png';
+import SafeAreaLayout from '@components/common/SafeAreaLayout';
+import { COLORS } from '@styles/colors';
+import Spacer from '@components/common/Spacer';
 
 export default function LoginScreen() {
   const [useremail, setUseremail] = useState('');
@@ -62,20 +65,19 @@ export default function LoginScreen() {
     }
   };
 
-  const handleSignup = async () => {
+  const handleSignup = () => {
     navigation.navigate('SignUpScreen');
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.formContainer}>
-        <View>
-          <Image
-            source={gasip_logo}
-            style={styles.gasipLogo}
-            resizeMode="contain"
-          />
-        </View>
+    <SafeAreaLayout backgroundColor="#4B5159">
+      <View style={styles.container}>
+        <Image
+          source={gasip_logo}
+          style={styles.gasipLogo}
+          resizeMode="contain"
+        />
+        <Spacer type="height" value={25} />
         <TextInput
           style={styles.input}
           placeholder="이메일"
@@ -90,38 +92,45 @@ export default function LoginScreen() {
           onChangeText={setPassword}
           secureTextEntry
         />
-        <GSButton onPress={handleLogin} buttonText="로그인" />
-        <Text style={styles.forgotPasswordLink}>아이디/비밀번호 찾기</Text>
-        <TouchableOpacity
-          style={[styles.button, { top: 200, left: 0 }]}
-          onPress={handleSignup}
-        >
-          <Text>학교 이메일로 회원가입</Text>
-        </TouchableOpacity>
+        {/* </View> */}
+        <View style={{ width: '100%' }}>
+          <GSButton
+            onPress={handleLogin}
+            buttonText="로그인"
+            marginHorizontal={0}
+          />
+          <Text style={styles.forgotPasswordLink}>아이디/비밀번호 찾기</Text>
+        </View>
       </View>
-    </View>
+
+      <GSButton
+        onPress={handleSignup}
+        buttonText="학교 이메일로 회원가입"
+        bgColor={COLORS.WHITE}
+        btnTextColor={COLORS.BTN_MAIN}
+      />
+    </SafeAreaLayout>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#4B5159',
-  },
-
-  formContainer: {
-    width: '80%',
+    paddingHorizontal: 16,
   },
 
   input: {
     height: 50,
     width: '100%',
-    borderRadius: 12,
+    borderRadius: 5,
     marginBottom: 8,
-    paddingHorizontal: 10,
+    paddingHorizontal: 16,
     backgroundColor: '#3E4044',
+    color: '#918989',
+    fontSize: 16,
   },
 
   forgotPasswordLink: {
@@ -131,17 +140,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
   },
 
-  button: {
-    backgroundColor: 'white',
-    padding: 10,
-    borderRadius: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-
   gasipLogo: {
-    marginBottom: 20,
-    marginLeft: 50,
     width: '75%',
     justifyContent: 'center',
   },
