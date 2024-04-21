@@ -8,17 +8,25 @@ import {
   Alert,
   TouchableOpacity,
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import { useAuth } from '@contexts/AuthContext';
 
 import GSButton from '@components/common/GSButton';
 
 import gasip_logo from '@assets/gasip_logo.png';
 
-import { useNavigation } from '@react-navigation/native'; 
-
 export default function LoginScreen() {
   const [useremail, setUseremail] = useState('');
   const [password, setPassword] = useState('');
-  const navigation = useNavigation(); 
+  const navigation = useNavigation();
+
+  const { dispatch } = useAuth();
+
+  //   email: 'ji@test.com',
+  //   password: 'passwordtest1!',
+  //   // name: '마지혁',
 
   const handleLogin = async () => {
     try {
@@ -27,10 +35,19 @@ export default function LoginScreen() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ useremail, password }),
+        body: JSON.stringify({ email: useremail, password }),
       });
 
-      console.log(handleLogin)
+      const loginResult = await response.json();
+
+      await AsyncStorage.setItem('userToken', loginResult.response.accessToken);
+      dispatch({
+        type: 'SIGN_IN',
+        payload: {
+          userToken: loginResult.response.accessToken,
+          isLoading: false,
+        },
+      });
 
       if (!response.ok) {
         throw new Error('이메일 or 비밀번호가 일치하지 않습니다');

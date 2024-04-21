@@ -22,15 +22,6 @@ export default function CreateFeedModal() {
   const [feedContent, setFeedContent] = useState('');
 
   const handleCreateFeedPress = async () => {
-    // TODO - 테스트용 로그인 로직
-    // const result = await axios.post('https://gasip.site/members/signup', {
-    // const result = await axios.post('https://gasip.site/members/login', {
-    //   email: 'ji@test.com',
-    //   password: 'passwordtest1!',
-    //   // name: '마지혁',
-    // });
-    // console.log(result.data);
-
     await createFeed(feedContent);
     setToggleToUpdateFeedsList(prev => !prev);
     setShowCreateFeedModal(false);

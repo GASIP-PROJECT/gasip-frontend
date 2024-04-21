@@ -1,12 +1,15 @@
-// TODO - 함수 데이터에 따라서 typing
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
 const GSBackendClient = axios.create({
   baseURL: 'https://gasip.site',
 });
 
+// TODO - 함수 데이터에 따라서 typing(모든 함수)
 export const getAllFeeds = async (page: number, dataCount: number = 5) => {
   try {
+    const access_token = await AsyncStorage.getItem('userToken');
+
     const posts = await GSBackendClient.get(
       `/boards/all-boards?page=${page}&size=${dataCount}`,
       {
@@ -25,6 +28,8 @@ export const getAllFeeds = async (page: number, dataCount: number = 5) => {
 
 export const getGeneralFeeds = async (page: number, dataCount: number = 5) => {
   try {
+    const access_token = await AsyncStorage.getItem('userToken');
+
     const posts = await GSBackendClient.get(
       `/boards/0?page=${page}&size=${dataCount}`,
       {
@@ -43,6 +48,7 @@ export const getGeneralFeeds = async (page: number, dataCount: number = 5) => {
 
 export const getPopularFeeds = async (page: number, dataCount: number = 5) => {
   try {
+    const access_token = await AsyncStorage.getItem('userToken');
     const posts = await GSBackendClient.get(
       `/boards/best?page=${page}&size=${dataCount}`,
       {
@@ -65,6 +71,8 @@ export const getProfessorFeeds = async (
   dataCount: number = 5,
 ) => {
   try {
+    const access_token = await AsyncStorage.getItem('userToken');
+
     const posts = await GSBackendClient.get(
       `/boards/${profId}?page=${page}&size=${dataCount}`,
       {
@@ -81,12 +89,10 @@ export const getProfessorFeeds = async (
   }
 };
 
-// TODO - 테스트용 토큰
-const access_token =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiZW1haWwiOiJqaUB0ZXN0LmNvbSIsInJvbGVzIjpbIk1FTUJFUiJdLCJleHAiOjE3MTQwNTE3MzV9.yrMNkYMcJH0zuctnl5dQLgBMdk7GTHQq23kB6X-q0S4';
-
 export const createFeed = async (content: string) => {
   try {
+    const access_token = await AsyncStorage.getItem('userToken');
+
     const response = await GSBackendClient.post(
       '/boards/0',
       {
@@ -137,6 +143,8 @@ export const searchProfessors = async (searchText: string) => {
 
 export const getFeedData = async (postId: number) => {
   try {
+    const access_token = await AsyncStorage.getItem('userToken');
+
     const response = await GSBackendClient.get(`/boards/details/${postId}`, {
       headers: {
         Authorization: `Bearer ${access_token}`,
@@ -163,6 +171,8 @@ export const getCommentsForFeed = async (postId: number) => {
 
 export const getAllMyFeeds = async () => {
   try {
+    const access_token = await AsyncStorage.getItem('userToken');
+
     const response = await GSBackendClient.get('/members/myboards', {
       headers: {
         Authorization: `Bearer ${access_token}`,
@@ -178,6 +188,8 @@ export const getAllMyFeeds = async () => {
 
 export const changeNickname = async (newNickname: string) => {
   try {
+    const access_token = await AsyncStorage.getItem('userToken');
+
     const response = await GSBackendClient.put(
       '/members/nicknames',
       {
@@ -200,6 +212,8 @@ export const changeNickname = async (newNickname: string) => {
 
 export const getUserData = async () => {
   try {
+    const access_token = await AsyncStorage.getItem('userToken');
+
     const response = await GSBackendClient.get('/members/mypage', {
       headers: {
         Authorization: `Bearer ${access_token}`,
@@ -215,6 +229,8 @@ export const getUserData = async () => {
 
 export const likeFeed = async (postId: number) => {
   try {
+    const access_token = await AsyncStorage.getItem('userToken');
+
     const response = await GSBackendClient.post(
       `/boards/likes`,
       {
@@ -233,6 +249,8 @@ export const likeFeed = async (postId: number) => {
 
 export const likeFeedCancel = async (postId: number) => {
   try {
+    const access_token = await AsyncStorage.getItem('userToken');
+
     const response = await GSBackendClient.delete(`/boards/likes`, {
       headers: {
         Authorization: `Bearer ${access_token}`,

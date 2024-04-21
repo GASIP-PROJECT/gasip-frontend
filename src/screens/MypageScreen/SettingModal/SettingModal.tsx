@@ -1,6 +1,8 @@
 import React, { SetStateAction, Dispatch, useState } from 'react';
 import { Modal, StyleSheet, View } from 'react-native';
 
+import { useAuth } from '@contexts/AuthContext';
+
 import MyPageElement from '@screens/MypageScreen/MyPageElement';
 import ChangeNicknameModal from '@screens/MypageScreen/ChangeNicknameModal/ChangeNicknameModal';
 import ChangePasswordModal from '@screens/MypageScreen/ChangePasswordModal/ChangePasswordModal';
@@ -9,9 +11,7 @@ import GSIcon from '@components/common/GSIcon';
 import Spacer from '@components/common/Spacer';
 import GSHeader from '@components/common/GSHeader';
 import SafeAreaLayout from '@components/common/SafeAreaLayout';
-
-// TODO - ICON_SIZE 여기 선언하는게 맞는가?
-const ICON_SIZE = 27;
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface SettingModalProps {
   isVisible: boolean;
@@ -22,8 +22,20 @@ export default function SettingModal({
   isVisible,
   setIsVisible,
 }: SettingModalProps) {
+  const { dispatch } = useAuth();
+
   const [showNicknameModal, setShowNicknameModal] = useState(false);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
+
+  const handleLogOut = async () => {
+    setIsVisible(false);
+
+    await AsyncStorage.removeItem('userToken');
+
+    dispatch({
+      type: 'SIGN_OUT',
+    });
+  };
 
   return (
     <Modal visible={isVisible} animationType="slide">
@@ -40,7 +52,7 @@ export default function SettingModal({
               title="비밀번호 변경"
               onPress={() => setShowPasswordModal(true)}
             />
-            <MyPageElement title="로그아웃" />
+            <MyPageElement title="로그아웃" onPress={handleLogOut} />
             <MyPageElement title="서비스 탈퇴하기" />
           </View>
         </View>
