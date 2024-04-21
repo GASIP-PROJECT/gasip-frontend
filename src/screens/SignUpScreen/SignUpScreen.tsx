@@ -9,8 +9,13 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StyleSheet } from 'react-native';
+
+import GSIcon from '@components/common/GSIcon';
+import Spacer from '@components/common/Spacer';
+import GSHeader from '@components/common/GSHeader';
 import EmailCodeBtn from '@components/common/EmailCodeBtn';
-import LoginScreen from '@screens/LoginScreen/LoginScreen';
+import SafeAreaLayout from '@components/common/SafeAreaLayout';
+import GSButton from '@components/common/GSButton';
 
 const SignUpScreen = () => {
   const navigation = useNavigation();
@@ -146,7 +151,6 @@ const SignUpScreen = () => {
 
   const handleResendCode = async () => {
     try {
-      // const url = `https://gasip.site/members/emails/verification-requests`;
       const url = `https://gasip.site/members/emails/verification-requests?email=${verifiedEmail}`;
 
       const response = await fetch(url, {
@@ -156,8 +160,9 @@ const SignUpScreen = () => {
         },
       });
 
-      // console.log(response.formData);
       console.log(await response.json());
+
+      setTimer(180);
 
       if (!response.ok) {
         throw new Error('새로운 인증번호 요청 실패');
@@ -259,223 +264,230 @@ const SignUpScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
-      {step === 1 && (
-        <View>
-          <View style={styles.header}>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('LoginScreen')}
-            >
-              <Image
-                source={require('@assets/chevron-left.png')}
-                style={styles.left}
-                resizeMode="contain"
+    <SafeAreaLayout backgroundColor="#4B5159">
+      <View style={styles.container}>
+        {step === 1 && (
+          <>
+            <GSHeader
+              title="이메일 회원가입 (1/3)"
+              leftComponent={<GSIcon name="chevron-back-outline" />}
+              onLeftComponentPress={() => navigation.goBack()}
+            />
+            <Spacer type="height" value={20} />
+            <View style={styles.pageContainer}>
+              <Text style={styles.emoji}>😄</Text>
+              <Text style={styles.subText}>이메일을 입력해 주세요</Text>
+              <Spacer type="height" value={20} />
+
+              <View
+                style={{
+                  width: '100%',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}
+              >
+                <TextInput
+                  style={[
+                    styles.step1,
+                    {
+                      borderStyle: 'solid',
+                      borderWidth: 1,
+                      backgroundColor: 'white',
+                      borderRadius: 5,
+                      borderColor: '#ffffff',
+                      height: 50,
+                      flex: 1,
+                      paddingHorizontal: 10,
+                    },
+                  ]}
+                  placeholder="이메일"
+                  value={useremail}
+                  onChangeText={handleEmailChange}
+                />
+                <Spacer type="width" value={10} />
+                <Text style={styles.emailText}>@ gachon.ac.kr</Text>
+              </View>
+              <Spacer type="height" value={10} />
+              <Text style={styles.smallText}>
+                본인 소유의 가천대학교 이메일 주소를 사용해 주세요
+              </Text>
+
+              <Spacer type="height" value={50} />
+
+              <GSButton
+                buttonText="이메일 인증"
+                onPress={handleButtonPress}
+                disabled={!isValidEmail}
+                marginHorizontal={0}
               />
-            </TouchableOpacity>
-            <Text style={styles.headerText}>이메일 회원가입 (1/3)</Text>
-            <Text style={styles.emoji}>😄</Text>
-            <Text style={styles.subText}>이메일을 입력해 주세요</Text>
-          </View>
+            </View>
+          </>
+        )}
 
-          <TextInput
-            style={[
-              styles.step1,
-              {
-                borderStyle: 'solid',
-                borderWidth: 1,
-                backgroundColor: 'white',
-                borderRadius: 10,
-                borderColor: '#ffffff',
-              },
-            ]}
-            placeholder="이메일"
-            value={useremail}
-            onChangeText={handleEmailChange}
-          />
-          <Text style={styles.emailText}>@gachon.ac.kr</Text>
-          <Text style={styles.smallText}>
-            본인 소유의 가천대학교 이메일 주소를 사용해 주세요
-          </Text>
-
-          <TouchableOpacity
-            style={[
-              styles.button,
-              isValidEmail ? styles.activeButton : styles.inactiveButton,
-            ]}
-            onPress={handleButtonPress}
-            disabled={!isValidEmail}
-          >
-            <Text style={styles.buttonText}>이메일 인증</Text>
-          </TouchableOpacity>
-        </View>
-      )}
-
-      {step === 2 && (
-        <View style={styles.header}>
-          <TouchableOpacity onPress={() => setStep(prevStep => prevStep - 1)}>
-            <Image
-              source={require('@assets/chevron-left.png')}
-              style={styles.left}
-              resizeMode="contain"
+        {step === 2 && (
+          <>
+            <GSHeader
+              title="이메일 회원가입 (2/3)"
+              leftComponent={<GSIcon name="chevron-back-outline" />}
+              onLeftComponentPress={() => setStep(prevStep => prevStep - 1)}
             />
-          </TouchableOpacity>
-          <Text style={styles.headerText}>이메일 회원가입 (1/3)</Text>
-          <Text style={styles.emoji}>😄</Text>
-          <Text style={styles.subText2}>인증번호를 입력해 주세요!</Text>
-          <TextInput
-            style={[
-              styles.step2,
-              {
-                borderStyle: 'solid',
-                borderWidth: 1,
-                backgroundColor: 'white',
-                borderRadius: 10,
-                borderColor: '#ffffff',
-              },
-            ]}
-            placeholder="인증번호 6자리"
-            onChangeText={handleCodeChange}
-          />
+            <Spacer type="height" value={20} />
+            <View style={styles.pageContainer}>
+              <Text style={styles.emoji}>😄</Text>
+              <Text style={styles.subText}>이메일을 입력해 주세요</Text>
+              <Spacer type="height" value={20} />
 
-          <TouchableOpacity onPress={handleResendCode}>
-            <Text style={styles.reNum}>인증번호 다시받기</Text>
-          </TouchableOpacity>
-          <View style={styles.timerContainer}>
-            <Text style={styles.timerText}>
-              {' '}
-              {Math.floor(timer / 60)}분
-              {timer % 60 < 10 ? `0${timer % 60}` : timer % 60}초
-            </Text>
-          </View>
-          <EmailCodeBtn
-            style={[
-              styles.button2,
-              isValidCode ? styles.activeButton2 : styles.inactiveButton2,
-            ]}
-            onPress={handleSubmit}
-            disabled={!isValidCode}
-          >
-            <Text style={styles.buttonText}>인증하기</Text>
-          </EmailCodeBtn>
-        </View>
-      )}
+              <TextInput
+                style={[
+                  styles.step2,
+                  {
+                    borderStyle: 'solid',
+                    borderWidth: 1,
+                    backgroundColor: 'white',
+                    borderRadius: 5,
+                    borderColor: '#ffffff',
+                    height: 50,
+                    paddingHorizontal: 10,
+                  },
+                ]}
+                placeholder="인증번호 6자리"
+                onChangeText={handleCodeChange}
+              />
 
-      {step === 3 && (
-        <View style={styles.header}>
-          <TouchableOpacity onPress={() => setStep(prevStep => prevStep - 1)}>
-            <Image
-              source={require('@assets/chevron-left.png')}
-              style={styles.left}
-              resizeMode="contain"
+              <Spacer type="height" value={10} />
+
+              <TouchableOpacity onPress={handleResendCode}>
+                <Text style={styles.reNum}>인증번호 다시받기</Text>
+              </TouchableOpacity>
+              <Spacer type="height" value={10} />
+              <View style={styles.timerContainer}>
+                <Text style={styles.timerText}>
+                  {' '}
+                  {Math.floor(timer / 60)}분
+                  {timer % 60 < 10 ? `0${timer % 60}` : timer % 60}초
+                </Text>
+              </View>
+
+              <Spacer type="height" value={20} />
+
+              <GSButton
+                buttonText="인증하기"
+                onPress={handleSubmit}
+                disabled={!isValidCode}
+                marginHorizontal={0}
+              />
+            </View>
+          </>
+        )}
+
+        {step === 3 && (
+          <>
+            <GSHeader
+              title="이메일 회원가입 (3/3)"
+              leftComponent={<GSIcon name="chevron-back-outline" />}
+              onLeftComponentPress={() => setStep(prevStep => prevStep - 1)}
             />
-          </TouchableOpacity>
-          <Text style={styles.headerText}>이메일 회원가입 (2/3)</Text>
-          <Text style={styles.emoji}>👋</Text>
-          <Text style={styles.subText2}>비밀번호를 입력해 주세요!</Text>
+            <Spacer type="height" value={20} />
+            <View style={styles.pageContainer}>
+              <Text style={styles.emoji}>👋</Text>
+              <Text style={styles.subText2}>비밀번호를 입력해 주세요!</Text>
 
-          <TextInput
-            style={styles.input}
-            placeholder="비밀번호"
-            secureTextEntry={true}
-            onChangeText={handlePasswordChange}
-          />
+              <Spacer type="height" value={20} />
 
-          <TextInput
-            style={styles.input}
-            placeholder="비밀번호 확인"
-            secureTextEntry={true}
-            onChangeText={handleConfirmPasswordChange}
-          />
+              <TextInput
+                style={styles.input}
+                placeholder="비밀번호"
+                secureTextEntry={true}
+                onChangeText={handlePasswordChange}
+              />
 
-          {!isValidPassword && (
-            <Text style={styles.errorMessage}>
-              비밀번호는 8자~20자의 영문+숫자+특수문자 공백X 조합이어야 합니다.
-            </Text>
-          )}
+              <Spacer type="height" value={10} />
 
-          {!passwordsMatch && (
-            <Text style={styles.errorMessage}>
-              비밀번호가 일치하지 않습니다.
-            </Text>
-          )}
+              {!isValidPassword && (
+                <Text style={styles.errorMessage}>
+                  비밀번호는 8자~20자의 영문+숫자+특수문자 공백X 조합이어야
+                  합니다.
+                </Text>
+              )}
 
-          <TouchableOpacity
-            style={[
-              styles.buttonPass,
-              isNextButtonEnabled ? styles.activeButton : styles.inactiveButton,
-            ]}
-            disabled={!isNextButtonEnabled}
-            onPress={nextStep}
-          >
-            <Text style={styles.buttonText}>다음</Text>
-          </TouchableOpacity>
-        </View>
-      )}
+              <Spacer type="height" value={25} />
 
-      {step === 4 && (
-        <View style={styles.header}>
-          <TouchableOpacity onPress={() => setStep(prevStep => prevStep - 1)}>
-            <Image
-              source={require('@assets/chevron-left.png')}
-              style={styles.left}
-              resizeMode="contain"
+              <TextInput
+                style={styles.input}
+                placeholder="비밀번호 확인"
+                secureTextEntry={true}
+                onChangeText={handleConfirmPasswordChange}
+              />
+
+              <Spacer type="height" value={10} />
+
+              {!passwordsMatch && (
+                <Text style={styles.errorMessage}>
+                  비밀번호가 일치하지 않습니다.
+                </Text>
+              )}
+
+              <Spacer type="height" value={30} />
+
+              <GSButton
+                buttonText="다음"
+                onPress={nextStep}
+                disabled={!isNextButtonEnabled}
+                marginHorizontal={0}
+              />
+            </View>
+          </>
+        )}
+
+        {step === 4 && (
+          <>
+            <GSHeader
+              title="이메일 회원가입 (3/3)"
+              leftComponent={<GSIcon name="chevron-back-outline" />}
+              onLeftComponentPress={() => setStep(prevStep => prevStep - 1)}
             />
-          </TouchableOpacity>
-          <Text style={styles.headerText}>이메일 회원가입 (3/3)</Text>
-          <Text style={styles.emoji}>✈️</Text>
-          <Text style={styles.subText3}>다 왔어요!</Text>
+            <Spacer type="height" value={20} />
+            <View style={styles.pageContainer}>
+              <Text style={styles.emoji}>✈️</Text>
+              <Text style={styles.subText3}>다 왔어요!</Text>
 
-          <TextInput
-            style={[
-              styles.inputName,
-              {
-                borderStyle: 'solid',
-                borderWidth: 1,
-                backgroundColor: 'white',
-                borderRadius: 10,
-                borderColor: '#ffffff',
-              },
-            ]}
-            placeholder="이름"
-            value={name}
-            onChangeText={handleNameChange}
-          />
-          <TextInput
-            style={[
-              styles.inputName,
-              {
-                borderStyle: 'solid',
-                borderWidth: 1,
-                backgroundColor: 'white',
-                borderRadius: 10,
-                borderColor: '#ffffff',
-              },
-            ]}
-            placeholder="닉네임 2~12자"
-            value={nickname}
-            onChangeText={handleNicknameChange}
-          />
-          {!isNicknameValid && (
-            <Text style={styles.warning}>
-              2~12자 사이의 영문 또는 숫자만 입력하세요.
-            </Text>
-          )}
+              <Spacer type="height" value={20} />
 
-          <TouchableOpacity
-            style={[
-              styles.button3,
-              isNameValid && isNicknameValid
-                ? styles.activeButton3
-                : styles.inactiveButton3,
-            ]} // 활성화 여부에 따라 스타일 변경
-            onPress={handleSubmitFinish}
-            disabled={!isNameValid || !isNicknameValid}
-          >
-            <Text style={styles.buttonText}>회원가입 완료</Text>
-          </TouchableOpacity>
-        </View>
-      )}
-    </View>
+              <TextInput
+                style={styles.input}
+                placeholder="이름"
+                value={name}
+                onChangeText={handleNameChange}
+              />
+
+              <Spacer type="height" value={15} />
+
+              <TextInput
+                style={styles.input}
+                placeholder="닉네임 2~12자"
+                value={nickname}
+                onChangeText={handleNicknameChange}
+              />
+              <Spacer type="height" value={10} />
+              {!isNicknameValid && (
+                <Text style={styles.warning}>
+                  2~12자 사이의 영문 또는 숫자만 입력하세요.
+                </Text>
+              )}
+
+              <Spacer type="height" value={50} />
+
+              <GSButton
+                buttonText="회원가입 완료"
+                onPress={handleSubmitFinish}
+                disabled={!isNameValid || !isNicknameValid}
+                marginHorizontal={0}
+              />
+            </View>
+          </>
+        )}
+      </View>
+    </SafeAreaLayout>
   );
 };
 
@@ -483,22 +495,24 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: '#4B5159',
-    paddingTop: 35,
+  },
+
+  pageContainer: {
+    flex: 1,
+    width: '100%',
+    paddingHorizontal: 16,
   },
   input: {
-    width: 350,
-    height: 55,
+    borderStyle: 'solid',
     borderWidth: 1,
     backgroundColor: 'white',
-    borderRadius: 10,
+    borderRadius: 5,
+    borderColor: '#ffffff',
+    height: 50,
     paddingHorizontal: 10,
-    marginBottom: 10,
   },
 
   inputName: {
-    width: 350,
-    height: 55,
     borderWidth: 1,
     backgroundColor: 'white',
     borderRadius: 10,
@@ -508,109 +522,72 @@ const styles = StyleSheet.create({
 
   header: {
     color: 'white',
-    fontSize: 25,
-    alignItems: 'center',
-    paddingTop: 0,
+    fontSize: 24,
   },
   headerText: {
     color: 'white',
     fontSize: 20,
-    position: 'relative',
-    top: -30,
-    marginBottom: 40,
   },
   emailBtn: {
-    marginTop: 130,
     fontSize: 20,
     backgroundColor: 'rgba(115, 120, 130, 0.15)',
     color: '#BCC0C6',
     borderRadius: 10,
     textAlign: 'center',
-    padding: 10,
   },
   step1: {
     fontSize: 15,
-    right: 35,
-    width: 180,
   },
 
   step2: {
     fontSize: 15,
-    width: 360,
     alignItems: 'center',
   },
 
-  left: {
-    position: 'relative',
-    right: 160,
-    width: 150,
-  },
+  left: {},
   emoji: {
     fontSize: 60,
-    right: 150,
-    marginBottom: 10,
   },
   smallText: {
-    position: 'relative',
-    right: 35,
-    marginTop: 0,
     color: '#4490D8',
   },
   subText: {
-    position: 'relative',
-    right: 40,
     fontSize: 30,
     color: 'white',
-    marginBottom: 30,
   },
 
   subText2: {
-    position: 'relative',
-    right: 15,
     fontSize: 30,
     color: 'white',
-    marginBottom: 30,
   },
 
   subText3: {
-    position: 'relative',
-    right: 110,
     fontSize: 30,
     color: 'white',
-    marginBottom: 30,
   },
 
   emailText: {
     color: 'white',
     fontSize: 20,
-    position: 'relative',
-    bottom: 40,
-    left: 165,
   },
 
   warning: {
     color: '#4490D8',
     fontSize: 14,
-    marginLeft: 10,
   },
 
   errorMessage: {
     color: '#4490D8',
-    marginBottom: 10,
   },
 
   button: {
-    marginTop: 50,
     backgroundColor: 'gray',
     padding: 10,
     borderRadius: 5,
   },
 
   buttonPass: {
-    width: 350,
-    marginTop: 50,
     backgroundColor: 'gray',
-    padding: 15,
     borderRadius: 5,
   },
   activeButton: {
@@ -621,11 +598,8 @@ const styles = StyleSheet.create({
   },
 
   button2: {
-    marginTop: 50,
     backgroundColor: 'gray',
-    padding: 10,
     borderRadius: 5,
-    width: 350,
   },
   activeButton2: {
     backgroundColor: '#4490D8',
@@ -635,10 +609,7 @@ const styles = StyleSheet.create({
   },
 
   button3: {
-    width: 350,
-    marginTop: 50,
     backgroundColor: 'gray',
-    padding: 10,
     borderRadius: 5,
   },
   activeButton3: {
@@ -651,23 +622,15 @@ const styles = StyleSheet.create({
     color: 'white',
     textAlign: 'center',
   },
-  timerContainer: {
-    marginTop: 20,
-  },
+  timerContainer: {},
   timerText: {
     color: '#4490D8',
     fontSize: 15,
-    position: 'relative',
-    left: 140,
   },
   reNum: {
     color: '#4490D8',
     fontSize: 15,
-    marginTop: 30,
-    marginBottom: -40,
     textDecorationLine: 'underline',
-    position: 'relative',
-    right: 120,
   },
 });
 
