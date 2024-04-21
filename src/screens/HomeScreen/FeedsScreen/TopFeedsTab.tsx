@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 
 import { getPopularFeeds } from '@api/index';
 import { NewFeedContext } from '@contexts/NewFeedContext';
@@ -31,19 +32,26 @@ export default function TopFeedsTab() {
     }
   };
 
-  // TODO - fetch하는 조건 설정 필요
-  useEffect(() => {
+  const fetchFeeds = async () => {
     setPage(0);
 
-    const fetchPopularFeeds = async () => {
-      const posts = await getPopularFeeds(0);
+    const posts = await getPopularFeeds(0);
 
-      setPopularFeedsList(posts);
-    };
+    setPopularFeedsList(posts);
 
-    fetchPopularFeeds();
     scrollToTop();
+  };
+
+  // TODO - fetch하는 조건 설정 필요
+  useEffect(() => {
+    fetchFeeds();
   }, [toggleToUpdateFeedsList]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchFeeds();
+    }, []),
+  );
 
   return (
     <View>

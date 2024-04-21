@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { FlatList, View } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 
 import { getGeneralFeeds } from '@api/index';
 import { NewFeedContext } from '@contexts/NewFeedContext';
@@ -33,18 +34,25 @@ export default function GeneralFeedsTab() {
     }
   };
 
-  useEffect(() => {
+  const fetchFeeds = async () => {
     // TODO -  page 변수 초기화가 여기서 이루어지는 게 최선인지 고민 필요
     setPage(0);
 
-    const fetchFeeds = async () => {
-      const posts: [Feed] = await getGeneralFeeds(0);
-      setFeedsList([...posts]);
-    };
+    const posts: [Feed] = await getGeneralFeeds(0);
+    setFeedsList([...posts]);
 
-    fetchFeeds();
     scrollToTop();
+  };
+
+  useEffect(() => {
+    fetchFeeds();
   }, [toggleToUpdateFeedsList]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchFeeds();
+    }, []),
+  );
 
   return (
     <View>
