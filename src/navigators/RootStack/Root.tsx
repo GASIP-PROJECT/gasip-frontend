@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import { MMKVStorage } from '@api/mmkv';
 import { useAuth } from '@contexts/AuthContext';
+
 import BottomTabNavigator from '@navigators/BottomTabNavigator';
 
 import SplashScreen from '@screens/SplashScreen';
@@ -24,7 +25,7 @@ export default function Root() {
 
   const checkUserToken = async () => {
     try {
-      const userToken = await AsyncStorage.getItem('userToken');
+      const userToken = MMKVStorage.getString('userToken');
       return userToken;
     } catch (e) {
       console.log(e);

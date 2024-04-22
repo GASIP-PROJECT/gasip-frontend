@@ -1,15 +1,6 @@
 import React, { useState } from 'react';
-import {
-  Text,
-  TextInput,
-  Image,
-  View,
-  StyleSheet,
-  Alert,
-  TouchableOpacity,
-} from 'react-native';
+import { Text, TextInput, Image, View, StyleSheet, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { useAuth } from '@contexts/AuthContext';
 
@@ -19,6 +10,7 @@ import gasip_logo from '@assets/gasip_logo.png';
 import SafeAreaLayout from '@components/common/SafeAreaLayout';
 import { COLORS } from '@styles/colors';
 import Spacer from '@components/common/Spacer';
+import { MMKVStorage } from '@api/mmkv';
 
 export default function LoginScreen() {
   const [useremail, setUseremail] = useState('');
@@ -43,7 +35,8 @@ export default function LoginScreen() {
 
       const loginResult = await response.json();
 
-      await AsyncStorage.setItem('userToken', loginResult.response.accessToken);
+      MMKVStorage.set('userToken', loginResult.response.accessToken);
+
       dispatch({
         type: 'SIGN_IN',
         payload: {
