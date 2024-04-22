@@ -4,7 +4,8 @@ export type StackParamList = {
   BottomTabNavigator: undefined;
   LoginScreen: undefined;
   SignUpScreen: undefined;
-  CreateFeedModal: undefined;
+  FeedDetailScreen: undefined;
+  ProfessorDetailScreen: undefined;
 };
 
 export type BottomTabParamList = {
