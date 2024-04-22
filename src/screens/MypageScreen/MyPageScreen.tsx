@@ -1,6 +1,7 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { Text, TouchableOpacity, StyleSheet, View } from 'react-native';
 
+import { MMKVStorage } from '@api/mmkv';
 import { getUserData } from '@api/index';
 
 import ProfileData from './ProfileData';
@@ -15,18 +16,19 @@ import { COLORS } from '@styles/colors';
 
 export default function MyPageScreen() {
   const [isSettingsModalVisible, setIsSettingsModalVisible] = useState(false);
-  const [nickname, setNickname] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchUserData = async () => {
       const result = await getUserData();
 
       if (result) {
-        setNickname(result.nickname);
+        MMKVStorage.set('userNickname', result.nickname);
       }
     };
 
-    fetchUserData();
+    if (MMKVStorage.getString('userNickname') === null) {
+      fetchUserData();
+    }
   }, []);
 
   return (
@@ -38,7 +40,7 @@ export default function MyPageScreen() {
           setIsSettingsModalVisible={setIsSettingsModalVisible}
         />
         <Spacer type="height" value={20} />
-        <ProfileData nickname={nickname} />
+        <ProfileData />
         <Spacer type="height" value={20} />
         <AppInformation />
       </View>

@@ -1,6 +1,8 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+
+import { MMKVStorage } from '@api/mmkv';
 
 import MyPageElement from './MyPageElement';
 
@@ -8,10 +10,11 @@ import GSIcon from '@components/common/GSIcon';
 
 import { COLORS } from '@styles/colors';
 
-export default function ProfileData({ nickname }: { nickname: string | null }) {
+export default function ProfileData() {
   const navigation = useNavigation();
 
-  const nickenameText = nickname ? `${nickname} 님` : 'Guest 님';
+  const userNickname = MMKVStorage.getString('userNickname');
+  const nickenameText = userNickname ? `${userNickname} 님` : 'Guest 님';
 
   const handleMyFeedsPress = async () => {
     navigation.navigate('MyFeedsScreen');

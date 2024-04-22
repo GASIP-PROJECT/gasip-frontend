@@ -1,6 +1,7 @@
 import React, { SetStateAction, Dispatch, useState } from 'react';
 import { Modal, StyleSheet, View } from 'react-native';
 
+import { MMKVStorage } from '@api/mmkv';
 import { useAuth } from '@contexts/AuthContext';
 
 import MyPageElement from '@screens/MypageScreen/MyPageElement';
@@ -11,7 +12,6 @@ import GSIcon from '@components/common/GSIcon';
 import Spacer from '@components/common/Spacer';
 import GSHeader from '@components/common/GSHeader';
 import SafeAreaLayout from '@components/common/SafeAreaLayout';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface SettingModalProps {
   isVisible: boolean;
@@ -30,7 +30,8 @@ export default function SettingModal({
   const handleLogOut = async () => {
     setIsVisible(false);
 
-    await AsyncStorage.removeItem('userToken');
+    MMKVStorage.delete('userToken');
+    MMKVStorage.delete('userNickname');
 
     dispatch({
       type: 'SIGN_OUT',
