@@ -11,6 +11,7 @@ import LoginScreen from '@screens/LoginScreen/LoginScreen';
 import SignUpScreen from '@screens/SignUpScreen/SignUpScreen';
 import CreateFeedModal from '@screens/HomeScreen/CreateFeedModal/CreateFeedModal';
 import FeedDetailScreen from '@screens/HomeScreen/FeedDetailScreen/FeedDetailScreen';
+import ProfessorDetailScreen from '@screens/HomeScreen/ProfessorScreen/ProfessorScreen';
 
 import { type StackParamList } from '@screens/navigationTypes';
 
@@ -74,6 +75,11 @@ export default function Root() {
             <RootStack.Screen
               name="FeedDetailScreen"
               component={FeedDetailScreen}
+              options={{ headerShown: false }}
+            />
+            <RootStack.Screen
+              name="ProfessorDetailScreen"
+              component={ProfessorDetailScreen}
               options={{ headerShown: false }}
             />
           </>

@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { StyleSheet, View, FlatList } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 
 import { getProfessorFeeds } from '@api/index';
 import { NewFeedContext } from '@contexts/NewFeedContext';
@@ -25,15 +26,21 @@ export default function ProfessorFeeds({ profId }: { profId: number }) {
     }
   };
 
-  useEffect(() => {
+  const fetchFeeds = async () => {
     setPage(0);
-    const fetchFeeds = async () => {
-      const posts: Feed[] = await getProfessorFeeds(profId, 0);
-      setFeeds([...posts]);
-    };
+    const posts: Feed[] = await getProfessorFeeds(profId, 0);
+    setFeeds([...posts]);
+  };
 
+  useEffect(() => {
     fetchFeeds();
   }, []);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchFeeds();
+    }, []),
+  );
 
   return (
     <View>

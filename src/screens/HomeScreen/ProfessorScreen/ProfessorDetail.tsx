@@ -9,8 +9,10 @@ import { Professor } from 'types/searchTypes';
 
 export default function ProfessorDetail({
   professorData,
+  handlePresentModalPress,
 }: {
   professorData: Professor;
+  handlePresentModalPress: () => void;
 }) {
   const [showRateButton, setShowRateButton] = useState(false);
 
@@ -22,7 +24,10 @@ export default function ProfessorDetail({
       <View style={styles.professorNameContainer}>
         <Text style={styles.professorNameText}>{profName} 교수님</Text>
         {!showRateButton && (
-          <TouchableOpacity style={styles.rateProfessorButton}>
+          <TouchableOpacity
+            style={styles.rateProfessorButton}
+            onPress={handlePresentModalPress}
+          >
             <Text style={styles.rateProfessorButtonText}>평가하기</Text>
           </TouchableOpacity>
         )}
