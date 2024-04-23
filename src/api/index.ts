@@ -3,20 +3,17 @@ import { MMKVStorage } from './mmkv';
 
 const GSBackendClient = axios.create({
   baseURL: 'https://gasip.site',
+  headers: {
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${MMKVStorage.getString('userToken')}`,
+  },
 });
 
 // TODO - 함수 데이터에 따라서 typing(모든 함수)
 export const getAllFeeds = async (page: number, dataCount: number = 5) => {
   try {
-    const access_token = MMKVStorage.getString('userToken');
-
     const posts = await GSBackendClient.get(
       `/boards/all-boards?page=${page}&size=${dataCount}`,
-      {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-      },
     );
 
     return posts.data.response;
@@ -28,15 +25,8 @@ export const getAllFeeds = async (page: number, dataCount: number = 5) => {
 
 export const getGeneralFeeds = async (page: number, dataCount: number = 5) => {
   try {
-    const access_token = MMKVStorage.getString('userToken');
-
     const posts = await GSBackendClient.get(
       `/boards/0?page=${page}&size=${dataCount}`,
-      {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-      },
     );
 
     return posts.data.response;
@@ -48,14 +38,8 @@ export const getGeneralFeeds = async (page: number, dataCount: number = 5) => {
 
 export const getPopularFeeds = async (page: number, dataCount: number = 5) => {
   try {
-    const access_token = MMKVStorage.getString('userToken');
     const posts = await GSBackendClient.get(
       `/boards/best?page=${page}&size=${dataCount}`,
-      {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-      },
     );
 
     return posts.data.response;
@@ -71,15 +55,8 @@ export const getProfessorFeeds = async (
   dataCount: number = 5,
 ) => {
   try {
-    const access_token = MMKVStorage.getString('userToken');
-
     const posts = await GSBackendClient.get(
       `/boards/${profId}?page=${page}&size=${dataCount}`,
-      {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-      },
     );
 
     return posts.data.response;
@@ -91,19 +68,9 @@ export const getProfessorFeeds = async (
 
 export const createFeed = async (content: string) => {
   try {
-    const access_token = MMKVStorage.getString('userToken');
-
-    const response = await GSBackendClient.post(
-      '/boards/0',
-      {
-        content,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-      },
-    );
+    const response = await GSBackendClient.post('/boards/0', {
+      content,
+    });
 
     console.log(response.data);
   } catch (error) {
@@ -143,13 +110,7 @@ export const searchProfessors = async (searchText: string) => {
 
 export const getFeedData = async (postId: number) => {
   try {
-    const access_token = MMKVStorage.getString('userToken');
-
-    const response = await GSBackendClient.get(`/boards/details/${postId}`, {
-      headers: {
-        Authorization: `Bearer ${access_token}`,
-      },
-    });
+    const response = await GSBackendClient.get(`/boards/details/${postId}`);
 
     return response.data.response;
   } catch (error) {
@@ -171,13 +132,7 @@ export const getCommentsForFeed = async (postId: number) => {
 
 export const getAllMyFeeds = async () => {
   try {
-    const access_token = MMKVStorage.getString('userToken');
-
-    const response = await GSBackendClient.get('/members/myboards', {
-      headers: {
-        Authorization: `Bearer ${access_token}`,
-      },
-    });
+    const response = await GSBackendClient.get('/members/myboards');
 
     return response.data.response;
   } catch (error) {
@@ -188,19 +143,9 @@ export const getAllMyFeeds = async () => {
 
 export const changeNickname = async (newNickname: string) => {
   try {
-    const access_token = MMKVStorage.getString('userToken');
-
-    const response = await GSBackendClient.put(
-      '/members/nicknames',
-      {
-        nickname: newNickname,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-      },
-    );
+    const response = await GSBackendClient.put('/members/nicknames', {
+      nickname: newNickname,
+    });
 
     console.log(response.data.response);
 
@@ -212,13 +157,7 @@ export const changeNickname = async (newNickname: string) => {
 
 export const getUserData = async () => {
   try {
-    const access_token = MMKVStorage.getString('userToken');
-
-    const response = await GSBackendClient.get('/members/mypage', {
-      headers: {
-        Authorization: `Bearer ${access_token}`,
-      },
-    });
+    const response = await GSBackendClient.get('/members/mypage');
 
     return response.data.response;
   } catch (error) {
@@ -229,19 +168,9 @@ export const getUserData = async () => {
 
 export const likeFeed = async (postId: number) => {
   try {
-    const access_token = MMKVStorage.getString('userToken');
-
-    const response = await GSBackendClient.post(
-      `/boards/likes`,
-      {
-        postId,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-      },
-    );
+    const response = await GSBackendClient.post(`/boards/likes`, {
+      postId,
+    });
   } catch (error) {
     console.log('likeFeed error: ', error);
   }
@@ -249,12 +178,7 @@ export const likeFeed = async (postId: number) => {
 
 export const likeFeedCancel = async (postId: number) => {
   try {
-    const access_token = MMKVStorage.getString('userToken');
-
     const response = await GSBackendClient.delete(`/boards/likes`, {
-      headers: {
-        Authorization: `Bearer ${access_token}`,
-      },
       data: {
         postId,
       },
@@ -266,19 +190,9 @@ export const likeFeedCancel = async (postId: number) => {
 
 export const createComment = async (postId: number, content: string) => {
   try {
-    const access_token = MMKVStorage.getString('userToken');
-
-    const response = await GSBackendClient.post(
-      `/comments/${postId}`,
-      {
-        content,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-      },
-    );
+    const response = await GSBackendClient.post(`/comments/${postId}`, {
+      content,
+    });
   } catch (error) {
     console.log('createComment error: ', error);
   }
@@ -286,19 +200,9 @@ export const createComment = async (postId: number, content: string) => {
 
 export const likeComment = async (commentId: number) => {
   try {
-    const access_token = MMKVStorage.getString('userToken');
-
-    const response = await GSBackendClient.post(
-      `/comments/likes`,
-      {
-        commentId,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-      },
-    );
+    const response = await GSBackendClient.post(`/comments/likes`, {
+      commentId,
+    });
   } catch (error) {
     console.log('likeComment error: ', error);
   }
@@ -306,17 +210,29 @@ export const likeComment = async (commentId: number) => {
 
 export const likeCommentCancel = async (commentId: number) => {
   try {
-    const access_token = MMKVStorage.getString('userToken');
-
     const response = await GSBackendClient.delete(`/comments/likes`, {
-      headers: {
-        Authorization: `Bearer ${access_token}`,
-      },
       data: {
         commentId,
       },
     });
   } catch (error) {
     console.log('likeCommentCancel error: ', error);
+  }
+};
+
+export const rateProfessor = async (profId: number, rating: number) => {
+  try {
+    const response = await GSBackendClient.post(`/grades/${profId}`, {
+      gradepoint: rating,
+      member: {
+        memberId: 7,
+        email: '',
+        nickname: '',
+        password: '',
+        role: 'MEMBER',
+      },
+    });
+  } catch (error) {
+    console.log('rateProfessor error: ', error);
   }
 };
