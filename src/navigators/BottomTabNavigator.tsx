@@ -1,4 +1,5 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
+import { BackHandler, ToastAndroid } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -9,7 +10,6 @@ import HomeScreen from '@screens/HomeScreen/HomeScreen';
 import MyPageScreen from '@screens/MypageScreen/MyPageScreen';
 import MyFeedsScreen from '@screens/MypageScreen/MyFeedsScreen.tsx/MyFeedsScreen';
 import CreateFeedModal from '@screens/HomeScreen/CreateFeedModal/CreateFeedModal';
-import ProfessorDetailScreen from '@screens/HomeScreen/ProfessorScreen/ProfessorScreen';
 
 import {
   type HomeStackParamList,
@@ -39,9 +39,40 @@ const MyPage = () => {
   );
 };
 
-// TODO - 글로벌 모달 + 하단 네비게이션을 구현하기에 이게 맞는 방법인지 고민 필요
 export default function BottomTabNavigator() {
   const { setShowCreateFeedModal } = useContext(NewFeedContext);
+
+  let shouldExitApp = false;
+  let waitToResetShouldExitApp: NodeJS.Timeout;
+
+  // 뒤로가기 눌렀을 때 안드로이드에서 필요한 처리
+  useEffect(() => {
+    const backButtonPress = () => {
+      if (!shouldExitApp) {
+        shouldExitApp = true;
+        ToastAndroid.show(
+          '뒤로 가기 버튼을 한 번 더 누르면 종료됩니다.',
+          ToastAndroid.SHORT,
+        );
+
+        waitToResetShouldExitApp = setTimeout(() => {
+          shouldExitApp = false;
+        }, 2000);
+      } else {
+        clearTimeout(waitToResetShouldExitApp);
+        BackHandler.exitApp();
+      }
+
+      return true;
+    };
+
+    const backButtonPressHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backButtonPress,
+    );
+
+    return () => backButtonPressHandler.remove();
+  }, []);
 
   return (
     <Tab.Navigator
