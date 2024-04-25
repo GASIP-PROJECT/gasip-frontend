@@ -56,7 +56,7 @@ export default function Root() {
     // keychain에 저장된 토큰 값 존재 검사 및 유효성 확인
     setTimeout(() => {
       authenticateUser();
-    }, 500);
+    }, 1000);
   }, []);
 
   if (authState.isLoading) return <SplashScreen />;
