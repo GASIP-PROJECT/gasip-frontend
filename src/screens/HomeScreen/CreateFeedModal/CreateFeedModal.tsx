@@ -3,7 +3,7 @@ import { Alert, Modal, StyleSheet, View } from 'react-native';
 import { ActionSheetRef } from 'react-native-actions-sheet';
 import axios from 'axios';
 
-import { createFeed } from '@api/index';
+import { createFeed, createProfessorFeed } from '@api/index';
 import { NewFeedContext } from '@contexts/NewFeedContext';
 
 import Spacer from '@components/common/Spacer';
@@ -16,7 +16,12 @@ import CreateFeedModalHeader from './CreateFeedModalHeader';
 import CreateFeedModalPolicy from './CreateFeedModalPolicy';
 import CreateFeedModalTextInput from './CreateFeedModalTextInput';
 
-import { FEED_CATEGORIES } from '@constants';
+import { FEED_CATEGORIES } from '../../../constants';
+
+export interface SelectedCategory {
+  category: string;
+  profId?: number | null;
+}
 
 export default function CreateFeedModal() {
   const {
@@ -24,10 +29,11 @@ export default function CreateFeedModal() {
     showCreateFeedModal,
     setShowCreateFeedModal,
   } = useContext(NewFeedContext);
-  const [feedContent, setFeedContent] = useState<string>('');
-  const [selectedCategory, setSelectedCategory] = useState<
-    FEED_CATEGORIES | string
-  >(FEED_CATEGORIES.FREE);
+  const [feedContent, setFeedContent] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState<SelectedCategory>({
+    category: FEED_CATEGORIES.FREE,
+    profId: null,
+  });
 
   const categorySelectModalRef = useRef<ActionSheetRef>(null);
 
@@ -41,7 +47,12 @@ export default function CreateFeedModal() {
       return;
     }
 
-    await createFeed(feedContent);
+    if (selectedCategory.category === FEED_CATEGORIES.FREE) {
+      await createFeed(feedContent);
+    } else {
+      await createProfessorFeed(feedContent, selectedCategory.profId);
+    }
+
     setToggleToUpdateFeedsList(prev => !prev);
     setShowCreateFeedModal(false);
   };

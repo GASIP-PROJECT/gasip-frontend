@@ -78,6 +78,23 @@ export const createFeed = async (content: string) => {
   }
 };
 
+export const createProfessorFeed = async (
+  content: string,
+  profId: number | null | undefined,
+) => {
+  if (profId === null || profId === undefined) return;
+
+  try {
+    const response = await GSBackendClient.post(`/boards/${profId}`, {
+      content,
+    });
+
+    console.log(response.data);
+  } catch (error) {
+    console.log('createProfessorFeed error: ', error);
+  }
+};
+
 export const searchFeeds = async (searchText: string) => {
   if (searchText === '') return [];
 

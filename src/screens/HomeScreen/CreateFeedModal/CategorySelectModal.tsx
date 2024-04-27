@@ -19,10 +19,11 @@ import GSBottomModalHeader from '@components/common/GSBottomModalHeader';
 import { COLORS } from '@styles/colors';
 import { Professor } from '@types/searchTypes';
 import { FEED_CATEGORIES } from '../../../constants';
+import { SelectedCategory } from './CreateFeedModal';
 
 interface CategorySelectModalProps {
   actionSheetRef: React.RefObject<ActionSheetRef>;
-  setSelectedCategory: Dispatch<SetStateAction<string>>;
+  setSelectedCategory: Dispatch<SetStateAction<SelectedCategory>>;
 }
 
 export default function CategorySelectModal({
@@ -32,18 +33,13 @@ export default function CategorySelectModal({
   const [isProfessorSearchOpen, setIsProfessorSearchOpen] =
     useState<boolean>(false);
 
-  const handleCategoryPress = (category: string) => {
-    setSelectedCategory(category);
+  const handleCategoryPress = (category: string, profId?: number) => {
+    setSelectedCategory(prevState => ({ ...prevState, category, profId }));
     actionSheetRef.current?.hide();
   };
 
   const handleProfessorSearchPress = () => {
     setIsProfessorSearchOpen(true);
-  };
-
-  const handleSearchedProfessorPress = (profName: string) => {
-    setSelectedCategory(profName);
-    actionSheetRef.current?.hide();
   };
 
   const closeCategorySelectModal = () => {
@@ -177,14 +173,19 @@ const ProfessorSearchResults = ({
   handleCategoryPress,
 }: {
   searchResults: Array<Professor>;
-  handleCategoryPress: (category: string) => void;
+  handleCategoryPress: (category: string, profId: number) => void;
 }) => {
   return (
     <ScrollView style={styles.searchResultsContainer}>
       {searchResults.map((professor, index) => (
         <TouchableOpacity
           key={index.toString()}
-          onPress={() => handleCategoryPress(`${professor.profName} 교수님`)}
+          onPress={() =>
+            handleCategoryPress(
+              `${professor.profName} 교수님`,
+              professor.profId,
+            )
+          }
         >
           <Text style={styles.searchResultText}>
             {professor.profName} 교수님

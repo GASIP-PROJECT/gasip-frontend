@@ -1,15 +1,16 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 
 import GSIcon from '@components/common/GSIcon';
 
 import { COLORS } from '@styles/colors';
+import { SelectedCategory } from './CreateFeedModal';
 
 export default function FeedCategorySelector({
   selectedCategory,
   openCategorySelectModal,
 }: {
-  selectedCategory: string;
+  selectedCategory: SelectedCategory;
   openCategorySelectModal: () => void;
 }) {
   return (
@@ -18,7 +19,7 @@ export default function FeedCategorySelector({
         style={styles.selectorContainer}
         onPress={openCategorySelectModal}
       >
-        <Text style={styles.selectorText}>{selectedCategory}</Text>
+        <Text style={styles.selectorText}>{selectedCategory.category}</Text>
         <GSIcon name="chevron-down" size={20} />
       </TouchableOpacity>
     </View>
