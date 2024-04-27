@@ -10,6 +10,7 @@ import {
   Modal,
 } from 'react-native';
 
+import { MMKVStorage } from '@api/mmkv';
 import { changeNickname } from '@api/index';
 
 import GSIcon from '@components/common/GSIcon';
@@ -35,6 +36,8 @@ export default function ChangeNicknameModal({
   const handlePressChangeNickname = async () => {
     if (newNickname.length) {
       const changedNickname = await changeNickname(newNickname);
+
+      MMKVStorage.set('userNickname', changedNickname);
       alertNicknameChanged();
     }
   };
