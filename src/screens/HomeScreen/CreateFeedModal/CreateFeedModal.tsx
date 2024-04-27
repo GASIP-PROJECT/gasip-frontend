@@ -58,7 +58,17 @@ export default function CreateFeedModal() {
   };
 
   return (
-    <Modal visible={showCreateFeedModal} animationType="slide">
+    <Modal
+      visible={showCreateFeedModal}
+      animationType="slide"
+      onDismiss={() =>
+        setSelectedCategory({
+          ...selectedCategory,
+          category: FEED_CATEGORIES.FREE,
+          profId: null,
+        })
+      }
+    >
       <SafeAreaLayout>
         <View style={styles.container}>
           <CreateFeedModalHeader feedContent={feedContent} />
