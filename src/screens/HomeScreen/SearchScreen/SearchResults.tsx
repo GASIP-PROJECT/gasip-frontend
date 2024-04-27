@@ -21,14 +21,16 @@ import {
 // TODO - 컴포넌트 구조 뭔가 이상함. 수정 필요한 상태
 export default function SearchResults({
   searchResults,
+  searchResultType,
 }: {
   searchResults: SearchResult[];
+  searchResultType: 'Professor' | 'Content';
 }) {
   if (searchResults.length === 0) {
     return <View />;
   }
 
-  if (searchResults[0]?.profId) {
+  if (searchResultType === 'Professor') {
     return (
       <View>
         <ProfessorResults searchResult={searchResults as Professor[]} />

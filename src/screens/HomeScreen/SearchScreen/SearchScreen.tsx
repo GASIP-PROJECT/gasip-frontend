@@ -20,6 +20,11 @@ export default function SearchScreen({
 }: SearchScreenProps) {
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const [noSearchResult, setNoSearchResult] = useState<boolean>(false);
+  const [searchResultType, setSearchResultType] = useState<
+    'Professor' | 'Content'
+  >('Professor');
+
+  console.log(searchResults);
 
   return (
     <>
@@ -27,11 +32,16 @@ export default function SearchScreen({
         setIsSearchPageOpen={setIsSearchPageOpen}
         setSearchResults={setSearchResults}
         setNoSearchResult={setNoSearchResult}
+        searchResultType={searchResultType}
+        setSearchResultType={setSearchResultType}
       />
       <Spacer type="height" value={20} />
 
       {searchResults.length > 0 && (
-        <SearchResults searchResults={searchResults} />
+        <SearchResults
+          searchResults={searchResults}
+          searchResultType={searchResultType}
+        />
       )}
 
       {noSearchResult && <NoSearchResult />}

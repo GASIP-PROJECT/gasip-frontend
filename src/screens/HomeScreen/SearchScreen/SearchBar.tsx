@@ -20,15 +20,16 @@ export default function SearchBar({
   setIsSearchPageOpen,
   setSearchResults,
   setNoSearchResult,
+  searchResultType,
+  setSearchResultType,
 }: {
   setIsSearchPageOpen: Dispatch<SetStateAction<boolean>>;
   setSearchResults: Dispatch<SetStateAction<SearchResult[]>>;
   setNoSearchResult: Dispatch<SetStateAction<boolean>>;
+  searchResultType: 'Professor' | 'Content';
+  setSearchResultType: Dispatch<SetStateAction<'Professor' | 'Content'>>;
 }) {
   const [searchText, setSearchText] = useState<string>('');
-  const [searchResultType, setSearchResultType] = useState<
-    'Professor' | 'Content'
-  >('Professor');
 
   const handleCancelPress = () => {
     setIsSearchPageOpen(false);
@@ -94,12 +95,14 @@ export default function SearchBar({
           typeName="Professor"
           searchResultType={searchResultType}
           setSearchResultType={setSearchResultType}
+          setSearchResults={setSearchResults}
         />
         <Spacer type="width" value={10} />
         <SearchResultTypeSelector
           typeName="Content"
           searchResultType={searchResultType}
           setSearchResultType={setSearchResultType}
+          setSearchResults={setSearchResults}
         />
       </View>
     </>
@@ -110,16 +113,19 @@ interface SearchResultTypeSelectorProps {
   typeName: 'Professor' | 'Content';
   searchResultType: 'Professor' | 'Content';
   setSearchResultType: Dispatch<SetStateAction<'Professor' | 'Content'>>;
+  setSearchResults: Dispatch<SetStateAction<SearchResult[]>>;
 }
 
 const SearchResultTypeSelector = ({
   typeName,
   searchResultType,
   setSearchResultType,
+  setSearchResults,
 }: SearchResultTypeSelectorProps) => {
   const isSelected = typeName === searchResultType;
 
   const handleTypePress = () => {
+    setSearchResults([]);
     setSearchResultType(typeName);
   };
 
