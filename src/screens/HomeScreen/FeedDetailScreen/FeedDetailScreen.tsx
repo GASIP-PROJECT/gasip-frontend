@@ -7,6 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
+import { ActionSheetRef } from 'react-native-actions-sheet';
 
 import { getFeedData } from '@api/index';
 
@@ -14,6 +15,7 @@ import FeedContent from './FeedContent';
 import FeedComment from './FeedComment';
 import ProfessorInfo from './ProfessorInfo';
 import FeedReplyInput from './FeedReplyInput';
+import FeedActionsModal from './FeedActionsModal';
 
 import Spacer from '@components/common/Spacer';
 import GSIcon from '@components/common/GSIcon';
@@ -28,6 +30,7 @@ export default function FeedDetailScreen({ route, navigation }) {
   const { postId } = route.params;
 
   const commentTextInputRef = useRef<TextInput>(null);
+  const actionSheetRef = useRef<ActionSheetRef>(null);
 
   const [feedData, setFeedData] = useState<Feed | null>(null);
   const [updateFeed, setUpdateFeed] = useState<boolean>(false);
@@ -52,6 +55,10 @@ export default function FeedDetailScreen({ route, navigation }) {
   const resetReplyCommentData = () => {
     setReplyCommentId(null);
     setReplyCommentNickname(null);
+  };
+
+  const openFeedActionsModal = () => {
+    actionSheetRef?.current?.show();
   };
 
   useEffect(() => {
@@ -81,7 +88,11 @@ export default function FeedDetailScreen({ route, navigation }) {
               />
             )}
             <Spacer type="height" value={10} />
-            <FeedContent feedData={feedData} setUpdateFeed={setUpdateFeed} />
+            <FeedContent
+              feedData={feedData}
+              setUpdateFeed={setUpdateFeed}
+              openFeedActionsModal={openFeedActionsModal}
+            />
             <Spacer type="height" value={10} />
             {feedData?.comments.length > 0 && (
               <View
@@ -131,6 +142,7 @@ export default function FeedDetailScreen({ route, navigation }) {
         setUpdateFeed={setUpdateFeed}
         resetReplyCommentData={resetReplyCommentData}
       />
+      <FeedActionsModal actionSheetRef={actionSheetRef} />
     </SafeAreaLayout>
   );
 }

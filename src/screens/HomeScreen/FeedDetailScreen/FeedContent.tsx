@@ -1,6 +1,7 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
+import { MMKVStorage } from '@api/mmkv';
 import { likeFeed, likeFeedCancel } from '@api/index';
 import { getTimeDifference } from '@utils/timeUtil';
 
@@ -13,18 +14,32 @@ import { type Feed } from 'types/searchTypes';
 export default function FeedContent({
   feedData,
   setUpdateFeed,
+  openFeedActionsModal,
 }: {
   feedData: Feed | null;
   setUpdateFeed: Dispatch<SetStateAction<boolean>>;
+  openFeedActionsModal: () => void;
 }) {
   if (feedData === null) return <View />;
 
-  const { content, regDate, likeCount, postId, memberNickname, isLike } =
-    feedData;
+  const {
+    memberId,
+    content,
+    regDate,
+    likeCount,
+    postId,
+    memberNickname,
+    isLike,
+  } = feedData;
 
   return (
     <View style={styles.container}>
-      <FeedContentHeader regDate={regDate} memberNickname={memberNickname} />
+      <FeedContentHeader
+        regDate={regDate}
+        memberNickname={memberNickname}
+        memberId={memberId}
+        openFeedActionsModal={openFeedActionsModal}
+      />
       <Spacer type="height" value={10} />
       <FeedContentText content={content} />
       <Spacer type="height" value={10} />
@@ -40,16 +55,30 @@ export default function FeedContent({
 const FeedContentHeader = ({
   regDate,
   memberNickname,
+  memberId,
+  openFeedActionsModal,
 }: {
   regDate: string;
   memberNickname: string;
+  memberId: number;
+  openFeedActionsModal: () => void;
 }) => {
   const timeString = getTimeDifference(regDate);
+  const currentUserMemberId = MMKVStorage.getNumber('memberId');
 
   return (
-    <Text style={styles.feedHeaderText}>
-      <Text style={{ color: '#B4B4B3' }}>{memberNickname}</Text> | {timeString}
-    </Text>
+    <View style={styles.feedHeaderContainer}>
+      <Text style={styles.feedHeaderText}>
+        <Text style={{ color: '#B4B4B3' }}>{memberNickname}</Text> |{' '}
+        {timeString}
+      </Text>
+
+      {memberId === currentUserMemberId && (
+        <TouchableOpacity onPress={openFeedActionsModal}>
+          <GSIcon name="ellipsis-horizontal" color="#B4B4B3" size={20} />
+        </TouchableOpacity>
+      )}
+    </View>
   );
 };
 
@@ -102,6 +131,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderRadius: 5,
     backgroundColor: '#28292A',
+  },
+  feedHeaderContainer: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   feedHeaderText: {
     color: '#4b5159',

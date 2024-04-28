@@ -14,6 +14,7 @@ export interface Feed {
   majorName: string;
   commentCount: number;
   isLike: boolean;
+  memberId: number;
 }
 
 export interface FeedComment {
