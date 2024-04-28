@@ -2,15 +2,15 @@ import React, { useState } from 'react';
 import { Text, TextInput, Image, View, StyleSheet, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
+import { setMMKVStorageAuthData } from '@api/mmkv';
 import { useAuth } from '@contexts/AuthContext';
 
-import GSButton from '@components/common/GSButton';
-
-import gasip_logo from '@assets/gasip_logo.png';
-import SafeAreaLayout from '@components/common/SafeAreaLayout';
-import { COLORS } from '@styles/colors';
 import Spacer from '@components/common/Spacer';
-import { MMKVStorage } from '@api/mmkv';
+import GSButton from '@components/common/GSButton';
+import SafeAreaLayout from '@components/common/SafeAreaLayout';
+
+import { COLORS } from '@styles/colors';
+import gasip_logo from '@assets/gasip_logo.png';
 
 export default function LoginScreen() {
   const [useremail, setUseremail] = useState('');
@@ -35,7 +35,8 @@ export default function LoginScreen() {
 
       const loginResult = await response.json();
 
-      MMKVStorage.set('userToken', loginResult.response.accessToken);
+      const { accessToken, userNickname, memberId } = loginResult.response;
+      setMMKVStorageAuthData(accessToken, userNickname, memberId);
 
       dispatch({
         type: 'SIGN_IN',
@@ -85,7 +86,6 @@ export default function LoginScreen() {
           onChangeText={setPassword}
           secureTextEntry
         />
-        {/* </View> */}
         <View style={{ width: '100%' }}>
           <GSButton
             onPress={handleLogin}
