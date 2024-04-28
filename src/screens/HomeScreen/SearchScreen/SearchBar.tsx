@@ -1,4 +1,10 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import {
   StyleSheet,
   TextInput,
@@ -29,6 +35,7 @@ export default function SearchBar({
   searchResultType: 'Professor' | 'Content';
   setSearchResultType: Dispatch<SetStateAction<'Professor' | 'Content'>>;
 }) {
+  const textInputRef = useRef<TextInput>();
   const [searchText, setSearchText] = useState<string>('');
 
   const handleCancelPress = () => {
@@ -63,10 +70,17 @@ export default function SearchBar({
     setNoSearchResult(false);
   };
 
+  useEffect(() => {
+    if (textInputRef.current) {
+      textInputRef.current.focus();
+    }
+  }, []);
+
   return (
     <>
       <View style={styles.container}>
         <TextInput
+          ref={textInputRef}
           style={styles.searchTextInput}
           placeholder="검색"
           placeholderTextColor={'#999999'}

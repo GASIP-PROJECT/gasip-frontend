@@ -24,8 +24,6 @@ export default function SearchScreen({
     'Professor' | 'Content'
   >('Professor');
 
-  console.log(searchResults);
-
   return (
     <>
       <SearchBar
