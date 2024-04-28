@@ -124,6 +124,7 @@ const ProfessorSearch = ({
 
       <Spacer type="height" value={20} />
       <ProfessorSearchResults
+        noSearchResult={noSearchResult}
         searchResults={searchResults}
         handleCategoryPress={handleCategoryPress}
       />
@@ -151,6 +152,10 @@ const ProfessorSearchBar = ({
     setSearchResults([...professors]);
   };
 
+  const handleTextInputFocus = () => {
+    setNoSearchResult(false);
+  };
+
   return (
     <View style={styles.searchBarContainer}>
       <TextInput
@@ -159,7 +164,7 @@ const ProfessorSearchBar = ({
         placeholderTextColor={'#999999'}
         onChangeText={text => setSearchText(text)}
         onSubmitEditing={handleSearchSubmit}
-        // onFocus={handleTextInputFocus}
+        onFocus={handleTextInputFocus}
       />
       <View style={styles.searchIconContainer}>
         <GSIcon name="search-outline" size={20} color="#999999" />
@@ -170,11 +175,24 @@ const ProfessorSearchBar = ({
 
 const ProfessorSearchResults = ({
   searchResults,
+  noSearchResult,
   handleCategoryPress,
 }: {
   searchResults: Array<Professor>;
+  noSearchResult: boolean;
   handleCategoryPress: (category: string, profId: number) => void;
 }) => {
+  if (noSearchResult)
+    return (
+      <View
+        style={[
+          styles.searchResultsContainer,
+          { justifyContent: 'center', alignItems: 'center' },
+        ]}
+      >
+        <Text style={styles.noSearchResultText}>검색 결과가 없습니다.</Text>
+      </View>
+    );
   return (
     <ScrollView style={styles.searchResultsContainer}>
       {searchResults.map((professor, index) => (
@@ -246,5 +264,10 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: COLORS.WHITE,
     fontWeight: '700',
+  },
+  noSearchResultText: {
+    fontSize: 16,
+    color: '#a9a9a9',
+    fontWeight: '500',
   },
 });
