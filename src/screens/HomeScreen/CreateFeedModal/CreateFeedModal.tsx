@@ -57,18 +57,20 @@ export default function CreateFeedModal() {
     setShowCreateFeedModal(false);
   };
 
+  const resetStateOnDismiss = () => {
+    setSelectedCategory({
+      ...selectedCategory,
+      category: FEED_CATEGORIES.FREE,
+      profId: null,
+    });
+    setFeedContent('');
+  };
+
   return (
     <Modal
       visible={showCreateFeedModal}
       animationType="slide"
-      onDismiss={() => {
-        setSelectedCategory({
-          ...selectedCategory,
-          category: FEED_CATEGORIES.FREE,
-          profId: null,
-        });
-        setFeedContent('');
-      }}
+      onDismiss={resetStateOnDismiss}
     >
       <SafeAreaLayout>
         <View style={styles.container}>

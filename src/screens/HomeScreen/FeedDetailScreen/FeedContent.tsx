@@ -64,7 +64,8 @@ const FeedContentHeader = ({
   openFeedActionsModal: () => void;
 }) => {
   const timeString = getTimeDifference(regDate);
-  const currentUserMemberId = MMKVStorage.getNumber('memberId');
+  const isCurrentUserCommentAuthor =
+    memberId === MMKVStorage.getNumber('memberId');
 
   return (
     <View style={styles.feedHeaderContainer}>
@@ -73,7 +74,7 @@ const FeedContentHeader = ({
         {timeString}
       </Text>
 
-      {memberId === currentUserMemberId && (
+      {isCurrentUserCommentAuthor && (
         <TouchableOpacity onPress={openFeedActionsModal}>
           <GSIcon name="ellipsis-horizontal" color="#B4B4B3" size={20} />
         </TouchableOpacity>
