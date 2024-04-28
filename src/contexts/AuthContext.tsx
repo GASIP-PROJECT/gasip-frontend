@@ -4,7 +4,6 @@ import {
   createContext,
   useContext,
   useEffect,
-  useMemo,
   useReducer,
 } from 'react';
 
@@ -15,12 +14,13 @@ interface AuthState {
 
 type AuthAction =
   | { type: 'SIGN_IN'; payload: AuthState }
-  | { type: 'SIGN_OUT' }
+  | { type: 'SIGN_OUT'; payload: AuthState }
   | { type: 'RESTORE_TOKEN'; payload: AuthState };
 // | { type: 'setCount'; payload: number };
 
 const authReducer = (prevState: AuthState, action: AuthAction): AuthState => {
   const { type } = action;
+
   switch (type) {
     case 'RESTORE_TOKEN':
       return {
@@ -35,7 +35,7 @@ const authReducer = (prevState: AuthState, action: AuthAction): AuthState => {
     case 'SIGN_OUT':
       return {
         ...prevState,
-        userToken: null,
+        ...action.payload,
       };
     default:
       return prevState;
@@ -57,8 +57,6 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const [authState, dispatch] = useReducer(authReducer, initialAuthState);
-
-  useEffect(() => {}, []);
 
   return (
     <AuthContext.Provider value={{ authState, dispatch }}>

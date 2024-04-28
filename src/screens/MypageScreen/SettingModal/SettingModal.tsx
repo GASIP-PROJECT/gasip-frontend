@@ -1,7 +1,7 @@
 import React, { SetStateAction, Dispatch, useState } from 'react';
 import { Modal, StyleSheet, View } from 'react-native';
 
-import { MMKVStorage } from '@api/mmkv';
+import { clearMMKVStorageAuthData } from '@api/mmkv';
 import { useAuth } from '@contexts/AuthContext';
 
 import MyPageElement from '@screens/MypageScreen/MyPageElement';
@@ -29,13 +29,15 @@ export default function SettingModal({
 
   const handleLogOut = async () => {
     setIsVisible(false);
+    clearMMKVStorageAuthData();
 
-    MMKVStorage.delete('userToken');
-    MMKVStorage.delete('userNickname');
-
-    dispatch({
-      type: 'SIGN_OUT',
-    });
+    // TODO - iOS에서 동기적으로 실행하면 앱이 터진다. 갑자기 이러는데 원인을 모르겠음
+    setTimeout(() => {
+      dispatch({
+        type: 'SIGN_OUT',
+        payload: { userToken: null, isLoading: false },
+      });
+    }, 0);
   };
 
   return (

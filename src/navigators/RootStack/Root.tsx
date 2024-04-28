@@ -23,18 +23,15 @@ const RootStack = createNativeStackNavigator<StackParamList>();
 export default function Root() {
   const { authState, dispatch } = useAuth();
 
-  const checkUserToken = async () => {
-    try {
-      const userToken = MMKVStorage.getString('userToken');
-      return userToken;
-    } catch (e) {
-      console.log(e);
-      return null;
-    }
+  const checkUserToken = () => {
+    const userToken = MMKVStorage.getString('userToken');
+
+    if (!userToken) return null;
+    return userToken;
   };
 
   const authenticateUser = async () => {
-    const userToken = await checkUserToken();
+    const userToken = checkUserToken();
 
     if (userToken) {
       dispatch({
@@ -65,8 +62,20 @@ export default function Root() {
     <NavigationContainer theme={{ colors: { background: COLORS.BG_MAIN } }}>
       <RootStack.Navigator>
         {/* TODO - 조건 다시 수정, 작업 위해서 임시로 수정한 상태 */}
-        {/* {isSignedIn === null ? ( */}
-        {authState.userToken !== null ? (
+        {authState.userToken === null ? (
+          <>
+            <RootStack.Screen
+              name="LoginScreen"
+              component={LoginScreen}
+              options={{ headerShown: false }}
+            />
+            <RootStack.Screen
+              name="SignUpScreen"
+              component={SignUpScreen}
+              options={{ headerShown: false }}
+            />
+          </>
+        ) : (
           <>
             <RootStack.Screen
               name="BottomTabNavigator"
@@ -81,19 +90,6 @@ export default function Root() {
             <RootStack.Screen
               name="ProfessorDetailScreen"
               component={ProfessorDetailScreen}
-              options={{ headerShown: false }}
-            />
-          </>
-        ) : (
-          <>
-            <RootStack.Screen
-              name="LoginScreen"
-              component={LoginScreen}
-              options={{ headerShown: false }}
-            />
-            <RootStack.Screen
-              name="SignUpScreen"
-              component={SignUpScreen}
               options={{ headerShown: false }}
             />
           </>
