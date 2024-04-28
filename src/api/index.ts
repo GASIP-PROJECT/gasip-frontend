@@ -149,6 +149,30 @@ export const searchProfessors = async (searchText: string) => {
   }
 };
 
+export const getProfessorData = async (profId: number) => {
+  try {
+    const response = await GSBackendClient.get(`/professors/${profId}`);
+
+    return response.data.response;
+  } catch (error) {
+    console.log('getProfessorData error: ', error);
+    return null;
+  }
+};
+
+export const getAllProfessors = async () => {
+  try {
+    const response = await GSBackendClient.get('/professors');
+
+    console.log(response.data.response);
+
+    return response.data.response;
+  } catch (error) {
+    console.log('getAllProfessors error: ', error);
+    return [];
+  }
+};
+
 export const getFeedData = async (postId: number) => {
   try {
     const response = await GSBackendClient.get(`/boards/details/${postId}`);
