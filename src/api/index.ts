@@ -241,13 +241,6 @@ export const rateProfessor = async (profId: number, rating: number) => {
   try {
     const response = await GSBackendClient.post(`/grades/${profId}`, {
       gradepoint: rating,
-      member: {
-        memberId: 7,
-        email: '',
-        nickname: '',
-        password: '',
-        role: 'MEMBER',
-      },
     });
   } catch (error) {
     console.log('rateProfessor error: ', error);

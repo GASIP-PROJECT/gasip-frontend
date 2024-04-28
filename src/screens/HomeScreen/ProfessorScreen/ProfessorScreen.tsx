@@ -1,26 +1,32 @@
 import React, { useRef, useState } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
-import ActionSheet, { ActionSheetRef } from 'react-native-actions-sheet';
+import { StyleSheet, View } from 'react-native';
+import { ActionSheetRef } from 'react-native-actions-sheet';
+
+import { rateProfessor } from '@api/index';
 
 import ProfessorFeeds from './ProfessorFeeds';
 import ProfessorDetail from './ProfessorDetail';
+import ProfessorRateModal from './ProfessorRateModal';
 
 import Spacer from '@components/common/Spacer';
 import GSIcon from '@components/common/GSIcon';
 import GSHeader from '@components/common/GSHeader';
 import SafeAreaLayout from '@components/common/SafeAreaLayout';
-import ProfessorRateModal from './ProfessorRateModal';
 
 export default function ProfessorDetailScreen({ route, navigation }) {
   const { professorData } = route.params;
   const { profId } = professorData;
-
   const [currentRating, setCurrentRating] = useState(3);
 
   const actionSheetRef = useRef<ActionSheetRef>(null);
 
   const openRateModal = () => {
     actionSheetRef?.current?.show();
+  };
+
+  const rate = async () => {
+    await rateProfessor(profId, currentRating);
+    actionSheetRef?.current?.hide();
   };
 
   return (
@@ -43,6 +49,7 @@ export default function ProfessorDetailScreen({ route, navigation }) {
         actionSheetRef={actionSheetRef}
         currentRating={currentRating}
         setCurrentRating={setCurrentRating}
+        rate={rate}
       />
     </SafeAreaLayout>
   );

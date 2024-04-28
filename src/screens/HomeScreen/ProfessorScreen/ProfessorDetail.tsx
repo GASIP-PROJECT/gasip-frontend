@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import Spacer from '@components/common/Spacer';
 import GSIcon from '@components/common/GSIcon';
 
 import { COLORS } from '@styles/colors';
 import { Professor } from 'types/searchTypes';
+import { getProfessorData } from '@api/index';
 
 export default function ProfessorDetail({
   professorData,
@@ -39,7 +40,7 @@ export default function ProfessorDetail({
       <Spacer type="height" value={10} />
       <DetailElement
         title="평점"
-        content={professorAverageGradePoint || 0}
+        content={`${professorAverageGradePoint || 0}/5.0`}
         iconName="star"
       />
     </View>
