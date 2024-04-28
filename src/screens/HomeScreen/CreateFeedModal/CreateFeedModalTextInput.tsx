@@ -4,15 +4,18 @@ import { StyleSheet, TextInput, View } from 'react-native';
 import { COLORS } from '@styles/colors';
 
 interface CreateFeedModalTextInputProps {
+  feedContent: string;
   setFeedContent: Dispatch<SetStateAction<string>>;
 }
 
 export default function CreateFeedModalTextInput({
+  feedContent,
   setFeedContent,
 }: CreateFeedModalTextInputProps) {
   return (
     <View style={styles.container}>
       <TextInput
+        value={feedContent}
         style={styles.textInput}
         placeholder="자유롭게 의견을 작성해 주세요.."
         placeholderTextColor={'#7d7878'}

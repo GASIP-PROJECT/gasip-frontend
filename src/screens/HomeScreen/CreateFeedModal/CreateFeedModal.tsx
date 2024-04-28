@@ -78,7 +78,10 @@ export default function CreateFeedModal() {
             openCategorySelectModal={openCategorySelectModal}
           />
           <Spacer type="height" value={15} />
-          <CreateFeedModalTextInput setFeedContent={setFeedContent} />
+          <CreateFeedModalTextInput
+            feedContent={feedContent}
+            setFeedContent={setFeedContent}
+          />
           <Spacer type="height" value={40} />
           {/* <CreateFeedModalPolicy /> */}
         </View>

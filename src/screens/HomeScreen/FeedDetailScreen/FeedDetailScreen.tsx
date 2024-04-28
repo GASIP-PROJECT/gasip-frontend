@@ -9,11 +9,12 @@ import {
 } from 'react-native';
 import { ActionSheetRef } from 'react-native-actions-sheet';
 
-import { getFeedData } from '@api/index';
+import { deleteFeed, getFeedData } from '@api/index';
 
 import FeedContent from './FeedContent';
 import FeedComment from './FeedComment';
 import ProfessorInfo from './ProfessorInfo';
+import FeedEditModal from './FeedEditModal';
 import FeedReplyInput from './FeedReplyInput';
 import FeedActionsModal from './FeedActionsModal';
 
@@ -33,12 +34,14 @@ export default function FeedDetailScreen({ route, navigation }) {
   const actionSheetRef = useRef<ActionSheetRef>(null);
 
   const [feedData, setFeedData] = useState<Feed | null>(null);
-  const [updateFeed, setUpdateFeed] = useState<boolean>(false);
+  const [updateFeed, setUpdateFeed] = useState(false);
 
   const [replyCommentId, setReplyCommentId] = useState<number | null>(null);
   const [replyCommentNickname, setReplyCommentNickname] = useState<
     string | null
   >(null);
+
+  const [showFeedEditModal, setShowFeedEditModal] = useState(false);
 
   const handleReplyCommentPress = (
     commentId: number,
@@ -59,6 +62,21 @@ export default function FeedDetailScreen({ route, navigation }) {
 
   const openFeedActionsModal = () => {
     actionSheetRef?.current?.show();
+  };
+
+  const handleFeedDeletePress = async () => {
+    actionSheetRef?.current?.hide();
+    await deleteFeed(feedData?.postId);
+    navigation.goBack();
+  };
+
+  const handleFeedEditPress = () => {
+    actionSheetRef?.current?.hide();
+
+    // TODO - setTimeout 제거 필요
+    setTimeout(() => {
+      setShowFeedEditModal(true);
+    }, 500);
   };
 
   useEffect(() => {
@@ -142,7 +160,18 @@ export default function FeedDetailScreen({ route, navigation }) {
         setUpdateFeed={setUpdateFeed}
         resetReplyCommentData={resetReplyCommentData}
       />
-      <FeedActionsModal actionSheetRef={actionSheetRef} />
+      <FeedActionsModal
+        actionSheetRef={actionSheetRef}
+        handleFeedDeletePress={handleFeedDeletePress}
+        handleFeedEditPress={handleFeedEditPress}
+      />
+      <FeedEditModal
+        postId={postId}
+        prevContent={feedData?.content || ''}
+        isVisible={showFeedEditModal}
+        setUpdateFeed={setUpdateFeed}
+        setIsVisible={setShowFeedEditModal}
+      />
     </SafeAreaLayout>
   );
 }

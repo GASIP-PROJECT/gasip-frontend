@@ -78,6 +78,30 @@ export const createFeed = async (content: string) => {
   }
 };
 
+export const deleteFeed = async (postId: number | undefined) => {
+  if (!postId) return;
+
+  try {
+    const response = await GSBackendClient.delete(`/boards/${postId}`);
+
+    console.log(response.data);
+  } catch (error) {
+    console.log('deleteFeed error: ', error);
+  }
+};
+
+export const editFeed = async (postId: number, content: string) => {
+  try {
+    const response = await GSBackendClient.put(`/boards/${postId}`, {
+      content,
+    });
+
+    console.log(response.data);
+  } catch (error) {
+    console.log('editFeed error: ', error);
+  }
+};
+
 export const createProfessorFeed = async (
   content: string,
   profId: number | null | undefined,

@@ -2,27 +2,26 @@ import React from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import ActionSheet, { ActionSheetRef } from 'react-native-actions-sheet';
 
-import Spacer from '@components/common/Spacer';
-
 import { COLORS } from '@styles/colors';
 
 interface FeedActionsModalProps {
   actionSheetRef: React.RefObject<ActionSheetRef>;
-  // currentRating: number;
-  // setCurrentRating: React.Dispatch<React.SetStateAction<number>>;
-  // rate: () => void;
+  handleFeedDeletePress: () => void;
+  handleFeedEditPress: () => void;
 }
 
 export default function FeedActionsModal({
   actionSheetRef,
+  handleFeedDeletePress,
+  handleFeedEditPress,
 }: FeedActionsModalProps) {
   return (
     <ActionSheet
       ref={actionSheetRef}
       containerStyle={styles.actionSheetContainer}
     >
-      <Action title="수정" onPress={() => {}} />
-      <Action title="삭제" onPress={() => {}} destructive={true} />
+      <Action title="수정" onPress={handleFeedEditPress} />
+      <Action title="삭제" onPress={handleFeedDeletePress} destructive={true} />
     </ActionSheet>
   );
 }
