@@ -1,4 +1,10 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import {
   GestureResponderEvent,
   ScrollView,
@@ -70,7 +76,7 @@ export default function CategorySelectModal({
             <ProfessorSearch handleCategoryPress={handleCategoryPress} />
           </>
         ) : (
-          <View>
+          <>
             <GSBottomModalHeader
               title={'카테고리 선택'}
               rightComponent={<GSIcon name="close-outline" />}
@@ -86,7 +92,7 @@ export default function CategorySelectModal({
               category={FEED_CATEGORIES.SEARCH_PROFESSOR}
               onPress={handleProfessorSearchPress}
             />
-          </View>
+          </>
         )}
       </View>
     </ActionSheet>
@@ -122,7 +128,6 @@ const ProfessorSearch = ({
         setNoSearchResult={setNoSearchResult}
         setSearchResults={setSearchResults}
       />
-
       <Spacer type="height" value={20} />
       <ProfessorSearchResults
         noSearchResult={noSearchResult}
@@ -140,6 +145,7 @@ const ProfessorSearchBar = ({
   setNoSearchResult: Dispatch<SetStateAction<boolean>>;
   setSearchResults: Dispatch<SetStateAction<Array<Professor>>>;
 }) => {
+  const textInputRef = useRef<TextInput>();
   const [searchText, setSearchText] = useState<string>('');
 
   const handleSearchSubmit = async () => {
@@ -157,9 +163,16 @@ const ProfessorSearchBar = ({
     setNoSearchResult(false);
   };
 
+  useEffect(() => {
+    if (textInputRef.current) {
+      textInputRef.current.focus();
+    }
+  }, []);
+
   return (
     <View style={styles.searchBarContainer}>
       <TextInput
+        ref={textInputRef}
         style={styles.searchTextInput}
         placeholder="교수님을 검색하세요."
         placeholderTextColor={'#999999'}
