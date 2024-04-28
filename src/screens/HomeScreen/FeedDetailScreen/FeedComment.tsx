@@ -11,15 +11,38 @@ import Spacer from '@components/common/Spacer';
 import { COLORS } from '@styles/colors';
 import { type FeedComment } from 'types/searchTypes';
 
+interface FeedCommentProps {
+  commentData: FeedComment;
+  setUpdateFeed: Dispatch<SetStateAction<boolean>>;
+}
+
 export default function FeedComment({
   commentData,
-}: {
+  setUpdateFeed,
   commentData: FeedComment;
-}) {
+}: FeedCommentProps) {
   if (commentData === null) return <View />;
 
-  const { content, commentLike, commentChildren, regDate, memberName } =
-    commentData;
+  const {
+    postId,
+    commentId,
+    content,
+    commentLike,
+    commentChildren,
+    regDate,
+    isCommentLike,
+    nickName,
+  } = commentData;
+
+  const handleLikePress = async () => {
+    if (isCommentLike) {
+      await likeCommentCancel(commentId, postId);
+    } else {
+      await likeComment(commentId, postId);
+    }
+
+    setUpdateFeed(prev => !prev);
+  };
 
   return (
     <View>
@@ -30,6 +53,7 @@ export default function FeedComment({
       <CommentFooter
         likeCount={commentLike}
         commentChildrenCount={commentChildren.length}
+        handleLikePress={handleLikePress}
       />
       <Spacer type="height" value={15} />
       {commentChildren.map((commentChild, index) => {
@@ -63,19 +87,24 @@ const CommentBody = ({ content }: { content: string }) => {
 const CommentFooter = ({
   likeCount,
   commentChildrenCount,
+  handleLikePress,
 }: {
   likeCount: number | null;
   commentChildrenCount: number;
+  handleLikePress: () => void;
 }) => {
   const iconTextGap = 3;
 
   return (
     <View style={styles.footerContainer}>
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+      <TouchableOpacity
+        style={{ flexDirection: 'row', alignItems: 'center' }}
+        onPress={handleLikePress}
+      >
         <GSIcon name="heart" size={20} color="tomato" />
         <Spacer type="width" value={iconTextGap} />
         <Text style={styles.iconText}>{likeCount || 0}</Text>
-      </View>
+      </TouchableOpacity>
 
       <Spacer type="width" value={15} />
 

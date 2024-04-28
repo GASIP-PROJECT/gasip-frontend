@@ -26,6 +26,8 @@ export interface FeedComment {
   postId: number;
   regDate: string;
   updateDate: string;
+  isCommentLike: boolean | null;
+  nickName: string;
 }
 
 export interface Professor {

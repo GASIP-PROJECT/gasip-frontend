@@ -215,21 +215,24 @@ export const createComment = async (postId: number, content: string) => {
   }
 };
 
-export const likeComment = async (commentId: number) => {
+export const likeComment = async (commentId: number, postId: number) => {
+  console.log(commentId, postId);
   try {
     const response = await GSBackendClient.post(`/comments/likes`, {
       commentId,
+      postId,
     });
   } catch (error) {
     console.log('likeComment error: ', error);
   }
 };
 
-export const likeCommentCancel = async (commentId: number) => {
+export const likeCommentCancel = async (commentId: number, postId: number) => {
   try {
     const response = await GSBackendClient.delete(`/comments/likes`, {
       data: {
         commentId,
+        postId,
       },
     });
   } catch (error) {
