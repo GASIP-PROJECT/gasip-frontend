@@ -1,6 +1,7 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { Dispatch, SetStateAction } from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
+import { likeComment, likeCommentCancel } from '@api/index';
 import { getTimeDifference } from '@utils/timeUtil';
 
 import FeedCommentReply from './FeedCommentReply';
@@ -14,12 +15,13 @@ import { type FeedComment } from 'types/searchTypes';
 interface FeedCommentProps {
   commentData: FeedComment;
   setUpdateFeed: Dispatch<SetStateAction<boolean>>;
+  handleReplyCommentPress: (commentId: number, commentNickname: string) => void;
 }
 
 export default function FeedComment({
   commentData,
   setUpdateFeed,
-  commentData: FeedComment;
+  handleReplyCommentPress,
 }: FeedCommentProps) {
   if (commentData === null) return <View />;
 
@@ -44,9 +46,13 @@ export default function FeedComment({
     setUpdateFeed(prev => !prev);
   };
 
+  const handleReplyButtonPress = () => {
+    handleReplyCommentPress(commentId, nickName);
+  };
+
   return (
     <View>
-      <CommentHeader regDate={regDate} commenterNickname={memberName} />
+      <CommentHeader regDate={regDate} commenterNickname={nickName} />
       <Spacer type="height" value={5} />
       <CommentBody content={content} />
       <Spacer type="height" value={10} />
@@ -54,6 +60,7 @@ export default function FeedComment({
         likeCount={commentLike}
         commentChildrenCount={commentChildren.length}
         handleLikePress={handleLikePress}
+        handleReplyButtonPress={handleReplyButtonPress}
       />
       <Spacer type="height" value={15} />
       {commentChildren.map((commentChild, index) => {
@@ -88,10 +95,12 @@ const CommentFooter = ({
   likeCount,
   commentChildrenCount,
   handleLikePress,
+  handleReplyButtonPress,
 }: {
   likeCount: number | null;
   commentChildrenCount: number;
   handleLikePress: () => void;
+  handleReplyButtonPress: () => void;
 }) => {
   const iconTextGap = 3;
 
@@ -113,6 +122,15 @@ const CommentFooter = ({
         <Spacer type="width" value={iconTextGap} />
         <Text style={styles.iconText}>{commentChildrenCount}</Text>
       </View>
+
+      <Spacer type="width" value={15} />
+
+      <TouchableOpacity
+        style={{ flexDirection: 'row', alignItems: 'center' }}
+        onPress={handleReplyButtonPress}
+      >
+        <Text style={styles.iconText}>답글달기</Text>
+      </TouchableOpacity>
     </View>
   );
 };

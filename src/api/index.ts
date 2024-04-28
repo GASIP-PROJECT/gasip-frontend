@@ -215,6 +215,21 @@ export const createComment = async (postId: number, content: string) => {
   }
 };
 
+export const createCommentReply = async (
+  postId: number,
+  content: string,
+  parentId: number,
+) => {
+  try {
+    const response = await GSBackendClient.post(`/comments/${postId}`, {
+      content,
+      parentId,
+    });
+  } catch (error) {
+    console.log('createCommentReply error: ', error);
+  }
+};
+
 export const likeComment = async (commentId: number, postId: number) => {
   console.log(commentId, postId);
   try {

@@ -3,13 +3,14 @@ import {
   Keyboard,
   Platform,
   StyleSheet,
+  Text,
   TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { createComment } from '@api/index';
+import { createComment, createCommentReply } from '@api/index';
 
 import GSIcon from '@components/common/GSIcon';
 import Spacer from '@components/common/Spacer';
@@ -18,14 +19,19 @@ import { COLORS } from '@styles/colors';
 
 interface FeedReplyInputProps {
   postId: number;
+  replyCommentId: number | null;
+  commentTextInputRef: React.RefObject<TextInput>;
   setUpdateFeed: Dispatch<SetStateAction<boolean>>;
+  resetReplyCommentData: () => void;
 }
 
 export default function FeedReplyInput({
   postId,
+  replyCommentId,
+  commentTextInputRef,
   setUpdateFeed,
+  resetReplyCommentData,
 }: FeedReplyInputProps) {
-  const textInputRef = useRef<TextInput>(null);
   const { bottom: bottomSafeAreaPadding } = useSafeAreaInsets();
 
   const [newComment, setNewComment] = useState('');
@@ -33,14 +39,21 @@ export default function FeedReplyInput({
   const handleCommentSubmit = async () => {
     if (newComment === '') return;
 
-    if (textInputRef.current) {
+    if (commentTextInputRef.current) {
       Keyboard.dismiss();
-      textInputRef.current.blur();
-      textInputRef.current.clear();
+      commentTextInputRef.current.blur();
+      commentTextInputRef.current.clear();
+    }
+
+    if (replyCommentId) {
+      // 대댓글
+      await createCommentReply(postId, newComment, replyCommentId);
+      resetReplyCommentData();
+    } else {
+      await createComment(postId, newComment);
     }
 
     setNewComment('');
-    await createComment(postId, newComment);
     setUpdateFeed(prev => !prev);
   };
 
@@ -49,7 +62,7 @@ export default function FeedReplyInput({
       {Platform.OS === 'ios' ? (
         <View>
           <TextInput
-            ref={textInputRef}
+            ref={commentTextInputRef}
             style={styles.textInput}
             placeholder="댓글을 입력해주세요."
             placeholderTextColor={'#ffffff'}
@@ -69,7 +82,7 @@ export default function FeedReplyInput({
       ) : (
         <View>
           <TextInput
-            ref={textInputRef}
+            ref={commentTextInputRef}
             style={styles.textInput}
             placeholder="댓글을 입력해주세요."
             placeholderTextColor={'#ffffff'}
@@ -98,8 +111,6 @@ const styles = StyleSheet.create({
     height: 90,
     backgroundColor: '#3e3b3b',
     paddingHorizontal: 16,
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
     justifyContent: 'center',
   },
   textInput: {
