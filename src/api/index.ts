@@ -254,8 +254,25 @@ export const createCommentReply = async (
   }
 };
 
+export const deleteComment = async (commentId: number) => {
+  try {
+    const response = await GSBackendClient.delete(`/comments/${commentId}`);
+  } catch (error) {
+    console.log('deleteComment error: ', error);
+  }
+};
+
+export const editComment = async (commentId: number, content: string) => {
+  try {
+    const response = await GSBackendClient.put(`/comments/${commentId}`, {
+      content,
+    });
+  } catch (error) {
+    console.log('editComment error: ', error);
+  }
+};
+
 export const likeComment = async (commentId: number, postId: number) => {
-  console.log(commentId, postId);
   try {
     const response = await GSBackendClient.post(`/comments/likes`, {
       commentId,

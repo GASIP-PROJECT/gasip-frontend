@@ -1,13 +1,14 @@
-import React, { Dispatch, SetStateAction, useRef } from 'react';
+import React, { Dispatch, SetStateAction, useRef, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ActionSheetRef } from 'react-native-actions-sheet';
 
 import { MMKVStorage } from '@api/mmkv';
-import { likeComment, likeCommentCancel } from '@api/index';
+import { deleteComment, likeComment, likeCommentCancel } from '@api/index';
 import { getTimeDifference } from '@utils/timeUtil';
 
 import FeedCommentReply from './FeedCommentReply';
 import FeedActionsModal from './FeedActionsModal';
+import CommentEditModal from './CommentEditModal';
 
 import GSIcon from '@components/common/GSIcon';
 import Spacer from '@components/common/Spacer';
@@ -41,6 +42,7 @@ export default function FeedComment({
   } = commentData;
 
   const actionSheetRef = useRef<ActionSheetRef>(null);
+  const [showCommentEditModal, setShowCommentEditModal] = useState(false);
 
   const handleLikePress = async () => {
     if (isCommentLike) {
@@ -59,6 +61,19 @@ export default function FeedComment({
   // TODO - commentAction과 feedAction 분리 필요
   const openCommentActionsModal = () => {
     actionSheetRef?.current?.show();
+  };
+
+  const handleCommentDeletePress = async () => {
+    actionSheetRef.current?.hide();
+    await deleteComment(commentId);
+    setUpdateFeed(prev => !prev);
+  };
+
+  const handleCommentEditPress = async () => {
+    actionSheetRef.current?.hide();
+    setTimeout(() => {
+      setShowCommentEditModal(true);
+    }, 500);
   };
 
   return (
@@ -84,9 +99,16 @@ export default function FeedComment({
       })}
       <FeedActionsModal
         actionSheetRef={actionSheetRef}
-        handleFeedDeletePress={() => {}}
-        handleFeedEditPress={() => {}}
+        handleFeedDeletePress={handleCommentDeletePress}
+        handleFeedEditPress={handleCommentEditPress}
         paddingBottom={30}
+      />
+      <CommentEditModal
+        isVisible={showCommentEditModal}
+        commentId={commentId}
+        prevComment={content}
+        setIsVisible={setShowCommentEditModal}
+        setUpdateFeed={setUpdateFeed}
       />
     </View>
   );
