@@ -70,22 +70,23 @@ export default function CategorySelectModal({
             <ProfessorSearch handleCategoryPress={handleCategoryPress} />
           </>
         ) : (
-          <>
+          <View>
             <GSBottomModalHeader
               title={'카테고리 선택'}
               rightComponent={<GSIcon name="close-outline" />}
               onRightComponentPress={closeCategorySelectModal}
             />
-            <Spacer type="height" value={10} />
+            <Spacer type="height" value={20} />
             <CategoryButton
               category={FEED_CATEGORIES.FREE}
               onPress={() => handleCategoryPress(FEED_CATEGORIES.FREE)}
             />
+            <Spacer type="height" value={10} />
             <CategoryButton
               category={FEED_CATEGORIES.SEARCH_PROFESSOR}
               onPress={handleProfessorSearchPress}
             />
-          </>
+          </View>
         )}
       </View>
     </ActionSheet>
@@ -231,9 +232,10 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
+    flexDirection: 'row',
   },
   categoryButtonText: {
-    color: COLORS.WHITE,
+    color: '#a9a9a9',
     fontSize: 16,
     fontWeight: '700',
   },
