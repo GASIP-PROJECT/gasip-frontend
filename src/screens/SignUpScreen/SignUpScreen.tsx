@@ -70,8 +70,10 @@ const SignUpScreen = () => {
   const handleButtonPress = async () => {
     try {
       const userEmailPrefix = useremail;
-      const defaultEmailSuffix = '@naver.com'; // 기본 이메일 도메인 나중에 @gachon.ac.kr 로 변경하기
-      const userEmail = `${userEmailPrefix}${defaultEmailSuffix}`;
+      const defaultEmailSuffix = '@hanmail.net'; // 기본 이메일 도메인 나중에 @gachon.ac.kr 로 변경하기
+      // const userEmail = `${userEmailPrefix}${defaultEmailSuffix}`;
+      // TODO - 테스트용으로 이메일 전체 주소말고 앞단에 입력하는 값으로 처리하도록 설정
+      const userEmail = `${userEmailPrefix}`;
       const response = await fetch(
         `https://gasip.site/members/emails/verification-requests?email=${encodeURIComponent(
           userEmail,
