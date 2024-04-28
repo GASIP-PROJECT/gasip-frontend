@@ -1,10 +1,13 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction, useRef } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ActionSheetRef } from 'react-native-actions-sheet';
 
+import { MMKVStorage } from '@api/mmkv';
 import { likeComment, likeCommentCancel } from '@api/index';
 import { getTimeDifference } from '@utils/timeUtil';
 
 import FeedCommentReply from './FeedCommentReply';
+import FeedActionsModal from './FeedActionsModal';
 
 import GSIcon from '@components/common/GSIcon';
 import Spacer from '@components/common/Spacer';
@@ -34,7 +37,10 @@ export default function FeedComment({
     regDate,
     isCommentLike,
     nickName,
+    memberId,
   } = commentData;
+
+  const actionSheetRef = useRef<ActionSheetRef>(null);
 
   const handleLikePress = async () => {
     if (isCommentLike) {
@@ -50,9 +56,19 @@ export default function FeedComment({
     handleReplyCommentPress(commentId, nickName);
   };
 
+  // TODO - commentAction과 feedAction 분리 필요
+  const openCommentActionsModal = () => {
+    actionSheetRef?.current?.show();
+  };
+
   return (
     <View>
-      <CommentHeader regDate={regDate} commenterNickname={nickName} />
+      <CommentHeader
+        regDate={regDate}
+        commenterNickname={nickName}
+        memberId={memberId}
+        openCommentActionsModal={openCommentActionsModal}
+      />
       <Spacer type="height" value={5} />
       <CommentBody content={content} />
       <Spacer type="height" value={10} />
@@ -66,6 +82,12 @@ export default function FeedComment({
       {commentChildren.map((commentChild, index) => {
         return <FeedCommentReply key={index.toString()} reply={commentChild} />;
       })}
+      <FeedActionsModal
+        actionSheetRef={actionSheetRef}
+        handleFeedDeletePress={() => {}}
+        handleFeedEditPress={() => {}}
+        paddingBottom={30}
+      />
     </View>
   );
 }
@@ -73,17 +95,31 @@ export default function FeedComment({
 const CommentHeader = ({
   regDate,
   commenterNickname,
+  memberId,
+  openCommentActionsModal,
 }: {
   regDate: string;
   commenterNickname: string;
+  memberId: number;
+  openCommentActionsModal: () => void;
 }) => {
   const timeString = getTimeDifference(regDate);
+  const isCurrentUserCommentAuthor =
+    memberId === MMKVStorage.getNumber('memberId');
 
   return (
-    <Text style={styles.commentHeaderText}>
-      <Text style={{ color: '#B4B4B3' }}>{commenterNickname}</Text> |{' '}
-      {timeString}
-    </Text>
+    <View style={styles.commentHeaderContainer}>
+      <Text style={styles.commentHeaderText}>
+        <Text style={{ color: '#B4B4B3' }}>{commenterNickname}</Text> |{' '}
+        {timeString}
+      </Text>
+
+      {isCurrentUserCommentAuthor && (
+        <TouchableOpacity onPress={openCommentActionsModal}>
+          <GSIcon name="ellipsis-horizontal" color="#B4B4B3" size={20} />
+        </TouchableOpacity>
+      )}
+    </View>
   );
 };
 
@@ -153,5 +189,11 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: '#B6BBC4',
     fontWeight: '500',
+  },
+  commentHeaderContainer: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
 });

@@ -2,18 +2,22 @@ import React from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import ActionSheet, { ActionSheetRef } from 'react-native-actions-sheet';
 
+import Spacer from '@components/common/Spacer';
+
 import { COLORS } from '@styles/colors';
 
 interface FeedActionsModalProps {
   actionSheetRef: React.RefObject<ActionSheetRef>;
   handleFeedDeletePress: () => void;
   handleFeedEditPress: () => void;
+  paddingBottom?: number;
 }
 
 export default function FeedActionsModal({
   actionSheetRef,
   handleFeedDeletePress,
   handleFeedEditPress,
+  paddingBottom = 0,
 }: FeedActionsModalProps) {
   return (
     <ActionSheet
@@ -22,6 +26,7 @@ export default function FeedActionsModal({
     >
       <Action title="수정" onPress={handleFeedEditPress} />
       <Action title="삭제" onPress={handleFeedDeletePress} destructive={true} />
+      <Spacer type="height" value={paddingBottom} />
     </ActionSheet>
   );
 }
