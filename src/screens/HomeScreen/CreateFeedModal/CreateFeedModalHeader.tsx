@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 
 import { NewFeedContext } from '@contexts/NewFeedContext';
 
@@ -10,8 +10,10 @@ import { COLORS } from '@styles/colors';
 
 export default function CreateFeedModalHeader({
   feedContent,
+  handleCreateFeedPress,
 }: {
   feedContent: string;
+  handleCreateFeedPress: () => void;
 }) {
   const { setShowCreateFeedModal } = useContext(NewFeedContext);
 
@@ -21,9 +23,9 @@ export default function CreateFeedModalHeader({
       leftComponent={<GSIcon name="close-outline" />}
       onLeftComponentPress={() => setShowCreateFeedModal(false)}
       rightComponent={
-        <Text style={styles.letterCountText}>
-          {feedContent.length || 0}/500
-        </Text>
+        <TouchableOpacity onPress={handleCreateFeedPress}>
+          <Text style={styles.letterCountText}>완료</Text>
+        </TouchableOpacity>
       }
     />
   );
@@ -50,6 +52,7 @@ const styles = StyleSheet.create({
   },
   letterCountText: {
     color: COLORS.WHITE,
-    fontSize: 12,
+    fontSize: 16,
+    fontWeight: '600',
   },
 });
