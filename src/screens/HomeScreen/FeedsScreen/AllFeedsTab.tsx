@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { FlatList, View } from 'react-native';
+import { FlatList, RefreshControl, View } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 
 import { getAllFeeds } from '@api/index';
@@ -10,6 +10,7 @@ import FeedSummary from './FeedSummary';
 import Spacer from '@components/common/Spacer';
 
 import { type Feed } from 'types/searchTypes';
+import { COLORS } from '@styles/colors';
 
 export default function AllFeedsTab() {
   const { toggleToUpdateFeedsList } = useContext(NewFeedContext);
@@ -17,6 +18,7 @@ export default function AllFeedsTab() {
 
   const [page, setPage] = useState(0);
   const [feedsList, setFeedsList] = useState<Feed[] | []>([]);
+  const [refreshing, setRefreshing] = useState(false);
 
   const scrollToTop = () => {
     if (flatListRef.current) {
@@ -54,6 +56,14 @@ export default function AllFeedsTab() {
     }, []),
   );
 
+  const onRefresh = async () => {
+    setRefreshing(true);
+    fetchFeeds();
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1000); // Refresh indicator will be visible for at least 1 second
+  };
+
   return (
     <View>
       <FlatList
@@ -64,6 +74,14 @@ export default function AllFeedsTab() {
           <FeedSummary feedData={item} />
         )}
         onEndReached={onListEndReached}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            colors={[COLORS.WHITE]}
+            tintColor={COLORS.WHITE}
+          />
+        }
         keyExtractor={(item, index) => index.toString()}
         ItemSeparatorComponent={() => <Spacer type="height" value={15} />}
         ListFooterComponent={() => <Spacer type="height" value={150} />}
