@@ -74,7 +74,10 @@ export default function CreateFeedModal() {
     >
       <SafeAreaLayout>
         <View style={styles.container}>
-          <CreateFeedModalHeader feedContent={feedContent} />
+          <CreateFeedModalHeader
+            feedContent={feedContent}
+            handleCreateFeedPress={handleCreateFeedPress}
+          />
           <Spacer type="height" value={10} />
           <FeedCategorySelector
             selectedCategory={selectedCategory}
@@ -89,7 +92,6 @@ export default function CreateFeedModal() {
           {/* <CreateFeedModalPolicy /> */}
         </View>
 
-        <GSButton buttonText="공유" onPress={handleCreateFeedPress} />
         <CategorySelectModal
           actionSheetRef={categorySelectModalRef}
           setSelectedCategory={setSelectedCategory}

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { FlatList, RefreshControl, StyleSheet, View } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 
 import { getPopularFeeds } from '@api/index';
@@ -8,6 +8,7 @@ import { NewFeedContext } from '@contexts/NewFeedContext';
 import FeedSummary from '@screens/HomeScreen/FeedsScreen/FeedSummary';
 
 import { type Feed } from 'types/searchTypes';
+import { COLORS } from '@styles/colors';
 
 export default function TopFeedsTab() {
   const { toggleToUpdateFeedsList } = useContext(NewFeedContext);
@@ -15,6 +16,7 @@ export default function TopFeedsTab() {
 
   const [page, setPage] = useState(0);
   const [popularFeedsList, setPopularFeedsList] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
 
   const scrollToTop = () => {
     if (flatListRef.current) {
@@ -53,6 +55,14 @@ export default function TopFeedsTab() {
     }, []),
   );
 
+  const onRefresh = async () => {
+    setRefreshing(true);
+    fetchFeeds();
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1000); // Refresh indicator will be visible for at least 1 second
+  };
+
   return (
     <View>
       <FlatList
@@ -60,6 +70,14 @@ export default function TopFeedsTab() {
         renderItem={({ item }: { item: Feed }) => (
           <FeedSummary feedData={item} />
         )}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            colors={[COLORS.WHITE]}
+            tintColor={COLORS.WHITE}
+          />
+        }
         keyExtractor={(item, index) => index.toString()}
         onEndReached={onListEndReached}
         ItemSeparatorComponent={() => <View style={{ height: 15 }} />}
@@ -68,5 +86,3 @@ export default function TopFeedsTab() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({});
