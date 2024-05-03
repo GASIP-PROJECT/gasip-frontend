@@ -4,4 +4,11 @@ export const COLORS = {
   BLACK: '#000000',
   BTN_MAIN: '#4490D8',
   BG_MAIN: '#1A1A1A',
+  GRAY_50: '#F7F8F9',
+  GRAY_100: '#E8EBED',
+  GRAY_200: '#C9CDD2',
+  GRAY_400: '#9EA4AA',
+  GRAY_500: '#72787F',
+  GRAY_800: '#26282B',
+  GRAY_900: '#1B1D1F',
 };
