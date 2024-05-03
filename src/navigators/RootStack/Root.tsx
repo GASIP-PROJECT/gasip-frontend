@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import BootSplash from 'react-native-bootsplash';
 
 import { MMKVStorage } from '@api/mmkv';
 import { useAuth } from '@contexts/AuthContext';
 
 import BottomTabNavigator from '@navigators/BottomTabNavigator';
 
-import SplashScreen from '@screens/SplashScreen';
 import LoginScreen from '@screens/LoginScreen/LoginScreen';
 import SignUpScreen from '@screens/SignUpScreen/SignUpScreen';
 import CreateFeedModal from '@screens/HomeScreen/CreateFeedModal/CreateFeedModal';
@@ -46,17 +46,20 @@ export default function Root() {
     }
   };
 
+  const hideBootSplash = async () => {
+    await BootSplash.hide({ fade: true });
+  };
+
   useEffect(() => {
     console.log('App launch');
     // 최초 앱 로딩 시 처리
+    authenticateUser();
 
     // keychain에 저장된 토큰 값 존재 검사 및 유효성 확인
     setTimeout(() => {
-      authenticateUser();
-    }, 1000);
+      hideBootSplash();
+    }, 500);
   }, []);
-
-  if (authState.isLoading) return <SplashScreen />;
 
   return (
     <NavigationContainer theme={{ colors: { background: COLORS.BG_MAIN } }}>
