@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   FlatList,
+  Image,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -10,6 +11,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import FeedSummary from '@screens/HomeScreen/FeedsScreen/FeedSummary';
 
+import GSText from '@components/common/GSText';
 import Spacer from '@components/common/Spacer';
 
 import {
@@ -17,6 +19,8 @@ import {
   type Professor,
   type SearchResult,
 } from 'types/searchTypes';
+import { COLORS } from '@styles/colors';
+import icon_serach from '@assets/icon_search.png';
 
 // TODO - 컴포넌트 구조 뭔가 이상함. 수정 필요한 상태
 export default function SearchResults({
@@ -24,15 +28,16 @@ export default function SearchResults({
   searchResultType,
 }: {
   searchResults: SearchResult[];
-  searchResultType: 'Professor' | 'Content';
+  searchResultType: '교수님' | 'Content';
 }) {
   if (searchResults.length === 0) {
     return <View />;
   }
 
-  if (searchResultType === 'Professor') {
+  if (searchResultType === '교수님') {
     return (
-      <View>
+      <View style={styles.container}>
+        <Spacer type="height" value={24} />
         <ProfessorResults searchResult={searchResults as Professor[]} />
       </View>
     );
@@ -71,10 +76,13 @@ const ProfessorInfo = ({ professorData }: { professorData: Professor }) => {
           professorData: professorData,
         });
       }}
+      style={styles.searchResultItemContainer}
     >
-      <Text style={styles.professorInfo}>
+      <Image source={icon_serach} style={{ width: 24, height: 24 }} />
+      <Spacer type="width" value={10} />
+      <GSText style={styles.professorInfo}>
         {majorName} - {profName} 교수님
-      </Text>
+      </GSText>
     </TouchableOpacity>
   );
 };
@@ -87,7 +95,7 @@ const FeedResults = ({ searchResult }: { searchResult: Feed[] }) => {
         return <FeedSummary feedData={item} />;
       }}
       keyExtractor={(item, index) => index.toString()}
-      ItemSeparatorComponent={() => <Spacer type="height" value={10} />}
+      ItemSeparatorComponent={() => <Spacer type="height" value={12} />}
       ListFooterComponent={() => <Spacer type="height" value={150} />}
     />
   );
@@ -95,8 +103,23 @@ const FeedResults = ({ searchResult }: { searchResult: Feed[] }) => {
 
 const styles = StyleSheet.create({
   professorInfo: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: `#999999`,
+    fontSize: 16,
+    fontWeight: '500',
+    color: COLORS.BLACK,
+  },
+  searchResultItemContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  container: {
+    flex: 1,
+    borderTopRightRadius: 30,
+    borderTopLeftRadius: 30,
+    backgroundColor: COLORS.WHITE,
+    paddingHorizontal: 26,
+    shadowColor: COLORS.BLUE_PRIMARY,
+    shadowOffset: { width: 4, height: -10 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
   },
 });

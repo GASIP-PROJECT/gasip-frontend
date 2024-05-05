@@ -13,8 +13,6 @@ import icon_fire from '@assets/icon_fire.png';
 import icon_papers from '@assets/icon_papers.png';
 
 export default function HomeScreen() {
-  const [isSearchPageOpen, setIsSearchPageOpen] = useState<boolean>(false);
-
   return (
     <SafeAreaLayout noBottomPadding style={{ paddingHorizontal: 16 }}>
       <Spacer type="height" value={10} />
