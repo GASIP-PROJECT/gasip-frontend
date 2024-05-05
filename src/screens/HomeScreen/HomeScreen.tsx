@@ -19,11 +19,11 @@ export default function HomeScreen() {
   const [isSearchPageOpen, setIsSearchPageOpen] = useState<boolean>(false);
 
   return (
-    <SafeAreaLayout>
+    <SafeAreaLayout noBottomPadding>
+      <Spacer type="height" value={10} />
+      <HomeScreenHeader />
+      <Spacer type="height" value={24} />
       <ScrollView style={styles.container}>
-        <Spacer type="height" value={10} />
-        <HomeScreenHeader />
-        <Spacer type="height" value={24} />
         <SearchButton />
         <Spacer type="height" value={32} />
         <WriteProfessorReview />
@@ -31,15 +31,7 @@ export default function HomeScreen() {
         <HomeFeedList title="전체 피드" headerIcon={icon_papers} />
         <Spacer type="height" value={24} />
         <HomeFeedList title="인기글" headerIcon={icon_fire} />
-
-        {/* {isSearchPageOpen ? (
-          <SearchScreen
-            isSearchPageOpen={isSearchPageOpen}
-            setIsSearchPageOpen={setIsSearchPageOpen}
-          />
-        ) : (
-          <FeedsScreen />
-        )} */}
+        <Spacer type="height" value={100} />
       </ScrollView>
     </SafeAreaLayout>
   );

@@ -6,8 +6,7 @@ import BootSplash from 'react-native-bootsplash';
 import { MMKVStorage } from '@api/mmkv';
 import { useAuth } from '@contexts/AuthContext';
 
-import BottomTabNavigator from '@navigators/BottomTabNavigator';
-
+import HomeScreen from '@screens/HomeScreen/HomeScreen';
 import LoginScreen from '@screens/LoginScreen/LoginScreen';
 import SignUpScreen from '@screens/SignUpScreen/SignUpScreen';
 import CreateFeedModal from '@screens/HomeScreen/CreateFeedModal/CreateFeedModal';
@@ -66,7 +65,7 @@ export default function Root() {
       <RootStack.Navigator>
         {/* TODO - 조건 다시 수정, 작업 위해서 임시로 수정한 상태 */}
         {authState.userToken === null ? (
-          <>
+          <RootStack.Group>
             <RootStack.Screen
               name="LoginScreen"
               component={LoginScreen}
@@ -77,12 +76,12 @@ export default function Root() {
               component={SignUpScreen}
               options={{ headerShown: false }}
             />
-          </>
+          </RootStack.Group>
         ) : (
-          <>
+          <RootStack.Group>
             <RootStack.Screen
-              name="BottomTabNavigator"
-              component={BottomTabNavigator}
+              name="HomeScreen"
+              component={HomeScreen}
               options={{ headerShown: false }}
             />
             <RootStack.Screen
@@ -95,7 +94,7 @@ export default function Root() {
               component={ProfessorDetailScreen}
               options={{ headerShown: false }}
             />
-          </>
+          </RootStack.Group>
         )}
       </RootStack.Navigator>
       <CreateFeedModal />
