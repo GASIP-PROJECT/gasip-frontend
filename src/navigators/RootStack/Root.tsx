@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createStackNavigator } from '@react-navigation/stack';
+import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import BootSplash from 'react-native-bootsplash';
 
 import { MMKVStorage } from '@api/mmkv';
@@ -9,15 +9,22 @@ import { useAuth } from '@contexts/AuthContext';
 import HomeScreen from '@screens/HomeScreen/HomeScreen';
 import LoginScreen from '@screens/LoginScreen/LoginScreen';
 import SignUpScreen from '@screens/SignUpScreen/SignUpScreen';
+import SearchScreen from '@screens/HomeScreen/SearchScreen/SearchScreen';
 import CreateFeedModal from '@screens/HomeScreen/CreateFeedModal/CreateFeedModal';
 import FeedDetailScreen from '@screens/HomeScreen/FeedDetailScreen/FeedDetailScreen';
 import ProfessorDetailScreen from '@screens/HomeScreen/ProfessorScreen/ProfessorScreen';
 
-import { type StackParamList } from '@screens/navigationTypes';
-
 import { COLORS } from '@styles/colors';
 
-const RootStack = createNativeStackNavigator<StackParamList>();
+const RootStack = createStackNavigator();
+
+const themeColor = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    background: COLORS.BG_MAIN,
+  },
+};
 
 export default function Root() {
   const { authState, dispatch } = useAuth();
@@ -60,8 +67,20 @@ export default function Root() {
     }, 500);
   }, []);
 
+  const config = {
+    animation: 'spring',
+    config: {
+      stiffness: 500,
+      damping: 200,
+      mass: 3,
+      overshootClamping: true,
+      restDisplacementThreshold: 0.01,
+      restSpeedThreshold: 0.01,
+    },
+  };
+
   return (
-    <NavigationContainer theme={{ colors: { background: COLORS.BG_MAIN } }}>
+    <NavigationContainer theme={themeColor}>
       <RootStack.Navigator>
         {/* TODO - 조건 다시 수정, 작업 위해서 임시로 수정한 상태 */}
         {authState.userToken === null ? (
@@ -78,11 +97,18 @@ export default function Root() {
             />
           </RootStack.Group>
         ) : (
-          <RootStack.Group>
+          <RootStack.Group screenOptions={{ animation: 'default' }}>
             <RootStack.Screen
               name="HomeScreen"
               component={HomeScreen}
               options={{ headerShown: false }}
+            />
+            <RootStack.Screen
+              name="SearchScreen"
+              component={SearchScreen}
+              options={{
+                headerShown: false,
+              }}
             />
             <RootStack.Screen
               name="FeedDetailScreen"
