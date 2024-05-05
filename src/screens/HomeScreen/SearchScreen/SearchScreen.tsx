@@ -3,8 +3,10 @@ import { StyleSheet, View, Text } from 'react-native';
 
 import SearchBar from './SearchBar';
 import SearchResults from './SearchResults';
+import SearchScreenHeader from './SearchScreenHeader';
 
 import Spacer from '@components/common/Spacer';
+import SafeAreaLayout from '@components/common/SafeAreaLayout';
 
 import { COLORS } from '@styles/colors';
 import { type SearchResult } from 'types/searchTypes';
@@ -14,26 +16,25 @@ interface SearchScreenProps {
   setIsSearchPageOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-export default function SearchScreen({
-  isSearchPageOpen,
-  setIsSearchPageOpen,
-}: SearchScreenProps) {
+export default function SearchScreen() {
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const [noSearchResult, setNoSearchResult] = useState<boolean>(false);
   const [searchResultType, setSearchResultType] = useState<
-    'Professor' | 'Content'
-  >('Professor');
+    '교수님' | 'Content'
+  >('교수님');
 
   return (
-    <>
+    <SafeAreaLayout noBottomPadding style={{ paddingHorizontal: 16 }}>
+      <Spacer type="height" value={10} />
+      <SearchScreenHeader />
+      <Spacer type="height" value={24} />
       <SearchBar
-        setIsSearchPageOpen={setIsSearchPageOpen}
         setSearchResults={setSearchResults}
         setNoSearchResult={setNoSearchResult}
         searchResultType={searchResultType}
         setSearchResultType={setSearchResultType}
       />
-      <Spacer type="height" value={20} />
+      {/* <Spacer type="height" value={20} />
 
       {searchResults.length > 0 && (
         <SearchResults
@@ -41,9 +42,9 @@ export default function SearchScreen({
           searchResultType={searchResultType}
         />
       )}
-
-      {noSearchResult && <NoSearchResult />}
-    </>
+ 
+      {noSearchResult && <NoSearchResult />} */}
+    </SafeAreaLayout>
   );
 }
 

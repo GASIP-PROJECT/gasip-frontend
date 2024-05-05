@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 import GSText from '@components/common/GSText';
 
@@ -8,6 +9,12 @@ import icon_serach from '@assets/icon_search.png';
 
 // TODO - 컬러 팔레트 확정 후 컬러 변경 필요
 export default function SearchButton() {
+  const navigation = useNavigation();
+
+  const handleSearchButtonPress = () => {
+    navigation.navigate('SearchScreen');
+  };
+
   return (
     <TouchableOpacity
       style={[
@@ -15,6 +22,7 @@ export default function SearchButton() {
         styles.containerShadow,
         styles.containerElevation,
       ]}
+      onPress={handleSearchButtonPress}
     >
       <GSText style={styles.placeholderText}>
         교수님 or 학과를 입력해주세요.

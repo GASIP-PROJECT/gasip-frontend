@@ -6,6 +6,7 @@ export type StackParamList = {
   FeedDetailScreen: undefined;
   ProfessorDetailScreen: undefined;
   HomeScreen: undefined;
+  SearchScreen: undefined;
 };
 
 export type BottomTabParamList = {
