@@ -1,5 +1,7 @@
 import React from 'react';
-import { Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
+
+import GSText from './GSText';
 
 import { COLORS } from '@styles/colors';
 
@@ -18,7 +20,7 @@ interface GSButtonProps {
 export default function GSButton({
   buttonText,
   onPress,
-  bgColor = COLORS.BTN_MAIN,
+  bgColor = COLORS.BLUE_PRIMARY,
   btnTextColor = COLORS.WHITE,
   marginHorizontal = 16,
   disabled = false,
@@ -27,6 +29,8 @@ export default function GSButton({
     <TouchableOpacity
       style={[
         styles.container,
+        styles.buttonElevation,
+        styles.buttonShadow,
         {
           marginHorizontal: marginHorizontal,
           backgroundColor: disabled ? 'gray' : bgColor,
@@ -35,20 +39,33 @@ export default function GSButton({
       onPress={onPress}
       disabled={disabled}
     >
-      <Text style={[styles.text, { color: btnTextColor }]}>{buttonText}</Text>
+      <GSText style={[styles.text, { color: btnTextColor }]}>
+        {buttonText}
+      </GSText>
     </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    height: 50,
+    width: '100%',
+    height: 40,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 5,
+    borderRadius: 100,
+  },
+  buttonShadow: {
+    shadowColor: COLORS.BLACK,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+  },
+  buttonElevation: {
+    elevation: 5,
+    elevationColor: COLORS.BLACK,
   },
   text: {
-    fontSize: 18,
+    fontSize: 14,
     fontWeight: '700',
   },
 });
