@@ -9,10 +9,10 @@ import { useAuth } from '@contexts/AuthContext';
 import HomeScreen from '@screens/HomeScreen/HomeScreen';
 import LoginScreen from '@screens/LoginScreen/LoginScreen';
 import SignUpScreen from '@screens/SignUpScreen/SignUpScreen';
-import SearchScreen from '@screens/HomeScreen/SearchScreen/SearchScreen';
 import CreateFeedModal from '@screens/HomeScreen/CreateFeedModal/CreateFeedModal';
 import FeedDetailScreen from '@screens/HomeScreen/FeedDetailScreen/FeedDetailScreen';
 import ProfessorDetailScreen from '@screens/HomeScreen/ProfessorScreen/ProfessorScreen';
+import SearchScreenWithContext from '@screens/HomeScreen/SearchScreen/SearchScreenWithContext';
 
 import { COLORS } from '@styles/colors';
 
@@ -97,7 +97,7 @@ export default function Root() {
             />
           </RootStack.Group>
         ) : (
-          <RootStack.Group screenOptions={{ animation: 'default' }}>
+          <RootStack.Group>
             <RootStack.Screen
               name="HomeScreen"
               component={HomeScreen}
@@ -105,7 +105,7 @@ export default function Root() {
             />
             <RootStack.Screen
               name="SearchScreen"
-              component={SearchScreen}
+              component={SearchScreenWithContext}
               options={{
                 headerShown: false,
               }}

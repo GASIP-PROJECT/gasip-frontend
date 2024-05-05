@@ -1,5 +1,7 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
-import { StyleSheet, View, Text, Image } from 'react-native';
+import React from 'react';
+import { StyleSheet, View, Image, Button } from 'react-native';
+
+import { useSearchContext } from '@contexts/SearchContext';
 
 import SearchBar from './SearchBar';
 import SearchResults from './SearchResults';
@@ -10,44 +12,32 @@ import GSText from '@components/common/GSText';
 import SafeAreaLayout from '@components/common/SafeAreaLayout';
 
 import { COLORS } from '@styles/colors';
-import { type SearchResult } from 'types/searchTypes';
 
 import icon_x_face from '@assets/icon_x_face.png';
 
-interface SearchScreenProps {
-  isSearchPageOpen: boolean;
-  setIsSearchPageOpen: Dispatch<SetStateAction<boolean>>;
-}
-
 export default function SearchScreen() {
-  const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
-  const [noSearchResult, setNoSearchResult] = useState<boolean>(true);
-  const [searchResultType, setSearchResultType] = useState<
-    '교수님' | 'Content'
-  >('교수님');
+  const { searchResults, noSearchResult, setNoSearchResult } =
+    useSearchContext();
 
   return (
     <SafeAreaLayout noBottomPadding>
+      <Button
+        title=";ss"
+        onPress={() => {
+          setNoSearchResult(true);
+          console.log(searchResults, noSearchResult);
+        }}
+      />
       <View style={{ paddingHorizontal: 16 }}>
         <Spacer type="height" value={10} />
         <SearchScreenHeader />
         <Spacer type="height" value={24} />
-        <SearchBar
-          setSearchResults={setSearchResults}
-          setNoSearchResult={setNoSearchResult}
-          searchResultType={searchResultType}
-          setSearchResultType={setSearchResultType}
-        />
+        <SearchBar />
       </View>
 
       <Spacer type="height" value={30} />
 
-      {searchResults.length > 0 && (
-        <SearchResults
-          searchResults={searchResults}
-          searchResultType={searchResultType}
-        />
-      )}
+      {searchResults.length > 0 && <SearchResults />}
 
       {noSearchResult && <NoSearchResult />}
     </SafeAreaLayout>

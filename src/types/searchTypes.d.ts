@@ -1,3 +1,5 @@
+import { SEARCH_CATEGORY } from '@constants';
+
 export interface Feed {
   clickCount: number;
   content: string;
@@ -41,3 +43,7 @@ export interface Professor {
 }
 
 export type SearchResult = Feed | Professor;
+
+export type SearchCategoryType =
+  | typeof SEARCH_CATEGORY.PROFESSOR
+  | typeof SEARCH_CATEGORY.MAJOR;

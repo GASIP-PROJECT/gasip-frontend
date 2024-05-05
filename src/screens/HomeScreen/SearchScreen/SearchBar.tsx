@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Image,
   StyleSheet,
@@ -7,54 +7,35 @@ import {
   View,
 } from 'react-native';
 
-import { searchFeeds, searchProfessors } from '@api/index';
+import { useSearchContext } from '@contexts/SearchContext';
 
-import Spacer from '@components/common/Spacer';
 import GSText from '@components/common/GSText';
+import Spacer from '@components/common/Spacer';
 import GSRadioButton from '@components/common/GSRadioButton';
 
 import { COLORS } from '@styles/colors';
-import { type SearchResult } from 'types/searchTypes';
+import { SEARCH_CATEGORY } from '../../../constants';
+import { SearchCategoryType } from 'types/searchTypes';
 
 import icon_x_circle from '@assets/icon_x_circle.png';
 
-export default function SearchBar({
-  setSearchResults,
-  setNoSearchResult,
-  searchResultType,
-  setSearchResultType,
-}: {
-  setSearchResults: Dispatch<SetStateAction<SearchResult[]>>;
-  setNoSearchResult: Dispatch<SetStateAction<boolean>>;
-  searchResultType: '교수님' | '학부/학과';
-  setSearchResultType: Dispatch<SetStateAction<'교수님' | '학부/학과'>>;
-}) {
+export default function SearchBar() {
   const [searchText, setSearchText] = useState<string>('');
 
-  const handleSearchSubmit = async () => {
-    if (searchResultType === '교수님') {
-      const professors = await searchProfessors(searchText);
-      if (professors.length === 0) {
-        setNoSearchResult(true);
-      } else {
-        setNoSearchResult(false);
-      }
-      setSearchResults([...professors]);
-    }
-
-    if (searchResultType === '학부/학과') {
-      const feeds = await searchFeeds(searchText);
-      if (feeds.length === 0) {
-        setNoSearchResult(true);
-      } else {
-        setNoSearchResult(false);
-      }
-      setSearchResults([...feeds]);
-    }
-  };
+  const { setNoSearchResult, handleSearchSubmit, searchCategory } =
+    useSearchContext();
 
   const handleTextInputFocus = () => {
     setNoSearchResult(false);
+  };
+
+  const clearSearchText = () => {
+    setSearchText('');
+  };
+
+  const onSubmit = async () => {
+    console.log('submit!');
+    await handleSearchSubmit(searchText);
   };
 
   return (
@@ -65,65 +46,54 @@ export default function SearchBar({
           placeholder=" 먼저 교수님 or 학과를 선택해주세요"
           placeholderTextColor={COLORS.GRAY_400}
           onChangeText={text => setSearchText(text)}
-          onSubmitEditing={handleSearchSubmit}
+          onSubmitEditing={onSubmit}
           onFocus={handleTextInputFocus}
+          value={searchText}
           autoFocus
         />
 
-        <TouchableOpacity
-          style={styles.searchIconContainer}
-          hitSlop={{ top: 8, bottom: 8, right: 8, left: 8 }}
-        >
-          <Image source={icon_x_circle} style={{ width: 24, height: 24 }} />
-        </TouchableOpacity>
+        {searchText !== '' && (
+          <TouchableOpacity
+            style={styles.searchIconContainer}
+            hitSlop={{ top: 8, bottom: 8, right: 8, left: 8 }}
+            onPress={clearSearchText}
+          >
+            <Image source={icon_x_circle} style={{ width: 24, height: 24 }} />
+          </TouchableOpacity>
+        )}
       </View>
 
       <Spacer type="height" value={16} />
 
       <View style={{ flexDirection: 'row' }}>
-        <SearchResultTypeSelector
-          typeName="교수님"
-          searchResultType={searchResultType}
-          setSearchResultType={setSearchResultType}
-          setSearchResults={setSearchResults}
-        />
+        <SearchResultTypeSelector category={SEARCH_CATEGORY.PROFESSOR} />
         <Spacer type="width" value={10} />
-        <SearchResultTypeSelector
-          typeName="학부/학과"
-          searchResultType={searchResultType}
-          setSearchResultType={setSearchResultType}
-          setSearchResults={setSearchResults}
-        />
+        <SearchResultTypeSelector category={SEARCH_CATEGORY.MAJOR} />
       </View>
     </>
   );
 }
 
-interface SearchResultTypeSelectorProps {
-  typeName: '교수님' | '학부/학과';
-  searchResultType: 'Professor' | 'Content';
-  setSearchResultType: Dispatch<SetStateAction<'교수님' | '학부/학과'>>;
-  setSearchResults: Dispatch<SetStateAction<SearchResult[]>>;
-}
-
 const SearchResultTypeSelector = ({
-  typeName,
-  searchResultType,
-  setSearchResultType,
-  setSearchResults,
-}: SearchResultTypeSelectorProps) => {
-  const isSelected = typeName === searchResultType;
+  category,
+}: {
+  category: SearchCategoryType;
+}) => {
+  const { setSearchResults, searchCategory, setSearchCategory } =
+    useSearchContext();
+
+  const isSelected = category === searchCategory;
 
   const handleTypePress = () => {
     setSearchResults([]);
-    setSearchResultType(typeName);
+    setSearchCategory(category);
   };
 
   return (
     <View style={styles.searchResultTypeContainer}>
       <GSRadioButton isSelected={isSelected} onPress={handleTypePress} />
       <Spacer type="width" value={5} />
-      <GSText style={styles.searchResultTypeText}>{typeName}</GSText>
+      <GSText style={styles.searchResultTypeText}>{category}</GSText>
     </View>
   );
 };
@@ -140,8 +110,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: COLORS.WHITE,
-    color: COLORS.BLUE_LIGHT_100,
+    color: COLORS.BLACK,
     fontSize: 16,
+    shadowColor: COLORS.BLUE_LIGHT_100,
+    shadowOffset: { width: 4, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 5,
   },
   cancelButton: {
     justifyContent: 'center',

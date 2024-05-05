@@ -3,57 +3,54 @@ import {
   FlatList,
   Image,
   StyleSheet,
-  Text,
   TouchableOpacity,
   View,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+
+import { useSearchContext } from '@contexts/SearchContext';
 
 import FeedSummary from '@screens/HomeScreen/FeedsScreen/FeedSummary';
 
 import GSText from '@components/common/GSText';
 import Spacer from '@components/common/Spacer';
 
-import {
-  type Feed,
-  type Professor,
-  type SearchResult,
-} from 'types/searchTypes';
+import { SEARCH_CATEGORY } from '../../../constants';
+
 import { COLORS } from '@styles/colors';
 import icon_serach from '@assets/icon_search.png';
+import { type Feed, type Professor } from 'types/searchTypes';
 
 // TODO - 컴포넌트 구조 뭔가 이상함. 수정 필요한 상태
-export default function SearchResults({
-  searchResults,
-  searchResultType,
-}: {
-  searchResults: SearchResult[];
-  searchResultType: '교수님' | 'Content';
-}) {
+export default function SearchResults() {
+  const { searchResults, searchCategory } = useSearchContext();
+
   if (searchResults.length === 0) {
     return <View />;
   }
 
-  if (searchResultType === '교수님') {
+  if (searchCategory === SEARCH_CATEGORY.PROFESSOR) {
     return (
       <View style={styles.container}>
         <Spacer type="height" value={24} />
-        <ProfessorResults searchResult={searchResults as Professor[]} />
+        <ProfessorResults />
       </View>
     );
   }
 
   return (
     <View>
-      <FeedResults searchResult={searchResults as Feed[]} />
+      <FeedResults />
     </View>
   );
 }
 
-const ProfessorResults = ({ searchResult }: { searchResult: Professor[] }) => {
+const ProfessorResults = () => {
+  const { searchResults } = useSearchContext();
+
   return (
     <FlatList
-      data={searchResult}
+      data={searchResults as Professor[]}
       renderItem={({ item }: { item: Professor }) => (
         <ProfessorInfo professorData={item} />
       )}
@@ -69,13 +66,15 @@ const ProfessorInfo = ({ professorData }: { professorData: Professor }) => {
 
   const { majorName, profName } = professorData;
 
+  const handleProfessorPress = () => {
+    navigation.navigate('ProfessorDetailScreen', {
+      professorData: professorData,
+    });
+  };
+
   return (
     <TouchableOpacity
-      onPress={() => {
-        navigation.navigate('ProfessorDetailScreen', {
-          professorData: professorData,
-        });
-      }}
+      onPress={handleProfessorPress}
       style={styles.searchResultItemContainer}
     >
       <Image source={icon_serach} style={{ width: 24, height: 24 }} />
@@ -87,10 +86,12 @@ const ProfessorInfo = ({ professorData }: { professorData: Professor }) => {
   );
 };
 
-const FeedResults = ({ searchResult }: { searchResult: Feed[] }) => {
+const FeedResults = () => {
+  const { searchResults } = useSearchContext();
+
   return (
     <FlatList
-      data={searchResult}
+      data={searchResults as Feed[]}
       renderItem={({ item }: { item: Feed }) => {
         return <FeedSummary feedData={item} />;
       }}

@@ -8,3 +8,8 @@ export const FEED_CATEGORIES = {
   FREE: '자유게시판',
   SEARCH_PROFESSOR: '교수님 검색',
 };
+
+export const SEARCH_CATEGORY = {
+  PROFESSOR: '교수님',
+  MAJOR: '학과/학부',
+};
