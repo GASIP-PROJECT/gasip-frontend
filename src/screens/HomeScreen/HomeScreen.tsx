@@ -1,25 +1,22 @@
 import React, { useState } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 
-import SafeAreaLayout from '@components/common/SafeAreaLayout';
-
+import SearchButton from './HomeScreen/SearchButton';
+import HomeFeedList from './HomeScreen/HomeFeedList';
 import HomeScreenHeader from './HomeScreen/HomeScreenHeader';
-import FeedsScreen from './FeedsScreen/FeedsScreen';
-import SearchScreen from './SearchScreen/SearchScreen';
+import WriteProfessorReview from './HomeScreen/WriteProfessorReview';
 
 import Spacer from '@components/common/Spacer';
-import SearchButton from './HomeScreen/SearchButton';
-import WriteProfessorReview from './HomeScreen/WriteProfessorReview';
-import HomeFeedList from './HomeScreen/HomeFeedList';
+import SafeAreaLayout from '@components/common/SafeAreaLayout';
 
-import icon_papers from '@assets/icon_papers.png';
 import icon_fire from '@assets/icon_fire.png';
+import icon_papers from '@assets/icon_papers.png';
 
 export default function HomeScreen() {
   const [isSearchPageOpen, setIsSearchPageOpen] = useState<boolean>(false);
 
   return (
-    <SafeAreaLayout noBottomPadding>
+    <SafeAreaLayout noBottomPadding style={{ paddingHorizontal: 16 }}>
       <Spacer type="height" value={10} />
       <HomeScreenHeader />
       <Spacer type="height" value={24} />
@@ -40,6 +37,5 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 16,
   },
 });
