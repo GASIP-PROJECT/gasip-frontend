@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { StyleSheet, View, FlatList, Image } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 
@@ -38,10 +38,10 @@ export default function ProfessorFeeds({ profId }: { profId: number }) {
 
   useEffect(() => {
     fetchFeeds();
-  }, []);
+  }, [toggleToUpdateFeedsList]);
 
   useFocusEffect(
-    React.useCallback(() => {
+    useCallback(() => {
       fetchFeeds();
     }, []),
   );
@@ -58,7 +58,7 @@ export default function ProfessorFeeds({ profId }: { profId: number }) {
         onEndReached={onListEndReached}
         keyExtractor={(item, index) => index.toString()}
         ItemSeparatorComponent={() => <Spacer type="height" value={6} />}
-        ListFooterComponent={() => <Spacer type="height" value={300} />}
+        ListFooterComponent={() => <Spacer type="height" value={150} />}
         showsVerticalScrollIndicator={false}
       />
     </View>

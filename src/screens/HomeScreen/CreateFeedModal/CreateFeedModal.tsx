@@ -24,13 +24,17 @@ export interface SelectedCategory {
 }
 
 export default function CreateFeedModal() {
-  const { triggerFeedListUpdate, showCreateFeedModal, closeNewFeedModal } =
-    useNewFeedContext();
+  const {
+    triggerFeedListUpdate,
+    showCreateFeedModal,
+    closeNewFeedModal,
+    profId,
+  } = useNewFeedContext();
   const [feedContent, setFeedContent] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<SelectedCategory>({
-    category: FEED_CATEGORIES.FREE,
-    profId: null,
-  });
+  // const [selectedCategory, setSelectedCategory] = useState<SelectedCategory>({
+  //   category: FEED_CATEGORIES.FREE,
+  //   profId: null,
+  // });
 
   const categorySelectModalRef = useRef<ActionSheetRef>(null);
 
@@ -44,22 +48,22 @@ export default function CreateFeedModal() {
       return;
     }
 
-    if (selectedCategory.category === FEED_CATEGORIES.FREE) {
+    if (profId === null) {
       await createFeed(feedContent);
     } else {
-      await createProfessorFeed(feedContent, selectedCategory.profId);
+      await createProfessorFeed(feedContent, profId);
     }
 
-    triggerFeedListUpdate;
+    triggerFeedListUpdate();
     closeNewFeedModal();
   };
 
   const resetStateOnDismiss = () => {
-    setSelectedCategory({
-      ...selectedCategory,
-      category: FEED_CATEGORIES.FREE,
-      profId: null,
-    });
+    // setSelectedCategory({
+    //   ...selectedCategory,
+    //   category: FEED_CATEGORIES.FREE,
+    //   profId: null,
+    // });
     setFeedContent('');
   };
 
@@ -76,11 +80,10 @@ export default function CreateFeedModal() {
             handleCreateFeedPress={handleCreateFeedPress}
           />
           <Spacer type="height" value={10} />
-          <FeedCategorySelector
+          {/* <FeedCategorySelector
             selectedCategory={selectedCategory}
             openCategorySelectModal={openCategorySelectModal}
-          />
-          <Spacer type="height" value={15} />
+          /> */}
           <CreateFeedModalTextInput
             feedContent={feedContent}
             setFeedContent={setFeedContent}
@@ -89,10 +92,10 @@ export default function CreateFeedModal() {
           {/* <CreateFeedModalPolicy /> */}
         </View>
 
-        <CategorySelectModal
+        {/* <CategorySelectModal
           actionSheetRef={categorySelectModalRef}
           setSelectedCategory={setSelectedCategory}
-        />
+        /> */}
       </SafeAreaLayout>
     </Modal>
   );

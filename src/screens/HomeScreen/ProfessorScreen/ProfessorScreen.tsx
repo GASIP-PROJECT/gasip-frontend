@@ -3,6 +3,7 @@ import { StyleSheet, View, Image } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { rateProfessor } from '@api/index';
+import { useNewFeedContext } from '@contexts/NewFeedContext';
 
 import ProfessorFeeds from './ProfessorFeeds';
 import ProfessorDetail from './ProfessorDetail';
@@ -24,6 +25,7 @@ export default function ProfessorDetailScreen({ route, navigation }) {
   const { profId } = professorData;
   const [currentRating, setCurrentRating] = useState(3);
   const [isRateModalVisible, setIsRateModalVisible] = useState(false);
+  const { openNewFeedModal } = useNewFeedContext();
 
   const openRateModal = () => {
     setIsRateModalVisible(true);
@@ -32,6 +34,10 @@ export default function ProfessorDetailScreen({ route, navigation }) {
   const rate = async () => {
     await rateProfessor(profId, currentRating);
     setIsRateModalVisible(false);
+  };
+
+  const handleWriteReviewPress = () => {
+    openNewFeedModal(profId);
   };
 
   return (
@@ -70,7 +76,7 @@ export default function ProfessorDetailScreen({ route, navigation }) {
       >
         <GSButton
           buttonText="교수님 리뷰 작성하기 "
-          onPress={() => {}}
+          onPress={handleWriteReviewPress}
           fontSize={16}
         />
       </View>
