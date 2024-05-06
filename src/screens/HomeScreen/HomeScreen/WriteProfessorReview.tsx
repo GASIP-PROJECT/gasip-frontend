@@ -23,7 +23,11 @@ export default function WriteProfessorReview() {
       >
         <Image source={icon_write} style={styles.writeIcon} />
         <Spacer type="height" value={18} />
-        <GSButton buttonText="작성하기" onPress={handleWriteReviewPress} />
+        <GSButton
+          buttonText="작성하기"
+          onPress={handleWriteReviewPress}
+          height={40}
+        />
       </View>
       <Spacer type="height" value={6} />
       <GSText style={styles.askForReviewText}>

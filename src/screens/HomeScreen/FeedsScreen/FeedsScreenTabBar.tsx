@@ -3,6 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import GSIcon from '@components/common/GSIcon';
 import Spacer from '@components/common/Spacer';
+import GSText from '@components/common/GSText';
 
 import { COLORS } from '@styles/colors';
 import { HOME_TABS } from '../../../constants';
@@ -81,7 +82,7 @@ const TabIndicator = ({
     >
       <GSIcon name={iconName} size={20} color={iconColor} />
       <Spacer type="width" value={3} />
-      <Text style={styles.indicatorTitle}>{title}</Text>
+      <GSText style={styles.indicatorTitle}>{title}</GSText>
     </TouchableOpacity>
   );
 };
@@ -99,7 +100,6 @@ const styles = StyleSheet.create({
     borderRadius: 25,
   },
   indicatorTitle: {
-    fontSize: 15,
     fontWeight: '700',
     color: COLORS.WHITE,
   },

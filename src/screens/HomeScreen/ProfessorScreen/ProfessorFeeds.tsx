@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { StyleSheet, View, FlatList } from 'react-native';
+import { StyleSheet, View, FlatList, Image } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 
 import { getProfessorFeeds } from '@api/index';
@@ -7,9 +7,13 @@ import { NewFeedContext } from '@contexts/NewFeedContext';
 
 import FeedSummary from '@screens/HomeScreen/FeedsScreen/FeedSummary';
 
+import GSText from '@components/common/GSText';
 import Spacer from '@components/common/Spacer';
 
+import { COLORS } from '@styles/colors';
 import { type Feed } from 'types/searchTypes';
+
+import icon_write from '@assets/icon_write.png';
 
 export default function ProfessorFeeds({ profId }: { profId: number }) {
   const { toggleToUpdateFeedsList } = useContext(NewFeedContext);
@@ -43,7 +47,8 @@ export default function ProfessorFeeds({ profId }: { profId: number }) {
   );
 
   return (
-    <View>
+    <View style={styles.container}>
+      <Header />
       <FlatList
         data={feeds}
         extraData={toggleToUpdateFeedsList}
@@ -52,11 +57,46 @@ export default function ProfessorFeeds({ profId }: { profId: number }) {
         )}
         onEndReached={onListEndReached}
         keyExtractor={(item, index) => index.toString()}
-        ItemSeparatorComponent={() => <Spacer type="height" value={15} />}
+        ItemSeparatorComponent={() => <Spacer type="height" value={6} />}
         ListFooterComponent={() => <Spacer type="height" value={300} />}
+        showsVerticalScrollIndicator={false}
       />
     </View>
   );
 }
 
-const styles = StyleSheet.create({});
+const Header = () => {
+  return (
+    <>
+      <Spacer type="height" value={20} />
+      <View style={styles.headerContainer}>
+        <Image source={icon_write} style={{ width: 22, height: 20 }} />
+        <Spacer type="width" value={6} />
+        <GSText style={styles.headerTitleText}>솔직한 리뷰 둘러보기</GSText>
+      </View>
+      <GSText style={styles.feedCountText}>게시글(12개)</GSText>
+      <Spacer type="height" value={10} />
+    </>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingHorizontal: 24,
+    backgroundColor: COLORS.GRAY_50,
+  },
+  headerContainer: {
+    flexDirection: 'row',
+  },
+  headerTitleText: {
+    fontSize: 18,
+    fontWeight: '600',
+  },
+  feedCountText: {
+    fontSize: 12,
+    fontWeight: '400',
+    color: COLORS.GRAY_500,
+    alignSelf: 'flex-end',
+  },
+});

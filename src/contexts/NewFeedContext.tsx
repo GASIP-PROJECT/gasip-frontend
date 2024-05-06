@@ -37,4 +37,5 @@ const NewFeedProvider = ({ children }: { children: ReactNode }) => {
     </NewFeedContext.Provider>
   );
 };
+
 export { NewFeedProvider, NewFeedContext };
