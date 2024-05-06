@@ -39,6 +39,6 @@ const styles = StyleSheet.create({
     borderColor: 'white',
     padding: 10,
     textAlignVertical: 'top',
-    lineHeight: 23,
+    lineHeight: 20,
   },
 });

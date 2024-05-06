@@ -1,21 +1,18 @@
 import React from 'react';
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 import icon_user from '@assets/icon_user.png';
 import gasip_logo from '@assets/gasip_logo.png';
 import icon_goback from '@assets/icon_goback.png';
-import { useNavigation } from '@react-navigation/native';
 
 export default function SearchScreenHeader() {
   const navigation = useNavigation();
 
-  const handleBackButtonPress = () => {
-    navigation.goBack();
-  };
   return (
     <View style={styles.container}>
       <TouchableOpacity
-        onPress={handleBackButtonPress}
+        onPress={navigation.goBack}
         hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
       >
         <Image source={icon_goback} style={{ width: 28, height: 28 }} />

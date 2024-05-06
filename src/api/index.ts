@@ -95,8 +95,6 @@ export const editFeed = async (postId: number, content: string) => {
     const response = await GSBackendClient.put(`/boards/${postId}`, {
       content,
     });
-
-    console.log(response.data);
   } catch (error) {
     console.log('editFeed error: ', error);
   }
@@ -112,8 +110,6 @@ export const createProfessorFeed = async (
     const response = await GSBackendClient.post(`/boards/${profId}`, {
       content,
     });
-
-    console.log(response.data);
   } catch (error) {
     console.log('createProfessorFeed error: ', error);
   }

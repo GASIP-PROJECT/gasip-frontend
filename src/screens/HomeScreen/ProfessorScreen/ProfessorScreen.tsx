@@ -49,6 +49,7 @@ export default function ProfessorDetailScreen({ route, navigation }) {
         }
         onLeftComponentPress={navigation.goBack}
       />
+      <Spacer type="height" value={8} />
       {/* 교수 상세 정보 */}
       <View style={styles.professorInfoContainer}>
         <GSText style={styles.introduceText}>

@@ -21,13 +21,6 @@ export default function SearchScreen() {
 
   return (
     <SafeAreaLayout noBottomPadding>
-      <Button
-        title=";ss"
-        onPress={() => {
-          setNoSearchResult(true);
-          console.log(searchResults, noSearchResult);
-        }}
-      />
       <View style={{ paddingHorizontal: 16 }}>
         <Spacer type="height" value={10} />
         <SearchScreenHeader />

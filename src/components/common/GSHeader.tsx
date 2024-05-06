@@ -1,6 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
+import Spacer from './Spacer';
+
 import { COLORS } from '@styles/colors';
 
 interface GSHeaderProps {
@@ -19,14 +21,17 @@ export default function GSHeader({
   onRightComponentPress = null,
 }: GSHeaderProps) {
   return (
-    <View style={styles.container}>
-      <HeaderLeftComponent
-        component={leftComponent}
-        onPress={onLeftComponentPress}
-      />
-      <HeaderTitle title={title} />
-      <HeaderRightComponent component={rightComponent} />
-    </View>
+    <>
+      <Spacer type="height" value={10} />
+      <View style={styles.container}>
+        <HeaderLeftComponent
+          component={leftComponent}
+          onPress={onLeftComponentPress}
+        />
+        <HeaderTitle title={title} />
+        <HeaderRightComponent component={rightComponent} />
+      </View>
+    </>
   );
 }
 
@@ -72,7 +77,7 @@ const HeaderRightComponent = ({
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    height: 50,
+    // height: 50,
     width: '100%',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -83,10 +88,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    fontSize: 20,
-    fontWeight: '800',
+    fontSize: 18,
+    fontWeight: '700',
     textAlign: 'center',
-    color: COLORS.WHITE,
+    // color: COLORS.WHITE,
   },
 
   leftComponentContainer: {

@@ -22,8 +22,7 @@ import icon_x_circle from '@assets/icon_x_circle.png';
 export default function SearchBar() {
   const [searchText, setSearchText] = useState<string>('');
 
-  const { setNoSearchResult, handleSearchSubmit, searchCategory } =
-    useSearchContext();
+  const { setNoSearchResult, handleSearchSubmit } = useSearchContext();
 
   const handleTextInputFocus = () => {
     setNoSearchResult(false);
@@ -34,7 +33,6 @@ export default function SearchBar() {
   };
 
   const onSubmit = async () => {
-    console.log('submit!');
     await handleSearchSubmit(searchText);
   };
 
