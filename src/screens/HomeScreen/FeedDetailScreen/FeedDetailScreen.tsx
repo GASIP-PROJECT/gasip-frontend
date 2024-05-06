@@ -6,6 +6,7 @@ import {
   ScrollView,
   TextInput,
   TouchableOpacity,
+  Image,
 } from 'react-native';
 import { ActionSheetRef } from 'react-native-actions-sheet';
 
@@ -13,18 +14,20 @@ import { deleteFeed, getFeedData } from '@api/index';
 
 import FeedContent from './FeedContent';
 import FeedComment from './FeedComment';
-import ProfessorInfo from './ProfessorInfo';
 import FeedEditModal from './FeedEditModal';
 import FeedReplyInput from './FeedReplyInput';
 import FeedActionsModal from './FeedActionsModal';
 
 import Spacer from '@components/common/Spacer';
+import GSText from '@components/common/GSText';
 import GSIcon from '@components/common/GSIcon';
 import GSHeader from '@components/common/GSHeader';
 import SafeAreaLayout from '@components/common/SafeAreaLayout';
 
 import { COLORS } from '@styles/colors';
 import { type Feed } from 'types/searchTypes';
+
+import icon_goback from '@assets/icon_goback.png';
 
 // TODO - type 선언 필요
 export default function FeedDetailScreen({ route, navigation }) {
@@ -91,45 +94,39 @@ export default function FeedDetailScreen({ route, navigation }) {
   return (
     <SafeAreaLayout noBottomPadding>
       <GSHeader
-        title="게시글 상세"
-        leftComponent={<GSIcon name="chevron-back-outline" />}
-        onLeftComponentPress={() => navigation.goBack()}
+        title={`${feedData?.memberNickname} 님의 게시글` || ''}
+        leftComponent={
+          <Image source={icon_goback} style={{ width: 28, height: 28 }} />
+        }
+        onLeftComponentPress={navigation.goBack}
       />
       <ScrollView style={styles.container}>
-        <Spacer type="height" value={10} />
         {feedData !== null ? (
           <>
+            {/* 교수님에 대한 글인 경우 표시되는 교수님 이름 */}
             {feedData.profId !== 0 && (
-              <ProfessorInfo
-                profName={feedData.profName}
-                majorName={feedData.majorName}
-              />
+              <GSText style={styles.professorNameText}>
+                {feedData.profName} 교수님
+              </GSText>
             )}
-            <Spacer type="height" value={10} />
+            <Spacer type="height" value={14} />
+
+            {/* 피드 내용 */}
             <FeedContent
               feedData={feedData}
               setUpdateFeed={setUpdateFeed}
               openFeedActionsModal={openFeedActionsModal}
             />
             <Spacer type="height" value={10} />
+
+            {/* 댓글  */}
             {feedData?.comments.length > 0 && (
-              <View
-                style={{
-                  backgroundColor: '#28292A',
-                  borderRadius: 5,
-                  paddingHorizontal: 10,
-                  paddingVertical: 15,
-                }}
-              >
-                <Text
-                  style={{ fontSize: 16, color: '#f5f5f5', fontWeight: '700' }}
-                >
-                  댓글{' '}
-                  <Text style={{ fontWeight: '500' }}>
-                    {feedData.commentCount}
-                  </Text>
-                </Text>
-                <Spacer type="height" value={10} />
+              <View>
+                <GSText style={styles.commentTitleText}>
+                  댓글 {`(${feedData.commentCount}개)`}
+                </GSText>
+                <Spacer type="height" value={6} />
+
                 {feedData.comments.map((comment, index) => (
                   <FeedComment
                     key={index.toString()}
@@ -213,5 +210,16 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '500',
     color: COLORS.WHITE,
+  },
+  professorNameText: {
+    fontSize: 12,
+    fontWeight: '400',
+    color: COLORS.GRAY_500,
+    alignSelf: 'center',
+  },
+  commentTitleText: {
+    fontSize: 12,
+    fontWeight: '500',
+    paddingLeft: 16,
   },
 });

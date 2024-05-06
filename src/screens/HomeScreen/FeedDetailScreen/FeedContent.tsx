@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { MMKVStorage } from '@api/mmkv';
 import { likeFeed, likeFeedCancel } from '@api/index';
@@ -7,9 +7,14 @@ import { getTimeDifference } from '@utils/timeUtil';
 
 import GSIcon from '@components/common/GSIcon';
 import Spacer from '@components/common/Spacer';
+import GSText from '@components/common/GSText';
 
 import { COLORS } from '@styles/colors';
 import { type Feed } from 'types/searchTypes';
+
+import icon_comment from '@assets/icon_comment.png';
+import icon_thumbsup from '@assets/icon_thumbsup.png';
+import icon_dots_vertical from '@assets/icon_dots_vertical.png';
 
 export default function FeedContent({
   feedData,
@@ -32,6 +37,10 @@ export default function FeedContent({
     isLike,
   } = feedData;
 
+  console.log(feedData);
+
+  console.log(regDate);
+
   return (
     <View style={styles.container}>
       <FeedContentHeader
@@ -42,7 +51,7 @@ export default function FeedContent({
       />
       <Spacer type="height" value={10} />
       <FeedContentText content={content} />
-      <Spacer type="height" value={10} />
+      <Spacer type="height" value={28} />
       <FeedContentFooter
         likeCount={likeCount}
         postId={postId}
@@ -69,14 +78,18 @@ const FeedContentHeader = ({
 
   return (
     <View style={styles.feedHeaderContainer}>
-      <Text style={styles.feedHeaderText}>
-        <Text style={{ color: '#B4B4B3' }}>{memberNickname}</Text> |{' '}
-        {timeString}
-      </Text>
+      <View style={{ flexDirection: 'row' }}>
+        <GSText style={styles.feedHeaderText}>{memberNickname}</GSText>
+        <Spacer type="width" value={6} />
+        <GSText style={styles.timeText}>{timeString}</GSText>
+      </View>
 
       {isCurrentUserCommentAuthor && (
         <TouchableOpacity onPress={openFeedActionsModal}>
-          <GSIcon name="ellipsis-horizontal" color="#B4B4B3" size={20} />
+          <Image
+            source={icon_dots_vertical}
+            style={{ width: 20, height: 20 }}
+          />
         </TouchableOpacity>
       )}
     </View>
@@ -116,9 +129,9 @@ const FeedContentFooter = ({
         style={{ flexDirection: 'row', alignItems: 'center' }}
         onPress={handleLikePress}
       >
-        <GSIcon name="heart" size={20} color="tomato" />
+        <Image source={icon_thumbsup} style={{ width: 20, height: 20 }} />
         <Spacer type="width" value={iconTextGap} />
-        <Text style={styles.iconText}>{likeCount}</Text>
+        <GSText style={styles.iconText}>{likeCount}</GSText>
       </TouchableOpacity>
     </View>
   );
@@ -127,11 +140,15 @@ const FeedContentFooter = ({
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    paddingTop: 15,
-    paddingBottom: 10,
-    paddingHorizontal: 10,
+    paddingVertical: 20,
+    paddingHorizontal: 16,
     borderRadius: 5,
-    backgroundColor: '#28292A',
+    backgroundColor: COLORS.WHITE,
+    shadowColor: COLORS.BLUE_PRIMARY,
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.05,
+    shadowRadius: 10,
+    elevation: 5,
   },
   feedHeaderContainer: {
     width: '100%',
@@ -140,20 +157,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   feedHeaderText: {
-    color: '#4b5159',
-    fontWeight: '500',
+    fontSize: 14,
+    fontWeight: '600',
   },
   feedContentText: {
-    color: COLORS.WHITE,
-    fontSize: 20,
+    fontSize: 14,
     fontWeight: '500',
   },
   footerContainer: {
     flexDirection: 'row',
   },
   iconText: {
-    fontSize: 15,
-    color: '#B6BBC4',
+    fontSize: 14,
     fontWeight: '500',
+  },
+  timeText: {
+    fontSize: 12,
+    fontWeight: '500',
+    color: COLORS.GRAY_500,
   },
 });

@@ -1,5 +1,6 @@
 import React, { useState, Dispatch, SetStateAction, useRef } from 'react';
 import {
+  Image,
   Keyboard,
   Platform,
   StyleSheet,
@@ -16,6 +17,8 @@ import GSIcon from '@components/common/GSIcon';
 import Spacer from '@components/common/Spacer';
 
 import { COLORS } from '@styles/colors';
+
+import icon_plane_right from '@assets/icon_plane_right.png';
 
 interface FeedReplyInputProps {
   postId: number;
@@ -60,44 +63,60 @@ export default function FeedReplyInput({
   return (
     <View style={[styles.container]}>
       {Platform.OS === 'ios' ? (
-        <View>
+        <View style={styles.textInputContainer}>
+          <Spacer type="width" value={20} />
           <TextInput
             ref={commentTextInputRef}
             style={styles.textInput}
             placeholder="댓글을 입력해주세요."
-            placeholderTextColor={'#ffffff'}
+            placeholderTextColor={COLORS.GRAY_400}
             onChangeText={text => setNewComment(text)}
             onSubmitEditing={handleCommentSubmit}
           />
 
+          <Spacer type="width" value={10} />
+
           <View style={styles.submitButtonContainer}>
             <TouchableOpacity
-              style={styles.submitButton}
               onPress={handleCommentSubmit}
+              hitSlop={{ top: 10, right: 10, bottom: 10, left: 10 }}
             >
-              <GSIcon name="arrow-up-outline" size={20} color={COLORS.WHITE} />
+              <Image
+                source={icon_plane_right}
+                style={{ width: 24, height: 24 }}
+              />
             </TouchableOpacity>
           </View>
+
+          <Spacer type="width" value={10} />
         </View>
       ) : (
         <View>
+          <Spacer type="width" value={20} />
           <TextInput
             ref={commentTextInputRef}
             style={styles.textInput}
             placeholder="댓글을 입력해주세요."
-            placeholderTextColor={'#ffffff'}
+            placeholderTextColor={COLORS.GRAY_400}
             onChangeText={text => setNewComment(text)}
             onSubmitEditing={handleCommentSubmit}
           />
 
+          <Spacer type="width" value={10} />
+
           <View style={styles.submitButtonContainer}>
             <TouchableOpacity
-              style={styles.submitButton}
               onPress={handleCommentSubmit}
+              hitSlop={{ top: 10, right: 10, bottom: 10, left: 10 }}
             >
-              <GSIcon name="arrow-up-outline" size={20} color={COLORS.WHITE} />
+              <Image
+                source={icon_plane_right}
+                style={{ width: 24, height: 24 }}
+              />
             </TouchableOpacity>
           </View>
+
+          <Spacer type="width" value={10} />
         </View>
       )}
 
@@ -109,31 +128,29 @@ export default function FeedReplyInput({
 const styles = StyleSheet.create({
   container: {
     height: 90,
-    backgroundColor: '#3e3b3b',
     paddingHorizontal: 16,
     justifyContent: 'center',
+    backgroundColor: COLORS.WHITE,
+    shadowColor: COLORS.BLUE_PRIMARY,
+    shadowOffset: { width: 0, height: -8 },
+    shadowOpacity: 0.05,
+    shadowRadius: 10,
+    elevation: 5,
   },
-  textInput: {
+  textInputContainer: {
     height: 40,
     borderRadius: 20,
-    backgroundColor: '#545151',
-    paddingHorizontal: 20,
-    color: '#ffffff',
+    borderColor: COLORS.BLUE_LIGHT_100,
+    borderWidth: 1,
+    flexDirection: 'row',
+  },
+  textInput: {
+    flex: 1,
+    height: '100%',
     fontSize: 16,
     textAlignVertical: 'center',
   },
   submitButtonContainer: {
-    position: 'absolute',
-    right: 0,
-    height: '100%',
-    padding: 5,
-  },
-  submitButton: {
-    flex: 1,
-    backgroundColor: COLORS.BTN_MAIN,
-    width: 50,
-    borderRadius: 20,
     justifyContent: 'center',
-    alignItems: 'center',
   },
 });

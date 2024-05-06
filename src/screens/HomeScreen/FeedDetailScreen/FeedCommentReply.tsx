@@ -1,13 +1,17 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
 
 import { getTimeDifference } from '@utils/timeUtil';
 
 import GSIcon from '@components/common/GSIcon';
+import GSText from '@components/common/GSText';
 import Spacer from '@components/common/Spacer';
 
 import { COLORS } from '@styles/colors';
 import { FeedComment } from 'types/searchTypes';
+
+import icon_reply from '@assets/icon_reply.png';
+import icon_thumbsup from '@assets/icon_thumbsup.png';
 
 export default function FeedCommentReply({ reply }: { reply: FeedComment }) {
   const { content, commentLike, regDate, memberName } = reply;
@@ -16,10 +20,12 @@ export default function FeedCommentReply({ reply }: { reply: FeedComment }) {
     <View style={styles.container}>
       <Spacer type="height" value={5} />
       <ReplyHeader regDate={regDate} replierNickname={memberName} />
-      <Spacer type="height" value={5} />
-      <ReplyBody content={content} />
-      <Spacer type="height" value={10} />
-      <ReplyFooter likeCount={commentLike} />
+      <Spacer type="height" value={6} />
+      <View style={{ paddingHorizontal: 20 }}>
+        <ReplyBody content={content} />
+        <Spacer type="height" value={16} />
+        <ReplyFooter likeCount={commentLike} />
+      </View>
     </View>
   );
 }
@@ -34,14 +40,20 @@ const ReplyHeader = ({
   const timeString = getTimeDifference(regDate);
 
   return (
-    <Text style={styles.commentHeaderText}>
-      <Text style={{ color: '#B4B4B3' }}>{replierNickname}</Text> | {timeString}
-    </Text>
+    <View style={styles.headerContainer}>
+      <Image source={icon_reply} style={{ width: 14, height: 14 }} />
+      <Spacer type="width" value={6} />
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <GSText style={styles.replyHeaderText}>{replierNickname}</GSText>
+        <Spacer type="width" value={6} />
+        <GSText style={styles.timeStringText}>{timeString}</GSText>
+      </View>
+    </View>
   );
 };
 
 const ReplyBody = ({ content }: { content: string }) => {
-  return <Text style={styles.commentBodyText}>{content}</Text>;
+  return <GSText style={styles.replyBodyText}>{content}</GSText>;
 };
 
 const ReplyFooter = ({ likeCount }: { likeCount: number | null }) => {
@@ -50,7 +62,7 @@ const ReplyFooter = ({ likeCount }: { likeCount: number | null }) => {
   return (
     <View style={styles.footerContainer}>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <GSIcon name="heart" size={20} color="tomato" />
+        <Image source={icon_thumbsup} style={{ width: 20, height: 20 }} />
         <Spacer type="width" value={iconTextGap} />
         <Text style={styles.iconText}>{likeCount || 0}</Text>
       </View>
@@ -60,28 +72,34 @@ const ReplyFooter = ({ likeCount }: { likeCount: number | null }) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginLeft: 20,
-    paddingLeft: 10,
-    borderColor: '#B4B4B3',
-    borderLeftWidth: 2,
-    marginBottom: 10,
+    paddingVertical: 16,
+    backgroundColor: COLORS.GRAY_100,
+    borderBottomWidth: 1,
+    borderColor: COLORS.GRAY_200,
   },
-  commentHeaderText: {
+  replyHeaderText: {
+    fontSize: 12,
+    fontWeight: '600',
+  },
+  replyBodyText: {
     fontSize: 14,
-    color: '#4b5159',
-    fontWeight: '500',
-  },
-  commentBodyText: {
-    color: COLORS.WHITE,
-    fontSize: 16,
-    fontWeight: '500',
+    fontWeight: '400',
   },
   footerContainer: {
     flexDirection: 'row',
   },
   iconText: {
-    fontSize: 15,
-    color: '#B6BBC4',
+    fontSize: 12,
     fontWeight: '500',
+  },
+  headerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 12,
+  },
+  timeStringText: {
+    fontSize: 11,
+    fontWeight: '400',
+    color: COLORS.GRAY_500,
   },
 });

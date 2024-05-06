@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction, useRef, useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View, Image } from 'react-native';
 import { ActionSheetRef } from 'react-native-actions-sheet';
 
 import { MMKVStorage } from '@api/mmkv';
@@ -10,11 +10,15 @@ import FeedCommentReply from './FeedCommentReply';
 import FeedActionsModal from './FeedActionsModal';
 import CommentEditModal from './CommentEditModal';
 
-import GSIcon from '@components/common/GSIcon';
+import GSText from '@components/common/GSText';
 import Spacer from '@components/common/Spacer';
 
 import { COLORS } from '@styles/colors';
 import { type FeedComment } from 'types/searchTypes';
+
+import icon_comment from '@assets/icon_comment.png';
+import icon_thumbsup from '@assets/icon_thumbsup.png';
+import icon_dots_vertical from '@assets/icon_dots_vertical.png';
 
 interface FeedCommentProps {
   commentData: FeedComment;
@@ -77,23 +81,25 @@ export default function FeedComment({
   };
 
   return (
-    <View>
-      <CommentHeader
-        regDate={regDate}
-        commenterNickname={nickName}
-        memberId={memberId}
-        openCommentActionsModal={openCommentActionsModal}
-      />
-      <Spacer type="height" value={5} />
-      <CommentBody content={content} />
-      <Spacer type="height" value={10} />
-      <CommentFooter
-        likeCount={commentLike}
-        commentChildrenCount={commentChildren.length}
-        handleLikePress={handleLikePress}
-        handleReplyButtonPress={handleReplyButtonPress}
-      />
-      <Spacer type="height" value={15} />
+    <View style={styles.container}>
+      <View style={styles.contentContainer}>
+        <CommentHeader
+          regDate={regDate}
+          commenterNickname={nickName}
+          memberId={memberId}
+          openCommentActionsModal={openCommentActionsModal}
+        />
+        <Spacer type="height" value={6} />
+        <CommentBody content={content} />
+        <Spacer type="height" value={16} />
+        <CommentFooter
+          likeCount={commentLike}
+          commentChildrenCount={commentChildren.length}
+          handleLikePress={handleLikePress}
+          handleReplyButtonPress={handleReplyButtonPress}
+        />
+      </View>
+
       {commentChildren.map((commentChild, index) => {
         return <FeedCommentReply key={index.toString()} reply={commentChild} />;
       })}
@@ -131,14 +137,18 @@ const CommentHeader = ({
 
   return (
     <View style={styles.commentHeaderContainer}>
-      <Text style={styles.commentHeaderText}>
-        <Text style={{ color: '#B4B4B3' }}>{commenterNickname}</Text> |{' '}
-        {timeString}
-      </Text>
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <GSText style={styles.commentHeaderText}>{commenterNickname}</GSText>
+        <Spacer type="width" value={6} />
+        <GSText style={styles.timeStringText}>{timeString}</GSText>
+      </View>
 
       {isCurrentUserCommentAuthor && (
         <TouchableOpacity onPress={openCommentActionsModal}>
-          <GSIcon name="ellipsis-horizontal" color="#B4B4B3" size={20} />
+          <Image
+            source={icon_dots_vertical}
+            style={{ width: 20, height: 20 }}
+          />
         </TouchableOpacity>
       )}
     </View>
@@ -146,7 +156,7 @@ const CommentHeader = ({
 };
 
 const CommentBody = ({ content }: { content: string }) => {
-  return <Text style={styles.commentBodyText}>{content}</Text>;
+  return <GSText style={styles.commentBodyText}>{content}</GSText>;
 };
 
 const CommentFooter = ({
@@ -168,17 +178,17 @@ const CommentFooter = ({
         style={{ flexDirection: 'row', alignItems: 'center' }}
         onPress={handleLikePress}
       >
-        <GSIcon name="heart" size={20} color="tomato" />
+        <Image source={icon_thumbsup} style={{ width: 20, height: 20 }} />
         <Spacer type="width" value={iconTextGap} />
-        <Text style={styles.iconText}>{likeCount || 0}</Text>
+        <GSText style={styles.iconText}>{likeCount || 0}</GSText>
       </TouchableOpacity>
 
-      <Spacer type="width" value={15} />
+      <Spacer type="width" value={8} />
 
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <GSIcon name="chatbox" size={20} color="#4F709C" />
+        <Image source={icon_comment} style={{ width: 20, height: 20 }} />
         <Spacer type="width" value={iconTextGap} />
-        <Text style={styles.iconText}>{commentChildrenCount}</Text>
+        <GSText style={styles.iconText}>{commentChildrenCount}</GSText>
       </View>
 
       <Spacer type="width" value={15} />
@@ -187,35 +197,47 @@ const CommentFooter = ({
         style={{ flexDirection: 'row', alignItems: 'center' }}
         onPress={handleReplyButtonPress}
       >
-        <Text style={styles.iconText}>답글달기</Text>
+        <GSText style={styles.iconText}>답글달기</GSText>
       </TouchableOpacity>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    paddingHorizontal: 16,
+  },
+  contentContainer: {
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderColor: COLORS.GRAY_200,
+    paddingVertical: 16,
+  },
   commentHeaderText: {
-    fontSize: 14,
-    color: '#4b5159',
-    fontWeight: '500',
+    fontSize: 12,
+    fontWeight: '600',
   },
   commentBodyText: {
-    color: COLORS.WHITE,
-    fontSize: 16,
-    fontWeight: '500',
+    fontSize: 14,
+    fontWeight: '400',
   },
   footerContainer: {
     flexDirection: 'row',
   },
   iconText: {
-    fontSize: 15,
-    color: '#B6BBC4',
+    fontSize: 12,
     fontWeight: '500',
+    fontVariant: ['tabular-nums'],
   },
   commentHeaderContainer: {
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  timeStringText: {
+    fontSize: 11,
+    fontWeight: '400',
+    color: COLORS.GRAY_500,
   },
 });
