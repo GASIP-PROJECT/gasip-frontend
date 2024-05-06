@@ -13,10 +13,10 @@ import icon_pencil from '@assets/icon_pencil.png';
 
 export default function ProfessorDetail({
   professorData,
-  handlePresentModalPress,
+  openRateModal,
 }: {
   professorData: Professor;
-  handlePresentModalPress: () => void;
+  openRateModal: () => void;
 }) {
   const [showRateButton, setShowRateButton] = useState(false);
 
@@ -41,7 +41,7 @@ export default function ProfessorDetail({
         <Spacer type="width" value={8} />
         <View style={styles.ratingStarAndButtonContainer}>
           <RatingStars currentRating={professorAverageGradePoint} />
-          <TouchableOpacity style={styles.rateButton}>
+          <TouchableOpacity style={styles.rateButton} onPress={openRateModal}>
             <GSText style={styles.rateButtonText}>평점 입력하기</GSText>
             <Image source={icon_pencil} style={{ width: 18, height: 18 }} />
           </TouchableOpacity>

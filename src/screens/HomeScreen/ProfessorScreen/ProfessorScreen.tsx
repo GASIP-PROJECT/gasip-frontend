@@ -1,6 +1,6 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View, Image } from 'react-native';
-import { ActionSheetRef } from 'react-native-actions-sheet';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { rateProfessor } from '@api/index';
 
@@ -11,28 +11,27 @@ import ProfessorRateModal from './ProfessorRateModal';
 import Spacer from '@components/common/Spacer';
 import GSText from '@components/common/GSText';
 import GSHeader from '@components/common/GSHeader';
+import GSButton from '@components/common/GSButton';
 import SafeAreaLayout from '@components/common/SafeAreaLayout';
 
 import { COLORS } from '@styles/colors';
+
 import icon_goback from '@assets/icon_goback.png';
-import GSButton from '@components/common/GSButton';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function ProfessorDetailScreen({ route, navigation }) {
   const { bottom } = useSafeAreaInsets();
   const { professorData } = route.params;
   const { profId } = professorData;
   const [currentRating, setCurrentRating] = useState(3);
-
-  const actionSheetRef = useRef<ActionSheetRef>(null);
+  const [isRateModalVisible, setIsRateModalVisible] = useState(false);
 
   const openRateModal = () => {
-    actionSheetRef?.current?.show();
+    setIsRateModalVisible(true);
   };
 
   const rate = async () => {
     await rateProfessor(profId, currentRating);
-    actionSheetRef?.current?.hide();
+    setIsRateModalVisible(false);
   };
 
   return (
@@ -44,6 +43,7 @@ export default function ProfessorDetailScreen({ route, navigation }) {
         }
         onLeftComponentPress={navigation.goBack}
       />
+      {/* 교수 상세 정보 */}
       <View style={styles.professorInfoContainer}>
         <GSText style={styles.introduceText}>
           가천대학교 교수님을 소개합니다 :)
@@ -51,10 +51,11 @@ export default function ProfessorDetailScreen({ route, navigation }) {
         <Spacer type="height" value={24} />
         <ProfessorDetail
           professorData={professorData}
-          handlePresentModalPress={openRateModal}
+          openRateModal={openRateModal}
         />
         <Spacer type="height" value={20} />
       </View>
+
       {/* 리뷰작성하기 버튼, 피드 목록 위에 렌더링 되도록 순서를 위로 땡겨옴 */}
       <View
         style={{
@@ -72,11 +73,13 @@ export default function ProfessorDetailScreen({ route, navigation }) {
 
       <ProfessorFeeds profId={profId} />
 
+      {/* 평점 입력 모달 */}
       <ProfessorRateModal
-        actionSheetRef={actionSheetRef}
         currentRating={currentRating}
         setCurrentRating={setCurrentRating}
         rate={rate}
+        isVisible={isRateModalVisible}
+        setIsVisible={setIsRateModalVisible}
       />
     </SafeAreaLayout>
   );
