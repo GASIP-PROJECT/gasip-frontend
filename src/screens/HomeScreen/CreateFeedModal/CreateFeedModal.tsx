@@ -24,11 +24,8 @@ export interface SelectedCategory {
 }
 
 export default function CreateFeedModal() {
-  const {
-    setToggleToUpdateFeedsList,
-    showCreateFeedModal,
-    setShowCreateFeedModal,
-  } = useNewFeedContext();
+  const { triggerFeedListUpdate, showCreateFeedModal, closeNewFeedModal } =
+    useNewFeedContext();
   const [feedContent, setFeedContent] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<SelectedCategory>({
     category: FEED_CATEGORIES.FREE,
@@ -53,8 +50,8 @@ export default function CreateFeedModal() {
       await createProfessorFeed(feedContent, selectedCategory.profId);
     }
 
-    setToggleToUpdateFeedsList(prev => !prev);
-    setShowCreateFeedModal(false);
+    triggerFeedListUpdate;
+    closeNewFeedModal();
   };
 
   const resetStateOnDismiss = () => {

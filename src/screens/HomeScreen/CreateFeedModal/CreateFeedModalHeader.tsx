@@ -15,13 +15,13 @@ export default function CreateFeedModalHeader({
   feedContent: string;
   handleCreateFeedPress: () => void;
 }) {
-  const { setShowCreateFeedModal } = useNewFeedContext();
+  const { closeNewFeedModal } = useNewFeedContext();
 
   return (
     <GSHeader
       title="피드 작성"
       leftComponent={<GSIcon name="close-outline" />}
-      onLeftComponentPress={() => setShowCreateFeedModal(false)}
+      onLeftComponentPress={closeNewFeedModal}
       rightComponent={
         <TouchableOpacity onPress={handleCreateFeedPress}>
           <Text style={styles.letterCountText}>완료</Text>
