@@ -40,6 +40,7 @@ export interface Professor {
   profName: string;
   professorAverageGradePoint: number | null;
   collegeName: string;
+  isGrade: boolean;
 }
 
 export type SearchResult = Feed | Professor;

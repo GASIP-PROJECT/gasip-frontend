@@ -18,10 +18,13 @@ export default function ProfessorDetail({
   professorData: Professor;
   openRateModal: () => void;
 }) {
-  const [showRateButton, setShowRateButton] = useState(false);
-
-  const { profName, collegeName, majorName, professorAverageGradePoint } =
-    professorData;
+  const {
+    profName,
+    collegeName,
+    majorName,
+    professorAverageGradePoint,
+    isGrade,
+  } = professorData;
 
   return (
     <View>
@@ -41,10 +44,12 @@ export default function ProfessorDetail({
         <Spacer type="width" value={8} />
         <View style={styles.ratingStarAndButtonContainer}>
           <RatingStars currentRating={professorAverageGradePoint} />
-          <TouchableOpacity style={styles.rateButton} onPress={openRateModal}>
-            <GSText style={styles.rateButtonText}>평점 입력하기</GSText>
-            <Image source={icon_pencil} style={{ width: 18, height: 18 }} />
-          </TouchableOpacity>
+          {!isGrade && (
+            <TouchableOpacity style={styles.rateButton} onPress={openRateModal}>
+              <GSText style={styles.rateButtonText}>평점 입력하기</GSText>
+              <Image source={icon_pencil} style={{ width: 18, height: 18 }} />
+            </TouchableOpacity>
+          )}
         </View>
       </View>
     </View>
