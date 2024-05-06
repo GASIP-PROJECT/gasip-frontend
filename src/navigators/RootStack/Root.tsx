@@ -67,18 +67,6 @@ export default function Root() {
     }, 500);
   }, []);
 
-  const config = {
-    animation: 'spring',
-    config: {
-      stiffness: 500,
-      damping: 200,
-      mass: 3,
-      overshootClamping: true,
-      restDisplacementThreshold: 0.01,
-      restSpeedThreshold: 0.01,
-    },
-  };
-
   return (
     <NavigationContainer theme={themeColor}>
       <RootStack.Navigator>

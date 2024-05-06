@@ -1,7 +1,7 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 
-import { NewFeedContext } from '@contexts/NewFeedContext';
+import { useNewFeedContext } from '@contexts/NewFeedContext';
 
 import GSIcon from '@components/common/GSIcon';
 import GSHeader from '@components/common/GSHeader';
@@ -15,7 +15,7 @@ export default function CreateFeedModalHeader({
   feedContent: string;
   handleCreateFeedPress: () => void;
 }) {
-  const { setShowCreateFeedModal } = useContext(NewFeedContext);
+  const { setShowCreateFeedModal } = useNewFeedContext();
 
   return (
     <GSHeader

@@ -68,7 +68,11 @@ export default function ProfessorDetailScreen({ route, navigation }) {
           zIndex: 100,
         }}
       >
-        <GSButton buttonText="교수님 리뷰 작성하기 " onPress={() => {}} />
+        <GSButton
+          buttonText="교수님 리뷰 작성하기 "
+          onPress={() => {}}
+          fontSize={16}
+        />
       </View>
 
       <ProfessorFeeds profId={profId} />

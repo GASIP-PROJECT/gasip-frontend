@@ -1,9 +1,9 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, FlatList, Image } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 
 import { getProfessorFeeds } from '@api/index';
-import { NewFeedContext } from '@contexts/NewFeedContext';
+import { useNewFeedContext } from '@contexts/NewFeedContext';
 
 import FeedSummary from '@screens/HomeScreen/FeedsScreen/FeedSummary';
 
@@ -16,7 +16,7 @@ import { type Feed } from 'types/searchTypes';
 import icon_write from '@assets/icon_write.png';
 
 export default function ProfessorFeeds({ profId }: { profId: number }) {
-  const { toggleToUpdateFeedsList } = useContext(NewFeedContext);
+  const { toggleToUpdateFeedsList } = useNewFeedContext();
 
   const [feeds, setFeeds] = useState<Feed[] | []>([]);
   const [page, setPage] = useState(0);

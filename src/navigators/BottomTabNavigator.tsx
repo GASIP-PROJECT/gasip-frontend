@@ -3,7 +3,7 @@ import { BackHandler, ToastAndroid } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import { NewFeedContext } from '@contexts/NewFeedContext';
+import { useNewFeedContext } from '@contexts/NewFeedContext';
 
 import BottomTabBar from './BottomTabBar';
 import HomeScreen from '@screens/HomeScreen/HomeScreen';
@@ -40,7 +40,7 @@ const MyPage = () => {
 };
 
 export default function BottomTabNavigator() {
-  const { setShowCreateFeedModal } = useContext(NewFeedContext);
+  const { setShowCreateFeedModal } = useNewFeedContext();
 
   let shouldExitApp = false;
   let waitToResetShouldExitApp: NodeJS.Timeout;

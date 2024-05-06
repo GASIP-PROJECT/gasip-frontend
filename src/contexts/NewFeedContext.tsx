@@ -3,6 +3,7 @@ import {
   ReactNode,
   SetStateAction,
   createContext,
+  useContext,
   useState,
 } from 'react';
 
@@ -20,7 +21,7 @@ const NewFeedContext = createContext<NewFeedContextValueType>({
   setToggleToUpdateFeedsList: () => {},
 });
 
-const NewFeedProvider = ({ children }: { children: ReactNode }) => {
+export const NewFeedProvider = ({ children }: { children: ReactNode }) => {
   const [toggleToUpdateFeedsList, setToggleToUpdateFeedsList] = useState(false);
   const [showCreateFeedModal, setShowCreateFeedModal] = useState(false);
 
@@ -38,4 +39,4 @@ const NewFeedProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-export { NewFeedProvider, NewFeedContext };
+export const useNewFeedContext = () => useContext(NewFeedContext);

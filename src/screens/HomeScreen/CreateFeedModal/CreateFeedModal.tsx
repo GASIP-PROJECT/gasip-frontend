@@ -1,10 +1,10 @@
-import React, { useContext, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Alert, Modal, StyleSheet, View } from 'react-native';
 import { ActionSheetRef } from 'react-native-actions-sheet';
 import axios from 'axios';
 
 import { createFeed, createProfessorFeed } from '@api/index';
-import { NewFeedContext } from '@contexts/NewFeedContext';
+import { useNewFeedContext } from '@contexts/NewFeedContext';
 
 import Spacer from '@components/common/Spacer';
 import GSButton from '@components/common/GSButton';
@@ -28,7 +28,7 @@ export default function CreateFeedModal() {
     setToggleToUpdateFeedsList,
     showCreateFeedModal,
     setShowCreateFeedModal,
-  } = useContext(NewFeedContext);
+  } = useNewFeedContext();
   const [feedContent, setFeedContent] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<SelectedCategory>({
     category: FEED_CATEGORIES.FREE,

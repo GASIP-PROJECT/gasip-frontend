@@ -1,9 +1,9 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { FlatList, RefreshControl, View } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 
 import { getAllFeeds } from '@api/index';
-import { NewFeedContext } from '@contexts/NewFeedContext';
+import { useNewFeedContext } from '@contexts/NewFeedContext';
 
 import FeedSummary from './FeedSummary';
 
@@ -13,7 +13,7 @@ import { type Feed } from 'types/searchTypes';
 import { COLORS } from '@styles/colors';
 
 export default function AllFeedsTab() {
-  const { toggleToUpdateFeedsList } = useContext(NewFeedContext);
+  const { toggleToUpdateFeedsList } = useNewFeedContext();
   const flatListRef = useRef(null);
 
   const [page, setPage] = useState(0);
