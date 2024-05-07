@@ -21,4 +21,5 @@ export const COLORS = {
   BLUE_LIGHT_200: '#66AFFF',
   BLUE_LIGHT_300: '#99CAFF',
   BLUE_LIGHT_400: '#CCE4FF',
+  RED: '#FF5247',
 };

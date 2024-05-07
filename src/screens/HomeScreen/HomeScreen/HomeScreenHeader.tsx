@@ -1,10 +1,13 @@
 import React from 'react';
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 import icon_user from '@assets/icon_user.png';
 import gasip_logo from '@assets/gasip_logo.png';
 
 export default function HomeScreenHeader() {
+  const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
       <Image
@@ -13,7 +16,7 @@ export default function HomeScreenHeader() {
         resizeMode="contain"
       />
 
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('MyPageScreen')}>
         <Image source={icon_user} style={{ width: 28, height: 28 }} />
       </TouchableOpacity>
     </View>

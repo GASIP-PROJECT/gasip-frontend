@@ -8,6 +8,7 @@ import { useAuth } from '@contexts/AuthContext';
 
 import HomeScreen from '@screens/HomeScreen/HomeScreen';
 import LoginScreen from '@screens/LoginScreen/LoginScreen';
+import MyPageScreen from '@screens/MypageScreen/MyPageScreen';
 import SignUpScreen from '@screens/SignUpScreen/SignUpScreen';
 import CreateFeedModal from '@screens/HomeScreen/CreateFeedModal/CreateFeedModal';
 import FeedDetailScreen from '@screens/HomeScreen/FeedDetailScreen/FeedDetailScreen';
@@ -94,6 +95,13 @@ export default function Root() {
             <RootStack.Screen
               name="SearchScreen"
               component={SearchScreenWithContext}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <RootStack.Screen
+              name="MyPageScreen"
+              component={MyPageScreen}
               options={{
                 headerShown: false,
               }}
