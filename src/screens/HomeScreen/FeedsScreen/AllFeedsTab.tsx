@@ -36,29 +36,34 @@ export default function AllFeedsTab() {
     }
   };
 
-  const fetchFeeds = async () => {
+  const resetFetchPage = () => {
     setPage(0);
+  };
 
+  const fetchFeedsAndSetFeedList = async () => {
     const posts: Feed[] = await getAllFeeds(0);
     setFeedsList([...posts]);
-
-    scrollToTop();
   };
 
   useEffect(() => {
-    // TODO -  page 변수 초기화가 여기서 이루어지는 게 최선인지 고민 필요
-    fetchFeeds();
+    fetchFeedsAndSetFeedList();
+    resetFetchPage();
+    scrollToTop();
   }, [toggleToUpdateFeedsList]);
 
   useFocusEffect(
     React.useCallback(() => {
-      fetchFeeds();
+      fetchFeedsAndSetFeedList();
+      resetFetchPage();
+      scrollToTop();
     }, []),
   );
 
   const onRefresh = async () => {
     setRefreshing(true);
-    fetchFeeds();
+    fetchFeedsAndSetFeedList();
+    resetFetchPage();
+    scrollToTop();
     setTimeout(() => {
       setRefreshing(false);
     }, 1000); // Refresh indicator will be visible for at least 1 second
