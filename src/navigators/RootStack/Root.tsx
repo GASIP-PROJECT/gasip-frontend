@@ -11,6 +11,7 @@ import LoginScreen from '@screens/LoginScreen/LoginScreen';
 import MyPageScreen from '@screens/MypageScreen/MyPageScreen';
 import SignUpScreen from '@screens/SignUpScreen/SignUpScreen';
 import CreateFeedModal from '@screens/HomeScreen/CreateFeedModal/CreateFeedModal';
+import MyFeedsScreen from '@screens/MypageScreen/MyFeedsScreen.tsx/MyFeedsScreen';
 import FeedDetailScreen from '@screens/HomeScreen/FeedDetailScreen/FeedDetailScreen';
 import ProfessorDetailScreen from '@screens/HomeScreen/ProfessorScreen/ProfessorScreen';
 import SearchScreenWithContext from '@screens/HomeScreen/SearchScreen/SearchScreenWithContext';
@@ -114,6 +115,11 @@ export default function Root() {
             <RootStack.Screen
               name="ProfessorDetailScreen"
               component={ProfessorDetailScreen}
+              options={{ headerShown: false }}
+            />
+            <RootStack.Screen
+              name="MyFeedsScreen"
+              component={MyFeedsScreen}
               options={{ headerShown: false }}
             />
           </RootStack.Group>

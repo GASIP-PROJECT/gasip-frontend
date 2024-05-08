@@ -29,7 +29,10 @@ export default function GSHeader({
           onPress={onLeftComponentPress}
         />
         <HeaderTitle title={title} />
-        <HeaderRightComponent component={rightComponent} />
+        <HeaderRightComponent
+          component={rightComponent}
+          onPress={onRightComponentPress}
+        />
       </View>
     </>
   );
@@ -65,13 +68,19 @@ const HeaderTitle = ({ title }: { title: string }) => {
 
 const HeaderRightComponent = ({
   component,
+  onPress,
 }: {
   component: React.ReactNode;
+  onPress: (() => void) | null;
 }) => {
   if (component === null)
     return <View style={styles.rightComponentContainer} />;
 
-  return <View style={styles.rightComponentContainer}>{component}</View>;
+  return (
+    <TouchableOpacity style={styles.rightComponentContainer} onPress={onPress}>
+      {component}
+    </TouchableOpacity>
+  );
 };
 
 const styles = StyleSheet.create({
