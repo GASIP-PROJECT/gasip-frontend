@@ -18,6 +18,7 @@ import PopularReviewsScreen from '@screens/HomeScreen/FeedsScreen/PopularReviews
 import ProfessorDetailScreen from '@screens/HomeScreen/ProfessorScreen/ProfessorScreen';
 import SearchScreenWithContext from '@screens/HomeScreen/SearchScreen/SearchScreenWithContext';
 import ChangeNicknameScreen from '@screens/MypageScreen/ChangeNicknameScreen/ChangeNicknameScreen';
+import ChangePasswordScreen from '@screens/MypageScreen/ChangePasswordScreen/ChangePasswordScreen';
 
 import { COLORS } from '@styles/colors';
 
@@ -133,6 +134,16 @@ export default function Root() {
             <RootStack.Screen
               name="PopularReviewsScreen"
               component={PopularReviewsScreen}
+              options={{ headerShown: false }}
+            />
+            <RootStack.Screen
+              name="ChangeNicknameScreen"
+              component={ChangeNicknameScreen}
+              options={{ headerShown: false }}
+            />
+            <RootStack.Screen
+              name="ChangePasswordScreen"
+              component={ChangePasswordScreen}
               options={{ headerShown: false }}
             />
           </RootStack.Group>
