@@ -1,6 +1,8 @@
 import React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 
+import { useNewFeedContext } from '@contexts/NewFeedContext';
+
 import GSText from '@components/common/GSText';
 import Spacer from '@components/common/Spacer';
 import GSButton from '@components/common/GSButton';
@@ -9,7 +11,8 @@ import { COLORS } from '@styles/colors';
 import icon_write from '@assets/icon_write.png';
 
 export default function WriteProfessorReview() {
-  const handleWriteReviewPress = () => {};
+  const { openNewFeedModal } = useNewFeedContext();
+
   return (
     <View>
       <GSText style={styles.titleText}>교수님 리뷰 작성하기</GSText>
@@ -25,7 +28,7 @@ export default function WriteProfessorReview() {
         <Spacer type="height" value={18} />
         <GSButton
           buttonText="작성하기"
-          onPress={handleWriteReviewPress}
+          onPress={openNewFeedModal}
           height={40}
         />
       </View>
