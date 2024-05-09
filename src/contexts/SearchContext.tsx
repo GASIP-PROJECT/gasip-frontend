@@ -52,7 +52,6 @@ export const SearchContextProvider = ({
   );
 
   const handleSearchSubmit = async (searchText: string) => {
-    console.log('searchTexxt', searchText);
     if (searchCategory === SEARCH_CATEGORY.PROFESSOR) {
       const professors = await searchProfessors(searchText);
       if (professors.length === 0) {

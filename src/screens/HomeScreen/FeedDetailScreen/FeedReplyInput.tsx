@@ -1,10 +1,9 @@
-import React, { useState, Dispatch, SetStateAction, useRef } from 'react';
+import React, { useState, Dispatch, SetStateAction } from 'react';
 import {
   Image,
   Keyboard,
   Platform,
   StyleSheet,
-  Text,
   TextInput,
   TouchableOpacity,
   View,
@@ -13,7 +12,6 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { createComment, createCommentReply } from '@api/index';
 
-import GSIcon from '@components/common/GSIcon';
 import Spacer from '@components/common/Spacer';
 
 import { COLORS } from '@styles/colors';
