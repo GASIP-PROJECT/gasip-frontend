@@ -25,7 +25,7 @@ export default function ProfessorDetailScreen({ route, navigation }) {
   const { profId } = professorData;
   const [currentRating, setCurrentRating] = useState(3);
   const [isRateModalVisible, setIsRateModalVisible] = useState(false);
-  const { openNewFeedModal } = useNewFeedContext();
+  const { openNewFeedModal, setProfId } = useNewFeedContext();
 
   const openRateModal = () => {
     setIsRateModalVisible(true);
@@ -37,7 +37,8 @@ export default function ProfessorDetailScreen({ route, navigation }) {
   };
 
   const handleWriteReviewPress = () => {
-    openNewFeedModal(profId);
+    setProfId(profId);
+    openNewFeedModal();
   };
 
   return (

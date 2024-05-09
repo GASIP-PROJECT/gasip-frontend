@@ -11,6 +11,7 @@ interface NewFeedContextValueType {
   showCreateFeedModal: boolean;
   toggleToUpdateFeedsList: boolean;
   profId: number | null;
+  setProfId: Dispatch<SetStateAction<number | null>>;
   // setShowCreateFeedModal: Dispatch<SetStateAction<boolean>>;
   // setToggleToUpdateFeedsList: Dispatch<SetStateAction<boolean>>;
   openNewFeedModal: (profId?: number | null) => void;
@@ -22,6 +23,7 @@ const NewFeedContext = createContext<NewFeedContextValueType>({
   showCreateFeedModal: false,
   toggleToUpdateFeedsList: false,
   profId: null,
+  setProfId: () => {},
   // setToggleToUpdateFeedsList: () => {},
   openNewFeedModal: () => {},
   closeNewFeedModal: () => {},
@@ -35,11 +37,7 @@ export const NewFeedProvider = ({ children }: { children: ReactNode }) => {
   // 특정 교수에 대한 피드 작성 위해서 교수 id담는 state
   const [profId, setProfId] = useState<number | null>(null);
 
-  const openNewFeedModal = (profId: number | null = null) => {
-    if (profId !== null) {
-      setProfId(profId);
-    }
-
+  const openNewFeedModal = (selectedProfId: number | null = null) => {
     setShowCreateFeedModal(true);
   };
 
@@ -59,6 +57,7 @@ export const NewFeedProvider = ({ children }: { children: ReactNode }) => {
         showCreateFeedModal,
         toggleToUpdateFeedsList,
         profId,
+        setProfId,
         openNewFeedModal,
         closeNewFeedModal,
         triggerFeedListUpdate,
