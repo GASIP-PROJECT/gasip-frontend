@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, View, Image, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useMMKVString } from 'react-native-mmkv';
 
 import { useAuth } from '@contexts/AuthContext';
 import { MMKVStorage } from '@api/mmkv';
@@ -16,12 +16,9 @@ import { COLORS } from '@styles/colors';
 
 import icon_goback from '@assets/icon_goback.png';
 
-export default function MyPageScreen() {
-  const navigation = useNavigation();
-  const [isSettingsModalVisible, setIsSettingsModalVisible] = useState(false);
-
-  const userNickname = MMKVStorage.getString('userNickname') || 'Guest';
-  const { dispatch, authState } = useAuth();
+export default function MyPageScreen({ navigation }) {
+  const { dispatch } = useAuth();
+  const [nickName] = useMMKVString('userNickname');
 
   const signOut = () => {
     dispatch({
@@ -46,17 +43,19 @@ export default function MyPageScreen() {
 
   return (
     <SafeAreaLayout backgroundColor={COLORS.GRAY_100}>
+      <GSHeader
+        title="마이페이지"
+        leftComponent={
+          <Image source={icon_goback} style={{ width: 28, height: 28 }} />
+        }
+        onLeftComponentPress={navigation.goBack}
+      />
       <View style={styles.container}>
-        <GSHeader
-          title="마이페이지"
-          leftComponent={
-            <Image source={icon_goback} style={{ width: 28, height: 28 }} />
-          }
-          onLeftComponentPress={navigation.goBack}
-        />
         <Spacer type="height" value={43} />
 
-        <GSText style={styles.elementTitle}>{userNickname} 님의 계정</GSText>
+        <GSText style={styles.elementTitle}>
+          {nickName || 'Guest'} 님의 계정
+        </GSText>
 
         <Spacer type="height" value={8} />
         <TouchableOpacity
@@ -69,6 +68,7 @@ export default function MyPageScreen() {
               alignItems: 'center',
             },
           ]}
+          onPress={() => navigation.navigate('MyFeedsScreen')}
         >
           <GSText style={styles.elementText}>내가 쓴 글</GSText>
           <GSIcon
@@ -84,11 +84,17 @@ export default function MyPageScreen() {
         <GSText style={styles.elementTitle}>개인 및 보안</GSText>
         <Spacer type="height" value={8} />
         <View style={styles.elementContainer}>
-          <TouchableOpacity onPress={() => {}} style={styles.element}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('ChangeNicknameScreen')}
+            style={styles.element}
+          >
             <GSText style={styles.elementText}>닉네임 변경</GSText>
           </TouchableOpacity>
           <Divider />
-          <TouchableOpacity onPress={() => {}} style={styles.element}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('ChangePasswordScreen')}
+            style={styles.element}
+          >
             <GSText style={styles.elementText}>비밀번호 변경</GSText>
           </TouchableOpacity>
           <Divider />

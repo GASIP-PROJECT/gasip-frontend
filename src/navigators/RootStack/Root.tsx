@@ -17,6 +17,7 @@ import FeedDetailScreen from '@screens/HomeScreen/FeedDetailScreen/FeedDetailScr
 import PopularReviewsScreen from '@screens/HomeScreen/FeedsScreen/PopularReviewsScreen';
 import ProfessorDetailScreen from '@screens/HomeScreen/ProfessorScreen/ProfessorScreen';
 import SearchScreenWithContext from '@screens/HomeScreen/SearchScreen/SearchScreenWithContext';
+import ChangeNicknameScreen from '@screens/MypageScreen/ChangeNicknameScreen/ChangeNicknameScreen';
 
 import { COLORS } from '@styles/colors';
 
