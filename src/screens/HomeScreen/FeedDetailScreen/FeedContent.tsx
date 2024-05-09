@@ -37,10 +37,6 @@ export default function FeedContent({
     isLike,
   } = feedData;
 
-  console.log(feedData);
-
-  console.log(regDate);
-
   return (
     <View style={styles.container}>
       <FeedContentHeader

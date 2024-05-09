@@ -81,7 +81,7 @@ export default function FeedComment({
   };
 
   return (
-    <View style={styles.container}>
+    <View>
       <View style={styles.contentContainer}>
         <CommentHeader
           regDate={regDate}
@@ -89,6 +89,7 @@ export default function FeedComment({
           memberId={memberId}
           openCommentActionsModal={openCommentActionsModal}
         />
+
         <Spacer type="height" value={6} />
         <CommentBody content={content} />
         <Spacer type="height" value={16} />
@@ -101,7 +102,16 @@ export default function FeedComment({
       </View>
 
       {commentChildren.map((commentChild, index) => {
-        return <FeedCommentReply key={index.toString()} reply={commentChild} />;
+        return (
+          <View
+            style={{
+              borderBottomWidth: index !== commentChildren.length - 1 ? 1 : 0,
+              borderBottomColor: COLORS.GRAY_200,
+            }}
+          >
+            <FeedCommentReply key={index.toString()} reply={commentChild} />
+          </View>
+        );
       })}
       <FeedActionsModal
         actionSheetRef={actionSheetRef}
@@ -204,14 +214,12 @@ const CommentFooter = ({
 };
 
 const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 16,
-  },
   contentContainer: {
     borderTopWidth: 1,
     borderBottomWidth: 1,
     borderColor: COLORS.GRAY_200,
     paddingVertical: 16,
+    paddingHorizontal: 16,
   },
   commentHeaderText: {
     fontSize: 12,

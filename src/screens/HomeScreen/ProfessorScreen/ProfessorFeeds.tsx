@@ -40,12 +40,6 @@ export default function ProfessorFeeds({ profId }: { profId: number }) {
     fetchFeeds();
   }, [toggleToUpdateFeedsList]);
 
-  useFocusEffect(
-    useCallback(() => {
-      fetchFeeds();
-    }, []),
-  );
-
   return (
     <View style={styles.container}>
       <Header />

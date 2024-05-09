@@ -74,8 +74,6 @@ const styles = StyleSheet.create({
   container: {
     paddingVertical: 16,
     backgroundColor: COLORS.GRAY_100,
-    borderBottomWidth: 1,
-    borderColor: COLORS.GRAY_200,
   },
   replyHeaderText: {
     fontSize: 12,
