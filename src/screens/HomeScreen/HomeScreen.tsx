@@ -42,7 +42,7 @@ export default function HomeScreen({ navigation }) {
       <Spacer type="height" value={10} />
       <HomeScreenHeader />
       <Spacer type="height" value={24} />
-      <ScrollView style={styles.container}>
+      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <SearchButton />
         <Spacer type="height" value={32} />
         <WriteProfessorReview />
