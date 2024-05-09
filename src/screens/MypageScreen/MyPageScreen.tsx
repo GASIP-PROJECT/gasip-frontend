@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
+import { useAuth } from '@contexts/AuthContext';
 import { MMKVStorage } from '@api/mmkv';
 import { getUserData } from '@api/index';
 
@@ -20,6 +21,14 @@ export default function MyPageScreen() {
   const [isSettingsModalVisible, setIsSettingsModalVisible] = useState(false);
 
   const userNickname = MMKVStorage.getString('userNickname') || 'Guest';
+  const { dispatch, authState } = useAuth();
+
+  const signOut = () => {
+    dispatch({
+      type: 'SIGN_OUT',
+      payload: { userToken: null, isLoading: false },
+    });
+  };
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -83,7 +92,7 @@ export default function MyPageScreen() {
             <GSText style={styles.elementText}>비밀번호 변경</GSText>
           </TouchableOpacity>
           <Divider />
-          <TouchableOpacity onPress={() => {}} style={styles.element}>
+          <TouchableOpacity onPress={signOut} style={styles.element}>
             <GSText style={styles.elementText}>로그아웃</GSText>
           </TouchableOpacity>
           <Divider />
