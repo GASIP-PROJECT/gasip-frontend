@@ -1,12 +1,15 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Modal, Alert } from 'react-native';
+import { StyleSheet, View, Modal, Alert } from 'react-native';
+
+import { editFeed } from '@api/index';
 
 import Spacer from '@components/common/Spacer';
 import GSButton from '@components/common/GSButton';
 import SafeAreaLayout from '@components/common/SafeAreaLayout';
-import { editFeed } from '@api/index';
-import CreateFeedModalTextInput from '@screens/HomeScreen/CreateFeedModal/CreateFeedModalTextInput';
+
 import FeedEditModalHeader from './FeedEditModalHeader';
+import CreateFeedModalTextInput from '@screens/HomeScreen/CreateFeedModal/CreateFeedModalTextInput';
+import CreateFeedModalHeader from '../CreateFeedModal/CreateFeedModalHeader';
 
 interface FeedEditModalProps {
   isVisible: boolean;
@@ -36,6 +39,10 @@ export default function FeedEditModal({
     setIsVisible(false);
   };
 
+  const closeFeedEditModal = () => {
+    setIsVisible(false);
+  };
+
   useEffect(() => {
     if (isVisible) {
       setFeedContent(prevContent);
@@ -48,18 +55,17 @@ export default function FeedEditModal({
         <View style={styles.container}>
           <FeedEditModalHeader
             feedContent={feedContent}
-            setIsVisible={setIsVisible}
+            handleFeedEditPress={handleFeedEditPress}
+            closeFeedEditModal={closeFeedEditModal}
           />
+
           <Spacer type="height" value={10} />
-          <Spacer type="height" value={15} />
           <CreateFeedModalTextInput
             feedContent={feedContent}
             setFeedContent={setFeedContent}
           />
           <Spacer type="height" value={40} />
         </View>
-
-        <GSButton buttonText="수정" onPress={handleFeedEditPress} />
       </SafeAreaLayout>
     </Modal>
   );

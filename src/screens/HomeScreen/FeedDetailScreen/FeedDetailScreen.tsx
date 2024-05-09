@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
-import { ActionSheetRef } from 'react-native-actions-sheet';
 
 import { deleteFeed, getFeedData } from '@api/index';
 
@@ -16,7 +15,6 @@ import FeedContent from './FeedContent';
 import FeedComment from './FeedComment';
 import FeedEditModal from './FeedEditModal';
 import FeedReplyInput from './FeedReplyInput';
-import FeedActionsModal from './FeedActionsModal';
 
 import Spacer from '@components/common/Spacer';
 import GSText from '@components/common/GSText';
@@ -34,7 +32,6 @@ export default function FeedDetailScreen({ route, navigation }) {
   const { postId } = route.params;
 
   const commentTextInputRef = useRef<TextInput>(null);
-  const actionSheetRef = useRef<ActionSheetRef>(null);
 
   const [feedData, setFeedData] = useState<Feed | null>(null);
   const [updateFeed, setUpdateFeed] = useState(false);
@@ -44,6 +41,7 @@ export default function FeedDetailScreen({ route, navigation }) {
     string | null
   >(null);
 
+  const [showFeedActionMenu, setShowFeedActionMenu] = useState(false);
   const [showFeedEditModal, setShowFeedEditModal] = useState(false);
 
   const handleReplyCommentPress = (
@@ -64,22 +62,22 @@ export default function FeedDetailScreen({ route, navigation }) {
   };
 
   const openFeedActionsModal = () => {
-    actionSheetRef?.current?.show();
+    setShowFeedActionMenu(true);
   };
 
   const handleFeedDeletePress = async () => {
-    actionSheetRef?.current?.hide();
+    setShowFeedActionMenu(false);
     await deleteFeed(feedData?.postId);
     navigation.goBack();
   };
 
   const handleFeedEditPress = () => {
-    actionSheetRef?.current?.hide();
+    setShowFeedActionMenu(false);
 
     // TODO - setTimeout 제거 필요
     setTimeout(() => {
       setShowFeedEditModal(true);
-    }, 500);
+    }, 0);
   };
 
   useEffect(() => {
@@ -93,6 +91,8 @@ export default function FeedDetailScreen({ route, navigation }) {
 
   return (
     <SafeAreaLayout noBottomPadding>
+      {/* 게시글 수정하기/삭제하기 배경 눌렀을 때 닫히도록 처리하는 투명 backdrop */}
+
       <GSHeader
         title={`${feedData?.memberNickname} 님의 게시글` || ''}
         leftComponent={
@@ -100,7 +100,20 @@ export default function FeedDetailScreen({ route, navigation }) {
         }
         onLeftComponentPress={navigation.goBack}
       />
+
       <ScrollView style={styles.container}>
+        {showFeedActionMenu && (
+          <ActionMenuTransparendBackdrop
+            onPress={() => setShowFeedActionMenu(false)}
+          />
+        )}
+
+        {showFeedActionMenu && (
+          <ActionMenu
+            handleFeedEditPress={handleFeedEditPress}
+            handleFeedDeletePress={handleFeedDeletePress}
+          />
+        )}
         {feedData !== null ? (
           <>
             {/* 교수님에 대한 글인 경우 표시되는 교수님 이름 */}
@@ -117,6 +130,7 @@ export default function FeedDetailScreen({ route, navigation }) {
               setUpdateFeed={setUpdateFeed}
               openFeedActionsModal={openFeedActionsModal}
             />
+
             <Spacer type="height" value={10} />
 
             {/* 댓글  */}
@@ -142,6 +156,11 @@ export default function FeedDetailScreen({ route, navigation }) {
           <Text>로딩중...</Text>
         )}
         <Spacer type="height" value={100} />
+        {showFeedActionMenu && (
+          <ActionMenuTransparendBackdrop
+            onPress={() => setShowFeedActionMenu(false)}
+          />
+        )}
       </ScrollView>
 
       {replyCommentNickname && (
@@ -156,11 +175,6 @@ export default function FeedDetailScreen({ route, navigation }) {
         commentTextInputRef={commentTextInputRef}
         setUpdateFeed={setUpdateFeed}
         resetReplyCommentData={resetReplyCommentData}
-      />
-      <FeedActionsModal
-        actionSheetRef={actionSheetRef}
-        handleFeedDeletePress={handleFeedDeletePress}
-        handleFeedEditPress={handleFeedEditPress}
       />
       <FeedEditModal
         postId={postId}
@@ -182,9 +196,9 @@ const CommentReplyIndicator = ({
 }) => {
   return (
     <View style={styles.commentReplyIndicatorContainer}>
-      <Text style={styles.commentReplyIndicatorText}>
+      <GSText style={styles.commentReplyIndicatorText}>
         {commentNickname} 님에게 남기는 답글
-      </Text>
+      </GSText>
       <TouchableOpacity onPress={resetReplyCommentData}>
         <GSIcon name="close-outline" size={20} color={COLORS.WHITE} />
       </TouchableOpacity>
@@ -192,9 +206,60 @@ const CommentReplyIndicator = ({
   );
 };
 
+const ActionMenu = ({ handleFeedEditPress, handleFeedDeletePress }) => {
+  return (
+    <View style={styles.actionMenuContainer}>
+      <TouchableOpacity
+        style={styles.actionMenuItemContainer}
+        onPress={handleFeedEditPress}
+      >
+        <GSText style={styles.actionMenuText}>수정하기</GSText>
+      </TouchableOpacity>
+      <View
+        style={{
+          height: 1,
+          backgroundColor: COLORS.BLUE_LIGHT_200,
+          width: '100%',
+        }}
+      />
+      <TouchableOpacity
+        style={styles.actionMenuItemContainer}
+        onPress={handleFeedDeletePress}
+      >
+        <GSText style={styles.actionMenuText}>삭제하기</GSText>
+      </TouchableOpacity>
+    </View>
+  );
+};
+
+// TODO - height 100%에도 ScrollView 만큼 안가는 이유가 뭐야?
+const ActionMenuTransparendBackdrop = ({ onPress }) => {
+  return (
+    <View
+      style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        backgroundColor: 'transparent',
+        zIndex: 1,
+      }}
+    >
+      <TouchableOpacity
+        style={{ width: '100%', height: '100%' }}
+        onPress={onPress}
+      >
+        <View />
+      </TouchableOpacity>
+    </View>
+  );
+};
+
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 16,
+    paddingHorizontal: 24,
+    flex: 1,
   },
   commentReplyIndicatorContainer: {
     width: '100%',
@@ -221,5 +286,32 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: '500',
     paddingLeft: 16,
+  },
+  actionMenuContainer: {
+    position: 'absolute',
+    top: 0,
+    right: 35,
+    height: 56,
+    width: 96,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: COLORS.WHITE,
+    shadowColor: COLORS.BLUE_PRIMARY,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.12,
+    shadowRadius: 10,
+    elevation: 5,
+    paddingHorizontal: 10,
+    zIndex: 2,
+  },
+  actionMenuItemContainer: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  actionMenuText: {
+    fontSize: 11,
+    fontWeight: '500',
+    color: COLORS.BLUE_LIGHT_100,
   },
 });
