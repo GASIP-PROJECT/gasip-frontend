@@ -41,7 +41,7 @@ export default function PopularReviewsScreen() {
   const fetchFeeds = async () => {
     setPage(0);
 
-    const posts = await getPopularFeeds(0);
+    const posts = await getPopularFeeds(0, 10);
 
     setPopularFeedsList(posts);
 
@@ -81,8 +81,8 @@ export default function PopularReviewsScreen() {
           <RefreshControl
             refreshing={refreshing}
             onRefresh={onRefresh}
-            colors={[COLORS.WHITE]}
-            tintColor={COLORS.WHITE}
+            colors={[COLORS.BLUE_LIGHT_200]}
+            tintColor={COLORS.BLUE_LIGHT_200}
           />
         }
         keyExtractor={(item, index) => index.toString()}

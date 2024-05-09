@@ -43,7 +43,7 @@ export default function AllReviewsScreen() {
   };
 
   const fetchFeedsAndSetFeedList = async () => {
-    const posts: Feed[] = await getAllFeeds(0);
+    const posts: Feed[] = await getAllFeeds(0, 10);
     setFeedsList([...posts]);
   };
 
@@ -85,8 +85,8 @@ export default function AllReviewsScreen() {
           <RefreshControl
             refreshing={refreshing}
             onRefresh={onRefresh}
-            colors={[COLORS.WHITE]}
-            tintColor={COLORS.WHITE}
+            colors={[COLORS.BLUE_LIGHT_200]}
+            tintColor={COLORS.BLUE_LIGHT_200}
           />
         }
         keyExtractor={(item, index) => index.toString()}
