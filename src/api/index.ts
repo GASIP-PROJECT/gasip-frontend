@@ -23,6 +23,31 @@ export const getAllFeeds = async (page: number, dataCount: number = 5) => {
   }
 };
 
+// 홈에서 표시할 4개의 피드 데이터 가져오는 함수
+export const getAllFeedsForHomeScreen = async () => {
+  try {
+    const posts = await GSBackendClient.get(
+      `/boards/all-boards?page=${0}&size=${4}`,
+    );
+
+    return posts.data.response;
+  } catch (error) {
+    console.log('getAllFeeds error: ', error);
+    return [];
+  }
+};
+
+export const getPopularFeedsForHomeScreen = async () => {
+  try {
+    const posts = await GSBackendClient.get(`/boards/best?page=${0}&size=${4}`);
+
+    return posts.data.response;
+  } catch (error) {
+    console.log('getPopularFeeds error: ', error);
+    return [];
+  }
+};
+
 export const getGeneralFeeds = async (page: number, dataCount: number = 5) => {
   try {
     const posts = await GSBackendClient.get(

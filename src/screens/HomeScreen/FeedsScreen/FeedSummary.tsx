@@ -9,6 +9,7 @@ import Spacer from '@components/common/Spacer';
 
 import { COLORS } from '@styles/colors';
 import { Feed } from 'types/searchTypes';
+import icon_view from '@assets/icon_view.png';
 import icon_comment from '@assets/icon_comment.png';
 import icon_thumbsup from '@assets/icon_thumbsup.png';
 
@@ -18,8 +19,15 @@ export default function FeedSummary({ feedData }: { feedData: Feed }) {
 
   const navigation = useNavigation();
 
-  const { content, likeCount, regDate, postId, memberNickname, commentCount } =
-    feedData;
+  const {
+    content,
+    likeCount,
+    regDate,
+    postId,
+    memberNickname,
+    commentCount,
+    clickCount,
+  } = feedData;
 
   const goToFeed = () => {
     navigation.navigate('FeedDetailScreen', { postId: postId });
@@ -32,6 +40,7 @@ export default function FeedSummary({ feedData }: { feedData: Feed }) {
       <SummaryFooter
         likeCount={likeCount}
         commentCount={commentCount || 0}
+        clickCount={clickCount}
         regDate={regDate}
         memberNickname={memberNickname}
       />
@@ -50,15 +59,16 @@ const SummaryContent = ({ content }: { content: string }) => {
 const SummaryFooter = ({
   likeCount,
   commentCount,
+  clickCount,
   regDate,
   memberNickname,
 }: {
   likeCount: number;
   commentCount: number | null;
+  clickCount: number;
   regDate: string;
   memberNickname: string;
 }) => {
-  const iconTextGap = 3;
   const timeString = getTimeDifference(regDate);
 
   return (
@@ -67,23 +77,39 @@ const SummaryFooter = ({
 
       <Spacer type="width" value={10} />
 
-      <View style={styles.feedIconsContainer}>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Image source={icon_thumbsup} style={styles.feedIcon} />
-          <Spacer type="width" value={4} />
-          <GSText style={styles.feedIconText}>{likeCount}</GSText>
+      <View
+        style={{
+          flex: 1,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+        }}
+      >
+        <View style={styles.feedIconsContainer}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Image source={icon_thumbsup} style={styles.feedIcon} />
+            <Spacer type="width" value={4} />
+            <GSText style={styles.feedIconText}>{likeCount}</GSText>
+          </View>
+
+          <Spacer type="width" value={10} />
+
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Image source={icon_comment} style={styles.feedIcon} />
+            <Spacer type="width" value={4} />
+            <GSText style={styles.feedIconText}>{commentCount}</GSText>
+          </View>
+
+          <Spacer type="width" value={10} />
+
+          <GSText style={styles.nicknameText}>{memberNickname}</GSText>
         </View>
-        <Spacer type="width" value={10} />
+
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Image source={icon_comment} style={styles.feedIcon} />
+          <Image source={icon_view} style={styles.feedIcon} />
           <Spacer type="width" value={4} />
-          <GSText style={styles.feedIconText}>{commentCount}</GSText>
+          <GSText style={styles.feedIconText}>{clickCount}</GSText>
         </View>
       </View>
-
-      <Spacer type="width" value={10} />
-
-      <GSText style={styles.nicknameText}>{memberNickname}</GSText>
     </View>
   );
 };
@@ -116,6 +142,7 @@ const styles = StyleSheet.create({
   },
   feedIconsContainer: {
     flexDirection: 'row',
+    alignItems: 'center',
   },
   feedIcon: {
     width: 18,

@@ -15,16 +15,20 @@ import { COLORS } from '@styles/colors';
 import icon_comment from '@assets/icon_comment.png';
 import icon_thumbsup from '@assets/icon_thumbsup.png';
 
+import { Feed } from '@types/searchTypes';
+
 interface HomeFeedListProps {
   headerIcon: ImageSourcePropType;
   title: string;
   onSeeMorePress: () => void;
+  data: Feed[];
 }
 
 export default function HomeFeedList({
   headerIcon,
   title,
   onSeeMorePress,
+  data,
 }: HomeFeedListProps) {
   return (
     <View>
@@ -53,17 +57,16 @@ export default function HomeFeedList({
 
       {/* 피드 목록 */}
       <View style={styles.feedsContainer}>
-        <FeedListItem
-          content="피드 내용이 이런데 길어지면 어떻게 되고 그런건 아무도 모르지만 아무튼 머시지..."
-          likeCount={10}
-          commentCount={5}
-        />
-        <Spacer type="height" value={10} />
-        <FeedListItem content="피드 내용" likeCount={10} commentCount={5} />
-        <Spacer type="height" value={10} />
-        <FeedListItem content="피드 내용" likeCount={10} commentCount={5} />
-        <Spacer type="height" value={10} />
-        <FeedListItem content="피드 내용" likeCount={10} commentCount={5} />
+        {data.map((feed, index) => (
+          <>
+            <FeedListItem
+              content={feed.content}
+              likeCount={feed.likeCount}
+              commentCount={feed.commentCount}
+            />
+            {index !== data.length - 1 && <Spacer type="height" value={10} />}
+          </>
+        ))}
       </View>
     </View>
   );
@@ -90,23 +93,21 @@ const FeedListItem = ({
 
       {/* 좋아요, 댓글 수 */}
       <View style={styles.feedIconsContainer}>
-        <View style={{ width: 44, flexDirection: 'row' }}>
-          <Image source={icon_thumbsup} style={styles.feedIcon} />
-          <Spacer type="width" value={4} />
-          <GSText style={styles.feedIconText}>{likeCount}</GSText>
-        </View>
-        <View style={{ width: 44, flexDirection: 'row' }}>
-          <Image source={icon_comment} style={styles.feedIcon} />
-          <Spacer type="width" value={4} />
-          <GSText style={styles.feedIconText}>{commentCount}</GSText>
-        </View>
+        {/* 좋아요 수 */}
+        <Image source={icon_thumbsup} style={styles.feedIcon} />
+        <Spacer type="width" value={4} />
+        <GSText style={styles.feedIconText}>{likeCount}</GSText>
+        <Spacer type="width" value={10} />
+        {/* 댓글 수 */}
+        <Image source={icon_comment} style={styles.feedIcon} />
+        <Spacer type="width" value={4} />
+        <GSText style={styles.feedIconText}>{commentCount}</GSText>
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {},
   headerContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -148,6 +149,7 @@ const styles = StyleSheet.create({
   },
   feedIconsContainer: {
     flexDirection: 'row',
+    alignItems: 'center',
   },
   feedIcon: {
     width: 18,
