@@ -57,7 +57,10 @@ export default function ChangeNicknameScreen({ navigation }) {
       <Spacer type="height" value={40} />
 
       <View style={{ paddingHorizontal: 24 }}>
-        <ChangeNickNameTextInput setNewNickname={setNewNickname} />
+        <ChangeNickNameTextInput
+          setNewNickname={setNewNickname}
+          onSubmitEditing={handlePressChangeNickname}
+        />
         <Spacer type="height" value={64} />
         <ChangeNicknameButton
           buttonText="저장"
@@ -70,8 +73,10 @@ export default function ChangeNicknameScreen({ navigation }) {
 
 const ChangeNickNameTextInput = ({
   setNewNickname,
+  onSubmitEditing,
 }: {
   setNewNickname: Dispatch<SetStateAction<string>>;
+  onSubmitEditing: () => void;
 }) => {
   return (
     <View>
@@ -81,16 +86,16 @@ const ChangeNickNameTextInput = ({
         placeholder="닉네임을 입력해주세요"
         placeholderTextColor={COLORS.BTN_MAIN}
         style={{
-          borderColor: COLORS.WHITE,
           borderWidth: 1,
           height: 56,
           borderRadius: 10,
           backgroundColor: COLORS.WHITE,
           paddingHorizontal: 16,
           color: COLORS.BTN_MAIN,
+          borderColor: COLORS.BLUE_PRIMARY,
         }}
         onChangeText={text => setNewNickname(text)}
-        onSubmitEditing={undefined}
+        onSubmitEditing={onSubmitEditing}
       />
     </View>
   );
