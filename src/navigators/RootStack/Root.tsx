@@ -10,9 +10,11 @@ import HomeScreen from '@screens/HomeScreen/HomeScreen';
 import LoginScreen from '@screens/LoginScreen/LoginScreen';
 import MyPageScreen from '@screens/MypageScreen/MyPageScreen';
 import SignUpScreen from '@screens/SignUpScreen/SignUpScreen';
+import AllReviewsScreen from '@screens/HomeScreen/FeedsScreen/AllReviewsScreen';
 import CreateFeedModal from '@screens/HomeScreen/CreateFeedModal/CreateFeedModal';
 import MyFeedsScreen from '@screens/MypageScreen/MyFeedsScreen.tsx/MyFeedsScreen';
 import FeedDetailScreen from '@screens/HomeScreen/FeedDetailScreen/FeedDetailScreen';
+import PopularReviewsScreen from '@screens/HomeScreen/FeedsScreen/PopularReviewsScreen';
 import ProfessorDetailScreen from '@screens/HomeScreen/ProfessorScreen/ProfessorScreen';
 import SearchScreenWithContext from '@screens/HomeScreen/SearchScreen/SearchScreenWithContext';
 
@@ -120,6 +122,16 @@ export default function Root() {
             <RootStack.Screen
               name="MyFeedsScreen"
               component={MyFeedsScreen}
+              options={{ headerShown: false }}
+            />
+            <RootStack.Screen
+              name="AllReviewsScreen"
+              component={AllReviewsScreen}
+              options={{ headerShown: false }}
+            />
+            <RootStack.Screen
+              name="PopularReviewsScreen"
+              component={PopularReviewsScreen}
               options={{ headerShown: false }}
             />
           </RootStack.Group>

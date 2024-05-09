@@ -1,16 +1,20 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { FlatList, RefreshControl, View } from 'react-native';
+import { FlatList, RefreshControl } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 
 import { getPopularFeeds } from '@api/index';
 import { useNewFeedContext } from '@contexts/NewFeedContext';
 
 import FeedSummary from '@screens/HomeScreen/FeedsScreen/FeedSummary';
+import FeedsListContainer from '@screens/HomeScreen/FeedsListContainer/FeedsListContainer';
 
-import { type Feed } from 'types/searchTypes';
+import Spacer from '@components/common/Spacer';
+
 import { COLORS } from '@styles/colors';
+import { type Feed } from 'types/searchTypes';
+import icon_fire from '@assets/icon_fire.png';
 
-export default function TopFeedsTab() {
+export default function PopularReviewsScreen() {
   const { toggleToUpdateFeedsList } = useNewFeedContext();
   const flatListRef = useRef(null);
 
@@ -64,12 +68,15 @@ export default function TopFeedsTab() {
   };
 
   return (
-    <View>
+    <FeedsListContainer title="인기글" titleIcon={icon_fire}>
       <FlatList
+        ref={flatListRef}
         data={popularFeedsList}
+        extraData={toggleToUpdateFeedsList}
         renderItem={({ item }: { item: Feed }) => (
           <FeedSummary feedData={item} />
         )}
+        onEndReached={onListEndReached}
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
@@ -79,10 +86,9 @@ export default function TopFeedsTab() {
           />
         }
         keyExtractor={(item, index) => index.toString()}
-        onEndReached={onListEndReached}
-        ItemSeparatorComponent={() => <View style={{ height: 15 }} />}
-        ListFooterComponent={() => <View style={{ height: 150 }} />}
+        ItemSeparatorComponent={() => <Spacer type="height" value={15} />}
+        ListFooterComponent={() => <Spacer type="height" value={150} />}
       />
-    </View>
+    </FeedsListContainer>
   );
 }

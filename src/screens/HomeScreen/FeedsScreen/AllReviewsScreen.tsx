@@ -1,18 +1,20 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { FlatList, RefreshControl, View } from 'react-native';
+import { FlatList, RefreshControl } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 
 import { getAllFeeds } from '@api/index';
 import { useNewFeedContext } from '@contexts/NewFeedContext';
 
 import FeedSummary from './FeedSummary';
+import FeedsListContainer from '@screens/HomeScreen/FeedsListContainer/FeedsListContainer';
 
 import Spacer from '@components/common/Spacer';
 
-import { type Feed } from 'types/searchTypes';
 import { COLORS } from '@styles/colors';
+import { type Feed } from 'types/searchTypes';
+import icon_papers from '@assets/icon_papers.png';
 
-export default function AllFeedsTab() {
+export default function AllReviewsScreen() {
   const { toggleToUpdateFeedsList } = useNewFeedContext();
   const flatListRef = useRef(null);
 
@@ -70,7 +72,7 @@ export default function AllFeedsTab() {
   };
 
   return (
-    <View>
+    <FeedsListContainer title="전체 리뷰" titleIcon={icon_papers}>
       <FlatList
         ref={flatListRef}
         data={feedsList}
@@ -91,6 +93,6 @@ export default function AllFeedsTab() {
         ItemSeparatorComponent={() => <Spacer type="height" value={15} />}
         ListFooterComponent={() => <Spacer type="height" value={150} />}
       />
-    </View>
+    </FeedsListContainer>
   );
 }

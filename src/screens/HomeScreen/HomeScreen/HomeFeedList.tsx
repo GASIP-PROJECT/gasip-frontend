@@ -18,9 +18,14 @@ import icon_thumbsup from '@assets/icon_thumbsup.png';
 interface HomeFeedListProps {
   headerIcon: ImageSourcePropType;
   title: string;
+  onSeeMorePress: () => void;
 }
 
-export default function HomeFeedList({ headerIcon, title }: HomeFeedListProps) {
+export default function HomeFeedList({
+  headerIcon,
+  title,
+  onSeeMorePress,
+}: HomeFeedListProps) {
   return (
     <View>
       {/* 헤더 */}
@@ -31,7 +36,10 @@ export default function HomeFeedList({ headerIcon, title }: HomeFeedListProps) {
           <GSText style={styles.titleText}>{title}</GSText>
         </View>
 
-        <TouchableOpacity style={styles.seeMoreButtonContainer}>
+        <TouchableOpacity
+          style={styles.seeMoreButtonContainer}
+          onPress={onSeeMorePress}
+        >
           <GSText style={styles.seeMoreText}>더보기</GSText>
           <GSIcon
             name="chevron-forward-outline"

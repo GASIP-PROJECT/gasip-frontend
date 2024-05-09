@@ -116,5 +116,6 @@ const styles = StyleSheet.create({
     flex: 1,
     borderTopWidth: 1,
     borderTopColor: COLORS.BLUE_LIGHT_200,
+    paddingHorizontal: 24,
   },
 });
