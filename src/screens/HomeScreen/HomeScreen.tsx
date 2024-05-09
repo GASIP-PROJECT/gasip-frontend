@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 
 import {
   getAllFeedsForHomeScreen,
   getPopularFeedsForHomeScreen,
 } from '@api/index';
+import { useNewFeedContext } from '@contexts/NewFeedContext';
 
 import SearchButton from './HomeScreen/SearchButton';
 import HomeFeedList from './HomeScreen/HomeFeedList';
@@ -20,22 +22,26 @@ import icon_papers from '@assets/icon_papers.png';
 import { Feed } from '@types/searchTypes';
 
 export default function HomeScreen({ navigation }) {
+  const { toggleToUpdateFeedsList } = useNewFeedContext();
+
   const [allReviews, setAllReviews] = useState<Feed[] | []>([]);
   const [popularReviews, setPopularReviews] = useState<Feed[] | []>([]);
 
-  useEffect(() => {
-    const fetchAllReviews = async () => {
-      const reviews = await getAllFeedsForHomeScreen();
-      setAllReviews([...reviews]);
-    };
-    const fetchPopularReviews = async () => {
-      const reviews = await getPopularFeedsForHomeScreen();
-      setPopularReviews([...reviews]);
-    };
+  useFocusEffect(
+    useCallback(() => {
+      const fetchAllReviews = async () => {
+        const reviews = await getAllFeedsForHomeScreen();
+        setAllReviews([...reviews]);
+      };
+      const fetchPopularReviews = async () => {
+        const reviews = await getPopularFeedsForHomeScreen();
+        setPopularReviews([...reviews]);
+      };
 
-    fetchAllReviews();
-    fetchPopularReviews();
-  }, []);
+      fetchAllReviews();
+      fetchPopularReviews();
+    }, [toggleToUpdateFeedsList]),
+  );
 
   return (
     <SafeAreaLayout noBottomPadding style={{ paddingHorizontal: 16 }}>
