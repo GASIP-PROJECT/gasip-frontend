@@ -8,6 +8,7 @@ import BottomTabNavigator from '@navigators/BottomTabNavigator';
 
 import LoginScreen from '@screens/LoginScreen/LoginScreen';
 import SignUpScreen from '@screens/SignUpScreen/SignUpScreen';
+import ResetPasswordScreen from '@screens/LoginScreen/ResetPasswordScreen';
 
 import { type StackParamList } from '@screens/navigationTypes';
 
@@ -41,6 +42,11 @@ export default function App() {
               <Stack.Screen
                 name="SignUpScreen"
                 component={SignUpScreen}
+                options={{ headerShown: false }}
+              />
+                <Stack.Screen
+                name="ResetPasswordScreen"
+                component={ResetPasswordScreen}
                 options={{ headerShown: false }}
               />
             </>

@@ -27,10 +27,10 @@ export default function LoginScreen() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ useremail, password }),
+        body: JSON.stringify({ email:useremail, password }),
       });
 
-      console.log(handleLogin)
+      console.log(await response.json())
 
       if (!response.ok) {
         throw new Error('이메일 or 비밀번호가 일치하지 않습니다');
@@ -49,16 +49,29 @@ export default function LoginScreen() {
     navigation.navigate('SignUpScreen');
   };
 
+  const ResetPw = () => {
+    navigation.navigate('ResetPasswordScreen');
+  } 
+
   return (
     <View style={styles.container}>
       <View style={styles.formContainer}>
-        <View>
+        <View style={styles.logo}>
           <Image
             source={gasip_logo}
             style={styles.gasipLogo}
             resizeMode="contain"
           />
+           <Image
+            source={require('@assets/gasip_text.png')}
+            style={styles.gasipLogoText}
+            resizeMode="contain"
+          />
+          <Text
+           style={styles.gasipSupText}
+          >가천인을 위한 교수님 전문 리뷰앱</Text>
         </View>
+        <View style={styles.mainForm}>
         <TextInput
           style={styles.input}
           placeholder="이메일"
@@ -74,13 +87,16 @@ export default function LoginScreen() {
           secureTextEntry
         />
         <GSButton onPress={handleLogin} buttonText="로그인" />
-        <Text style={styles.forgotPasswordLink}>아이디/비밀번호 찾기</Text>
-        <TouchableOpacity
-          style={[styles.button, { top: 200, left: 0 }]}
+        <Text onPress={ResetPw} style={styles.forgotPasswordLink}>비밀번호 재설정</Text>
+        <Text 
+        style={styles.Text}
+        >아직 회원이 아니신가요? 
+          <Text
+          style={styles.signUp}          
           onPress={handleSignup}
-        >
-          <Text>학교 이메일로 회원가입</Text>
-        </TouchableOpacity>
+          > 학교 이메일로 회원가입</Text>
+        </Text>
+      </View>
       </View>
     </View>
   );
@@ -91,7 +107,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#4B5159',
+    backgroundColor: '#fff',
   },
 
   formContainer: {
@@ -99,12 +115,33 @@ const styles = StyleSheet.create({
   },
 
   input: {
-    height: 50,
+    height: 60,
     width: '100%',
-    borderRadius: 12,
+    borderRadius: 16,
+    borderStyle: 'solid',
+    borderWidth: 1,
+    borderColor: '#9EA4AA',
     marginBottom: 8,
     paddingHorizontal: 10,
-    backgroundColor: '#3E4044',
+    backgroundColor: '#ffffff',
+  },
+
+
+  signUp: {
+    textDecorationLine: 'underline',
+    color: '#007AFF',
+  },
+
+  mainForm: {
+    position: 'relative',
+    bottom: 190,
+  },
+
+  Text: {
+    position: 'relative',
+    top: '20%',
+    textAlign: 'center',
+    color: '#9EA3B2',
   },
 
   forgotPasswordLink: {
@@ -114,18 +151,27 @@ const styles = StyleSheet.create({
     fontSize: 13,
   },
 
-  button: {
-    backgroundColor: 'white',
-    padding: 10,
-    borderRadius: 10,
+  logo: {
     alignItems: 'center',
-    justifyContent: 'center',
   },
 
   gasipLogo: {
-    marginBottom: 20,
-    marginLeft: 50,
-    width: '75%',
-    justifyContent: 'center',
+    position: 'relative',
+    top: 90,
+    width: '100%',
+  },
+
+  gasipLogoText: {
+    position: 'relative',
+    bottom: 100,
+    width: '30%',
+  },
+
+  gasipSupText: {
+    position: 'relative',
+    bottom: 265,
+    fontSize: 16,
+    color: '#007AFF',
+    letterSpacing: -0.4,
   },
 });

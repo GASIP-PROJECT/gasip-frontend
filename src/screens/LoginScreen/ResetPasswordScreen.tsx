@@ -68,7 +68,7 @@ const SignUpScreen = () => {
       const defaultEmailSuffix = '@naver.com'; // 기본 이메일 도메인 나중에 @gachon.ac.kr 로 변경하기
       const userEmail = `${userEmailPrefix}${defaultEmailSuffix}`;
       const response = await fetch(
-        `https://gasip.site/members/emails/verification-requests?email=${encodeURIComponent(
+        `https://gasip.site/members/emails/verification-requests/exist?email=${encodeURIComponent(
           userEmail,
         )}`,
         {
@@ -147,11 +147,11 @@ const SignUpScreen = () => {
   const handleResendCode = async () => {
     try {
       // const url = `https://gasip.site/members/emails/verification-requests`;
-      const url = `https://gasip.site/members/emails/verification-requests?email=${verifiedEmail}`;
+      const url = `https://gasip.site/members/emails/verification-requests/exist?email=${verifiedEmail}`;
 
       const response = await fetch(url, {
         method: 'POST',
-        headers: {
+        headers: {    
           'Content-Type': 'application/json',
         },
       });
@@ -163,12 +163,14 @@ const SignUpScreen = () => {
         throw new Error('새로운 인증번호 요청 실패');
       }
 
+      setTimer(180);
       startTimer();
     } catch (error: any) {
       console.error('새로운 인증번호 요청에 실패했습니다:', error.message);
       Alert.alert('새로운 인증번호 요청 실패', error.message);
     }
   };
+
 
   const handlePasswordChange = (text: any) => {
     setPassword(text);
@@ -189,123 +191,72 @@ const SignUpScreen = () => {
   const validatePasswordMatch = (password: string, confirmPassword: string) => {
     setPasswordsMatch(password === confirmPassword);
   };
+ 
 
-  const isNextButtonEnabled = isValidPassword && passwordsMatch;
-
-  const nextStep = () => {
-    setStep(step + 1); // 다음 단계로 이동
-  };
-
-  const handleNameChange = (text: string) => {
-    setName(text);
-    setIsNameValid(validateName(text));
-  };
-
-  const validateName = (name: string) => {
-    const namePattern = /^[a-zA-Z가-힣]{2,}$/;
-    return namePattern.test(name);
-  };
-
-  const handleNicknameChange = (text: string) => {
-    setNickname(text);
-    setIsNicknameValid(validateNickname(text));
-  };
-
-  const validateNickname = (nickname: string) => {
-    const nicknamePattern = /^[a-zA-Z0-9가-힣]{2,12}$/;
-    return nicknamePattern.test(nickname);
-  };
-
-  const handleNextStepFinish = () => {
-    if (isNameValid && isNicknameValid) {
-      setStep(step + 1);
-    }
-  };
-
-  const handleSubmitFinish = async () => {
+  const handleSubmitNewPw = async () => {
     try {
-      const userData = {
-        email: verifiedEmail,
-        password: password,
-        name: name,
-        nickname: nickname,
-      };
+      const url = 'https://gasip.site/members/passwords';
+      const requestData = JSON.stringify({
+        email: verifiedEmail, // 이메일
+        code: verificationCode, // 인증코드
+        newPassword: password // 새 비밀번호
+      });
+  
+      
 
-      console.log(userData);
-
-      const response = await fetch('https://gasip.site/members/signup', {
-        method: 'POST',
+      const response = await fetch(url, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(userData),
+        body: requestData,
       });
 
       console.log(response);
-
+  
       if (response.ok) {
-        // 회원가입 성공하면
-        navigation.navigate('LoginScreen');
+        // 비밀번호 재설정이 성공
+        Alert.alert('비밀번호 재설정 성공', '새로운 비밀번호로 로그인해주세요.');
+  
+        // 비밀번호 변경 성공하였을때
+  
       } else {
-        throw new Error('회원가입 실패');
+        throw new Error('비밀번호 재설정 실패');
       }
     } catch (error: any) {
-      console.error('회원가입 요청에 실패했습니다:', error.message);
-      Alert.alert(
-        '회원가입 실패',
-        '회원가입에 실패했습니다. 다시 시도해주세요.',
-      );
+      console.error('비밀번호 재설정 실패:', error.message);
+      Alert.alert('비밀번호 재설정 실패', '비밀번호를 재설정할 수 없습니다. 잠시 후 다시 시도해주세요.');
     }
   };
+  
 
   return (
     <View style={styles.container}>
       {step === 1 && (
-        <View>
+        <View style={styles.mainBox}>
           <View style={styles.header}>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('LoginScreen')}
-            >
-              <Image
-                source={require('@assets/chevron-left.png')}
-                style={styles.left}
-                resizeMode="contain"
-              />
-            </TouchableOpacity>
-            <Text style={styles.headerText}>회원가입하기</Text>
-            <Text style={styles.stepText}>1/3</Text>
-            <Text style={styles.subText}>이메일</Text>
+            <Text style={styles.emoji}>😀</Text>
+            <Text style={styles.subText}>이메일을 입력해 주세요</Text>
           </View>
-        <View> 
-          <Image
-           source={require('@assets/mail.png')}
-           style={[styles.smallText,
-           isValidEmail ? styles.activeMail : styles.inactiveMail,
-         ]}
-           resizeMode="contain"
-          />
+
           <TextInput
             style={[
               styles.step1,
-              isValidEmail ? styles.activeBorder : styles.inactiveBorder,
               {
                 borderStyle: 'solid',
                 borderWidth: 1,
                 backgroundColor: 'white',
-                borderRadius: 16,
+                borderRadius: 10,
+                borderColor: '#ffffff',
               },
             ]}
-            placeholder="학교 아이디를 입력해 주세요"
+            placeholder="이메일"
             value={useremail}
             onChangeText={handleEmailChange}
           />
-        </View>
-          <Text style={styles.gachon}
-          >@gachon.ac.kr</Text>
-          <Text style={[styles.smallText,
-             isValidEmail ? styles.activeText2 : styles.inactiveText2,
-          ]}>
-            본인 소유의 가천대학교 이메일 주소를 사용해 주세요
+          <Text style={styles.emailText}>@gachon.ac.kr</Text>
+          <Text style={styles.smallText}>
+            재설정하려는 비밀번호의 이메일 주소를 입력해 주세요
           </Text>
 
           <TouchableOpacity
@@ -316,39 +267,33 @@ const SignUpScreen = () => {
             onPress={handleButtonPress}
             disabled={!isValidEmail}
           >
-            <Text style={[styles.buttonText,
-              isValidEmail ? styles.activeText : styles.inactiveText,
-            ]}>이메일 인증하기</Text>
+            <Text style={styles.buttonText}>이메일 인증</Text>
           </TouchableOpacity>
         </View>
       )}
 
       {step === 2 && (
+        <View style={styles.mainBox}>
         <View style={styles.header}>
-          <TouchableOpacity onPress={() => setStep(prevStep => prevStep - 1)}>
-            <Image
-              source={require('@assets/chevron-left.png')}
-              style={styles.left}
-              resizeMode="contain"
-            />
+        <TouchableOpacity onPress={() => setStep(prevStep => prevStep - 1)}>
+            <Text
+              style={styles.back}
+            >뒤로가기</Text>
           </TouchableOpacity>
-          <Text style={styles.headerText}>회원가입하기</Text>
-          <Text style={styles.stepText}>1/3</Text>
-          <Text style={styles.subText2}>인증번호</Text>
+          <Text style={styles.emoji}>😄</Text>
+          <Text style={styles.subText2}>인증번호를 입력해 주세요!</Text>
           <TextInput
             style={[
               styles.step2,
-              isValidCode ? styles.activeBorder : styles.inactiveBorder,
               {
-                height: 60,
-                paddingLeft: 12,
                 borderStyle: 'solid',
                 borderWidth: 1,
                 backgroundColor: 'white',
-                borderRadius: 16,
+                borderRadius: 10,
+                borderColor: '#ffffff',
               },
             ]}
-            placeholder="인증번호 6자리를 입력해주세요"
+            placeholder="인증번호 6자리"
             onChangeText={handleCodeChange}
           />
 
@@ -370,127 +315,48 @@ const SignUpScreen = () => {
             onPress={handleSubmit}
             disabled={!isValidCode}
           >
-            <Text style={[styles.buttonText,
-               isValidCode ? styles.buttonText : styles.inactiveButtonText
-            ]}>확인</Text>
+            <Text style={styles.buttonText}>인증하기</Text>
           </EmailCodeBtn>
         </View>
-      )}
-
-      {step === 3 && (
-        <View style={styles.header}>
-          <TouchableOpacity onPress={() => setStep(prevStep => prevStep - 1)}>
-            <Image
-              source={require('@assets/chevron-left.png')}
-              style={styles.left}
-              resizeMode="contain"
-            />
-          </TouchableOpacity>
-          <Text style={styles.headerText}>이메일 회원가입 (2/3)</Text>
-          <Text style={styles.emoji}>👋</Text>
-          <Text style={styles.subText2}>비밀번호를 입력해 주세요!</Text>
-
-          <TextInput
-            style={styles.input}
-            placeholder="비밀번호"
-            secureTextEntry={true}
-            onChangeText={handlePasswordChange}
-          />
-
-          <TextInput
-            style={styles.input}
-            placeholder="비밀번호 확인"
-            secureTextEntry={true}
-            onChangeText={handleConfirmPasswordChange}
-          />
-
-          {!isValidPassword && (
-            <Text style={styles.errorMessage}>
-              비밀번호는 8자~20자의 영문+숫자+특수문자 공백X 조합이어야 합니다.
-            </Text>
-          )}
-
-          {!passwordsMatch && (
-            <Text style={styles.errorMessage}>
-              비밀번호가 일치하지 않습니다.
-            </Text>
-          )}
-
-          <TouchableOpacity
-            style={[
-              styles.buttonPass,
-              isNextButtonEnabled ? styles.activeButton : styles.inactiveButton,
-            ]}
-            disabled={!isNextButtonEnabled}
-            onPress={nextStep}
-          >
-            <Text style={styles.buttonText}>다음</Text>
-          </TouchableOpacity>
         </View>
       )}
 
-      {step === 4 && (
-        <View style={styles.header}>
-          <TouchableOpacity onPress={() => setStep(prevStep => prevStep - 1)}>
-            <Image
-              source={require('@assets/chevron-left.png')}
-              style={styles.left}
-              resizeMode="contain"
-            />
-          </TouchableOpacity>
-          <Text style={styles.headerText}>이메일 회원가입 (3/3)</Text>
-          <Text style={styles.emoji}>✈️</Text>
-          <Text style={styles.subText3}>다 왔어요!</Text>
+{step === 3 && (
+         <View style={styles.header}>
+         <Text style={styles.emoji}>🔨</Text>
+         <Text style={styles.subText2}>재설정할 비밀번호를 입력해 주세요!</Text>
 
-          <TextInput
-            style={[
-              styles.inputName,
-              {
-                borderStyle: 'solid',
-                borderWidth: 1,
-                backgroundColor: 'white',
-                borderRadius: 10,
-                borderColor: '#ffffff',
-              },
-            ]}
-            placeholder="이름"
-            value={name}
-            onChangeText={handleNameChange}
-          />
-          <TextInput
-            style={[
-              styles.inputName,
-              {
-                borderStyle: 'solid',
-                borderWidth: 1,
-                backgroundColor: 'white',
-                borderRadius: 10,
-                borderColor: '#ffffff',
-              },
-            ]}
-            placeholder="닉네임 2~12자"
-            value={nickname}
-            onChangeText={handleNicknameChange}
-          />
-          {!isNicknameValid && (
-            <Text style={styles.warning}>
-              2~12자 사이의 영문 또는 숫자만 입력하세요.
-            </Text>
-          )}
+         <TextInput
+           style={styles.input}
+           placeholder="비밀번호"
+           secureTextEntry={true}
+           onChangeText={handlePasswordChange}
+         />
 
-          <TouchableOpacity
-            style={[
-              styles.button3,
-              isNameValid && isNicknameValid
-                ? styles.activeButton3
-                : styles.inactiveButton3,
-            ]} // 활성화 여부에 따라 스타일 변경
-            onPress={handleSubmitFinish}
-            disabled={!isNameValid || !isNicknameValid}
-          >
-            <Text style={styles.buttonText}>회원가입 완료</Text>
-          </TouchableOpacity>
-        </View>
+         <TextInput
+           style={styles.input}
+           placeholder="비밀번호 확인"
+           secureTextEntry={true}
+           onChangeText={handleConfirmPasswordChange}
+         />
+
+         {!isValidPassword && (
+           <Text style={styles.errorMessage}>
+             비밀번호는 8자~20자의 영문+숫자+특수문자 공백X 조합이어야 합니다.
+           </Text>
+         )}
+
+         {!passwordsMatch && (
+           <Text style={styles.errorMessage}>
+             비밀번호가 일치하지 않습니다.
+           </Text>
+         )}
+         <TouchableOpacity>
+         <Text onPress={handleSubmitNewPw}>
+         비밀번호변경
+         </Text>
+         </TouchableOpacity>
+       </View>
       )}
     </View>
   );
@@ -500,9 +366,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: '#F7F8F9',
+    backgroundColor: '#4B5159',
     paddingTop: 35,
   },
+
+  mainBox: {
+    position: 'relative',
+    top: 100,
+  },
+
   input: {
     width: 350,
     height: 55,
@@ -529,16 +401,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: 0,
   },
-  headerText: {
-    color: '#111111',
-    fontSize: 20,
-    position: 'relative',
-    top: -30,
-    marginBottom: 40,
-  },
 
-  stepText: {
-    marginTop: -50,
+  back: {
+    position: 'relative',
+    top: -60,
+    right: 130,
+    color: 'white',
+    fontSize: 15,
+    backgroundColor: '#4490D8',
+    padding: 9,
+    borderRadius: 10,
   },
 
   emailBtn: {
@@ -550,73 +422,43 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     padding: 10,
   },
-
-  mailIcon: {
-    position: 'absolute',
-    top: 20,
-    left: 10,
-    zIndex: 1,
-  },
-
-  activeMail: {
-    tintColor: '#007AFF',
-  },
-
-  inactiveMail: {
-    tintColor: '#9EA4AA',
-  },
-
-  activeBorder: {
-    borderColor: '#007AFF',
-  },
-
-  inactiveBorder: {
-    borderColor: '#9EA4AA',
-  },
-
   step1: {
-    fontSize: 14,
-    right: 0,
-    width: 326,
-    height: 60,
+    fontSize: 15,
+    right: 35,
+    width: 180,
   },
 
   step2: {
     fontSize: 15,
     width: 360,
-    height: 60,
     alignItems: 'center',
   },
 
-  left: {
-    position: 'relative',
-    right: 160,
-    width: 150,
+  emoji: {
+    fontSize: 60,
+    right: 150,
+    marginBottom: 10,
   },
-
   smallText: {
     position: 'relative',
-    right: 0,
-    marginTop: 10,
-    fontSize: 12,
-    color: '#9EA4AA',
+    right: 35,
+    marginTop: 0,
+    color: '#4490D8',
   },
   subText: {
     position: 'relative',
-    right: 140,
-    fontSize: 14,
-    color: '#72787F',
-    marginBottom: 10,
-    marginTop: 50,
+    right: 40,
+    fontSize: 30,
+    color: 'white',
+    marginBottom: 30,
   },
 
   subText2: {
     position: 'relative',
-    right: 145,
-    fontSize: 14,
-    color: '#72787F',
-    marginTop: 40,
-    marginBottom: 10,
+    right: 15,
+    fontSize: 30,
+    color: 'white',
+    marginBottom: 30,
   },
 
   subText3: {
@@ -625,6 +467,14 @@ const styles = StyleSheet.create({
     fontSize: 30,
     color: 'white',
     marginBottom: 30,
+  },
+
+  emailText: {
+    color: 'white',
+    fontSize: 20,
+    position: 'relative',
+    bottom: 40,
+    left: 165,
   },
 
   warning: {
@@ -640,14 +490,9 @@ const styles = StyleSheet.create({
 
   button: {
     marginTop: 50,
-    backgroundColor: 'white',
-    borderRadius: 16,
-    borderColor: '#9EA4AA',
-    borderStyle: 'solid',
-    height: 60,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 1,
+    backgroundColor: 'gray',
+    padding: 10,
+    borderRadius: 5,
   },
 
   buttonPass: {
@@ -657,39 +502,18 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 5,
   },
-
   activeButton: {
-    backgroundColor: '#007AFF',
-    borderStyle: 'solid',
-    borderColor: '#9EA4AA00',
+    backgroundColor: '#4490D8',
   },
-
   inactiveButton: {
-    backgroundColor: 'white',
-    borderStyle: 'solid',
-    borderColor: '#9EA4AA',
-  },
-
-  activeText: {
-    color: '#ffffff',
-  },
-
-  inactiveText: {
-    color: '#9EA4AA',
-  },
-
-  activeText2: {
-    color: '#007AFF',
-  },
-
-  inactiveText2: {
-    color: '#9EA4AA',
+    backgroundColor: 'gray',
   },
 
   button2: {
     marginTop: 50,
+    backgroundColor: 'gray',
     padding: 10,
-    borderRadius: 16,
+    borderRadius: 5,
     width: 350,
   },
   activeButton2: {
@@ -706,51 +530,33 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 5,
   },
-
   activeButton3: {
     backgroundColor: '#4490D8',
   },
-
   inactiveButton3: {
     backgroundColor: 'gray',
   },
-
   buttonText: {
-    color: '#fff',
+    color: 'white',
     textAlign: 'center',
-    fontSize: 18,
   },
-
-  inactiveButtonText: {
-    color: '#9EA4AA'
-  },
-
-  gachon: {
-    position: 'absolute',
-    top: '52.5%',
-    left: '50%',
-    color: '#000000',
-  },
-  
   timerContainer: {
     marginTop: 20,
   },
   timerText: {
-    color: '#9EA4AA',
+    color: '#4490D8',
     fontSize: 15,
     position: 'relative',
-    bottom: 30,
-    left: 150,
+    left: 140,
   },
   reNum: {
     color: '#4490D8',
     fontSize: 15,
     marginTop: 30,
-    marginBottom: 0,
+    marginBottom: -40,
     textDecorationLine: 'underline',
     position: 'relative',
-    bottom: 15,
-    left: 120,
+    right: 120,
   },
 });
 

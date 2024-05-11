@@ -4,6 +4,7 @@ export type StackParamList = {
   BottomTabNavigator: undefined;
   LoginScreen: undefined;
   SignUpScreen: undefined;
+  ResetPasswordScreen: undefined;
 };
 
 export type BottomTabParamList = {

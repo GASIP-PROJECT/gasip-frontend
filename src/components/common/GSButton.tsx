@@ -14,7 +14,7 @@ interface GSButtonProps {
 export default function GSButton({ buttonText, onPress }: GSButtonProps) {
   return (
     <TouchableOpacity
-      style={[styles.container, { marginHorizontal: 16 }]}
+      style={[styles.container, { marginHorizontal: 0 }]}
       onPress={onPress}
     >
       <Text style={styles.text}>{buttonText}</Text>
@@ -24,10 +24,12 @@ export default function GSButton({ buttonText, onPress }: GSButtonProps) {
 
 const styles = StyleSheet.create({
   container: {
-    height: 50,
+    width: '100%',
+    height: 60,
+    marginTop: 70,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 5,
+    borderRadius: 16,
     backgroundColor: COLORS.BTN_MAIN,
   },
   text: {

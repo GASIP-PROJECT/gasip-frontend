@@ -15,24 +15,37 @@ const EmailCodeBtn: React.FC<EmailCodeBtnProps> = ({ onPress, disabled = false, 
       onPress={onPress}
       disabled={disabled}
     >
-      <Text style={styles.buttonText}>{children}</Text>
+      <Text 
+      disabled={disabled}
+      style={styles.buttonText}>{children}</Text>
     </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: '#4490D8',
+    backgroundColor: '#007AFF',
     padding: 10,
-    borderRadius: 5,
+    height: 60,
+    borderRadius: 16,
+    borderStyle: 'solid',
+    borderWidth: 1,
+    borderColor: '#9EA4AA',
     alignItems: 'center',
+    justifyContent: 'center',
   },
+  
   buttonText: {
-    color: 'white',
+    color: '#ffffff',
     fontSize: 16,
+    justifyContent: 'center',
   },
+
   disabledButton: {
-    backgroundColor: 'gray',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 16,
+    backgroundColor: '#ffffff',
   },
 });
 
