@@ -1,9 +1,11 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { NewFeedProvider } from '@contexts/NewFeedContext';
+import { AuthContextProvider } from '@contexts/AuthContext';
 
+<<<<<<< HEAD
 import BottomTabNavigator from '@navigators/BottomTabNavigator';
 
 import LoginScreen from '@screens/LoginScreen/LoginScreen';
@@ -15,11 +17,13 @@ import { type StackParamList } from '@screens/navigationTypes';
 import { COLORS } from '@styles/colors';
 
 const Stack = createNativeStackNavigator<StackParamList>();
+=======
+import Root from '@navigators/RootStack/Root';
+>>>>>>> 04b925ef688c6bc9261415a45124c05626cb1329
 
 export default function App() {
-  const isSignedIn = 'null'; // 임시로 로그인 여부를 처리하기 위한 state, 추후에 로그인 데이터를 담고 있는 state로 변경 필요
-
   return (
+<<<<<<< HEAD
     // TODO - colors 에러 발생하는 부분 수정
     <NewFeedProvider>
       <NavigationContainer theme={{ colors: { background: COLORS.BG_MAIN } }}>
@@ -54,5 +58,16 @@ export default function App() {
         </Stack.Navigator>
       </NavigationContainer>
     </NewFeedProvider>
+=======
+    <SafeAreaProvider>
+      <AuthContextProvider>
+        <NewFeedProvider>
+          <GestureHandlerRootView>
+            <Root />
+          </GestureHandlerRootView>
+        </NewFeedProvider>
+      </AuthContextProvider>
+    </SafeAreaProvider>
+>>>>>>> 04b925ef688c6bc9261415a45124c05626cb1329
   );
 }

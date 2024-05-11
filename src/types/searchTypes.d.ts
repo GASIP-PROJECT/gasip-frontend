@@ -1,3 +1,5 @@
+import { SEARCH_CATEGORY } from '@constants';
+
 export interface Feed {
   clickCount: number;
   content: string;
@@ -13,6 +15,8 @@ export interface Feed {
   memberNickname: string;
   majorName: string;
   commentCount: number;
+  isLike: boolean;
+  memberId: number;
 }
 
 export interface FeedComment {
@@ -25,6 +29,8 @@ export interface FeedComment {
   postId: number;
   regDate: string;
   updateDate: string;
+  isCommentLike: boolean | null;
+  nickName: string;
 }
 
 export interface Professor {
@@ -34,6 +40,11 @@ export interface Professor {
   profName: string;
   professorAverageGradePoint: number | null;
   collegeName: string;
+  isGrade: boolean;
 }
 
 export type SearchResult = Feed | Professor;
+
+export type SearchCategoryType =
+  | typeof SEARCH_CATEGORY.PROFESSOR
+  | typeof SEARCH_CATEGORY.MAJOR;

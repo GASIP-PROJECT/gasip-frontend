@@ -1,10 +1,16 @@
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 
 export type StackParamList = {
-  BottomTabNavigator: undefined;
   LoginScreen: undefined;
   SignUpScreen: undefined;
+<<<<<<< HEAD
   ResetPasswordScreen: undefined;
+=======
+  FeedDetailScreen: undefined;
+  ProfessorDetailScreen: undefined;
+  HomeScreen: undefined;
+  SearchScreen: undefined;
+>>>>>>> 04b925ef688c6bc9261415a45124c05626cb1329
 };
 
 export type BottomTabParamList = {
@@ -15,13 +21,11 @@ export type BottomTabParamList = {
 
 export type HomeStackParamList = {
   HomeScreen: undefined;
-  CreateFeed0: undefined;
   FeedDetailScreen: undefined;
   ProfessorDetailScreen: undefined;
 };
 export type MyPageStackParamList = {
   MyPage: undefined;
-  CreateFeed2: undefined;
   SettingsScreen: undefined;
   ChangePasswordScreen: undefined;
   ChangeNicknameScreen: undefined;
@@ -36,6 +40,5 @@ export type MyPageScreenProps = BottomTabScreenProps<
 
 // TODO - type issue 해결
 export type CreateFeedModalProps = BottomTabScreenProps<
-  HomeStackParamList | MyPageStackParamList,
-  'CreateFeed0' | 'CreateFeed2' // string/never issue
+  HomeStackParamList | MyPageStackParamList
 >;

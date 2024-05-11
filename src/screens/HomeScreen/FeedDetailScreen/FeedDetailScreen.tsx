@@ -1,61 +1,153 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Text, ScrollView } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import {
+  StyleSheet,
+  View,
+  Text,
+  ScrollView,
+  TextInput,
+  TouchableOpacity,
+  Image,
+} from 'react-native';
 
-import { getFeedData } from '@api/index';
+import { deleteFeed, getFeedData } from '@api/index';
 
 import FeedContent from './FeedContent';
 import FeedComment from './FeedComment';
-import ProfessorInfo from './ProfessorInfo';
-import FeedDetailScreenHeader from './FeedDetailScreenHeader';
+import FeedEditModal from './FeedEditModal';
+import FeedReplyInput from './FeedReplyInput';
 
 import Spacer from '@components/common/Spacer';
+import GSText from '@components/common/GSText';
+import GSIcon from '@components/common/GSIcon';
+import GSHeader from '@components/common/GSHeader';
 import SafeAreaLayout from '@components/common/SafeAreaLayout';
 
+import { COLORS } from '@styles/colors';
 import { type Feed } from 'types/searchTypes';
 
+import icon_goback from '@assets/icon_goback.png';
+
 // TODO - type 선언 필요
-export default function FeedDetailScreen({ route }) {
+export default function FeedDetailScreen({ route, navigation }) {
   const { postId } = route.params;
 
+  const commentTextInputRef = useRef<TextInput>(null);
+
   const [feedData, setFeedData] = useState<Feed | null>(null);
+  const [updateFeed, setUpdateFeed] = useState(false);
+
+  const [replyCommentId, setReplyCommentId] = useState<number | null>(null);
+  const [replyCommentNickname, setReplyCommentNickname] = useState<
+    string | null
+  >(null);
+
+  const [showFeedActionMenu, setShowFeedActionMenu] = useState(false);
+  const [showFeedEditModal, setShowFeedEditModal] = useState(false);
+
+  const handleReplyCommentPress = (
+    commentId: number,
+    commentNickname: string,
+  ) => {
+    setReplyCommentId(commentId);
+    setReplyCommentNickname(commentNickname);
+
+    if (commentTextInputRef.current) {
+      commentTextInputRef.current.focus();
+    }
+  };
+
+  const resetReplyCommentData = () => {
+    setReplyCommentId(null);
+    setReplyCommentNickname(null);
+  };
+
+  const openFeedActionsModal = () => {
+    setShowFeedActionMenu(true);
+  };
+
+  const handleFeedDeletePress = async () => {
+    setShowFeedActionMenu(false);
+    await deleteFeed(feedData?.postId);
+    navigation.goBack();
+  };
+
+  const handleFeedEditPress = () => {
+    setShowFeedActionMenu(false);
+
+    // TODO - setTimeout 제거 필요
+    setTimeout(() => {
+      setShowFeedEditModal(true);
+    }, 0);
+  };
 
   useEffect(() => {
     const fetchFeedData = async () => {
       const feedData = await getFeedData(postId);
-
       setFeedData(feedData);
     };
 
     fetchFeedData();
-  }, []);
+  }, [updateFeed]);
 
   return (
-    <SafeAreaLayout>
+    <SafeAreaLayout noBottomPadding>
+      {/* 게시글 수정하기/삭제하기 배경 눌렀을 때 닫히도록 처리하는 투명 backdrop */}
+
+      <GSHeader
+        title={`${feedData?.memberNickname} 님의 게시글` || ''}
+        leftComponent={
+          <Image source={icon_goback} style={{ width: 28, height: 28 }} />
+        }
+        onLeftComponentPress={navigation.goBack}
+      />
+
       <ScrollView style={styles.container}>
-        <FeedDetailScreenHeader />
-        <Spacer type="height" value={10} />
+        {showFeedActionMenu && (
+          <ActionMenuTransparendBackdrop
+            onPress={() => setShowFeedActionMenu(false)}
+          />
+        )}
+
+        {showFeedActionMenu && (
+          <ActionMenu
+            handleFeedEditPress={handleFeedEditPress}
+            handleFeedDeletePress={handleFeedDeletePress}
+          />
+        )}
         {feedData !== null ? (
           <>
+            {/* 교수님에 대한 글인 경우 표시되는 교수님 이름 */}
             {feedData.profId !== 0 && (
-              <ProfessorInfo
-                profName={feedData.profName}
-                majorName={feedData.majorName}
-              />
+              <GSText style={styles.professorNameText}>
+                {feedData.profName} 교수님
+              </GSText>
             )}
+            <Spacer type="height" value={14} />
+
+            {/* 피드 내용 */}
+            <FeedContent
+              feedData={feedData}
+              setUpdateFeed={setUpdateFeed}
+              openFeedActionsModal={openFeedActionsModal}
+            />
+
             <Spacer type="height" value={10} />
-            <FeedContent feedData={feedData} />
-            <Spacer type="height" value={10} />
+
+            {/* 댓글  */}
             {feedData?.comments.length > 0 && (
-              <View
-                style={{
-                  backgroundColor: '#28292A',
-                  borderRadius: 5,
-                  paddingHorizontal: 10,
-                  paddingVertical: 15,
-                }}
-              >
+              <View>
+                <GSText style={styles.commentTitleText}>
+                  댓글 {`(${feedData.commentCount}개)`}
+                </GSText>
+                <Spacer type="height" value={6} />
+
                 {feedData.comments.map((comment, index) => (
-                  <FeedComment key={index.toString()} commentData={comment} />
+                  <FeedComment
+                    key={index.toString()}
+                    commentData={comment}
+                    setUpdateFeed={setUpdateFeed}
+                    handleReplyCommentPress={handleReplyCommentPress}
+                  />
                 ))}
               </View>
             )}
@@ -63,13 +155,163 @@ export default function FeedDetailScreen({ route }) {
         ) : (
           <Text>로딩중...</Text>
         )}
+        <Spacer type="height" value={100} />
+        {showFeedActionMenu && (
+          <ActionMenuTransparendBackdrop
+            onPress={() => setShowFeedActionMenu(false)}
+          />
+        )}
       </ScrollView>
+
+      {replyCommentNickname && (
+        <CommentReplyIndicator
+          commentNickname={replyCommentNickname}
+          resetReplyCommentData={resetReplyCommentData}
+        />
+      )}
+      <FeedReplyInput
+        postId={postId}
+        replyCommentId={replyCommentId}
+        commentTextInputRef={commentTextInputRef}
+        setUpdateFeed={setUpdateFeed}
+        resetReplyCommentData={resetReplyCommentData}
+      />
+      <FeedEditModal
+        postId={postId}
+        prevContent={feedData?.content || ''}
+        isVisible={showFeedEditModal}
+        setUpdateFeed={setUpdateFeed}
+        setIsVisible={setShowFeedEditModal}
+      />
     </SafeAreaLayout>
   );
 }
 
+const CommentReplyIndicator = ({
+  commentNickname,
+  resetReplyCommentData,
+}: {
+  commentNickname: string;
+  resetReplyCommentData: () => void;
+}) => {
+  return (
+    <View style={styles.commentReplyIndicatorContainer}>
+      <GSText style={styles.commentReplyIndicatorText}>
+        {commentNickname} 님에게 남기는 답글
+      </GSText>
+      <TouchableOpacity onPress={resetReplyCommentData}>
+        <GSIcon name="close-outline" size={20} color={COLORS.WHITE} />
+      </TouchableOpacity>
+    </View>
+  );
+};
+
+const ActionMenu = ({ handleFeedEditPress, handleFeedDeletePress }) => {
+  return (
+    <View style={styles.actionMenuContainer}>
+      <TouchableOpacity
+        style={styles.actionMenuItemContainer}
+        onPress={handleFeedEditPress}
+      >
+        <GSText style={styles.actionMenuText}>수정하기</GSText>
+      </TouchableOpacity>
+      <View
+        style={{
+          height: 1,
+          backgroundColor: COLORS.BLUE_LIGHT_200,
+          width: '100%',
+        }}
+      />
+      <TouchableOpacity
+        style={styles.actionMenuItemContainer}
+        onPress={handleFeedDeletePress}
+      >
+        <GSText style={styles.actionMenuText}>삭제하기</GSText>
+      </TouchableOpacity>
+    </View>
+  );
+};
+
+// TODO - height 100%에도 ScrollView 만큼 안가는 이유가 뭐야?
+const ActionMenuTransparendBackdrop = ({ onPress }) => {
+  return (
+    <View
+      style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        backgroundColor: 'transparent',
+        zIndex: 1,
+      }}
+    >
+      <TouchableOpacity
+        style={{ width: '100%', height: '100%' }}
+        onPress={onPress}
+      >
+        <View />
+      </TouchableOpacity>
+    </View>
+  );
+};
+
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 16,
+    paddingHorizontal: 24,
+    flex: 1,
+  },
+  commentReplyIndicatorContainer: {
+    width: '100%',
+    backgroundColor: '#3e3b3b',
+    opacity: 0.5,
+    height: 50,
+    justifyContent: 'space-between',
+    paddingHorizontal: 25,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  commentReplyIndicatorText: {
+    fontSize: 16,
+    fontWeight: '500',
+    color: COLORS.WHITE,
+  },
+  professorNameText: {
+    fontSize: 12,
+    fontWeight: '400',
+    color: COLORS.GRAY_500,
+    alignSelf: 'center',
+  },
+  commentTitleText: {
+    fontSize: 12,
+    fontWeight: '500',
+    paddingLeft: 16,
+  },
+  actionMenuContainer: {
+    position: 'absolute',
+    top: 0,
+    right: 35,
+    height: 56,
+    width: 96,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: COLORS.WHITE,
+    shadowColor: COLORS.BLUE_PRIMARY,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.12,
+    shadowRadius: 10,
+    elevation: 5,
+    paddingHorizontal: 10,
+    zIndex: 2,
+  },
+  actionMenuItemContainer: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  actionMenuText: {
+    fontSize: 11,
+    fontWeight: '500',
+    color: COLORS.BLUE_LIGHT_100,
   },
 });

@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { FlatList } from 'react-native';
 
 import { getAllMyFeeds } from '@api/index';
 
-import MyFeedsScreenHeader from './MyFeedsScreenHeader';
 import FeedSummary from '@screens/HomeScreen/FeedsScreen/FeedSummary';
+import FeedsListContainer from '@screens/HomeScreen/FeedsListContainer/FeedsListContainer';
 
 import Spacer from '@components/common/Spacer';
-import SafeAreaLayout from '@components/common/SafeAreaLayout';
 
 import { Feed } from 'types/searchTypes';
 
@@ -26,26 +25,14 @@ export default function MyFeedsScreen() {
   }, []);
 
   return (
-    <SafeAreaLayout>
-      <View style={styles.container}>
-        <MyFeedsScreenHeader />
-        <Spacer type="height" value={20} />
-
-        <FlatList
-          data={myFeeds}
-          renderItem={({ item }) => <FeedSummary feedData={item} />}
-          keyExtractor={(item, index) => index.toString()}
-          ItemSeparatorComponent={() => <Spacer type="height" value={15} />}
-          ListFooterComponent={() => <Spacer type="height" value={150} />}
-        />
-      </View>
-    </SafeAreaLayout>
+    <FeedsListContainer title="내가 쓴 글" showButton={false}>
+      <FlatList
+        data={myFeeds}
+        renderItem={({ item }) => <FeedSummary feedData={item} />}
+        keyExtractor={(item, index) => index.toString()}
+        ItemSeparatorComponent={() => <Spacer type="height" value={15} />}
+        ListFooterComponent={() => <Spacer type="height" value={150} />}
+      />
+    </FeedsListContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingHorizontal: 16,
-  },
-});

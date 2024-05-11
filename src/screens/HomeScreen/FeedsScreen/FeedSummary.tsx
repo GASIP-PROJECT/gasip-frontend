@@ -4,13 +4,14 @@ import { useNavigation } from '@react-navigation/native';
 
 import { getTimeDifference } from '@utils/timeUtil';
 
-import GSIcon from '@components/common/GSIcon';
+import GSText from '@components/common/GSText';
 import Spacer from '@components/common/Spacer';
 
 import { COLORS } from '@styles/colors';
 import { Feed } from 'types/searchTypes';
-
-import icon_comments from '@assets/icon_comments.png';
+import icon_view from '@assets/icon_view.png';
+import icon_comment from '@assets/icon_comment.png';
+import icon_thumbsup from '@assets/icon_thumbsup.png';
 
 // TODO - navigation 관련 버그 해결
 export default function FeedSummary({ feedData }: { feedData: Feed }) {
@@ -18,99 +19,96 @@ export default function FeedSummary({ feedData }: { feedData: Feed }) {
 
   const navigation = useNavigation();
 
-  console.log(feedData);
-
   const {
     content,
     likeCount,
-    clickCount,
     regDate,
     postId,
     memberNickname,
     commentCount,
+    clickCount,
   } = feedData;
 
-  const handleSummaryPress = () => {
-    // TODO - 각 글 세부 내용으로 이동시키는 처리
+  const goToFeed = () => {
     navigation.navigate('FeedDetailScreen', { postId: postId });
   };
 
   return (
-    <TouchableOpacity style={styles.container} onPress={handleSummaryPress}>
-      <SummaryHeader regDate={regDate} memberNickname={memberNickname} />
-      <Spacer type="height" value={10} />
+    <TouchableOpacity style={styles.container} onPress={goToFeed}>
       <SummaryContent content={content} />
       <Spacer type="height" value={10} />
       <SummaryFooter
-        clickCount={clickCount}
         likeCount={likeCount}
         commentCount={commentCount || 0}
+        clickCount={clickCount}
+        regDate={regDate}
+        memberNickname={memberNickname}
       />
-      <Spacer type="height" value={10} />
-      <View style={styles.bottomLine} />
     </TouchableOpacity>
   );
 }
 
-const SummaryHeader = ({
+const SummaryContent = ({ content }: { content: string }) => {
+  return (
+    <GSText style={styles.feedContentText} numberOfLines={2}>
+      {content}
+    </GSText>
+  );
+};
+
+const SummaryFooter = ({
+  likeCount,
+  commentCount,
+  clickCount,
   regDate,
   memberNickname,
 }: {
+  likeCount: number;
+  commentCount: number | null;
+  clickCount: number;
   regDate: string;
   memberNickname: string;
 }) => {
   const timeString = getTimeDifference(regDate);
 
   return (
-    <Text style={styles.feedHeaderText}>
-      {timeString} | {memberNickname}
-    </Text>
-  );
-};
-
-const SummaryContent = ({ content }: { content: string }) => {
-  return (
-    <Text style={styles.feedContentText} numberOfLines={2}>
-      {content}
-    </Text>
-  );
-};
-
-const SummaryFooter = ({
-  clickCount,
-  likeCount,
-  commentCount,
-}: {
-  clickCount: number;
-  likeCount: number;
-  commentCount: number | null;
-}) => {
-  return (
     <View style={styles.footerContainer}>
-      <View style={styles.footerIconContainer}>
-        <GSIcon name="heart" size={15} color="red" />
-        <Spacer type="width" value={5} />
-        <Text style={{ fontSize: 15, color: 'red', fontWeight: '500' }}>
-          {likeCount}
-        </Text>
-      </View>
+      <GSText style={styles.timeText}>{timeString}</GSText>
 
-      <View style={[styles.footerIconContainer, { justifyContent: 'center' }]}>
-        <Image source={icon_comments} style={{ width: 15, height: 15 }} />
-        <Spacer type="width" value={5} />
-        <Text style={{ fontSize: 15, color: '#4490d8', fontWeight: '500' }}>
-          {commentCount}
-        </Text>
-      </View>
+      <Spacer type="width" value={10} />
 
       <View
-        style={[styles.footerIconContainer, { justifyContent: 'flex-end' }]}
+        style={{
+          flex: 1,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+        }}
       >
-        <GSIcon name="eye" size={15} color="#999999" />
-        <Spacer type="width" value={5} />
-        <Text style={{ fontSize: 15, color: '#999999', fontWeight: '500' }}>
-          {clickCount}
-        </Text>
+        <View style={styles.feedIconsContainer}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Image source={icon_thumbsup} style={styles.feedIcon} />
+            <Spacer type="width" value={4} />
+            <GSText style={styles.feedIconText}>{likeCount}</GSText>
+          </View>
+
+          <Spacer type="width" value={10} />
+
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Image source={icon_comment} style={styles.feedIcon} />
+            <Spacer type="width" value={4} />
+            <GSText style={styles.feedIconText}>{commentCount}</GSText>
+          </View>
+
+          <Spacer type="width" value={10} />
+
+          <GSText style={styles.nicknameText}>{memberNickname}</GSText>
+        </View>
+
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Image source={icon_view} style={styles.feedIcon} />
+          <Spacer type="width" value={4} />
+          <GSText style={styles.feedIconText}>{clickCount}</GSText>
+        </View>
       </View>
     </View>
   );
@@ -118,34 +116,46 @@ const SummaryFooter = ({
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
-    paddingTop: 15,
-    paddingBottom: 10,
-    paddingHorizontal: 10,
-    borderRadius: 5,
-    backgroundColor: '#28292A',
+    paddingVertical: 15,
+    paddingHorizontal: 16,
+    borderRadius: 10,
+    backgroundColor: COLORS.WHITE,
+    shadowColor: COLORS.BLUE_PRIMARY,
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.05,
+    shadowRadius: 10,
+    elevation: 5,
   },
   footerContainer: {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    alignItems: 'center',
   },
-  footerIconContainer: {
-    flex: 1,
+  feedContentText: {
+    fontSize: 14,
+    fontWeight: '500',
+  },
+  timeText: {
+    fontSize: 11,
+    fontWeight: '400',
+    color: COLORS.GRAY_500,
+  },
+  feedIconsContainer: {
     flexDirection: 'row',
     alignItems: 'center',
   },
-  bottomLine: {
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.WHITE,
+  feedIcon: {
+    width: 18,
+    height: 18,
   },
-  feedHeaderText: {
-    color: '#4b5159',
+  feedIconText: {
+    fontSize: 12,
     fontWeight: '500',
   },
-  feedContentText: {
-    color: COLORS.WHITE,
-    fontSize: 16,
+
+  nicknameText: {
+    fontSize: 12,
     fontWeight: '500',
+    color: COLORS.GRAY_500,
   },
 });

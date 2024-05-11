@@ -1,42 +1,57 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+
+import RatingStars from './RatingStars';
 
 import Spacer from '@components/common/Spacer';
-import GSIcon from '@components/common/GSIcon';
+import GSText from '@components/common/GSText';
 
 import { COLORS } from '@styles/colors';
 import { Professor } from 'types/searchTypes';
 
+import icon_pencil from '@assets/icon_pencil.png';
+
 export default function ProfessorDetail({
   professorData,
+  openRateModal,
 }: {
   professorData: Professor;
+  openRateModal: () => void;
 }) {
-  const [showRateButton, setShowRateButton] = useState(false);
-
-  const { profName, collegeName, majorName, professorAverageGradePoint } =
-    professorData;
+  const {
+    profName,
+    collegeName,
+    majorName,
+    professorAverageGradePoint,
+    isGrade,
+  } = professorData;
 
   return (
-    <View style={styles.container}>
+    <View>
       <View style={styles.professorNameContainer}>
-        <Text style={styles.professorNameText}>{profName} 교수님</Text>
-        {!showRateButton && (
-          <TouchableOpacity style={styles.rateProfessorButton}>
-            <Text style={styles.rateProfessorButtonText}>평가하기</Text>
-          </TouchableOpacity>
-        )}
+        <GSText style={styles.professorNameText}>{profName} 교수님</GSText>
       </View>
       <Spacer type="height" value={20} />
-      <DetailElement title="학부" content={collegeName} iconName="location" />
+      <DetailElement title="학부" content={collegeName} />
       <Spacer type="height" value={10} />
-      <DetailElement title="학과" content={majorName} iconName="grid" />
+      <DetailElement title="학과" content={majorName} />
       <Spacer type="height" value={10} />
-      <DetailElement
-        title="평점"
-        content={professorAverageGradePoint || 0}
-        iconName="star"
-      />
+      <View style={styles.professorRatingContainer}>
+        <DetailElement
+          title="평점"
+          content={`${professorAverageGradePoint || 0}`}
+        />
+        <Spacer type="width" value={8} />
+        <View style={styles.ratingStarAndButtonContainer}>
+          <RatingStars currentRating={professorAverageGradePoint} />
+          {!isGrade && (
+            <TouchableOpacity style={styles.rateButton} onPress={openRateModal}>
+              <GSText style={styles.rateButtonText}>평점 입력하기</GSText>
+              <Image source={icon_pencil} style={{ width: 18, height: 18 }} />
+            </TouchableOpacity>
+          )}
+        </View>
+      </View>
     </View>
   );
 }
@@ -44,41 +59,30 @@ export default function ProfessorDetail({
 const DetailElement = ({
   title,
   content,
-  iconName,
 }: {
   title: string;
   content: string | number;
-  iconName: string;
 }) => {
   return (
     <View style={styles.elementContainer}>
       <View style={styles.elementTitleContainer}>
-        <GSIcon name={iconName} size={20} />
         <Spacer type="width" value={5} />
         <Text style={styles.elementTitle}>{title}</Text>
       </View>
-      <Spacer type="width" value={15} />
+      <Spacer type="width" value={10} />
       <Text style={styles.elementContent}>{content}</Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    width: '100%',
-    backgroundColor: '#28292A',
-    borderRadius: 5,
-    paddingVertical: 15,
-    paddingHorizontal: 10,
-  },
   professorNameContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
   },
   professorNameText: {
-    color: COLORS.WHITE,
-    fontSize: 30,
+    fontSize: 26,
     fontWeight: '700',
   },
   rateProfessorButton: {
@@ -103,13 +107,36 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   elementTitle: {
-    color: COLORS.WHITE,
-    fontSize: 20,
-    fontWeight: '700',
+    fontSize: 14,
+    fontWeight: '500',
+    color: COLORS.GRAY_400,
   },
   elementContent: {
-    color: COLORS.WHITE,
-    fontSize: 20,
-    fontWeight: '700',
+    fontSize: 14,
+    fontWeight: '500',
+  },
+  professorRatingContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  ratingStarAndButtonContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  rateButton: {
+    flexDirection: 'row',
+    paddingHorizontal: 14,
+    alignItems: 'center',
+    height: 28,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: COLORS.BLUE_PRIMARY,
+  },
+  rateButtonText: {
+    fontSize: 14,
+    fontWeight: '500',
+    color: COLORS.BLUE_PRIMARY,
   },
 });

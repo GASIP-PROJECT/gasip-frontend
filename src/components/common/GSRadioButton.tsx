@@ -14,11 +14,21 @@ export default function GSRadioButton({
 }: GSRadioButtonProps) {
   return (
     <TouchableOpacity
-      style={styles.borderCircle}
+      style={[
+        styles.borderCircle,
+        { borderColor: isSelected ? COLORS.BLUE_PRIMARY : '#636366' },
+      ]}
       disabled={isSelected}
       onPress={onPress}
     >
-      {isSelected && <View style={styles.innerFillCircle} />}
+      {isSelected && (
+        <View
+          style={[
+            styles.innerFillCircle,
+            { backgroundColor: isSelected ? COLORS.BLUE_PRIMARY : '#636366' },
+          ]}
+        />
+      )}
     </TouchableOpacity>
   );
 }
@@ -29,7 +39,6 @@ const styles = StyleSheet.create({
     height: 20,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: COLORS.WHITE,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -37,6 +46,5 @@ const styles = StyleSheet.create({
     width: 10,
     height: 10,
     borderRadius: 5,
-    backgroundColor: COLORS.WHITE,
   },
 });

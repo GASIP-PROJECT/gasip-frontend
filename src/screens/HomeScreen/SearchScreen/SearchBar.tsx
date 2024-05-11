@@ -1,150 +1,120 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { useState } from 'react';
 import {
+  Image,
   StyleSheet,
   TextInput,
   TouchableOpacity,
   View,
-  Text,
 } from 'react-native';
 
-import { searchFeeds, searchProfessors } from '@api/index';
+import { useSearchContext } from '@contexts/SearchContext';
 
-import GSIcon from '@components/common/GSIcon';
+import GSText from '@components/common/GSText';
 import Spacer from '@components/common/Spacer';
 import GSRadioButton from '@components/common/GSRadioButton';
 
 import { COLORS } from '@styles/colors';
-import { type SearchResult } from 'types/searchTypes';
+import { SEARCH_CATEGORY } from '../../../constants';
+import { SearchCategoryType } from 'types/searchTypes';
 
-export default function SearchBar({
-  setIsSearchPageOpen,
-  setSearchResults,
-  setNoSearchResult,
-}: {
-  setIsSearchPageOpen: Dispatch<SetStateAction<boolean>>;
-  setSearchResults: Dispatch<SetStateAction<SearchResult[]>>;
-  setNoSearchResult: Dispatch<SetStateAction<boolean>>;
-}) {
+import icon_x_circle from '@assets/icon_x_circle.png';
+
+export default function SearchBar() {
   const [searchText, setSearchText] = useState<string>('');
-  const [searchResultType, setSearchResultType] = useState<
-    'Professor' | 'Content'
-  >('Professor');
 
-  const handleCancelPress = () => {
-    setIsSearchPageOpen(false);
-  };
-
-  const handleSearchSubmit = async () => {
-    if (searchResultType === 'Professor') {
-      const professors = await searchProfessors(searchText);
-      // console.log(professors);
-      if (professors.length === 0) {
-        setNoSearchResult(true);
-      } else {
-        setNoSearchResult(false);
-      }
-      setSearchResults([...professors]);
-    }
-
-    if (searchResultType === 'Content') {
-      const feeds = await searchFeeds(searchText);
-      // console.log(feeds);
-      if (feeds.length === 0) {
-        setNoSearchResult(true);
-      } else {
-        setNoSearchResult(false);
-      }
-      setSearchResults([...feeds]);
-    }
-  };
+  const { setNoSearchResult, handleSearchSubmit } = useSearchContext();
 
   const handleTextInputFocus = () => {
     setNoSearchResult(false);
   };
 
+  const clearSearchText = () => {
+    setSearchText('');
+  };
+
+  const onSubmit = async () => {
+    await handleSearchSubmit(searchText);
+  };
+
   return (
     <>
-      <View style={styles.container}>
+      <View>
         <TextInput
           style={styles.searchTextInput}
-          placeholder="검색"
-          placeholderTextColor={'#999999'}
+          placeholder=" 먼저 교수님 or 학과를 선택해주세요"
+          placeholderTextColor={COLORS.GRAY_400}
           onChangeText={text => setSearchText(text)}
-          onSubmitEditing={handleSearchSubmit}
+          onSubmitEditing={onSubmit}
           onFocus={handleTextInputFocus}
+          value={searchText}
+          autoFocus
         />
 
-        <View style={styles.searchIconContainer}>
-          <GSIcon name="search-outline" size={20} color="#999999" />
-        </View>
-
-        <Spacer type="width" value={8} />
-
-        <TouchableOpacity
-          style={styles.cancelButton}
-          onPress={handleCancelPress}
-        >
-          <Text style={styles.cancelButtonText}>취소</Text>
-        </TouchableOpacity>
+        {searchText !== '' && (
+          <TouchableOpacity
+            style={styles.searchIconContainer}
+            hitSlop={{ top: 8, bottom: 8, right: 8, left: 8 }}
+            onPress={clearSearchText}
+          >
+            <Image source={icon_x_circle} style={{ width: 24, height: 24 }} />
+          </TouchableOpacity>
+        )}
       </View>
-      <Spacer type="height" value={10} />
+
+      <Spacer type="height" value={16} />
 
       <View style={{ flexDirection: 'row' }}>
-        <SearchResultTypeSelector
-          typeName="Professor"
-          searchResultType={searchResultType}
-          setSearchResultType={setSearchResultType}
-        />
+        <SearchResultTypeSelector category={SEARCH_CATEGORY.PROFESSOR} />
         <Spacer type="width" value={10} />
-        <SearchResultTypeSelector
-          typeName="Content"
-          searchResultType={searchResultType}
-          setSearchResultType={setSearchResultType}
-        />
+        <SearchResultTypeSelector category={SEARCH_CATEGORY.MAJOR} />
       </View>
     </>
   );
 }
 
-interface SearchResultTypeSelectorProps {
-  typeName: 'Professor' | 'Content';
-  searchResultType: 'Professor' | 'Content';
-  setSearchResultType: Dispatch<SetStateAction<'Professor' | 'Content'>>;
-}
-
 const SearchResultTypeSelector = ({
-  typeName,
-  searchResultType,
-  setSearchResultType,
-}: SearchResultTypeSelectorProps) => {
-  const isSelected = typeName === searchResultType;
+  category,
+}: {
+  category: SearchCategoryType;
+}) => {
+  const { setSearchResults, searchCategory, setSearchCategory } =
+    useSearchContext();
+
+  const isSelected = category === searchCategory;
 
   const handleTypePress = () => {
-    setSearchResultType(typeName);
+    setSearchResults([]);
+    setSearchCategory(category);
   };
 
   return (
     <View style={styles.searchResultTypeContainer}>
       <GSRadioButton isSelected={isSelected} onPress={handleTypePress} />
       <Spacer type="width" value={5} />
-      <Text style={styles.searchResultTypeText}>{typeName}</Text>
+      <GSText style={styles.searchResultTypeText}>{category}</GSText>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-  },
   searchTextInput: {
-    flex: 1,
+    height: 52,
+    borderRadius: 100,
+    borderColor: COLORS.BLUE_LIGHT_100,
+    borderWidth: 1,
+    justifyContent: 'space-between',
+    paddingLeft: 24,
+    paddingRight: 60,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: COLORS.WHITE,
+    color: COLORS.BLACK,
     fontSize: 16,
-    height: 40,
-    paddingLeft: 35,
-    paddingRight: 15,
-    borderRadius: 20,
-    backgroundColor: '#545151',
-    color: COLORS.WHITE,
+    shadowColor: COLORS.BLUE_LIGHT_100,
+    shadowOffset: { width: 4, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 5,
   },
   cancelButton: {
     justifyContent: 'center',
@@ -157,8 +127,8 @@ const styles = StyleSheet.create({
   },
   searchIconContainer: {
     position: 'absolute',
-    left: 10,
-    top: 10,
+    right: 24,
+    top: 14,
   },
   searchResultTypeContainer: {
     flexDirection: 'row',
@@ -166,7 +136,7 @@ const styles = StyleSheet.create({
   },
   searchResultTypeText: {
     fontSize: 16,
-    fontWeight: '600',
-    color: COLORS.WHITE,
+    fontWeight: '400',
+    color: COLORS.BLACK,
   },
 });

@@ -1,24 +1,27 @@
 import React, { useState } from 'react';
-import {
-  Text,
-  TextInput,
-  Image,
-  View,
-  StyleSheet,
-  Alert,
-  TouchableOpacity,
-} from 'react-native';
+import { Text, TextInput, Image, View, StyleSheet, Alert } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
+import { setMMKVStorageAuthData } from '@api/mmkv';
+import { useAuth } from '@contexts/AuthContext';
+
+import Spacer from '@components/common/Spacer';
 import GSButton from '@components/common/GSButton';
+import SafeAreaLayout from '@components/common/SafeAreaLayout';
 
+import { COLORS } from '@styles/colors';
 import gasip_logo from '@assets/gasip_logo.png';
-
-import { useNavigation } from '@react-navigation/native'; 
 
 export default function LoginScreen() {
   const [useremail, setUseremail] = useState('');
   const [password, setPassword] = useState('');
-  const navigation = useNavigation(); 
+  const navigation = useNavigation();
+
+  const { dispatch } = useAuth();
+
+  //   email: 'ji@test.com',
+  //   password: 'passwordtest1!',
+  //   // name: '마지혁',
 
   const handleLogin = async () => {
     try {
@@ -27,10 +30,28 @@ export default function LoginScreen() {
         headers: {
           'Content-Type': 'application/json',
         },
+<<<<<<< HEAD
         body: JSON.stringify({ email:useremail, password }),
       });
 
       console.log(await response.json())
+=======
+        body: JSON.stringify({ email: useremail, password }),
+      });
+
+      const loginResult = await response.json();
+
+      const { accessToken, userNickname, memberId } = loginResult.response;
+      setMMKVStorageAuthData(accessToken, userNickname, memberId);
+
+      dispatch({
+        type: 'SIGN_IN',
+        payload: {
+          userToken: loginResult.response.accessToken,
+          isLoading: false,
+        },
+      });
+>>>>>>> 04b925ef688c6bc9261415a45124c05626cb1329
 
       if (!response.ok) {
         throw new Error('이메일 or 비밀번호가 일치하지 않습니다');
@@ -45,7 +66,7 @@ export default function LoginScreen() {
     }
   };
 
-  const handleSignup = async () => {
+  const handleSignup = () => {
     navigation.navigate('SignUpScreen');
   };
 
@@ -54,6 +75,7 @@ export default function LoginScreen() {
   } 
 
   return (
+<<<<<<< HEAD
     <View style={styles.container}>
       <View style={styles.formContainer}>
         <View style={styles.logo}>
@@ -72,6 +94,16 @@ export default function LoginScreen() {
           >가천인을 위한 교수님 전문 리뷰앱</Text>
         </View>
         <View style={styles.mainForm}>
+=======
+    <SafeAreaLayout backgroundColor="#4B5159">
+      <View style={styles.container}>
+        <Image
+          source={gasip_logo}
+          style={styles.gasipLogo}
+          resizeMode="contain"
+        />
+        <Spacer type="height" value={25} />
+>>>>>>> 04b925ef688c6bc9261415a45124c05626cb1329
         <TextInput
           style={styles.input}
           placeholder="이메일"
@@ -86,6 +118,7 @@ export default function LoginScreen() {
           onChangeText={setPassword}
           secureTextEntry
         />
+<<<<<<< HEAD
         <GSButton onPress={handleLogin} buttonText="로그인" />
         <Text onPress={ResetPw} style={styles.forgotPasswordLink}>비밀번호 재설정</Text>
         <Text 
@@ -97,26 +130,49 @@ export default function LoginScreen() {
           > 학교 이메일로 회원가입</Text>
         </Text>
       </View>
+=======
+        <View style={{ width: '100%' }}>
+          <GSButton
+            onPress={handleLogin}
+            buttonText="로그인"
+            marginHorizontal={0}
+          />
+          <Text style={styles.forgotPasswordLink}>아이디/비밀번호 찾기</Text>
+        </View>
+>>>>>>> 04b925ef688c6bc9261415a45124c05626cb1329
       </View>
-    </View>
+
+      <GSButton
+        onPress={handleSignup}
+        buttonText="학교 이메일로 회원가입"
+        bgColor={COLORS.WHITE}
+        btnTextColor={COLORS.BTN_MAIN}
+      />
+    </SafeAreaLayout>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
+<<<<<<< HEAD
     backgroundColor: '#fff',
   },
 
   formContainer: {
     width: '80%',
+=======
+    paddingHorizontal: 16,
+>>>>>>> 04b925ef688c6bc9261415a45124c05626cb1329
   },
 
   input: {
     height: 60,
     width: '100%',
+<<<<<<< HEAD
     borderRadius: 16,
     borderStyle: 'solid',
     borderWidth: 1,
@@ -142,6 +198,14 @@ const styles = StyleSheet.create({
     top: '20%',
     textAlign: 'center',
     color: '#9EA3B2',
+=======
+    borderRadius: 5,
+    marginBottom: 8,
+    paddingHorizontal: 16,
+    backgroundColor: '#3E4044',
+    color: '#918989',
+    fontSize: 16,
+>>>>>>> 04b925ef688c6bc9261415a45124c05626cb1329
   },
 
   forgotPasswordLink: {
@@ -151,6 +215,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
   },
 
+<<<<<<< HEAD
   logo: {
     alignItems: 'center',
   },
@@ -173,5 +238,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#007AFF',
     letterSpacing: -0.4,
+=======
+  gasipLogo: {
+    width: '75%',
+    justifyContent: 'center',
+>>>>>>> 04b925ef688c6bc9261415a45124c05626cb1329
   },
 });

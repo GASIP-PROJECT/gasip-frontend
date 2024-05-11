@@ -12,9 +12,19 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		19A31D0C5882478A9A8889C1 /* Pretendard-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E2C0F3F8108B4314876871D1 /* Pretendard-Regular.ttf */; };
+		1C777B57C1914095A46999AF /* Pretendard-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AB99604D714F4DDD93997D15 /* Pretendard-Bold.ttf */; };
+		478C88814F17497C98D7A0B0 /* Pretendard-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1150BF5D31FD458FBE0CE98C /* Pretendard-Black.ttf */; };
 		4EFF6BBC2BC44200002E8F24 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4EFF6BBA2BC43EAB002E8F24 /* Ionicons.ttf */; };
+		5E8A7B7CDED441C4B2AAF926 /* Pretendard-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 33E328E11F464A0BB1761E7B /* Pretendard-ExtraBold.ttf */; };
 		7699B88040F8A987B510C191 /* libPods-Gasip-GasipTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-Gasip-GasipTests.a */; };
+		7C1F00FE130545859303675C /* Pretendard-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EAF2848142564D0B8F4642FF /* Pretendard-ExtraLight.ttf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		82E5A25073F14EF08B47C7C6 /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C1ACFC4526EE4CACA35AAA38 /* BootSplash.storyboard */; };
+		9ADBED2F11A44239AB285463 /* Pretendard-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D09B727AC0F4551B9A60C6C /* Pretendard-Light.ttf */; };
+		ACE6ECEF0D9F4BF7A45CBE5C /* Pretendard-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C96F567CC9CE4DADB7C75E22 /* Pretendard-Thin.ttf */; };
+		BC80475CB5984530A47B9E7A /* Pretendard-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 580F2E510B1548CC90DEE6F9 /* Pretendard-Medium.ttf */; };
+		BE4A3A9E370C499B999BA859 /* Pretendard-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0234F8607B4C4C709626545E /* Pretendard-SemiBold.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -31,6 +41,8 @@
 		00E356EE1AD99517003FC87E /* GasipTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GasipTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* GasipTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GasipTests.m; sourceTree = "<group>"; };
+		0234F8607B4C4C709626545E /* Pretendard-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Pretendard-SemiBold.ttf"; path = "../assets/fonts/Pretendard-SemiBold.ttf"; sourceTree = "<group>"; };
+		1150BF5D31FD458FBE0CE98C /* Pretendard-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Pretendard-Black.ttf"; path = "../assets/fonts/Pretendard-Black.ttf"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* Gasip.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Gasip.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Gasip/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = Gasip/AppDelegate.mm; sourceTree = "<group>"; };
@@ -38,13 +50,21 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Gasip/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Gasip/main.m; sourceTree = "<group>"; };
 		19F6CBCC0A4E27FBF8BF4A61 /* libPods-Gasip-GasipTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Gasip-GasipTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		33E328E11F464A0BB1761E7B /* Pretendard-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Pretendard-ExtraBold.ttf"; path = "../assets/fonts/Pretendard-ExtraBold.ttf"; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-Gasip.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Gasip.debug.xcconfig"; path = "Target Support Files/Pods-Gasip/Pods-Gasip.debug.xcconfig"; sourceTree = "<group>"; };
 		4EFF6BBA2BC43EAB002E8F24 /* Ionicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-Gasip.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Gasip.release.xcconfig"; path = "Target Support Files/Pods-Gasip/Pods-Gasip.release.xcconfig"; sourceTree = "<group>"; };
+		580F2E510B1548CC90DEE6F9 /* Pretendard-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Pretendard-Medium.ttf"; path = "../assets/fonts/Pretendard-Medium.ttf"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-Gasip-GasipTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Gasip-GasipTests.debug.xcconfig"; path = "Target Support Files/Pods-Gasip-GasipTests/Pods-Gasip-GasipTests.debug.xcconfig"; sourceTree = "<group>"; };
+		5D09B727AC0F4551B9A60C6C /* Pretendard-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Pretendard-Light.ttf"; path = "../assets/fonts/Pretendard-Light.ttf"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-Gasip.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Gasip.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Gasip/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-Gasip-GasipTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Gasip-GasipTests.release.xcconfig"; path = "Target Support Files/Pods-Gasip-GasipTests/Pods-Gasip-GasipTests.release.xcconfig"; sourceTree = "<group>"; };
+		AB99604D714F4DDD93997D15 /* Pretendard-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Pretendard-Bold.ttf"; path = "../assets/fonts/Pretendard-Bold.ttf"; sourceTree = "<group>"; };
+		C1ACFC4526EE4CACA35AAA38 /* BootSplash.storyboard */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = BootSplash.storyboard; path = Gasip/BootSplash.storyboard; sourceTree = "<group>"; };
+		C96F567CC9CE4DADB7C75E22 /* Pretendard-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Pretendard-Thin.ttf"; path = "../assets/fonts/Pretendard-Thin.ttf"; sourceTree = "<group>"; };
+		E2C0F3F8108B4314876871D1 /* Pretendard-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Pretendard-Regular.ttf"; path = "../assets/fonts/Pretendard-Regular.ttf"; sourceTree = "<group>"; };
+		EAF2848142564D0B8F4642FF /* Pretendard-ExtraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Pretendard-ExtraLight.ttf"; path = "../assets/fonts/Pretendard-ExtraLight.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -95,6 +115,7 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				C1ACFC4526EE4CACA35AAA38 /* BootSplash.storyboard */,
 			);
 			name = Gasip;
 			sourceTree = "<group>";
@@ -133,6 +154,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
+				9E36DF1273794776BF148ABB /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -146,6 +168,23 @@
 				00E356EE1AD99517003FC87E /* GasipTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		9E36DF1273794776BF148ABB /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				1150BF5D31FD458FBE0CE98C /* Pretendard-Black.ttf */,
+				AB99604D714F4DDD93997D15 /* Pretendard-Bold.ttf */,
+				33E328E11F464A0BB1761E7B /* Pretendard-ExtraBold.ttf */,
+				EAF2848142564D0B8F4642FF /* Pretendard-ExtraLight.ttf */,
+				5D09B727AC0F4551B9A60C6C /* Pretendard-Light.ttf */,
+				580F2E510B1548CC90DEE6F9 /* Pretendard-Medium.ttf */,
+				E2C0F3F8108B4314876871D1 /* Pretendard-Regular.ttf */,
+				0234F8607B4C4C709626545E /* Pretendard-SemiBold.ttf */,
+				C96F567CC9CE4DADB7C75E22 /* Pretendard-Thin.ttf */,
+			);
+			name = Resources;
+			path = "";
 			sourceTree = "<group>";
 		};
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
@@ -256,6 +295,16 @@
 				4EFF6BBC2BC44200002E8F24 /* Ionicons.ttf in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				478C88814F17497C98D7A0B0 /* Pretendard-Black.ttf in Resources */,
+				1C777B57C1914095A46999AF /* Pretendard-Bold.ttf in Resources */,
+				5E8A7B7CDED441C4B2AAF926 /* Pretendard-ExtraBold.ttf in Resources */,
+				7C1F00FE130545859303675C /* Pretendard-ExtraLight.ttf in Resources */,
+				9ADBED2F11A44239AB285463 /* Pretendard-Light.ttf in Resources */,
+				BC80475CB5984530A47B9E7A /* Pretendard-Medium.ttf in Resources */,
+				19A31D0C5882478A9A8889C1 /* Pretendard-Regular.ttf in Resources */,
+				BE4A3A9E370C499B999BA859 /* Pretendard-SemiBold.ttf in Resources */,
+				ACE6ECEF0D9F4BF7A45CBE5C /* Pretendard-Thin.ttf in Resources */,
+				82E5A25073F14EF08B47C7C6 /* BootSplash.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -498,19 +547,21 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = WQ25M9GH7A;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Gasip/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.gasip.--PRODUCT-NAME-rfc1034identifier-";
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = org.gasip.Gasip;
 				PRODUCT_NAME = Gasip;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -525,18 +576,20 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = WQ25M9GH7A;
 				INFOPLIST_FILE = Gasip/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.gasip.--PRODUCT-NAME-rfc1034identifier-";
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = org.gasip.Gasip;
 				PRODUCT_NAME = Gasip;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
