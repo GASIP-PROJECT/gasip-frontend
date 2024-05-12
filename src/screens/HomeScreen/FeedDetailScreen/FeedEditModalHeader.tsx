@@ -1,8 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-import { useNewFeedContext } from '@contexts/NewFeedContext';
-
 import GSIcon from '@components/common/GSIcon';
 import GSText from '@components/common/GSText';
 import Spacer from '@components/common/Spacer';

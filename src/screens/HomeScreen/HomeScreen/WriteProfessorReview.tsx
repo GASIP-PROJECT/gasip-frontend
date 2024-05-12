@@ -1,7 +1,7 @@
 import React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 
-import { useNewFeedContext } from '@contexts/NewFeedContext';
+import useNeewFeedStore from '@store/newFeedStore';
 
 import GSText from '@components/common/GSText';
 import Spacer from '@components/common/Spacer';
@@ -11,7 +11,7 @@ import { COLORS } from '@styles/colors';
 import icon_write from '@assets/icon_write.png';
 
 export default function WriteProfessorReview() {
-  const { openNewFeedModal } = useNewFeedContext();
+  const openNewFeedModal = useNeewFeedStore(state => state.openNewFeedModal);
 
   return (
     <View>

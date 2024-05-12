@@ -3,7 +3,7 @@ import { Image, ImageSourcePropType, StyleSheet, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { useNewFeedContext } from '@contexts/NewFeedContext';
+import useNewFeedStore from '@store/newFeedStore';
 
 import Spacer from '@components/common/Spacer';
 import GSText from '@components/common/GSText';
@@ -29,7 +29,8 @@ export default function FeedsListContainer({
 }) {
   const navigation = useNavigation();
   const { bottom } = useSafeAreaInsets();
-  const { openNewFeedModal } = useNewFeedContext();
+
+  const openNewFeedModal = useNewFeedStore(state => state.openNewFeedModal);
 
   const handleWriteReviewPress = () => {
     openNewFeedModal();

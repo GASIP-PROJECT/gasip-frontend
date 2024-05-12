@@ -3,7 +3,7 @@ import { StyleSheet, View, Image } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { rateProfessor } from '@api/index';
-import { useNewFeedContext } from '@contexts/NewFeedContext';
+import useNewFeedStore from '@store/newFeedStore';
 
 import ProfessorFeeds from './ProfessorFeeds';
 import ProfessorDetail from './ProfessorDetail';
@@ -21,11 +21,13 @@ import icon_goback from '@assets/icon_goback.png';
 
 export default function ProfessorDetailScreen({ route, navigation }) {
   const { bottom } = useSafeAreaInsets();
+  const openNewFeedModal = useNewFeedStore(state => state.openNewFeedModal);
+
   const { professorData } = route.params;
   const { profId } = professorData;
+
   const [currentRating, setCurrentRating] = useState(3);
   const [isRateModalVisible, setIsRateModalVisible] = useState(false);
-  const { openNewFeedModal, setProfId } = useNewFeedContext();
 
   const openRateModal = () => {
     setIsRateModalVisible(true);
@@ -37,7 +39,7 @@ export default function ProfessorDetailScreen({ route, navigation }) {
   };
 
   const handleWriteReviewPress = () => {
-    setProfId(profId);
+    // setProfId(profId);
     openNewFeedModal();
   };
 

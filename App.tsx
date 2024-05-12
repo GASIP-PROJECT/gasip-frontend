@@ -2,7 +2,6 @@ import React from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-import { NewFeedProvider } from '@contexts/NewFeedContext';
 import { AuthContextProvider } from '@contexts/AuthContext';
 
 <<<<<<< HEAD
@@ -61,11 +60,9 @@ export default function App() {
 =======
     <SafeAreaProvider>
       <AuthContextProvider>
-        <NewFeedProvider>
-          <GestureHandlerRootView>
-            <Root />
-          </GestureHandlerRootView>
-        </NewFeedProvider>
+        <GestureHandlerRootView>
+          <Root />
+        </GestureHandlerRootView>
       </AuthContextProvider>
     </SafeAreaProvider>
 >>>>>>> 04b925ef688c6bc9261415a45124c05626cb1329

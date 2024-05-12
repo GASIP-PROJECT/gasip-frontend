@@ -3,7 +3,7 @@ import { FlatList, RefreshControl } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 
 import { getAllFeeds } from '@api/index';
-import { useNewFeedContext } from '@contexts/NewFeedContext';
+import useNewFeedStore from '@store/newFeedStore';
 
 import FeedSummary from './FeedSummary';
 import FeedsListContainer from '@screens/HomeScreen/FeedsListContainer/FeedsListContainer';
@@ -15,8 +15,10 @@ import { type Feed } from 'types/searchTypes';
 import icon_papers from '@assets/icon_papers.png';
 
 export default function AllReviewsScreen() {
-  const { toggleToUpdateFeedsList } = useNewFeedContext();
   const flatListRef = useRef(null);
+  const toggleToUpdateFeedsList = useNewFeedStore(
+    state => state.toggleToUpdateFeedsList,
+  );
 
   const [page, setPage] = useState(0);
   const [feedsList, setFeedsList] = useState<Feed[] | []>([]);

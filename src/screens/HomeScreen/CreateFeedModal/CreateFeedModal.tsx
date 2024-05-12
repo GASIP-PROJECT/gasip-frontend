@@ -1,22 +1,18 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { Alert, Modal, StyleSheet, View } from 'react-native';
-import { ActionSheetRef } from 'react-native-actions-sheet';
 import axios from 'axios';
 
+import useNewFeedStore from '@store/newFeedStore';
 import { createFeed, createProfessorFeed } from '@api/index';
-import { useNewFeedContext } from '@contexts/NewFeedContext';
 
 import Spacer from '@components/common/Spacer';
 import GSButton from '@components/common/GSButton';
 import SafeAreaLayout from '@components/common/SafeAreaLayout';
 
 import CategorySelectModal from './CategorySelectModal';
-import FeedCategorySelector from './FeedCategorySelector';
 import CreateFeedModalHeader from './CreateFeedModalHeader';
 import CreateFeedModalPolicy from './CreateFeedModalPolicy';
 import CreateFeedModalTextInput from './CreateFeedModalTextInput';
-
-import { FEED_CATEGORIES } from '../../../constants';
 
 export interface SelectedCategory {
   category: string;
@@ -24,23 +20,18 @@ export interface SelectedCategory {
 }
 
 export default function CreateFeedModal() {
-  const {
-    triggerFeedListUpdate,
-    showCreateFeedModal,
-    closeNewFeedModal,
-    profId,
-  } = useNewFeedContext();
+  const showCreateFeedModal = useNewFeedStore(
+    state => state.showCreateFeedModal,
+  );
+  const triggerFeedListUpdate = useNewFeedStore(
+    state => state.triggerFeedListUpdate,
+  );
+  const closeNewFeedModal = useNewFeedStore(state => state.closeNewFeedModal);
+  const selectedProfData = useNewFeedStore(state => state.selectedProfData);
+
+  const { id, name } = selectedProfData;
+
   const [feedContent, setFeedContent] = useState('');
-  // const [selectedCategory, setSelectedCategory] = useState<SelectedCategory>({
-  //   category: FEED_CATEGORIES.FREE,
-  //   profId: null,
-  // });
-
-  const categorySelectModalRef = useRef<ActionSheetRef>(null);
-
-  const openCategorySelectModal = () => {
-    categorySelectModalRef?.current?.show();
-  };
 
   const handleCreateFeedPress = async () => {
     if (feedContent === '') {
@@ -48,10 +39,10 @@ export default function CreateFeedModal() {
       return;
     }
 
-    if (profId === null) {
+    if (id === null) {
       await createFeed(feedContent);
     } else {
-      await createProfessorFeed(feedContent, profId);
+      await createProfessorFeed(feedContent, id);
     }
 
     triggerFeedListUpdate();
@@ -59,11 +50,6 @@ export default function CreateFeedModal() {
   };
 
   const resetStateOnDismiss = () => {
-    // setSelectedCategory({
-    //   ...selectedCategory,
-    //   category: FEED_CATEGORIES.FREE,
-    //   profId: null,
-    // });
     setFeedContent('');
   };
 
@@ -80,10 +66,6 @@ export default function CreateFeedModal() {
             handleCreateFeedPress={handleCreateFeedPress}
           />
           <Spacer type="height" value={10} />
-          {/* <FeedCategorySelector
-            selectedCategory={selectedCategory}
-            openCategorySelectModal={openCategorySelectModal}
-          /> */}
           <CreateFeedModalTextInput
             feedContent={feedContent}
             setFeedContent={setFeedContent}

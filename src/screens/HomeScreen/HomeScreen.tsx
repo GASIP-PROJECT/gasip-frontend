@@ -6,7 +6,7 @@ import {
   getAllFeedsForHomeScreen,
   getPopularFeedsForHomeScreen,
 } from '@api/index';
-import { useNewFeedContext } from '@contexts/NewFeedContext';
+import useNewFeedStore from '@store/newFeedStore';
 
 import SearchButton from './HomeScreen/SearchButton';
 import HomeFeedList from './HomeScreen/HomeFeedList';
@@ -22,7 +22,9 @@ import icon_papers from '@assets/icon_papers.png';
 import { Feed } from '@types/searchTypes';
 
 export default function HomeScreen({ navigation }) {
-  const { toggleToUpdateFeedsList } = useNewFeedContext();
+  const toggleToUpdateFeedsList = useNewFeedStore(
+    state => state.toggleToUpdateFeedsList,
+  );
 
   const [allReviews, setAllReviews] = useState<Feed[] | []>([]);
   const [popularReviews, setPopularReviews] = useState<Feed[] | []>([]);
