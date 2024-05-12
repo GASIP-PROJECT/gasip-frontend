@@ -13,7 +13,8 @@
       "@api/*": ["api/*"],
       "@utils/*": ["utils/*"],
       "@types/*": ["types/*"],
-      "@contexts/*": ["contexts/*"]
+      "@contexts/*": ["contexts/*"],
+      "@store/*": ["store/*"]
     }
   }
 }
