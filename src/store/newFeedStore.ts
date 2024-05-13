@@ -3,35 +3,38 @@ import { create } from 'zustand';
 interface NewFeedStore {
   showCreateFeedModal: boolean;
   toggleToUpdateFeedsList: boolean;
-  selectedProfData: {
-    id: number | null;
-    name: string;
-  };
-  setSelectedProfData: (profData: { id: number | null; name: string }) => void;
+  profName: string;
+  profId: number | null;
+  setSelectedProfData: (profId: number, profName: string) => void;
   openNewFeedModal: (profId?: number | null, profName?: string) => void;
   closeNewFeedModal: () => void;
   triggerFeedListUpdate: () => void;
 }
 
-const useNewFeedStore = create<NewFeedStore>((set, get) => ({
+const useNewFeedStore = create<NewFeedStore>(set => ({
   showCreateFeedModal: false,
   toggleToUpdateFeedsList: false,
-  selectedProfData: {
-    id: null,
-    name: '',
+  profName: '',
+  profId: null,
+
+  setSelectedProfData: (profId: number, profName: string) => {
+    set(() => ({
+      selectedProfId: profId,
+      profName: profName,
+    }));
   },
-  setSelectedProfData: (profData: { id: number | null; name: string }) =>
-    set(() => ({ selectedProfData: profData })),
   openNewFeedModal: (profId: number | null = null, profName: string = '') => {
     set(() => ({
       showCreateFeedModal: true,
-      selectedProfData: { id: profId, name: profName },
+      selectedProfId: profId,
+      profName: profName,
     }));
   },
   closeNewFeedModal: () => {
     set(() => ({
       showCreateFeedModal: false,
-      selectedProfData: { id: null, name: '' },
+      selectedProfId: null,
+      profName: '',
     }));
   },
   triggerFeedListUpdate: () => {

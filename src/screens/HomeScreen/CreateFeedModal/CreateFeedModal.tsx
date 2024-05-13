@@ -4,34 +4,27 @@ import axios from 'axios';
 
 import useNewFeedStore from '@store/newFeedStore';
 import { createFeed, createProfessorFeed } from '@api/index';
+import { SearchContextProvider } from '@contexts/SearchContext';
 
 import Spacer from '@components/common/Spacer';
-import GSButton from '@components/common/GSButton';
 import SafeAreaLayout from '@components/common/SafeAreaLayout';
 
-import CategorySelectModal from './CategorySelectModal';
 import CreateFeedModalHeader from './CreateFeedModalHeader';
 import CreateFeedModalPolicy from './CreateFeedModalPolicy';
 import CreateFeedModalTextInput from './CreateFeedModalTextInput';
-
-export interface SelectedCategory {
-  category: string;
-  profId?: number | null;
-}
+import SelectProfessorModal from './SelectProfessorModal';
 
 export default function CreateFeedModal() {
-  const showCreateFeedModal = useNewFeedStore(
-    state => state.showCreateFeedModal,
-  );
-  const triggerFeedListUpdate = useNewFeedStore(
-    state => state.triggerFeedListUpdate,
-  );
-  const closeNewFeedModal = useNewFeedStore(state => state.closeNewFeedModal);
-  const selectedProfData = useNewFeedStore(state => state.selectedProfData);
-
-  const { id, name } = selectedProfData;
-
   const [feedContent, setFeedContent] = useState('');
+  const [isSelectProfessorModalVisible, setIsSelectProfessorModalVisible] =
+    useState(false);
+  const {
+    showCreateFeedModal,
+    profId,
+    triggerFeedListUpdate,
+    closeNewFeedModal,
+    profName,
+  } = useNewFeedStore();
 
   const handleCreateFeedPress = async () => {
     if (feedContent === '') {
@@ -39,10 +32,10 @@ export default function CreateFeedModal() {
       return;
     }
 
-    if (id === null) {
+    if (profId === null) {
       await createFeed(feedContent);
     } else {
-      await createProfessorFeed(feedContent, id);
+      await createProfessorFeed(feedContent, profId);
     }
 
     triggerFeedListUpdate();
@@ -51,6 +44,14 @@ export default function CreateFeedModal() {
 
   const resetStateOnDismiss = () => {
     setFeedContent('');
+  };
+
+  const openSelectProfessorModal = () => {
+    setIsSelectProfessorModalVisible(true);
+  };
+
+  const closeSelectProfessorModal = () => {
+    setIsSelectProfessorModalVisible(false);
   };
 
   return (
@@ -69,16 +70,18 @@ export default function CreateFeedModal() {
           <CreateFeedModalTextInput
             feedContent={feedContent}
             setFeedContent={setFeedContent}
+            openSelectProfessorModal={openSelectProfessorModal}
           />
           <Spacer type="height" value={40} />
           {/* <CreateFeedModalPolicy /> */}
         </View>
-
-        {/* <CategorySelectModal
-          actionSheetRef={categorySelectModalRef}
-          setSelectedCategory={setSelectedCategory}
-        /> */}
       </SafeAreaLayout>
+      <SearchContextProvider>
+        <SelectProfessorModal
+          isVisible={isSelectProfessorModalVisible}
+          closeModal={closeSelectProfessorModal}
+        />
+      </SearchContextProvider>
     </Modal>
   );
 }
