@@ -3,14 +3,10 @@ import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 export type StackParamList = {
   LoginScreen: undefined;
   SignUpScreen: undefined;
-<<<<<<< HEAD
-  ResetPasswordScreen: undefined;
-=======
   FeedDetailScreen: undefined;
   ProfessorDetailScreen: undefined;
   HomeScreen: undefined;
   SearchScreen: undefined;
->>>>>>> 04b925ef688c6bc9261415a45124c05626cb1329
 };
 
 export type BottomTabParamList = {
