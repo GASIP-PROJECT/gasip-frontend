@@ -322,113 +322,6 @@ const SignUpScreen = () => {
                 disabled={!isValidEmail}
                 marginHorizontal={0}
               />
-<<<<<<< HEAD
-            </TouchableOpacity>
-            <Text style={styles.headerText}>회원가입하기</Text>
-            <Text style={styles.stepText}>1/3</Text>
-            <Text style={styles.subText}>이메일</Text>
-          </View>
-        <View> 
-          <Image
-           source={require('@assets/mail.png')}
-           style={[styles.smallText,
-           isValidEmail ? styles.activeMail : styles.inactiveMail,
-         ]}
-           resizeMode="contain"
-          />
-          <TextInput
-            style={[
-              styles.step1,
-              isValidEmail ? styles.activeBorder : styles.inactiveBorder,
-              {
-                borderStyle: 'solid',
-                borderWidth: 1,
-                backgroundColor: 'white',
-                borderRadius: 16,
-              },
-            ]}
-            placeholder="학교 아이디를 입력해 주세요"
-            value={useremail}
-            onChangeText={handleEmailChange}
-          />
-        </View>
-          <Text style={styles.gachon}
-          >@gachon.ac.kr</Text>
-          <Text style={[styles.smallText,
-             isValidEmail ? styles.activeText2 : styles.inactiveText2,
-          ]}>
-            본인 소유의 가천대학교 이메일 주소를 사용해 주세요
-          </Text>
-
-          <TouchableOpacity
-            style={[
-              styles.button,
-              isValidEmail ? styles.activeButton : styles.inactiveButton,
-            ]}
-            onPress={handleButtonPress}
-            disabled={!isValidEmail}
-          >
-            <Text style={[styles.buttonText,
-              isValidEmail ? styles.activeText : styles.inactiveText,
-            ]}>이메일 인증하기</Text>
-          </TouchableOpacity>
-        </View>
-      )}
-
-      {step === 2 && (
-        <View style={styles.header}>
-          <TouchableOpacity onPress={() => setStep(prevStep => prevStep - 1)}>
-            <Image
-              source={require('@assets/chevron-left.png')}
-              style={styles.left}
-              resizeMode="contain"
-            />
-          </TouchableOpacity>
-          <Text style={styles.headerText}>회원가입하기</Text>
-          <Text style={styles.stepText}>1/3</Text>
-          <Text style={styles.subText2}>인증번호</Text>
-          <TextInput
-            style={[
-              styles.step2,
-              isValidCode ? styles.activeBorder : styles.inactiveBorder,
-              {
-                height: 60,
-                paddingLeft: 12,
-                borderStyle: 'solid',
-                borderWidth: 1,
-                backgroundColor: 'white',
-                borderRadius: 16,
-              },
-            ]}
-            placeholder="인증번호 6자리를 입력해주세요"
-            onChangeText={handleCodeChange}
-          />
-
-          <TouchableOpacity onPress={handleResendCode}>
-            <Text style={styles.reNum}>인증번호 다시받기</Text>
-          </TouchableOpacity>
-          <View style={styles.timerContainer}>
-            <Text style={styles.timerText}>
-              {' '}
-              {Math.floor(timer / 60)}분
-              {timer % 60 < 10 ? `0${timer % 60}` : timer % 60}초
-            </Text>
-          </View>
-          <EmailCodeBtn
-            style={[
-              styles.button2,
-              isValidCode ? styles.activeButton2 : styles.inactiveButton2,
-            ]}
-            onPress={handleSubmit}
-            disabled={!isValidCode}
-          >
-            <Text style={[styles.buttonText,
-               isValidCode ? styles.buttonText : styles.inactiveButtonText
-            ]}>확인</Text>
-          </EmailCodeBtn>
-        </View>
-      )}
-=======
             </View>
           </>
         )}
@@ -462,7 +355,6 @@ const SignUpScreen = () => {
                 placeholder="인증번호 6자리"
                 onChangeText={handleCodeChange}
               />
->>>>>>> 04b925ef688c6bc9261415a45124c05626cb1329
 
               <Spacer type="height" value={10} />
 
@@ -605,17 +497,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-<<<<<<< HEAD
-    backgroundColor: '#F7F8F9',
-    paddingTop: 35,
-=======
   },
 
   pageContainer: {
     flex: 1,
     width: '100%',
     paddingHorizontal: 16,
->>>>>>> 04b925ef688c6bc9261415a45124c05626cb1329
   },
   input: {
     borderStyle: 'solid',
@@ -680,54 +567,11 @@ const styles = StyleSheet.create({
   },
 
   step1: {
-<<<<<<< HEAD
-    fontSize: 14,
-    right: 0,
-    width: 326,
-    height: 60,
-=======
     fontSize: 15,
->>>>>>> 04b925ef688c6bc9261415a45124c05626cb1329
   },
 
   step2: {
     fontSize: 15,
-<<<<<<< HEAD
-    width: 360,
-    height: 60,
-    alignItems: 'center',
-  },
-
-  left: {
-    position: 'relative',
-    right: 160,
-    width: 150,
-  },
-
-  smallText: {
-    position: 'relative',
-    right: 0,
-    marginTop: 10,
-    fontSize: 12,
-    color: '#9EA4AA',
-  },
-  subText: {
-    position: 'relative',
-    right: 140,
-    fontSize: 14,
-    color: '#72787F',
-    marginBottom: 10,
-    marginTop: 50,
-  },
-
-  subText2: {
-    position: 'relative',
-    right: 145,
-    fontSize: 14,
-    color: '#72787F',
-    marginTop: 40,
-    marginBottom: 10,
-=======
     alignItems: 'center',
   },
 
@@ -746,7 +590,6 @@ const styles = StyleSheet.create({
   subText2: {
     fontSize: 30,
     color: 'white',
->>>>>>> 04b925ef688c6bc9261415a45124c05626cb1329
   },
 
   subText3: {
@@ -754,14 +597,11 @@ const styles = StyleSheet.create({
     color: 'white',
   },
 
-<<<<<<< HEAD
-=======
   emailText: {
     color: 'white',
     fontSize: 20,
   },
 
->>>>>>> 04b925ef688c6bc9261415a45124c05626cb1329
   warning: {
     color: '#4490D8',
     fontSize: 14,
@@ -772,21 +612,9 @@ const styles = StyleSheet.create({
   },
 
   button: {
-<<<<<<< HEAD
-    marginTop: 50,
-    backgroundColor: 'white',
-    borderRadius: 16,
-    borderColor: '#9EA4AA',
-    borderStyle: 'solid',
-    height: 60,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 1,
-=======
     backgroundColor: 'gray',
     padding: 10,
     borderRadius: 5,
->>>>>>> 04b925ef688c6bc9261415a45124c05626cb1329
   },
 
   buttonPass: {
@@ -823,15 +651,8 @@ const styles = StyleSheet.create({
   },
 
   button2: {
-<<<<<<< HEAD
-    marginTop: 50,
-    padding: 10,
-    borderRadius: 16,
-    width: 350,
-=======
     backgroundColor: 'gray',
     borderRadius: 5,
->>>>>>> 04b925ef688c6bc9261415a45124c05626cb1329
   },
   activeButton2: {
     backgroundColor: '#4490D8',
@@ -858,48 +679,15 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 18,
   },
-<<<<<<< HEAD
-
-  inactiveButtonText: {
-    color: '#9EA4AA'
-  },
-
-  gachon: {
-    position: 'absolute',
-    top: '52.5%',
-    left: '50%',
-    color: '#000000',
-  },
-  
-  timerContainer: {
-    marginTop: 20,
-  },
-=======
   timerContainer: {},
->>>>>>> 04b925ef688c6bc9261415a45124c05626cb1329
   timerText: {
     color: '#9EA4AA',
     fontSize: 15,
-<<<<<<< HEAD
-    position: 'relative',
-    bottom: 30,
-    left: 150,
-=======
->>>>>>> 04b925ef688c6bc9261415a45124c05626cb1329
   },
   reNum: {
     color: '#4490D8',
     fontSize: 15,
-<<<<<<< HEAD
-    marginTop: 30,
-    marginBottom: 0,
     textDecorationLine: 'underline',
-    position: 'relative',
-    bottom: 15,
-    left: 120,
-=======
-    textDecorationLine: 'underline',
->>>>>>> 04b925ef688c6bc9261415a45124c05626cb1329
   },
 });
 
