@@ -31,9 +31,6 @@ export default function GSButton({
 }: GSButtonProps) {
   return (
     <TouchableOpacity
-<<<<<<< HEAD
-      style={[styles.container, { marginHorizontal: 0 }]}
-=======
       style={[
         styles.container,
         styles.buttonElevation,
@@ -44,7 +41,6 @@ export default function GSButton({
           height: height,
         },
       ]}
->>>>>>> 04b925ef688c6bc9261415a45124c05626cb1329
       onPress={onPress}
       disabled={disabled}
     >
@@ -60,14 +56,6 @@ export default function GSButton({
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-<<<<<<< HEAD
-    height: 60,
-    marginTop: 70,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 16,
-    backgroundColor: COLORS.BTN_MAIN,
-=======
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 100,
@@ -81,7 +69,6 @@ const styles = StyleSheet.create({
   buttonElevation: {
     elevation: 5,
     elevationColor: COLORS.BLACK,
->>>>>>> 04b925ef688c6bc9261415a45124c05626cb1329
   },
   text: {
     fontWeight: '700',
