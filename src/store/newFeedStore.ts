@@ -3,8 +3,8 @@ import { create } from 'zustand';
 interface NewFeedStore {
   showCreateFeedModal: boolean;
   toggleToUpdateFeedsList: boolean;
-  profName: string;
   profId: number | null;
+  profName: string;
   setSelectedProfData: (profId: number, profName: string) => void;
   openNewFeedModal: (profId?: number | null, profName?: string) => void;
   closeNewFeedModal: () => void;
@@ -19,21 +19,19 @@ const useNewFeedStore = create<NewFeedStore>(set => ({
 
   setSelectedProfData: (profId: number, profName: string) => {
     set(() => ({
-      selectedProfId: profId,
+      profId: profId,
       profName: profName,
     }));
   },
-  openNewFeedModal: (profId: number | null = null, profName: string = '') => {
+  openNewFeedModal: () => {
     set(() => ({
       showCreateFeedModal: true,
-      selectedProfId: profId,
-      profName: profName,
     }));
   },
   closeNewFeedModal: () => {
     set(() => ({
       showCreateFeedModal: false,
-      selectedProfId: null,
+      profId: null,
       profName: '',
     }));
   },

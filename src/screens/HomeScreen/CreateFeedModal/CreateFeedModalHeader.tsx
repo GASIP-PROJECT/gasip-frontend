@@ -10,10 +10,8 @@ import Spacer from '@components/common/Spacer';
 import { COLORS } from '@styles/colors';
 
 export default function CreateFeedModalHeader({
-  feedContent,
   handleCreateFeedPress,
 }: {
-  feedContent: string;
   handleCreateFeedPress: () => void;
 }) {
   const closeNewFeedModal = useNewFeedStore(state => state.closeNewFeedModal);
@@ -88,8 +86,6 @@ export default function CreateFeedModalHeader({
       </View>
 
       <Spacer type="height" value={8} />
-
-      <GSText style={styles.letterCountText}>{feedContent.length}/500</GSText>
     </View>
   );
 }
@@ -110,12 +106,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     textAlign: 'center',
   },
-  letterCountText: {
-    fontSize: 11,
-    fontWeight: '400',
-    color: COLORS.GRAY_400,
-    alignSelf: 'flex-end',
-  },
+
   createFeedButton: {
     backgroundColor: COLORS.BLUE_PRIMARY,
     height: 28,

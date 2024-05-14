@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {
+  FlatList,
   Image,
   StyleSheet,
   TextInput,
@@ -9,6 +10,7 @@ import {
 import Modal from 'react-native-modal';
 
 import { useSearchContext } from '@contexts/SearchContext';
+import useNewFeedStore from '@store/newFeedStore';
 
 import GSText from '@components/common/GSText';
 import Spacer from '@components/common/Spacer';
@@ -16,7 +18,7 @@ import GSRadioButton from '@components/common/GSRadioButton';
 
 import { COLORS } from '@styles/colors';
 import { SEARCH_CATEGORY } from '@constants';
-import { SearchCategoryType } from '@types/searchTypes';
+import { Professor, SearchCategoryType } from '@types/searchTypes';
 
 import icon_search from '@assets/icon_search.png';
 import icon_smiley from '@assets/icon_smiley.png';
@@ -35,8 +37,6 @@ export default function SelectProfessorModal({
   const { searchResults, noSearchResult, setNoSearchResult } =
     useSearchContext();
 
-  console.log(noSearchResult);
-
   return (
     <Modal
       isVisible={isVisible}
@@ -52,7 +52,13 @@ export default function SelectProfessorModal({
         <SearchBar />
         <Spacer type="height" value={28} />
         <Divider />
-        {noSearchResult ? <NoSearchResult /> : <SearchResultsPlaceholder />}
+        {noSearchResult ? (
+          <NoSearchResult />
+        ) : searchResults.length > 0 ? (
+          <SearchResults closeModal={closeModal} />
+        ) : (
+          <SearchResultsPlaceholder />
+        )}
       </View>
     </Modal>
   );
@@ -172,6 +178,69 @@ const NoSearchResult = () => {
   );
 };
 
+const SearchResults = ({ closeModal }) => {
+  const { searchResults, searchCategory } = useSearchContext();
+
+  if (searchResults.length === 0) {
+    return <View />;
+  }
+
+  return (
+    <View>
+      <Spacer type="height" value={24} />
+      <ProfessorResults closeModal={closeModal} />
+    </View>
+  );
+};
+
+const ProfessorResults = ({ closeModal }) => {
+  const { searchResults } = useSearchContext();
+
+  return (
+    <FlatList
+      data={searchResults as Professor[]}
+      renderItem={({ item }: { item: Professor }) => (
+        <ProfessorInfo professorData={item} closeModal={closeModal} />
+      )}
+      keyExtractor={(item, index) => index.toString()}
+      ItemSeparatorComponent={() => <Spacer type="height" value={15} />}
+      ListFooterComponent={() => <Spacer type="height" value={150} />}
+    />
+  );
+};
+
+const ProfessorInfo = ({
+  professorData,
+  closeModal,
+}: {
+  professorData: Professor;
+  closeModal: () => void;
+}) => {
+  const { majorName, profName, profId } = professorData;
+
+  const setSelectedProfData = useNewFeedStore(
+    state => state.setSelectedProfData,
+  );
+
+  const handleProfessorPress = () => {
+    setSelectedProfData(profId, profName);
+    closeModal();
+  };
+
+  return (
+    <TouchableOpacity
+      onPress={handleProfessorPress}
+      style={styles.searchResultItemContainer}
+    >
+      <Image source={icon_search} style={{ width: 24, height: 24 }} />
+      <Spacer type="width" value={10} />
+      <GSText style={styles.professorInfo}>
+        {majorName} - {profName} 교수님
+      </GSText>
+    </TouchableOpacity>
+  );
+};
+
 const styles = StyleSheet.create({
   container: {
     backgroundColor: COLORS.WHITE,
@@ -247,5 +316,14 @@ const styles = StyleSheet.create({
   noSearchResultText: {
     fontSize: 16,
     color: COLORS.GRAY_400,
+  },
+  professorInfo: {
+    fontSize: 16,
+    fontWeight: '500',
+    color: COLORS.BLACK,
+  },
+  searchResultItemContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });

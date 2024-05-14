@@ -22,9 +22,12 @@ import icon_goback from '@assets/icon_goback.png';
 export default function ProfessorDetailScreen({ route, navigation }) {
   const { bottom } = useSafeAreaInsets();
   const openNewFeedModal = useNewFeedStore(state => state.openNewFeedModal);
+  const setSelctedProfData = useNewFeedStore(
+    state => state.setSelectedProfData,
+  );
 
   const { professorData } = route.params;
-  const { profId } = professorData;
+  const { profId, profName } = professorData;
 
   const [currentRating, setCurrentRating] = useState(3);
   const [isRateModalVisible, setIsRateModalVisible] = useState(false);
@@ -39,7 +42,7 @@ export default function ProfessorDetailScreen({ route, navigation }) {
   };
 
   const handleWriteReviewPress = () => {
-    // setProfId(profId);
+    setSelctedProfData(profId, profName); // 피드 작성 시 필요한 교수님 정보 set
     openNewFeedModal();
   };
 
