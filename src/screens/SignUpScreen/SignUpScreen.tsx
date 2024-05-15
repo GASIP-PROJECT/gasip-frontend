@@ -383,47 +383,111 @@ const SignUpScreen = () => {
       )}
 
       {step === 3 && (
-        <View style={styles.header}>
-          <TouchableOpacity onPress={() => setStep(prevStep => prevStep - 1)}>
+          <View style={{ width: '100%' }}>
+            <View style={styles.headerContainer}>
+              <TouchableOpacity
+                onPress={() => setStep(prevStep => prevStep - 1)}
+              >
             <Image
               source={require('@assets/chevron-left.png')}
               style={styles.left}
               resizeMode="contain"
             />
           </TouchableOpacity>
-          <Text style={styles.headerText}>회원가입하기</Text>
-          <Text style={styles.stepText}>2/3</Text>
+              <View style={{ flex: 1, alignItems: 'center' }}>
+                <GSText style={styles.headerText}>회원가입하기</GSText>
+              </View>
+              <View style={{ height: 28, width: 28 }} />
+            </View>
+            <GSText style={styles.stepText}>2/3</GSText>
+
+            <Spacer type="height" value={12} />
 
           <Text style={styles.pwText}>비밀번호</Text>
-          <Image source={require('@assets/lock.png')} />
+
+            <Spacer type="height" value={8} />
+
+            <View
+              style={[
+                {
+                  width: '100%',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  paddingHorizontal: 26,
+                  borderColor: isPasswordValid
+                    ? COLORS.BLUE_PRIMARY
+                    : COLORS.GRAY_400,
+                },
+                styles.input,
+              ]}
+            >
+              <Image
+                source={require('@assets/lock.png')}
+                style={{ tintColor: COLORS.GRAY_400 }}
+              />
+              <Spacer type="width" value={6} />
           <TextInput
-            style={styles.input}
+                style={{ flex: 1 }}
             placeholder="비밀번호를 입력해주세요"
             secureTextEntry={true}
             onChangeText={handlePasswordChange}
           />
+            </View>
+            <Spacer type="height" value={10} />
 
-          <Text style={styles.pwText2}>비밀번호 재입력</Text>
+            <GSText style={[styles.errorMessage, { color: COLORS.GRAY_500 }]}>
+              영문, 숫자, 특수문자를 사용해 8~20자리를 입력해주세요
+            </GSText>
+
+            <Spacer type="height" value={20} />
+
+            <GSText style={styles.pwText}>비밀번호 재입력</GSText>
+            <Spacer type="height" value={8} />
+            <View
+              style={[
+                {
+                  width: '100%',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  paddingHorizontal: 26,
+                  borderColor: isPasswordValid
+                    ? COLORS.BLUE_PRIMARY
+                    : COLORS.GRAY_400,
+                },
+                styles.input,
+              ]}
+            >
+              <Image
+                source={require('@assets/lock.png')}
+                style={{ tintColor: COLORS.GRAY_400 }}
+              />
+              <Spacer type="width" value={6} />
           <TextInput
-            style={styles.input}
+                style={{ flex: 1 }}
             placeholder="비밀번호를 재입력해주세요"
             secureTextEntry={true}
             onChangeText={handleConfirmPasswordChange}
           />
-          {!isValidPassword && (
-            <Text style={styles.errorMessage}>
-              영문, 숫자, 특수문자를 사용해 8~20자리를 입력해주세요
-            </Text>
-          )}
+            </View>
+
+            <Spacer type="height" value={10} />
+
           {!passwordsMatch && (
-            <Text style={styles.errorMessage}>
+              <GSText
+                style={{ fontSize: 12, fontWeight: '400', color: COLORS.RED }}
+              >
               비밀번호가 일치하지 않습니다.
-            </Text>
+              </GSText>
           )}
+
+            <Spacer type="height" value={76} />
+
           <TouchableOpacity
             style={[
               styles.buttonPass,
-              isNextButtonEnabled ? styles.activeButton : styles.inactiveButton,
+                isNextButtonEnabled
+                  ? styles.activeButton
+                  : styles.inactiveButton,
             ]}
             disabled={!isNextButtonEnabled}
             onPress={nextStep}
