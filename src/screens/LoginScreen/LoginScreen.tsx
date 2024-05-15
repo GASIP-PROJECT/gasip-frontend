@@ -77,7 +77,7 @@ export default function LoginScreen() {
   };
 
   const handleSignup = () => {
-    navigation.navigate('SignUpScreen');
+    navigation.navigate('SignUp_Step1');
   };
 
   const ResetPw = () => {

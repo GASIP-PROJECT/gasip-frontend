@@ -99,17 +99,17 @@ export default function Root() {
               options={{ headerShown: false }}
             />
             <RootStack.Screen
-              name="SignIn_Step1"
+              name="SignUp_Step1"
               component={Step1_VerifyEmailScreen}
               options={{ headerShown: false }}
             />
             <RootStack.Screen
-              name="SignIn_Step2"
+              name="SignUp_Step2"
               component={Step2_CreatePasswordScreen}
               options={{ headerShown: false }}
             />
             <RootStack.Screen
-              name="SignIn_Step3"
+              name="SignUp_Step3"
               component={Step3_CreateUserInfoScreen}
               options={{ headerShown: false }}
             />

@@ -9,6 +9,8 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
+import useSignUpDataStore from '@store/signUpDataStore';
+
 import GSText from '@components/common/GSText';
 import Spacer from '@components/common/Spacer';
 
@@ -22,6 +24,8 @@ export default function VerifyEmailCodeScreen({
   emailToVerifyCode,
 }: VerifyEmailCodeScreenProps) {
   const navigation = useNavigation();
+
+  const setVerifiedEmail = useSignUpDataStore(state => state.setVerifiedEmail);
 
   const [verificationCode, setVerificationCode] = useState<string>('');
   const [remainingTime, setRemainingTime] = useState<number>(180);
@@ -55,7 +59,8 @@ export default function VerifyEmailCodeScreen({
   };
 
   const handleConfirmPress = async () => {
-    navigation.replace('SignIn_Step2');
+    setVerifiedEmail(emailToVerifyCode);
+    navigation.replace('SignUp_Step2');
     // try {
     //   const url = `https://gasip.site/members/emails/verifications?email=${verifiedEmail}&code=${verificationCode}`;
     //   console.log(url);

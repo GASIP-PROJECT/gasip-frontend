@@ -7,6 +7,8 @@ import {
   Image,
 } from 'react-native';
 
+import useSignUpDataStore from '@store/signUpDataStore';
+
 import SignUpProcessHeader from '@screens/SignUpScreen/SignUpProcessHeader';
 
 import GSText from '@components/common/GSText';
@@ -20,6 +22,9 @@ import icon_show_password from '@assets/icon_show_password.png';
 import icon_hide_password from '@assets/icon_hide_password.png';
 
 export default function Step2_CreatePasswordScreen({ navigation }) {
+  const storePassword = useSignUpDataStore(state => state.setPassword);
+  const resetSignUpData = useSignUpDataStore(state => state.resetSignUpData);
+
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -45,15 +50,24 @@ export default function Step2_CreatePasswordScreen({ navigation }) {
     }
 
     setShowPasswordDontMatchError(false);
-    navigation.replace('SignIn_Step3');
+    storePassword(password);
+    navigation.replace('SignUp_Step3');
 
     // store에 password set하는 처리
+  };
+
+  const handleBackButtonPress = () => {
+    navigation.goBack();
+    resetSignUpData();
   };
 
   return (
     <SafeAreaLayout>
       <View style={styles.container}>
-        <SignUpProcessHeader step={2} onBackButtonPress={navigation.goBack} />
+        <SignUpProcessHeader
+          step={2}
+          onBackButtonPress={handleBackButtonPress}
+        />
 
         <Spacer type="height" value={12} />
 

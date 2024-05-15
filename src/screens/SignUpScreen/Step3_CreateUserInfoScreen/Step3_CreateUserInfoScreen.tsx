@@ -7,6 +7,8 @@ import {
   TextInput,
 } from 'react-native';
 
+import useSignUpDataStore from '@store/signUpDataStore';
+
 import SignUpProcessHeader from '@screens/SignUpScreen/SignUpProcessHeader';
 
 import Spacer from '@components/common/Spacer';
@@ -16,6 +18,9 @@ import SafeAreaLayout from '@components/common/SafeAreaLayout';
 import { COLORS } from '@styles/colors';
 
 export default function Step3_CreateUserInfoScreen({ navigation }) {
+  const verifiedEmail = useSignUpDataStore(state => state.verifiedEmail);
+  const password = useSignUpDataStore(state => state.password);
+  const resetSignUpData = useSignUpDataStore(state => state.resetSignUpData);
   const [name, setName] = useState('');
   const [nickname, setNickname] = useState('');
 
@@ -24,12 +29,22 @@ export default function Step3_CreateUserInfoScreen({ navigation }) {
 
   const isUserInfoValid = isNameValid && isNicknameValid;
 
-  const handleConfirmButtonPress = async () => {};
+  const handleConfirmButtonPress = async () => {
+    console.log(verifiedEmail, password, name, nickname);
+  };
+
+  const handleBackButtonPress = () => {
+    navigation.goBack();
+    resetSignUpData();
+  };
 
   return (
     <SafeAreaLayout>
       <View style={styles.container}>
-        <SignUpProcessHeader step={3} onBackButtonPress={navigation.goBack} />
+        <SignUpProcessHeader
+          step={3}
+          onBackButtonPress={handleBackButtonPress}
+        />
         <GSText style={styles.inputLabelText}>이름</GSText>
         <Spacer type="height" value={8} />
         <TextInput
