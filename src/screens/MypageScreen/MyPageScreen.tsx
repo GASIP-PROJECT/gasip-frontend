@@ -3,7 +3,7 @@ import { StyleSheet, View, Image, TouchableOpacity } from 'react-native';
 import { useMMKVString } from 'react-native-mmkv';
 
 import { useAuth } from '@contexts/AuthContext';
-import { MMKVStorage } from '@api/mmkv';
+import { MMKVStorage, clearMMKVStorageAuthData } from '@api/mmkv';
 import { getUserData } from '@api/index';
 
 import Spacer from '@components/common/Spacer';
@@ -25,6 +25,7 @@ export default function MyPageScreen({ navigation }) {
       type: 'SIGN_OUT',
       payload: { userToken: null, isLoading: false },
     });
+    clearMMKVStorageAuthData();
   };
 
   useEffect(() => {
