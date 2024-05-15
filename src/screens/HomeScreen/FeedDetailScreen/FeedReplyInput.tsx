@@ -91,6 +91,7 @@ export default function FeedReplyInput({
             placeholderTextColor={COLORS.GRAY_400}
             onChangeText={text => setNewComment(text)}
             onSubmitEditing={handleCommentSubmit}
+            value={newComment}
           />
 
           <Spacer type="width" value={10} />
