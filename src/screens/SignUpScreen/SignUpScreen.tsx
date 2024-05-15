@@ -20,6 +20,7 @@ const SignUpScreen = () => {
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [verificationCode, setVerificationCode] = useState('');
   const [password, setPassword] = useState('');
+  const [isPasswordValid, setIsPasswordValid] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isValidPassword, setIsValidPassword] = useState(false);
   const [passwordsMatch, setPasswordsMatch] = useState(true);
@@ -347,20 +348,19 @@ const SignUpScreen = () => {
             />
           </TouchableOpacity>
           <Text style={styles.headerText}>회원가입하기</Text>
-          <Text style={styles.stepText}>1/3</Text>
+          <Text style={styles.stepText}>2/3</Text>
 
           <Text style={styles.pwText}>비밀번호</Text>
+          <Image
+              source={require('@assets/lock.png')}     
+          />
           <TextInput
             style={styles.input}
             placeholder="비밀번호를 입력해주세요"
             secureTextEntry={true}
             onChangeText={handlePasswordChange}
           />
-          <Image
-            source={require('')}
-            style={styles.eyeclose}
-            resizeMode="contain"
-          />
+         
           <Text style={styles.pwText2}>비밀번호 재입력</Text>
           <TextInput
             style={styles.input}
@@ -370,7 +370,7 @@ const SignUpScreen = () => {
           />
           {!isValidPassword && (
             <Text style={styles.errorMessage}>
-              비밀번호는 8자~20자의 영문+숫자+특수문자 공백X 조합이어야 합니다.
+              영문, 숫자, 특수문자를 사용해 8~20자리를 입력해주세요
             </Text>
           )}
           {!passwordsMatch && (
@@ -386,7 +386,9 @@ const SignUpScreen = () => {
             disabled={!isNextButtonEnabled}
             onPress={nextStep}
           >
-            <Text style={styles.buttonText}>다음</Text>
+            <Text style={[styles.buttonText,
+              isNextButtonEnabled ? styles.activeButtonText : styles.inactiveButtonText,    
+            ]}>확인</Text>
           </TouchableOpacity>
         </View>
       )}
@@ -399,23 +401,27 @@ const SignUpScreen = () => {
               resizeMode="contain"
             />
           </TouchableOpacity>
-          <Text style={styles.headerText}>이메일 회원가입 (3/3)</Text>
-          <Text style={styles.subText3}>다 왔어요!</Text>
+          <Text style={styles.headerText}>회원가입하기</Text>
+          <Text style={styles.stepText}>3/3</Text>
+          <Text style={styles.setName}>이름</Text>
           <TextInput
             style={[
               styles.inputName,
               {
+                marginTop: 50,
                 borderStyle: 'solid',
                 borderWidth: 1,
-                backgroundColor: 'white',
-                borderRadius: 10,
-                borderColor: '#ffffff',
+                backgroundColor: '#fff',
+                borderRadius: 16,
+                borderColor: '#9EA4AA',
+                marginBottom: 50,
               },
             ]}
-            placeholder="이름"
+            placeholder="이름을 입력해주세요"
             value={name}
             onChangeText={handleNameChange}
           />
+           <Text style={styles.setNickName}>닉네임</Text>
           <TextInput
             style={[
               styles.inputName,
@@ -423,11 +429,11 @@ const SignUpScreen = () => {
                 borderStyle: 'solid',
                 borderWidth: 1,
                 backgroundColor: 'white',
-                borderRadius: 10,
-                borderColor: '#ffffff',
+                borderRadius: 16,
+                borderColor: '#9EA4AA',
               },
             ]}
-            placeholder="닉네임 2~12자"
+            placeholder="닉네임을 입력해주세요"
             value={nickname}
             onChangeText={handleNicknameChange}
           />
@@ -446,7 +452,11 @@ const SignUpScreen = () => {
             onPress={handleSubmitFinish}
             disabled={!isNameValid || !isNicknameValid}
           >
-            <Text style={styles.buttonText}>회원가입 완료</Text>
+            <Text style={[styles.buttonText,
+              isNameValid && isNicknameValid
+              ? styles.activeButtonText3
+              : styles.inactiveButtonText3,
+            ]}>회원가입 완료</Text>
           </TouchableOpacity>
         </View>
       )}
@@ -543,7 +553,7 @@ pwText: {
   position: 'relative',
   right: 140,
   marginBottom: 10,
-  marginTop: 10,
+  marginTop: 25,
 },
 
 pwText2: {
@@ -634,21 +644,28 @@ pwText2: {
   buttonPass: {
     width: 350,
     marginTop: 50,
-    backgroundColor: 'gray',
+    backgroundColor: '#fff',
     padding: 15,
-    borderRadius: 5,
+    borderStyle: 'solid',
+    borderColor: '#9EA4AA',
+    borderRadius: 16,
   },
 
   activeButton: {
     backgroundColor: '#007AFF',
     borderStyle: 'solid',
-    borderColor: '#9EA4AA00',
+    borderColor: '#9EA4AA',
   },
 
   inactiveButton: {
-    backgroundColor: 'white',
+    backgroundColor: '#fff',
     borderStyle: 'solid',
     borderColor: '#9EA4AA',
+    borderWidth: 1,
+  },
+
+  activeButtonText: {
+    color: '#fff',
   },
 
   activeText: {
@@ -684,20 +701,27 @@ pwText2: {
     width: 350,
     marginTop: 50,
     backgroundColor: 'gray',
-    padding: 10,
-    borderRadius: 5,
+    padding: 16,
+    borderRadius: 16,
+    borderWidth: 1,
   },
 
   activeButton3: {
-    backgroundColor: '#4490D8',
+    borderColor: '#007AFF',
+    backgroundColor: '#007AFF',
   },
 
   inactiveButton3: {
-    backgroundColor: 'gray',
+    borderColor: '#9EA4AA',
+    backgroundColor: '#fff',
+  },
+
+  activeButtonText3: {
+    color: '#fff'
   },
 
   buttonText: {
-    color: '#fff',
+    color: '#9EA4AA',
     textAlign: 'center',
     fontSize: 18,
   },
@@ -733,6 +757,19 @@ pwText2: {
     bottom: 15,
     position: 'relative',
     left: 120,
+  },
+
+  setName: {
+    position: 'relative',
+    top: 40,
+    right: 152,
+  },
+
+  setNickName: {
+    position: 'relative',
+    top: 0,
+    right: 146,
+    marginBottom: 10,
   },
 });
 

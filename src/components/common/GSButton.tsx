@@ -24,7 +24,7 @@ export default function GSButton({
   onPress,
   bgColor = COLORS.BLUE_PRIMARY,
   btnTextColor = COLORS.WHITE,
-  marginHorizontal = 16,
+  marginHorizontal = 0,
   disabled = false,
   height = 52,
   fontSize = 14,
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 100,
+    borderRadius: 16,
   },
   buttonShadow: {
     shadowColor: COLORS.BLACK,

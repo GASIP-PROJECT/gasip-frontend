@@ -29,6 +29,7 @@ const SignUpScreen = () => {
   const [isNameValid, setIsNameValid] = useState(false);
   const [isNicknameValid, setIsNicknameValid] = useState(false);
   const [verifiedEmail, setVerifiedEmail] = useState<string>('');
+  const isSubmitEnabled = isValidPassword && passwordsMatch;
 
   useEffect(() => {
     if (step === 2 && isTimerRunning && timer > 0) {
@@ -195,15 +196,13 @@ const SignUpScreen = () => {
 
   const handleSubmitNewPw = async () => {
     try {
-      const url = 'https://gasip.site/members/passwords';
+      const url = 'https://gasip.site/members/passwords/noauth';
       const requestData = JSON.stringify({
-        email: verifiedEmail, // 이메일
+        email: verifiedEmail, // 인증받은 이메일
         code: verificationCode, // 인증코드
         newPassword: password // 새 비밀번호
       });
   
-      
-
       const response = await fetch(url, {
         method: 'PUT',
         headers: {
@@ -211,15 +210,9 @@ const SignUpScreen = () => {
         },
         body: requestData,
       });
-
-      console.log(response);
   
       if (response.ok) {
-        // 비밀번호 재설정이 성공
         Alert.alert('비밀번호 재설정 성공', '새로운 비밀번호로 로그인해주세요.');
-  
-        // 비밀번호 변경 성공하였을때
-  
       } else {
         throw new Error('비밀번호 재설정 실패');
       }
@@ -233,116 +226,146 @@ const SignUpScreen = () => {
   return (
     <View style={styles.container}>
       {step === 1 && (
-        <View style={styles.mainBox}>
-          <View style={styles.header}>
-            <Text style={styles.emoji}>😀</Text>
-            <Text style={styles.subText}>이메일을 입력해 주세요</Text>
-          </View>
-
-          <TextInput
-            style={[
-              styles.step1,
-              {
-                borderStyle: 'solid',
-                borderWidth: 1,
-                backgroundColor: 'white',
-                borderRadius: 10,
-                borderColor: '#ffffff',
-              },
-            ]}
-            placeholder="이메일"
-            value={useremail}
-            onChangeText={handleEmailChange}
-          />
-          <Text style={styles.emailText}>@gachon.ac.kr</Text>
-          <Text style={styles.smallText}>
-            재설정하려는 비밀번호의 이메일 주소를 입력해 주세요
-          </Text>
-
+        <View>
+        <View style={styles.header}>
           <TouchableOpacity
-            style={[
-              styles.button,
-              isValidEmail ? styles.activeButton : styles.inactiveButton,
-            ]}
-            onPress={handleButtonPress}
-            disabled={!isValidEmail}
+            onPress={() => navigation.navigate('LoginScreen')}
           >
-            <Text style={styles.buttonText}>이메일 인증</Text>
+            <Image
+              source={require('@assets/chevron-left.png')}
+              style={styles.left}
+              resizeMode="contain"
+            />
           </TouchableOpacity>
+          <Text style={styles.headerText}>비밀번호재설정</Text>
+          <Text style={styles.stepText}>1/3</Text>
+          <Text style={styles.subText}>이메일</Text>
         </View>
-      )}
+
+      <View> 
+        <Image
+         source={require('@assets/mail.png')}
+         style={[styles.smallText,
+         isValidEmail ? styles.activeMail : styles.inactiveMail,
+       ]}
+         resizeMode="contain"
+        />
+        <TextInput
+          style={[
+            styles.step1,
+            isValidEmail ? styles.activeBorder : styles.inactiveBorder,
+            {
+              borderStyle: 'solid',
+              borderWidth: 1,
+              backgroundColor: 'white',
+              borderRadius: 16,
+            },
+          ]}
+          placeholder="학교 아이디를 입력해 주세요"
+          value={useremail}
+          onChangeText={handleEmailChange}
+        />
+      </View>
+        <Text style={styles.gachon}
+        >@gachon.ac.kr</Text>
+        <Text style={[styles.smallText,
+           isValidEmail ? styles.activeText2 : styles.inactiveText2,
+        ]}>
+          본인 소유의 가천대학교 이메일 주소를 사용해 주세요
+        </Text>
+
+        <TouchableOpacity
+          style={[
+            styles.button,
+            isValidEmail ? styles.activeButton : styles.inactiveButton,
+          ]}
+          onPress={handleButtonPress}
+          disabled={!isValidEmail}
+        >
+          <Text style={[styles.buttonText,
+            isValidEmail ? styles.activeText : styles.inactiveText,
+          ]}>이메일 인증하기</Text>
+        </TouchableOpacity>
+      </View>
+    )}
 
       {step === 2 && (
-        <View style={styles.mainBox}>
-        <View style={styles.header}>
-        <TouchableOpacity onPress={() => setStep(prevStep => prevStep - 1)}>
-            <Text
-              style={styles.back}
-            >뒤로가기</Text>
-          </TouchableOpacity>
-          <Text style={styles.emoji}>😄</Text>
-          <Text style={styles.subText2}>인증번호를 입력해 주세요!</Text>
-          <TextInput
-            style={[
-              styles.step2,
-              {
-                borderStyle: 'solid',
-                borderWidth: 1,
-                backgroundColor: 'white',
-                borderRadius: 10,
-                borderColor: '#ffffff',
-              },
-            ]}
-            placeholder="인증번호 6자리"
-            onChangeText={handleCodeChange}
-          />
+       <View style={styles.header}>
+       <TouchableOpacity onPress={() => setStep(prevStep => prevStep - 1)}>
+         <Image
+           source={require('@assets/chevron-left.png')}
+           style={styles.left}
+           resizeMode="contain"
+         />
+       </TouchableOpacity>
+       <Text style={styles.headerText}>비밀번호재설정</Text>
+       <Text style={styles.stepText}>2/3</Text>
+       <Text style={styles.subText5}>인증번호</Text>
+       <TextInput
+         style={[
+           styles.step2,
+           isValidCode ? styles.activeBorder : styles.inactiveBorder,
+           {
+             height: 60,
+             paddingLeft: 12,
+             borderStyle: 'solid',
+             borderWidth: 1,
+             backgroundColor: 'white',
+             borderRadius: 16,
+           },
+         ]}
+         placeholder="인증번호 6자리를 입력해주세요"
+         onChangeText={handleCodeChange}
+       />
 
-          <TouchableOpacity onPress={handleResendCode}>
-            <Text style={styles.reNum}>인증번호 다시받기</Text>
-          </TouchableOpacity>
-          <View style={styles.timerContainer}>
-            <Text style={styles.timerText}>
-              {' '}
-              {Math.floor(timer / 60)}분
-              {timer % 60 < 10 ? `0${timer % 60}` : timer % 60}초
-            </Text>
-          </View>
-          <EmailCodeBtn
-            style={[
-              styles.button2,
-              isValidCode ? styles.activeButton2 : styles.inactiveButton2,
-            ]}
-            onPress={handleSubmit}
-            disabled={!isValidCode}
-          >
-            <Text style={styles.buttonText}>인증하기</Text>
-          </EmailCodeBtn>
-        </View>
-        </View>
-      )}
+       <TouchableOpacity onPress={handleResendCode}>
+         <Text style={styles.reNum}>인증번호 다시받기</Text>
+       </TouchableOpacity>
+       <View style={styles.timerContainer}>
+         <Text style={styles.timerText}>
+           {' '}
+           {Math.floor(timer / 60)}분
+           {timer % 60 < 10 ? `0${timer % 60}` : timer % 60}초
+         </Text>
+       </View>
+       <EmailCodeBtn
+         style={[
+           styles.button2,
+           isValidCode ? styles.activeButton2 : styles.inactiveButton2,
+         ]}
+         onPress={handleSubmit}
+         disabled={!isValidCode}
+       >
+         <Text style={[styles.buttonText,
+            isValidCode ? styles.buttonText : styles.inactiveButtonText
+         ]}>확인</Text>
+       </EmailCodeBtn>
+     </View>
+   )}
 
 {step === 3 && (
          <View style={styles.header}>
-         <Text style={styles.emoji}>🔨</Text>
-         <Text style={styles.subText2}>재설정할 비밀번호를 입력해 주세요!</Text>
+          <Text style={styles.headerText}>비밀번호재설정</Text>
+          <Text style={styles.stepText}>3/3</Text>
+         <Text style={styles.subText2}>새 비밀번호</Text>
 
          <TextInput
            style={styles.input}
-           placeholder="비밀번호"
+           placeholder="새로운 비밀번호로 재설정해주세요"
            secureTextEntry={true}
            onChangeText={handlePasswordChange}
          />
-
+        <Text style={styles.subText4}>비밀번호 재입력</Text>
          <TextInput
            style={styles.input}
-           placeholder="비밀번호 확인"
+           placeholder="비밀번호를 재입력해주세요"
            secureTextEntry={true}
            onChangeText={handleConfirmPasswordChange}
          />
 
          {!isValidPassword && (
            <Text style={styles.errorMessage}>
-             비밀번호는 8자~20자의 영문+숫자+특수문자 공백X 조합이어야 합니다.
+              영문, 숫자, 특수문자를 사용해 8~20자리를 입력해주세요
            </Text>
          )}
 
@@ -351,8 +374,16 @@ const SignUpScreen = () => {
              비밀번호가 일치하지 않습니다.
            </Text>
          )}
-         <TouchableOpacity>
-         <Text onPress={handleSubmitNewPw}>
+         <TouchableOpacity
+          disabled={!isSubmitEnabled} // 비밀번호 변경 버튼 활성화 여부
+          onPress={handleSubmitNewPw}
+          >
+         <Text
+         style={[
+          styles.changePwButton,
+          isSubmitEnabled ? styles.activeButtonCP : styles.inactiveButtonCP,
+        ]}
+         onPress={handleSubmitNewPw}>
          비밀번호변경
          </Text>
          </TouchableOpacity>
@@ -366,25 +397,25 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: '#4B5159',
+    backgroundColor: '#F7F8F9',
     paddingTop: 35,
   },
 
-  mainBox: {
-    position: 'relative',
-    top: 100,
+  pageContainer: {
+    flex: 1,
+    width: '100%',
+    paddingHorizontal: 16,
   },
-
+  
   input: {
     width: 350,
     height: 55,
     borderWidth: 1,
     backgroundColor: 'white',
-    borderRadius: 10,
+    borderRadius: 16,
     paddingHorizontal: 10,
     marginBottom: 10,
   },
-
   inputName: {
     width: 350,
     height: 55,
@@ -397,20 +428,22 @@ const styles = StyleSheet.create({
 
   header: {
     color: 'white',
-    fontSize: 25,
+    fontSize: 24,
     alignItems: 'center',
     paddingTop: 0,
   },
 
-  back: {
+  headerText: {
+    color: '#111111',
+    fontSize: 20,
     position: 'relative',
-    top: -60,
-    right: 130,
-    color: 'white',
-    fontSize: 15,
-    backgroundColor: '#4490D8',
-    padding: 9,
-    borderRadius: 10,
+    top: -30,
+    marginTop: 0,
+    marginBottom: 40,
+  },
+
+  stepText: {
+    marginTop: -50,
   },
 
   emailBtn: {
@@ -422,43 +455,124 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     padding: 10,
   },
+
+  mailIcon: {
+    position: 'absolute',
+    top: 20,
+    left: 10,
+    zIndex: 1,
+  },
+
+  changePwButton: {
+    width: 350,
+    marginTop: 40,
+    backgroundColor: '#fff',
+    padding: 20,
+    borderStyle: 'solid',
+    borderColor: '#9EA4AA',
+    borderWidth: 1,
+    borderRadius: 16,
+    textAlign: 'center',
+  },
+
+  activeButtonCP: {
+    backgroundColor: '#007AFF',
+    color: '#fff',
+  },
+
+  inactiveButtonCP: {
+    
+  },
+
+  activeMail: {
+    tintColor: '#007AFF',
+  },
+
+  subText4: {
+    position: 'relative',
+    right: 119,
+    marginTop: 40,
+    marginBottom: 10,
+  },
+
+  subText5: {
+    position: 'relative',
+    right: 142,
+    marginTop: 35,
+    marginBottom: 10,
+  },
+
+  inactiveMail: {
+    tintColor: '#9EA4AA',
+  },
+
+  activeBorder: {
+    borderColor: '#007AFF',
+  },
+
+  inactiveBorder: {
+    borderColor: '#9EA4AA',
+  },
+
+pwText: {
+  position: 'relative',
+  right: 140,
+  marginBottom: 10,
+  marginTop: 25,
+},
+
+pwText2: {
+  position: 'relative',
+  right: 118,
+  marginBottom: 10,
+  marginTop: 35,
+},
+
+
   step1: {
-    fontSize: 15,
-    right: 35,
-    width: 180,
+    fontSize: 14,
+    right: 0,
+    width: 326,
+    height: 60,
   },
 
   step2: {
     fontSize: 15,
     width: 360,
+    height: 60,
     alignItems: 'center',
   },
 
-  emoji: {
-    fontSize: 60,
-    right: 150,
-    marginBottom: 10,
+  left: {
+    position: 'relative',
+    right: 160,
+    width: 150,
   },
+
   smallText: {
     position: 'relative',
-    right: 35,
-    marginTop: 0,
-    color: '#4490D8',
+    right: 0,
+    marginTop: 10,
+    fontSize: 12,
+    color: '#9EA4AA',
   },
+
   subText: {
     position: 'relative',
-    right: 40,
-    fontSize: 30,
-    color: 'white',
-    marginBottom: 30,
+    right: 140,
+    fontSize: 14,
+    color: '#72787F',
+    marginBottom: 10,
+    marginTop: 50,
   },
 
   subText2: {
     position: 'relative',
-    right: 15,
-    fontSize: 30,
-    color: 'white',
-    marginBottom: 30,
+    right: 132,
+    fontSize: 14,
+    color: '#72787F',
+    marginTop: 40,
+    marginBottom: 10,
   },
 
   subText3: {
@@ -467,14 +581,6 @@ const styles = StyleSheet.create({
     fontSize: 30,
     color: 'white',
     marginBottom: 30,
-  },
-
-  emailText: {
-    color: 'white',
-    fontSize: 20,
-    position: 'relative',
-    bottom: 40,
-    left: 165,
   },
 
   warning: {
@@ -490,30 +596,63 @@ const styles = StyleSheet.create({
 
   button: {
     marginTop: 50,
-    backgroundColor: 'gray',
-    padding: 10,
-    borderRadius: 5,
+    backgroundColor: 'white',
+    borderRadius: 16,
+    borderColor: '#9EA4AA',
+    borderStyle: 'solid',
+    height: 60,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
   },
 
   buttonPass: {
     width: 350,
     marginTop: 50,
-    backgroundColor: 'gray',
+    backgroundColor: '#fff',
     padding: 15,
-    borderRadius: 5,
+    borderStyle: 'solid',
+    borderColor: '#9EA4AA',
+    borderRadius: 16,
   },
+
   activeButton: {
-    backgroundColor: '#4490D8',
+    backgroundColor: '#007AFF',
+    borderStyle: 'solid',
+    borderColor: '#9EA4AA',
   },
+
   inactiveButton: {
-    backgroundColor: 'gray',
+    backgroundColor: '#fff',
+    borderStyle: 'solid',
+    borderColor: '#9EA4AA',
+    borderWidth: 1,
+  },
+
+  activeButtonText: {
+    color: '#fff',
+  },
+
+  activeText: {
+    color: '#ffffff',
+  },
+
+  inactiveText: {
+    color: '#9EA4AA',
+  },
+
+  activeText2: {
+    color: '#007AFF',
+  },
+
+  inactiveText2: {
+    color: '#9EA4AA',
   },
 
   button2: {
     marginTop: 50,
-    backgroundColor: 'gray',
     padding: 10,
-    borderRadius: 5,
+    borderRadius: 16,
     width: 350,
   },
   activeButton2: {
@@ -527,37 +666,75 @@ const styles = StyleSheet.create({
     width: 350,
     marginTop: 50,
     backgroundColor: 'gray',
-    padding: 10,
-    borderRadius: 5,
+    padding: 16,
+    borderRadius: 16,
+    borderWidth: 1,
   },
+
   activeButton3: {
-    backgroundColor: '#4490D8',
+    borderColor: '#007AFF',
+    backgroundColor: '#007AFF',
   },
+
   inactiveButton3: {
-    backgroundColor: 'gray',
+    borderColor: '#9EA4AA',
+    backgroundColor: '#fff',
   },
+
+  activeButtonText3: {
+    color: '#fff'
+  },
+
   buttonText: {
-    color: 'white',
+    color: '#fff',
     textAlign: 'center',
+    fontSize: 18,
   },
+
+  inactiveButtonText: {
+    color: '#9EA4AA'
+  },
+
+  gachon: {
+    position: 'absolute',
+    top: '52.5%',
+    left: '50%',
+    color: '#000000',
+  },
+
   timerContainer: {
     marginTop: 20,
   },
+
   timerText: {
-    color: '#4490D8',
+    color: '#9EA4AA',
     fontSize: 15,
     position: 'relative',
-    left: 140,
+    bottom: 30,
+    left: 150,
   },
   reNum: {
     color: '#4490D8',
     fontSize: 15,
     marginTop: 30,
-    marginBottom: -40,
+    marginBottom: 0,
     textDecorationLine: 'underline',
+    bottom: 15,
     position: 'relative',
-    right: 120,
+    left: 120,
+  },
+
+  setName: {
+    position: 'relative',
+    top: 40,
+    right: 152,
+  },
+
+  setNickName: {
+    position: 'relative',
+    top: 0,
+    right: 146,
+    marginBottom: 10,
   },
 });
-
 export default SignUpScreen;

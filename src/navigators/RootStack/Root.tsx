@@ -10,6 +10,7 @@ import HomeScreen from '@screens/HomeScreen/HomeScreen';
 import LoginScreen from '@screens/LoginScreen/LoginScreen';
 import MyPageScreen from '@screens/MypageScreen/MyPageScreen';
 import SignUpScreen from '@screens/SignUpScreen/SignUpScreen';
+import ResetPasswordScreen from '@screens/LoginScreen/ResetPasswordScreen';
 import AllReviewsScreen from '@screens/HomeScreen/FeedsScreen/AllReviewsScreen';
 import CreateFeedModal from '@screens/HomeScreen/CreateFeedModal/CreateFeedModal';
 import MyFeedsScreen from '@screens/MypageScreen/MyFeedsScreen.tsx/MyFeedsScreen';
@@ -87,6 +88,11 @@ export default function Root() {
             <RootStack.Screen
               name="SignUpScreen"
               component={SignUpScreen}
+              options={{ headerShown: false }}
+            />
+            <RootStack.Screen
+              name="ResetPasswordScreen"
+              component={ResetPasswordScreen}
               options={{ headerShown: false }}
             />
           </RootStack.Group>
