@@ -29,6 +29,7 @@ export default function SearchBar() {
   };
 
   const clearSearchText = () => {
+    setNoSearchResult(false);
     setSearchText('');
   };
 

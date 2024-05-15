@@ -94,11 +94,11 @@ const SearchBar = () => {
   };
 
   const clearSearchText = () => {
+    setNoSearchResult(false);
     setSearchText('');
   };
 
   const onSubmit = async () => {
-    console.log('onSubmit');
     await handleSearchSubmit(searchText);
   };
 
