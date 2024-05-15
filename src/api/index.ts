@@ -1,11 +1,19 @@
 import axios from 'axios';
 import { MMKVStorage } from './mmkv';
 
+let userToken = MMKVStorage.getString('userToken');
+
+export const resetToken = () => {
+  const newToken = MMKVStorage.getString('userToken');
+  console.log(newToken);
+  userToken = newToken;
+};
+
 const GSBackendClient = axios.create({
   baseURL: 'https://gasip.site',
   headers: {
     'Content-Type': 'application/json',
-    Authorization: `Bearer ${MMKVStorage.getString('userToken')}`,
+    Authorization: `Bearer ${userToken}`,
   },
 });
 

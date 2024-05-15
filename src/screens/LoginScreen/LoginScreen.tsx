@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Text, TextInput, Image, View, StyleSheet, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
+import { resetToken } from '@api/index';
 import { setMMKVStorageAuthData } from '@api/mmkv';
 import { useAuth } from '@contexts/AuthContext';
 
@@ -37,6 +38,7 @@ export default function LoginScreen() {
 
       const { accessToken, userNickname, memberId } = loginResult.response;
       setMMKVStorageAuthData(accessToken, userNickname, memberId);
+      resetToken();
 
       dispatch({
         type: 'SIGN_IN',
