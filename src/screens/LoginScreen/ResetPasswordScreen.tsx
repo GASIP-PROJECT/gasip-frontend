@@ -152,7 +152,7 @@ const SignUpScreen = () => {
 
       const response = await fetch(url, {
         method: 'POST',
-        headers: {    
+        headers: {
           'Content-Type': 'application/json',
         },
       });
@@ -171,7 +171,6 @@ const SignUpScreen = () => {
       Alert.alert('새로운 인증번호 요청 실패', error.message);
     }
   };
-
 
   const handlePasswordChange = (text: any) => {
     setPassword(text);
@@ -192,7 +191,6 @@ const SignUpScreen = () => {
   const validatePasswordMatch = (password: string, confirmPassword: string) => {
     setPasswordsMatch(password === confirmPassword);
   };
- 
 
   const handleSubmitNewPw = async () => {
     try {
@@ -200,9 +198,9 @@ const SignUpScreen = () => {
       const requestData = JSON.stringify({
         email: verifiedEmail, // 인증받은 이메일
         code: verificationCode, // 인증코드
-        newPassword: password // 새 비밀번호
+        newPassword: password, // 새 비밀번호
       });
-  
+
       const response = await fetch(url, {
         method: 'PUT',
         headers: {
@@ -210,27 +208,101 @@ const SignUpScreen = () => {
         },
         body: requestData,
       });
-  
+
       if (response.ok) {
-        Alert.alert('비밀번호 재설정 성공', '새로운 비밀번호로 로그인해주세요.');
+        Alert.alert(
+          '비밀번호 재설정 성공',
+          '새로운 비밀번호로 로그인해주세요.',
+        );
       } else {
         throw new Error('비밀번호 재설정 실패');
       }
     } catch (error: any) {
       console.error('비밀번호 재설정 실패:', error.message);
-      Alert.alert('비밀번호 재설정 실패', '비밀번호를 재설정할 수 없습니다. 잠시 후 다시 시도해주세요.');
+      Alert.alert(
+        '비밀번호 재설정 실패',
+        '비밀번호를 재설정할 수 없습니다. 잠시 후 다시 시도해주세요.',
+      );
     }
   };
-  
 
   return (
     <View style={styles.container}>
       {step === 1 && (
         <View>
-        <View style={styles.header}>
-          <TouchableOpacity
-            onPress={() => navigation.navigate('LoginScreen')}
+          <View style={styles.header}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('LoginScreen')}
+            >
+              <Image
+                source={require('@assets/chevron-left.png')}
+                style={styles.left}
+                resizeMode="contain"
+              />
+            </TouchableOpacity>
+            <Text style={styles.headerText}>비밀번호재설정</Text>
+            <Text style={styles.stepText}>1/3</Text>
+            <Text style={styles.subText}>이메일</Text>
+          </View>
+
+          <View>
+            <Image
+              source={require('@assets/mail.png')}
+              style={[
+                styles.smallText,
+                isValidEmail ? styles.activeMail : styles.inactiveMail,
+              ]}
+              resizeMode="contain"
+            />
+            <TextInput
+              style={[
+                styles.step1,
+                isValidEmail ? styles.activeBorder : styles.inactiveBorder,
+                {
+                  borderStyle: 'solid',
+                  borderWidth: 1,
+                  backgroundColor: 'white',
+                  borderRadius: 16,
+                },
+              ]}
+              placeholder="학교 아이디를 입력해 주세요"
+              value={useremail}
+              onChangeText={handleEmailChange}
+            />
+          </View>
+          <Text style={styles.gachon}>@gachon.ac.kr</Text>
+          <Text
+            style={[
+              styles.smallText,
+              isValidEmail ? styles.activeText2 : styles.inactiveText2,
+            ]}
           >
+            본인 소유의 가천대학교 이메일 주소를 사용해 주세요
+          </Text>
+
+          <TouchableOpacity
+            style={[
+              styles.button,
+              isValidEmail ? styles.activeButton : styles.inactiveButton,
+            ]}
+            onPress={handleButtonPress}
+            disabled={!isValidEmail}
+          >
+            <Text
+              style={[
+                styles.buttonText,
+                isValidEmail ? styles.activeText : styles.inactiveText,
+              ]}
+            >
+              이메일 인증하기
+            </Text>
+          </TouchableOpacity>
+        </View>
+      )}
+
+      {step === 2 && (
+        <View style={styles.header}>
+          <TouchableOpacity onPress={() => setStep(prevStep => prevStep - 1)}>
             <Image
               source={require('@assets/chevron-left.png')}
               style={styles.left}
@@ -238,156 +310,103 @@ const SignUpScreen = () => {
             />
           </TouchableOpacity>
           <Text style={styles.headerText}>비밀번호재설정</Text>
-          <Text style={styles.stepText}>1/3</Text>
-          <Text style={styles.subText}>이메일</Text>
+          <Text style={styles.stepText}>2/3</Text>
+          <Text style={styles.subText5}>인증번호</Text>
+          <TextInput
+            style={[
+              styles.step2,
+              isValidCode ? styles.activeBorder : styles.inactiveBorder,
+              {
+                height: 60,
+                paddingLeft: 12,
+                borderStyle: 'solid',
+                borderWidth: 1,
+                backgroundColor: 'white',
+                borderRadius: 16,
+              },
+            ]}
+            placeholder="인증번호 6자리를 입력해주세요"
+            onChangeText={handleCodeChange}
+          />
+
+          <TouchableOpacity onPress={handleResendCode}>
+            <Text style={styles.reNum}>인증번호 다시받기</Text>
+          </TouchableOpacity>
+          <View style={styles.timerContainer}>
+            <Text style={styles.timerText}>
+              {' '}
+              {Math.floor(timer / 60)}분
+              {timer % 60 < 10 ? `0${timer % 60}` : timer % 60}초
+            </Text>
+          </View>
+          <EmailCodeBtn
+            style={[
+              styles.button2,
+              isValidCode ? styles.activeButton2 : styles.inactiveButton2,
+            ]}
+            onPress={handleSubmit}
+            disabled={!isValidCode}
+          >
+            <Text
+              style={[
+                styles.buttonText,
+                isValidCode ? styles.buttonText : styles.inactiveButtonText,
+              ]}
+            >
+              확인
+            </Text>
+          </EmailCodeBtn>
         </View>
+      )}
 
-      <View> 
-        <Image
-         source={require('@assets/mail.png')}
-         style={[styles.smallText,
-         isValidEmail ? styles.activeMail : styles.inactiveMail,
-       ]}
-         resizeMode="contain"
-        />
-        <TextInput
-          style={[
-            styles.step1,
-            isValidEmail ? styles.activeBorder : styles.inactiveBorder,
-            {
-              borderStyle: 'solid',
-              borderWidth: 1,
-              backgroundColor: 'white',
-              borderRadius: 16,
-            },
-          ]}
-          placeholder="학교 아이디를 입력해 주세요"
-          value={useremail}
-          onChangeText={handleEmailChange}
-        />
-      </View>
-        <Text style={styles.gachon}
-        >@gachon.ac.kr</Text>
-        <Text style={[styles.smallText,
-           isValidEmail ? styles.activeText2 : styles.inactiveText2,
-        ]}>
-          본인 소유의 가천대학교 이메일 주소를 사용해 주세요
-        </Text>
-
-        <TouchableOpacity
-          style={[
-            styles.button,
-            isValidEmail ? styles.activeButton : styles.inactiveButton,
-          ]}
-          onPress={handleButtonPress}
-          disabled={!isValidEmail}
-        >
-          <Text style={[styles.buttonText,
-            isValidEmail ? styles.activeText : styles.inactiveText,
-          ]}>이메일 인증하기</Text>
-        </TouchableOpacity>
-      </View>
-    )}
-
-      {step === 2 && (
-       <View style={styles.header}>
-       <TouchableOpacity onPress={() => setStep(prevStep => prevStep - 1)}>
-         <Image
-           source={require('@assets/chevron-left.png')}
-           style={styles.left}
-           resizeMode="contain"
-         />
-       </TouchableOpacity>
-       <Text style={styles.headerText}>비밀번호재설정</Text>
-       <Text style={styles.stepText}>2/3</Text>
-       <Text style={styles.subText5}>인증번호</Text>
-       <TextInput
-         style={[
-           styles.step2,
-           isValidCode ? styles.activeBorder : styles.inactiveBorder,
-           {
-             height: 60,
-             paddingLeft: 12,
-             borderStyle: 'solid',
-             borderWidth: 1,
-             backgroundColor: 'white',
-             borderRadius: 16,
-           },
-         ]}
-         placeholder="인증번호 6자리를 입력해주세요"
-         onChangeText={handleCodeChange}
-       />
-
-       <TouchableOpacity onPress={handleResendCode}>
-         <Text style={styles.reNum}>인증번호 다시받기</Text>
-       </TouchableOpacity>
-       <View style={styles.timerContainer}>
-         <Text style={styles.timerText}>
-           {' '}
-           {Math.floor(timer / 60)}분
-           {timer % 60 < 10 ? `0${timer % 60}` : timer % 60}초
-         </Text>
-       </View>
-       <EmailCodeBtn
-         style={[
-           styles.button2,
-           isValidCode ? styles.activeButton2 : styles.inactiveButton2,
-         ]}
-         onPress={handleSubmit}
-         disabled={!isValidCode}
-       >
-         <Text style={[styles.buttonText,
-            isValidCode ? styles.buttonText : styles.inactiveButtonText
-         ]}>확인</Text>
-       </EmailCodeBtn>
-     </View>
-   )}
-
-{step === 3 && (
-         <View style={styles.header}>
+      {step === 3 && (
+        <View style={styles.header}>
           <Text style={styles.headerText}>비밀번호재설정</Text>
           <Text style={styles.stepText}>3/3</Text>
-         <Text style={styles.subText2}>새 비밀번호</Text>
+          <Text style={styles.subText2}>새 비밀번호</Text>
 
-         <TextInput
-           style={styles.input}
-           placeholder="새로운 비밀번호로 재설정해주세요"
-           secureTextEntry={true}
-           onChangeText={handlePasswordChange}
-         />
-        <Text style={styles.subText4}>비밀번호 재입력</Text>
-         <TextInput
-           style={styles.input}
-           placeholder="비밀번호를 재입력해주세요"
-           secureTextEntry={true}
-           onChangeText={handleConfirmPasswordChange}
-         />
+          <TextInput
+            style={styles.input}
+            placeholder="새로운 비밀번호로 재설정해주세요"
+            secureTextEntry={true}
+            onChangeText={handlePasswordChange}
+          />
+          <Text style={styles.subText4}>비밀번호 재입력</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="비밀번호를 재입력해주세요"
+            secureTextEntry={true}
+            onChangeText={handleConfirmPasswordChange}
+          />
 
-         {!isValidPassword && (
-           <Text style={styles.errorMessage}>
+          {!isValidPassword && (
+            <Text style={styles.errorMessage}>
               영문, 숫자, 특수문자를 사용해 8~20자리를 입력해주세요
-           </Text>
-         )}
+            </Text>
+          )}
 
-         {!passwordsMatch && (
-           <Text style={styles.errorMessage}>
-             비밀번호가 일치하지 않습니다.
-           </Text>
-         )}
-         <TouchableOpacity
-          disabled={!isSubmitEnabled} // 비밀번호 변경 버튼 활성화 여부
-          onPress={handleSubmitNewPw}
+          {!passwordsMatch && (
+            <Text style={styles.errorMessage}>
+              비밀번호가 일치하지 않습니다.
+            </Text>
+          )}
+          <TouchableOpacity
+            disabled={!isSubmitEnabled} // 비밀번호 변경 버튼 활성화 여부
+            onPress={handleSubmitNewPw}
           >
-         <Text
-         style={[
-          styles.changePwButton,
-          isSubmitEnabled ? styles.activeButtonCP : styles.inactiveButtonCP,
-        ]}
-         onPress={handleSubmitNewPw}>
-         비밀번호변경
-         </Text>
-         </TouchableOpacity>
-       </View>
+            <Text
+              style={[
+                styles.changePwButton,
+                isSubmitEnabled
+                  ? styles.activeButtonCP
+                  : styles.inactiveButtonCP,
+              ]}
+              onPress={handleSubmitNewPw}
+            >
+              비밀번호변경
+            </Text>
+          </TouchableOpacity>
+        </View>
       )}
     </View>
   );
@@ -406,7 +425,7 @@ const styles = StyleSheet.create({
     width: '100%',
     paddingHorizontal: 16,
   },
-  
+
   input: {
     width: 350,
     height: 55,
@@ -480,9 +499,7 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
 
-  inactiveButtonCP: {
-    
-  },
+  inactiveButtonCP: {},
 
   activeMail: {
     tintColor: '#007AFF',
@@ -514,20 +531,19 @@ const styles = StyleSheet.create({
     borderColor: '#9EA4AA',
   },
 
-pwText: {
-  position: 'relative',
-  right: 140,
-  marginBottom: 10,
-  marginTop: 25,
-},
+  pwText: {
+    position: 'relative',
+    right: 140,
+    marginBottom: 10,
+    marginTop: 25,
+  },
 
-pwText2: {
-  position: 'relative',
-  right: 118,
-  marginBottom: 10,
-  marginTop: 35,
-},
-
+  pwText2: {
+    position: 'relative',
+    right: 118,
+    marginBottom: 10,
+    marginTop: 35,
+  },
 
   step1: {
     fontSize: 14,
@@ -682,7 +698,7 @@ pwText2: {
   },
 
   activeButtonText3: {
-    color: '#fff'
+    color: '#fff',
   },
 
   buttonText: {
@@ -692,7 +708,7 @@ pwText2: {
   },
 
   inactiveButtonText: {
-    color: '#9EA4AA'
+    color: '#9EA4AA',
   },
 
   gachon: {

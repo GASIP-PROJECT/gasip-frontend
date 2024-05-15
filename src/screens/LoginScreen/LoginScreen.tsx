@@ -24,7 +24,6 @@ export default function LoginScreen() {
   //   password: 'passwordtest1!',
   //   // name: '마지혁',
 
-
   const handleLogin = async () => {
     try {
       const response = await fetch('https://gasip.site/members/login', {
@@ -68,7 +67,7 @@ export default function LoginScreen() {
 
   const ResetPw = () => {
     navigation.navigate('ResetPasswordScreen');
-  };  
+  };
 
   return (
     <View style={styles.container}>
@@ -103,10 +102,9 @@ export default function LoginScreen() {
             onChangeText={setPassword}
             secureTextEntry
           />
-          <Text
-            style={styles.resetPw}
-            onPress={ResetPw}
-          >비밀번호 찾기</Text>
+          <Text style={styles.resetPw} onPress={ResetPw}>
+            비밀번호 찾기
+          </Text>
           <GSButton onPress={handleLogin} buttonText="로그인" />
           <Text style={styles.Text}>
             아직 회원이 아니신가요?
