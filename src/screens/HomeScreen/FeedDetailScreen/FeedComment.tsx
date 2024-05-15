@@ -1,14 +1,17 @@
 import React, { Dispatch, SetStateAction, useRef, useState } from 'react';
-import { StyleSheet, TouchableOpacity, View, Image } from 'react-native';
-import { ActionSheetRef } from 'react-native-actions-sheet';
+import {
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  Image,
+  TextInput,
+} from 'react-native';
 
 import { MMKVStorage } from '@api/mmkv';
 import { deleteComment, likeComment, likeCommentCancel } from '@api/index';
 import { getTimeDifference } from '@utils/timeUtil';
 
 import FeedCommentReply from './FeedCommentReply';
-import FeedActionsModal from './FeedActionsModal';
-import CommentEditModal from './CommentEditModal';
 
 import GSText from '@components/common/GSText';
 import Spacer from '@components/common/Spacer';
@@ -24,12 +27,26 @@ interface FeedCommentProps {
   commentData: FeedComment;
   setUpdateFeed: Dispatch<SetStateAction<boolean>>;
   handleReplyCommentPress: (commentId: number, commentNickname: string) => void;
+  isCommentEditing: boolean;
+  setIsCommentEditing: Dispatch<SetStateAction<boolean>>;
+  setSelectedCommentId: Dispatch<SetStateAction<number | null>>;
+  handleCommentEditConfirm: () => void;
+  newComment: string;
+  setNewComment: Dispatch<SetStateAction<string>>;
+  isSelectedForEditing: boolean;
 }
 
 export default function FeedComment({
   commentData,
   setUpdateFeed,
   handleReplyCommentPress,
+  isCommentEditing,
+  setIsCommentEditing,
+  setSelectedCommentId,
+  handleCommentEditConfirm,
+  newComment,
+  setNewComment,
+  isSelectedForEditing,
 }: FeedCommentProps) {
   if (commentData === null) return <View />;
 
@@ -45,8 +62,16 @@ export default function FeedComment({
     memberId,
   } = commentData;
 
-  const actionSheetRef = useRef<ActionSheetRef>(null);
-  const [showCommentEditModal, setShowCommentEditModal] = useState(false);
+  const [showCommentActionMenu, setShowCommentActionMenu] = useState(false);
+
+  const commentContainerBorderStyle =
+    isCommentEditing && isSelectedForEditing
+      ? { borderWidth: 1, borderColor: COLORS.BLUE_PRIMARY }
+      : {
+          borderTopWidth: 1,
+          borderBottomWidth: 1,
+          borderColor: COLORS.GRAY_200,
+        };
 
   const handleLikePress = async () => {
     if (isCommentLike) {
@@ -64,25 +89,29 @@ export default function FeedComment({
 
   // TODO - commentAction과 feedAction 분리 필요
   const openCommentActionsModal = () => {
-    actionSheetRef?.current?.show();
+    setShowCommentActionMenu(true);
+  };
+
+  const closeCommentActionsModal = () => {
+    setShowCommentActionMenu(false);
   };
 
   const handleCommentDeletePress = async () => {
-    actionSheetRef.current?.hide();
+    setShowCommentActionMenu(false);
     await deleteComment(commentId);
     setUpdateFeed(prev => !prev);
   };
 
-  const handleCommentEditPress = async () => {
-    actionSheetRef.current?.hide();
-    setTimeout(() => {
-      setShowCommentEditModal(true);
-    }, 500);
+  const handleCommentEditPress = () => {
+    setShowCommentActionMenu(false);
+    setNewComment(content);
+    setSelectedCommentId(commentId);
+    setIsCommentEditing(true);
   };
 
   return (
     <View>
-      <View style={styles.contentContainer}>
+      <View style={[styles.contentContainer, commentContainerBorderStyle]}>
         <CommentHeader
           regDate={regDate}
           commenterNickname={nickName}
@@ -90,8 +119,27 @@ export default function FeedComment({
           openCommentActionsModal={openCommentActionsModal}
         />
 
+        {showCommentActionMenu && (
+          <ActionMenu
+            handleEditPress={handleCommentEditPress}
+            handleDeletePress={handleCommentDeletePress}
+          />
+        )}
+
+        {showCommentActionMenu && (
+          <ActionMenuTransparendBackdrop onPress={closeCommentActionsModal} />
+        )}
+
         <Spacer type="height" value={6} />
-        <CommentBody content={content} />
+        <CommentBody
+          content={content}
+          isCommentEditing={isCommentEditing}
+          setIsCommentEditing={setIsCommentEditing}
+          handleCommentEditConfirm={handleCommentEditConfirm}
+          newComment={newComment}
+          setNewComment={setNewComment}
+          isSelectedForEditing={isSelectedForEditing}
+        />
         <Spacer type="height" value={16} />
         <CommentFooter
           likeCount={commentLike}
@@ -104,28 +152,16 @@ export default function FeedComment({
       {commentChildren.map((commentChild, index) => {
         return (
           <View
+            key={index.toString()}
             style={{
               borderBottomWidth: index !== commentChildren.length - 1 ? 1 : 0,
               borderBottomColor: COLORS.GRAY_200,
             }}
           >
-            <FeedCommentReply key={index.toString()} reply={commentChild} />
+            <FeedCommentReply reply={commentChild} />
           </View>
         );
       })}
-      <FeedActionsModal
-        actionSheetRef={actionSheetRef}
-        handleFeedDeletePress={handleCommentDeletePress}
-        handleFeedEditPress={handleCommentEditPress}
-        paddingBottom={30}
-      />
-      <CommentEditModal
-        isVisible={showCommentEditModal}
-        commentId={commentId}
-        prevComment={content}
-        setIsVisible={setShowCommentEditModal}
-        setUpdateFeed={setUpdateFeed}
-      />
     </View>
   );
 }
@@ -165,7 +201,35 @@ const CommentHeader = ({
   );
 };
 
-const CommentBody = ({ content }: { content: string }) => {
+const CommentBody = ({
+  content,
+  isCommentEditing,
+  setIsCommentEditing,
+  handleCommentEditConfirm,
+  newComment,
+  setNewComment,
+  isSelectedForEditing,
+}: {
+  content: string;
+  isCommentEditing: boolean;
+  setIsCommentEditing: Dispatch<SetStateAction<boolean>>;
+  handleCommentEditConfirm: () => void;
+  newComment: string;
+  setNewComment: Dispatch<SetStateAction<string>>;
+  isSelectedForEditing: boolean;
+}) => {
+  if (isCommentEditing && isSelectedForEditing)
+    return (
+      <TextInput
+        value={newComment}
+        onChangeText={text => setNewComment(text)}
+        style={{ flex: 1 }}
+        multiline
+        autoFocus
+        onSubmitEditing={handleCommentEditConfirm}
+        onBlur={() => setIsCommentEditing(false)}
+      />
+    );
   return <GSText style={styles.commentBodyText}>{content}</GSText>;
 };
 
@@ -213,11 +277,58 @@ const CommentFooter = ({
   );
 };
 
+const ActionMenu = ({ handleEditPress, handleDeletePress }) => {
+  return (
+    <View style={styles.actionMenuContainer}>
+      <TouchableOpacity
+        style={styles.actionMenuItemContainer}
+        onPress={handleEditPress}
+      >
+        <GSText style={styles.actionMenuText}>수정하기</GSText>
+      </TouchableOpacity>
+      <View
+        style={{
+          height: 1,
+          backgroundColor: COLORS.BLUE_LIGHT_200,
+          width: '100%',
+        }}
+      />
+      <TouchableOpacity
+        style={styles.actionMenuItemContainer}
+        onPress={handleDeletePress}
+      >
+        <GSText style={styles.actionMenuText}>삭제하기</GSText>
+      </TouchableOpacity>
+    </View>
+  );
+};
+
+const ActionMenuTransparendBackdrop = ({ onPress }) => {
+  return (
+    <View
+      style={{
+        position: 'absolute',
+        top: -500,
+        left: -100,
+        width: 1000,
+        height: 1000,
+        backgroundColor: 'coral',
+        // backgroundColor: 'transparent',
+        zIndex: 1,
+      }}
+    >
+      <TouchableOpacity
+        style={{ width: '100%', height: '100%' }}
+        onPress={onPress}
+      >
+        <View />
+      </TouchableOpacity>
+    </View>
+  );
+};
+
 const styles = StyleSheet.create({
   contentContainer: {
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    borderColor: COLORS.GRAY_200,
     paddingVertical: 16,
     paddingHorizontal: 16,
   },
@@ -247,5 +358,32 @@ const styles = StyleSheet.create({
     fontSize: 11,
     fontWeight: '400',
     color: COLORS.GRAY_500,
+  },
+  actionMenuContainer: {
+    position: 'absolute',
+    top: -15,
+    right: 35,
+    height: 56,
+    width: 96,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: COLORS.WHITE,
+    shadowColor: COLORS.BLUE_PRIMARY,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.12,
+    shadowRadius: 10,
+    elevation: 5,
+    paddingHorizontal: 10,
+    zIndex: 2,
+  },
+  actionMenuItemContainer: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  actionMenuText: {
+    fontSize: 11,
+    fontWeight: '500',
+    color: COLORS.BLUE_LIGHT_100,
   },
 });

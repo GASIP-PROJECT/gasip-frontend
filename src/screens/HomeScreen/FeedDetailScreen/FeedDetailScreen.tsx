@@ -7,9 +7,12 @@ import {
   TextInput,
   TouchableOpacity,
   Image,
+  KeyboardAvoidingView,
+  Platform,
+  Alert,
 } from 'react-native';
 
-import { deleteFeed, getFeedData } from '@api/index';
+import { deleteFeed, editComment, getFeedData } from '@api/index';
 
 import FeedContent from './FeedContent';
 import FeedComment from './FeedComment';
@@ -43,6 +46,12 @@ export default function FeedDetailScreen({ route, navigation }) {
 
   const [showFeedActionMenu, setShowFeedActionMenu] = useState(false);
   const [showFeedEditModal, setShowFeedEditModal] = useState(false);
+  const [isCommentEditing, setIsCommentEditing] = useState(false);
+  const [selectedCommentId, setSelectedCommentId] = useState<number | null>(
+    null,
+  );
+
+  const [newComment, setNewComment] = useState('');
 
   const handleReplyCommentPress = (
     commentId: number,
@@ -80,6 +89,19 @@ export default function FeedDetailScreen({ route, navigation }) {
     }, 0);
   };
 
+  const handleCommentEditConfirmPress = async () => {
+    if (newComment === '') {
+      Alert.alert('내용을 입력해주세요.');
+      return;
+    }
+    if (selectedCommentId === null) return;
+
+    await editComment(selectedCommentId, newComment);
+    setUpdateFeed(prev => !prev);
+    setIsCommentEditing(false);
+    setNewComment('');
+  };
+
   useEffect(() => {
     const fetchFeedData = async () => {
       const feedData = await getFeedData(postId);
@@ -90,100 +112,152 @@ export default function FeedDetailScreen({ route, navigation }) {
   }, [updateFeed]);
 
   return (
-    <SafeAreaLayout noBottomPadding>
-      {/* 게시글 수정하기/삭제하기 배경 눌렀을 때 닫히도록 처리하는 투명 backdrop */}
-
-      <GSHeader
-        title={`${feedData?.memberNickname} 님의 게시글` || ''}
-        leftComponent={
-          <Image source={icon_goback} style={{ width: 28, height: 28 }} />
-        }
-        onLeftComponentPress={navigation.goBack}
-      />
-
-      <ScrollView style={styles.container}>
-        {showFeedActionMenu && (
-          <ActionMenuTransparendBackdrop
-            onPress={() => setShowFeedActionMenu(false)}
-          />
-        )}
-
-        {showFeedActionMenu && (
-          <ActionMenu
-            handleFeedEditPress={handleFeedEditPress}
-            handleFeedDeletePress={handleFeedDeletePress}
-          />
-        )}
-        {feedData !== null ? (
-          <>
-            {/* 교수님에 대한 글인 경우 표시되는 교수님 이름 */}
-            {feedData.profId !== 0 && (
-              <GSText style={styles.professorNameText}>
-                {feedData.profName} 교수님
-              </GSText>
-            )}
-            <Spacer type="height" value={14} />
-
-            {/* 피드 내용 */}
-            <FeedContent
-              feedData={feedData}
-              setUpdateFeed={setUpdateFeed}
-              openFeedActionsModal={openFeedActionsModal}
-            />
-
-            <Spacer type="height" value={10} />
-
-            {/* 댓글  */}
-            {feedData?.comments.length > 0 && (
-              <View>
-                <GSText style={styles.commentTitleText}>
-                  댓글 {`(${feedData.commentCount}개)`}
-                </GSText>
-                <Spacer type="height" value={6} />
-
-                {feedData.comments.map((comment, index) => (
-                  <FeedComment
-                    key={index.toString()}
-                    commentData={comment}
-                    setUpdateFeed={setUpdateFeed}
-                    handleReplyCommentPress={handleReplyCommentPress}
-                  />
-                ))}
-              </View>
-            )}
-          </>
-        ) : (
-          <Text>로딩중...</Text>
-        )}
-        <Spacer type="height" value={100} />
-        {showFeedActionMenu && (
-          <ActionMenuTransparendBackdrop
-            onPress={() => setShowFeedActionMenu(false)}
-          />
-        )}
-      </ScrollView>
-
-      {replyCommentNickname && (
-        <CommentReplyIndicator
-          commentNickname={replyCommentNickname}
-          resetReplyCommentData={resetReplyCommentData}
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      enabled
+      // TODO - keyboardVerticalOffset 값 안드에서도 확인 필요
+      keyboardVerticalOffset={Platform.select({
+        ios: 0,
+        android: 500,
+      })}
+    >
+      <SafeAreaLayout noBottomPadding>
+        <GSHeader
+          title={`${feedData?.memberNickname} 님의 게시글` || ''}
+          leftComponent={
+            <Image source={icon_goback} style={{ width: 28, height: 28 }} />
+          }
+          onLeftComponentPress={navigation.goBack}
         />
-      )}
-      <FeedReplyInput
-        postId={postId}
-        replyCommentId={replyCommentId}
-        commentTextInputRef={commentTextInputRef}
-        setUpdateFeed={setUpdateFeed}
-        resetReplyCommentData={resetReplyCommentData}
-      />
-      <FeedEditModal
-        postId={postId}
-        prevContent={feedData?.content || ''}
-        isVisible={showFeedEditModal}
-        setUpdateFeed={setUpdateFeed}
-        setIsVisible={setShowFeedEditModal}
-      />
-    </SafeAreaLayout>
+        <ScrollView style={styles.container}>
+          {showFeedActionMenu && (
+            <ActionMenuTransparendBackdrop
+              onPress={() => setShowFeedActionMenu(false)}
+            />
+          )}
+
+          {showFeedActionMenu && (
+            <ActionMenu
+              handleFeedEditPress={handleFeedEditPress}
+              handleFeedDeletePress={handleFeedDeletePress}
+            />
+          )}
+          {feedData !== null ? (
+            <>
+              {/* 교수님에 대한 글인 경우 표시되는 교수님 이름 */}
+              {feedData.profId !== 0 && (
+                <GSText style={styles.professorNameText}>
+                  {feedData.profName} 교수님
+                </GSText>
+              )}
+              <Spacer type="height" value={14} />
+
+              {/* 피드 내용 */}
+              <FeedContent
+                feedData={feedData}
+                setUpdateFeed={setUpdateFeed}
+                openFeedActionsModal={openFeedActionsModal}
+              />
+
+              <Spacer type="height" value={10} />
+
+              {/* 댓글  */}
+              {feedData?.comments.length > 0 && (
+                <View>
+                  <GSText style={styles.commentTitleText}>
+                    댓글 {`(${feedData.commentCount}개)`}
+                  </GSText>
+                  <Spacer type="height" value={6} />
+
+                  {feedData.comments.map((comment, index) => (
+                    <FeedComment
+                      key={index.toString()}
+                      commentData={comment}
+                      setUpdateFeed={setUpdateFeed}
+                      handleReplyCommentPress={handleReplyCommentPress}
+                      isCommentEditing={isCommentEditing}
+                      setIsCommentEditing={setIsCommentEditing}
+                      setSelectedCommentId={setSelectedCommentId}
+                      handleCommentEditConfirm={handleCommentEditConfirmPress}
+                      newComment={newComment}
+                      setNewComment={setNewComment}
+                      isSelectedForEditing={
+                        // TODO - optional 로 처리하지 않으면 null로 뜨는 이슈 체크
+                        comment?.commentId === selectedCommentId
+                      }
+                    />
+                  ))}
+                </View>
+              )}
+            </>
+          ) : (
+            <Text>로딩중...</Text>
+          )}
+          <Spacer type="height" value={100} />
+          {showFeedActionMenu && (
+            <ActionMenuTransparendBackdrop
+              onPress={() => setShowFeedActionMenu(false)}
+            />
+          )}
+        </ScrollView>
+
+        {replyCommentNickname && (
+          <CommentReplyIndicator
+            commentNickname={replyCommentNickname}
+            resetReplyCommentData={resetReplyCommentData}
+          />
+        )}
+        {isCommentEditing ? (
+          <View
+            style={{
+              height: 56,
+              paddingHorizontal: 16,
+              justifyContent: 'center',
+              backgroundColor: COLORS.WHITE,
+              shadowColor: COLORS.BLUE_PRIMARY,
+              shadowOffset: { width: 0, height: -8 },
+              shadowOpacity: 0.05,
+              shadowRadius: 10,
+              elevation: 5,
+            }}
+          >
+            <TouchableOpacity
+              style={{
+                height: 40,
+                backgroundColor: COLORS.BLUE_PRIMARY,
+                borderRadius: 100,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+              onPress={handleCommentEditConfirmPress}
+            >
+              <GSText
+                style={{ fontSize: 16, color: COLORS.WHITE, fontWeight: '600' }}
+              >
+                완료
+              </GSText>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <FeedReplyInput
+            postId={postId}
+            replyCommentId={replyCommentId}
+            commentTextInputRef={commentTextInputRef}
+            setUpdateFeed={setUpdateFeed}
+            resetReplyCommentData={resetReplyCommentData}
+          />
+        )}
+
+        <FeedEditModal
+          postId={postId}
+          prevContent={feedData?.content || ''}
+          isVisible={showFeedEditModal}
+          setUpdateFeed={setUpdateFeed}
+          setIsVisible={setShowFeedEditModal}
+        />
+      </SafeAreaLayout>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -239,10 +313,11 @@ const ActionMenuTransparendBackdrop = ({ onPress }) => {
       style={{
         position: 'absolute',
         top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        backgroundColor: 'transparent',
+        left: -100,
+        width: 1000,
+        height: 1000,
+        // backgroundColor: 'transparent',
+        backgroundColor: 'coral',
         zIndex: 1,
       }}
     >
@@ -289,7 +364,7 @@ const styles = StyleSheet.create({
   },
   actionMenuContainer: {
     position: 'absolute',
-    top: 0,
+    top: 15,
     right: 35,
     height: 56,
     width: 96,
