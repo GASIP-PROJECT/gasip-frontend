@@ -12,7 +12,7 @@ import { StyleSheet } from 'react-native';
 import EmailCodeBtn from '@components/common/EmailCodeBtn';
 import LoginScreen from '@screens/LoginScreen/LoginScreen';
 
-const SignUpScreen = () => {
+const ResetPasswordScreen = () => {
   const navigation = useNavigation();
   const [step, setStep] = useState(1);
   const [useremail, setUseremail] = useState<string>('');
@@ -753,4 +753,4 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
 });
-export default SignUpScreen;
+export default ResetPasswordScreen;
