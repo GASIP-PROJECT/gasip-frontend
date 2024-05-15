@@ -30,12 +30,6 @@ export default function LoginScreen() {
         headers: {
           'Content-Type': 'application/json',
         },
-<<<<<<< HEAD
-        body: JSON.stringify({ email:useremail, password }),
-      });
-
-      console.log(await response.json())
-=======
         body: JSON.stringify({ email: useremail, password }),
       });
 
@@ -51,7 +45,6 @@ export default function LoginScreen() {
           isLoading: false,
         },
       });
->>>>>>> 04b925ef688c6bc9261415a45124c05626cb1329
 
       if (!response.ok) {
         throw new Error('이메일 or 비밀번호가 일치하지 않습니다');
@@ -72,10 +65,9 @@ export default function LoginScreen() {
 
   const ResetPw = () => {
     navigation.navigate('ResetPasswordScreen');
-  } 
+  };
 
   return (
-<<<<<<< HEAD
     <View style={styles.container}>
       <View style={styles.formContainer}>
         <View style={styles.logo}>
@@ -84,62 +76,42 @@ export default function LoginScreen() {
             style={styles.gasipLogo}
             resizeMode="contain"
           />
-           <Image
+          <Image
             source={require('@assets/gasip_text.png')}
             style={styles.gasipLogoText}
             resizeMode="contain"
           />
-          <Text
-           style={styles.gasipSupText}
-          >가천인을 위한 교수님 전문 리뷰앱</Text>
+          <Text style={styles.gasipSupText}>
+            가천인을 위한 교수님 전문 리뷰앱
+          </Text>
         </View>
         <View style={styles.mainForm}>
-=======
-    <SafeAreaLayout backgroundColor="#4B5159">
-      <View style={styles.container}>
-        <Image
-          source={gasip_logo}
-          style={styles.gasipLogo}
-          resizeMode="contain"
-        />
-        <Spacer type="height" value={25} />
->>>>>>> 04b925ef688c6bc9261415a45124c05626cb1329
-        <TextInput
-          style={styles.input}
-          placeholder="이메일"
-          value={useremail}
-          onChangeText={setUseremail}
-          autoCapitalize="none"
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="비밀번호"
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
-        />
-<<<<<<< HEAD
-        <GSButton onPress={handleLogin} buttonText="로그인" />
-        <Text onPress={ResetPw} style={styles.forgotPasswordLink}>비밀번호 재설정</Text>
-        <Text 
-        style={styles.Text}
-        >아직 회원이 아니신가요? 
-          <Text
-          style={styles.signUp}          
-          onPress={handleSignup}
-          > 학교 이메일로 회원가입</Text>
-        </Text>
-      </View>
-=======
-        <View style={{ width: '100%' }}>
-          <GSButton
-            onPress={handleLogin}
-            buttonText="로그인"
-            marginHorizontal={0}
+          <TextInput
+            style={styles.input}
+            placeholder="이메일"
+            value={useremail}
+            onChangeText={setUseremail}
+            autoCapitalize="none"
           />
-          <Text style={styles.forgotPasswordLink}>아이디/비밀번호 찾기</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="비밀번호"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry
+          />
+          <GSButton onPress={handleLogin} buttonText="로그인" />
+          <Text onPress={ResetPw} style={styles.forgotPasswordLink}>
+            비밀번호 재설정
+          </Text>
+          <Text style={styles.Text}>
+            아직 회원이 아니신가요?
+            <Text style={styles.signUp} onPress={handleSignup}>
+              {' '}
+              학교 이메일로 회원가입
+            </Text>
+          </Text>
         </View>
->>>>>>> 04b925ef688c6bc9261415a45124c05626cb1329
       </View>
 
       <GSButton
@@ -148,7 +120,7 @@ export default function LoginScreen() {
         bgColor={COLORS.WHITE}
         btnTextColor={COLORS.BTN_MAIN}
       />
-    </SafeAreaLayout>
+    </View>
   );
 }
 
@@ -158,21 +130,16 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-<<<<<<< HEAD
     backgroundColor: '#fff',
   },
 
   formContainer: {
     width: '80%',
-=======
-    paddingHorizontal: 16,
->>>>>>> 04b925ef688c6bc9261415a45124c05626cb1329
   },
 
   input: {
     height: 60,
     width: '100%',
-<<<<<<< HEAD
     borderRadius: 16,
     borderStyle: 'solid',
     borderWidth: 1,
@@ -181,7 +148,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     backgroundColor: '#ffffff',
   },
-
 
   signUp: {
     textDecorationLine: 'underline',
@@ -198,14 +164,6 @@ const styles = StyleSheet.create({
     top: '20%',
     textAlign: 'center',
     color: '#9EA3B2',
-=======
-    borderRadius: 5,
-    marginBottom: 8,
-    paddingHorizontal: 16,
-    backgroundColor: '#3E4044',
-    color: '#918989',
-    fontSize: 16,
->>>>>>> 04b925ef688c6bc9261415a45124c05626cb1329
   },
 
   forgotPasswordLink: {
@@ -215,7 +173,6 @@ const styles = StyleSheet.create({
     fontSize: 13,
   },
 
-<<<<<<< HEAD
   logo: {
     alignItems: 'center',
   },
@@ -238,10 +195,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#007AFF',
     letterSpacing: -0.4,
-=======
-  gasipLogo: {
-    width: '75%',
-    justifyContent: 'center',
->>>>>>> 04b925ef688c6bc9261415a45124c05626cb1329
   },
 });
