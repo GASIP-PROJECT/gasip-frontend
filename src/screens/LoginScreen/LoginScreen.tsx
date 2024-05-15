@@ -23,11 +23,14 @@ import SafeAreaLayout from '@components/common/SafeAreaLayout';
 
 import { COLORS } from '@styles/colors';
 import gasip_logo from '@assets/gasip_logo.png';
+import icon_show_password from '@assets/icon_show_password.png';
 
 export default function LoginScreen() {
+  const navigation = useNavigation();
+
   const [useremail, setUseremail] = useState('');
   const [password, setPassword] = useState('');
-  const navigation = useNavigation();
+  const [showPassword, setShowPassword] = useState(false);
 
   const { dispatch } = useAuth();
 
@@ -62,12 +65,13 @@ export default function LoginScreen() {
       if (!response.ok) {
         throw new Error('이메일 or 비밀번호가 일치하지 않습니다');
       }
-
-      //navigation.navigate('#');  로그인 성공하면 이동하는 곳.
+      console.log(response);
     } catch (error: any) {
+      // TODO - 에러 핸들링 필요
       Alert.alert(
         '로그인 실패',
-        error.message || '알 수 없는 오류가 발생했습니다.',
+        // error.message || '알 수 없는 오류가 발생했습니다.',
+        '입력한 회원 정보를 다시 확인해주세요.',
       );
     }
   };
@@ -119,14 +123,31 @@ export default function LoginScreen() {
                 autoCapitalize="none"
               />
               <Spacer type="height" value={12} />
-              <TextInput
-                style={styles.input}
-                placeholder=" 비밀번호"
-                value={password}
-                onChangeText={setPassword}
-                secureTextEntry
-              />
+              <View
+                style={[
+                  { flexDirection: 'row', alignItems: 'center' },
+                  styles.input,
+                ]}
+              >
+                <TextInput
+                  style={{ flex: 1 }}
+                  placeholder=" 비밀번호"
+                  value={password}
+                  onChangeText={setPassword}
+                  secureTextEntry={!showPassword}
+                />
+                <Spacer type="width" value={5} />
+                <TouchableOpacity
+                  onPress={() => setShowPassword(prev => !prev)}
+                >
+                  <Image
+                    source={icon_show_password}
+                    style={{ width: 24, height: 24 }}
+                  />
+                </TouchableOpacity>
+              </View>
               <Spacer type="height" value={12} />
+
               <TouchableOpacity
                 onPress={ResetPw}
                 style={{ alignSelf: 'flex-end' }}
