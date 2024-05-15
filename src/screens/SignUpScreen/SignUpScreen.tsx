@@ -219,58 +219,66 @@ const SignUpScreen = () => {
   };
 
   return (
+    <SafeAreaLayout>
     <View style={styles.container}>
+        <Spacer type="height" value={10} />
       {step === 1 && (
-        <View>
-          <View style={styles.header}>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('LoginScreen')}
-            >
+          <View style={{ width: '100%' }}>
+            <View style={styles.headerContainer}>
+              <TouchableOpacity onPress={navigation.goBack}>
               <Image
                 source={require('@assets/chevron-left.png')}
                 style={styles.left}
                 resizeMode="contain"
               />
             </TouchableOpacity>
-            <Text style={styles.headerText}>회원가입하기</Text>
+              <View style={{ flex: 1, alignItems: 'center' }}>
+                <GSText style={styles.headerText}>회원가입하기</GSText>
+              </View>
+              <View style={{ height: 28, width: 28 }} />
+            </View>
             <Text style={styles.stepText}>1/3</Text>
-            <Text style={styles.subText}>이메일</Text>
-          </View>
-
-          <View>
-            <Image
-              source={require('@assets/mail.png')}
+            <Spacer type="height" value={28} />
+            <GSText style={styles.subText}>이메일</GSText>
+            <Spacer type="height" value={8} />
+            <View
               style={[
-                styles.smallText,
-                isValidEmail ? styles.activeMail : styles.inactiveMail,
-              ]}
-              resizeMode="contain"
-            />
-            <TextInput
-              style={[
-                styles.step1,
-                isValidEmail ? styles.activeBorder : styles.inactiveBorder,
                 {
-                  borderStyle: 'solid',
+                  flexDirection: 'row',
                   borderWidth: 1,
                   backgroundColor: 'white',
                   borderRadius: 16,
+                  alignItems: 'center',
+                  paddingHorizontal: 20,
                 },
+                styles.step1,
+                isValidEmail ? styles.activeBorder : styles.inactiveBorder,
               ]}
-              placeholder="학교 아이디를 입력해 주세요"
+            >
+              <Image
+                source={require('@assets/mail.png')}
+                style={[isValidEmail ? styles.activeMail : styles.inactiveMail]}
+              />
+              <Spacer type="width" value={2} />
+              <TextInput
+                style={{ height: 60, flex: 1 }}
+                placeholder=" 학교 아이디 입력"
               value={useremail}
               onChangeText={handleEmailChange}
             />
+              <GSText style={styles.gachon}>@gachon.ac.kr</GSText>
           </View>
-          <Text style={styles.gachon}>@gachon.ac.kr</Text>
-          <Text
+            <Spacer type="height" value={12} />
+            <GSText
             style={[
               styles.smallText,
               isValidEmail ? styles.activeText2 : styles.inactiveText2,
             ]}
           >
             본인 소유의 가천대학교 이메일 주소를 사용해 주세요
-          </Text>
+            </GSText>
+
+            <Spacer type="height" value={64} />
 
           <TouchableOpacity
             style={[
