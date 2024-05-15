@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {
   StyleSheet,
-  Text,
   View,
   TouchableOpacity,
   TextInput,
@@ -13,6 +12,7 @@ import SignUpProcessHeader from '@screens/SignUpScreen/SignUpProcessHeader';
 import GSText from '@components/common/GSText';
 import Spacer from '@components/common/Spacer';
 import SafeAreaLayout from '@components/common/SafeAreaLayout';
+
 import { COLORS } from '@styles/colors';
 
 import icon_lock from '@assets/icon_lock.png';
@@ -45,6 +45,7 @@ export default function Step2_CreatePasswordScreen({ navigation }) {
     }
 
     setShowPasswordDontMatchError(false);
+    navigation.replace('SignIn_Step3');
 
     // store에 password set하는 처리
   };

@@ -22,6 +22,7 @@ import ChangeNicknameScreen from '@screens/MypageScreen/ChangeNicknameScreen/Cha
 import ChangePasswordScreen from '@screens/MypageScreen/ChangePasswordScreen/ChangePasswordScreen';
 import Step1_VerifyEmailScreen from '@screens/SignUpScreen/Step1_VerifyEmailScreen/Step1_VerifyEmailScreen';
 import Step2_CreatePasswordScreen from '@screens/SignUpScreen/Step2_CreatePasswordScreen/Step2_CreatePasswordScreen';
+import Step3_CreateUserInfoScreen from '@screens/SignUpScreen/\bStep3_CreateUserInfoScreen/Step3_CreateUserInfoScreen';
 
 import { COLORS } from '@styles/colors';
 
@@ -105,6 +106,11 @@ export default function Root() {
             <RootStack.Screen
               name="SignIn_Step2"
               component={Step2_CreatePasswordScreen}
+              options={{ headerShown: false }}
+            />
+            <RootStack.Screen
+              name="SignIn_Step3"
+              component={Step3_CreateUserInfoScreen}
               options={{ headerShown: false }}
             />
           </RootStack.Group>
