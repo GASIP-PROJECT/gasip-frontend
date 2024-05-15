@@ -10,7 +10,7 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { StyleSheet } from 'react-native';
 import EmailCodeBtn from '@components/common/EmailCodeBtn';
-import LoginScreen from '@screens/LoginScreen/LoginScreen';
+
 const SignUpScreen = () => {
   const navigation = useNavigation();
   const [step, setStep] = useState(1);
@@ -230,7 +230,6 @@ const SignUpScreen = () => {
                 style={styles.left}
                 resizeMode="contain"
               />
-<<<<<<< HEAD
             </TouchableOpacity>
             <Text style={styles.headerText}>회원가입하기</Text>
             <Text style={styles.stepText}>1/3</Text>
@@ -337,11 +336,6 @@ const SignUpScreen = () => {
           </EmailCodeBtn>
         </View>
       )}
-=======
-            </View>
-          </>
-        )}
->>>>>>> e1863ffca159387d98602f5f5c7ba2d08b4bc6e2
 
       {step === 3 && (
         <View style={styles.header}>
@@ -355,7 +349,6 @@ const SignUpScreen = () => {
           <Text style={styles.headerText}>회원가입하기</Text>
           <Text style={styles.stepText}>1/3</Text>
 
-<<<<<<< HEAD
           <Text style={styles.pwText}>비밀번호</Text>
           <TextInput
             style={styles.input}
@@ -404,57 +397,6 @@ const SignUpScreen = () => {
               source={require('@assets/chevron-left.png')}
               style={styles.left}
               resizeMode="contain"
-=======
-              <TextInput
-                style={[
-                  styles.step2,
-                  {
-                    borderStyle: 'solid',
-                    borderWidth: 1,
-                    backgroundColor: 'white',
-                    borderRadius: 5,
-                    borderColor: '#ffffff',
-                    height: 50,
-                    paddingHorizontal: 10,
-                  },
-                ]}
-                placeholder="인증번호 6자리"
-                onChangeText={handleCodeChange}
-              />
-
-              <Spacer type="height" value={10} />
-
-              <TouchableOpacity onPress={handleResendCode}>
-                <Text style={styles.reNum}>인증번호 다시받기</Text>
-              </TouchableOpacity>
-              <Spacer type="height" value={10} />
-              <View style={styles.timerContainer}>
-                <Text style={styles.timerText}>
-                  {' '}
-                  {Math.floor(timer / 60)}분
-                  {timer % 60 < 10 ? `0${timer % 60}` : timer % 60}초
-                </Text>
-              </View>
-
-              <Spacer type="height" value={20} />
-
-              <GSButton
-                buttonText="인증하기"
-                onPress={handleSubmit}
-                disabled={!isValidCode}
-                marginHorizontal={0}
-              />
-            </View>
-          </>
-        )}
-
-        {step === 3 && (
-          <>
-            <GSHeader
-              title="이메일 회원가입 (3/3)"
-              leftComponent={<GSIcon name="chevron-back-outline" />}
-              onLeftComponentPress={() => setStep(prevStep => prevStep - 1)}
->>>>>>> e1863ffca159387d98602f5f5c7ba2d08b4bc6e2
             />
           </TouchableOpacity>
           <Text style={styles.headerText}>이메일 회원가입 (3/3)</Text>
@@ -516,11 +458,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-<<<<<<< HEAD
     backgroundColor: '#F7F8F9',
     paddingTop: 35,
-=======
->>>>>>> e1863ffca159387d98602f5f5c7ba2d08b4bc6e2
   },
 
   pageContainer: {
@@ -616,19 +555,14 @@ pwText2: {
 
 
   step1: {
-<<<<<<< HEAD
     fontSize: 14,
     right: 0,
     width: 326,
     height: 60,
-=======
-    fontSize: 15,
->>>>>>> e1863ffca159387d98602f5f5c7ba2d08b4bc6e2
   },
 
   step2: {
     fontSize: 15,
-<<<<<<< HEAD
     width: 360,
     height: 60,
     alignItems: 'center',
@@ -664,26 +598,6 @@ pwText2: {
     color: '#72787F',
     marginTop: 40,
     marginBottom: 10,
-=======
-    alignItems: 'center',
-  },
-
-  left: {},
-  emoji: {
-    fontSize: 60,
-  },
-  smallText: {
-    color: '#4490D8',
-  },
-  subText: {
-    fontSize: 30,
-    color: 'white',
-  },
-
-  subText2: {
-    fontSize: 30,
-    color: 'white',
->>>>>>> e1863ffca159387d98602f5f5c7ba2d08b4bc6e2
   },
 
   subText3: {
@@ -694,14 +608,6 @@ pwText2: {
     marginBottom: 30,
   },
 
-<<<<<<< HEAD
-=======
-  emailText: {
-    color: 'white',
-    fontSize: 20,
-  },
-
->>>>>>> e1863ffca159387d98602f5f5c7ba2d08b4bc6e2
   warning: {
     color: '#4490D8',
     fontSize: 14,
@@ -714,7 +620,6 @@ pwText2: {
   },
 
   button: {
-<<<<<<< HEAD
     marginTop: 50,
     backgroundColor: 'white',
     borderRadius: 16,
@@ -724,11 +629,6 @@ pwText2: {
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1,
-=======
-    backgroundColor: 'gray',
-    padding: 10,
-    borderRadius: 5,
->>>>>>> e1863ffca159387d98602f5f5c7ba2d08b4bc6e2
   },
 
   buttonPass: {
@@ -768,15 +668,10 @@ pwText2: {
   },
 
   button2: {
-<<<<<<< HEAD
     marginTop: 50,
     padding: 10,
     borderRadius: 16,
     width: 350,
-=======
-    backgroundColor: 'gray',
-    borderRadius: 5,
->>>>>>> e1863ffca159387d98602f5f5c7ba2d08b4bc6e2
   },
   activeButton2: {
     backgroundColor: '#4490D8',
@@ -806,7 +701,6 @@ pwText2: {
     textAlign: 'center',
     fontSize: 18,
   },
-<<<<<<< HEAD
 
   inactiveButtonText: {
     color: '#9EA4AA'
@@ -829,26 +723,16 @@ pwText2: {
     position: 'relative',
     bottom: 30,
     left: 150,
-=======
-  timerContainer: {},
-  timerText: {
-    color: '#9EA4AA',
-    fontSize: 15,
->>>>>>> e1863ffca159387d98602f5f5c7ba2d08b4bc6e2
   },
   reNum: {
     color: '#4490D8',
     fontSize: 15,
-<<<<<<< HEAD
     marginTop: 30,
     marginBottom: 0,
     textDecorationLine: 'underline',
     bottom: 15,
     position: 'relative',
     left: 120,
-=======
-    textDecorationLine: 'underline',
->>>>>>> e1863ffca159387d98602f5f5c7ba2d08b4bc6e2
   },
 });
 
