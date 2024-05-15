@@ -1,9 +1,8 @@
 import React from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { getTimeDifference } from '@utils/timeUtil';
 
-import GSIcon from '@components/common/GSIcon';
 import GSText from '@components/common/GSText';
 import Spacer from '@components/common/Spacer';
 
@@ -13,8 +12,18 @@ import { FeedComment } from 'types/searchTypes';
 import icon_reply from '@assets/icon_reply.png';
 import icon_thumbsup from '@assets/icon_thumbsup.png';
 
-export default function FeedCommentReply({ reply }: { reply: FeedComment }) {
-  const { content, commentLike, regDate, memberName } = reply;
+export default function FeedCommentReply({
+  reply,
+  handleLikePress,
+}: {
+  reply: FeedComment;
+  handleLikePress: (isLike: boolean, commentId: number) => void;
+}) {
+  const { content, commentLike, regDate, memberName, isCommentLike } = reply;
+
+  const handleReplyLikePress = () => {
+    handleLikePress(isCommentLike, reply.commentId);
+  };
 
   return (
     <View style={styles.container}>
@@ -24,7 +33,11 @@ export default function FeedCommentReply({ reply }: { reply: FeedComment }) {
       <View style={{ paddingHorizontal: 20 }}>
         <ReplyBody content={content} />
         <Spacer type="height" value={16} />
-        <ReplyFooter likeCount={commentLike} />
+        <ReplyFooter
+          likeCount={commentLike}
+          isCommentLike={isCommentLike}
+          handleReplyLikePress={handleReplyLikePress}
+        />
       </View>
     </View>
   );
@@ -56,16 +69,34 @@ const ReplyBody = ({ content }: { content: string }) => {
   return <GSText style={styles.replyBodyText}>{content}</GSText>;
 };
 
-const ReplyFooter = ({ likeCount }: { likeCount: number | null }) => {
+const ReplyFooter = ({
+  likeCount,
+  isCommentLike,
+  handleReplyLikePress,
+}: {
+  likeCount: number | null;
+  isCommentLike: boolean;
+  handleReplyLikePress: () => void;
+}) => {
   const iconTextGap = 3;
 
   return (
     <View style={styles.footerContainer}>
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <Image source={icon_thumbsup} style={{ width: 20, height: 20 }} />
+      <TouchableOpacity
+        style={{ flexDirection: 'row', alignItems: 'center' }}
+        onPress={handleReplyLikePress}
+      >
+        <Image
+          source={icon_thumbsup}
+          style={{
+            width: 20,
+            height: 20,
+            tintColor: isCommentLike ? COLORS.BLUE_PRIMARY : COLORS.GRAY_400,
+          }}
+        />
         <Spacer type="width" value={iconTextGap} />
         <Text style={styles.iconText}>{likeCount || 0}</Text>
-      </View>
+      </TouchableOpacity>
     </View>
   );
 };

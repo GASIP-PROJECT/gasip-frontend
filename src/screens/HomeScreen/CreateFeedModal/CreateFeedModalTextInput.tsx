@@ -1,23 +1,35 @@
 import React, { Dispatch, SetStateAction } from 'react';
-import { StyleSheet, TextInput, View } from 'react-native';
+import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
+
+import useNewFeedStore from '@store/newFeedStore';
 
 import { COLORS } from '@styles/colors';
 
 interface CreateFeedModalTextInputProps {
   feedContent: string;
   setFeedContent: Dispatch<SetStateAction<string>>;
+  openSelectProfessorModal?: () => void;
 }
 
 export default function CreateFeedModalTextInput({
   feedContent,
   setFeedContent,
+  openSelectProfessorModal = () => {},
 }: CreateFeedModalTextInputProps) {
+  const profId = useNewFeedStore(state => state.profId);
+
   return (
     <View style={styles.container}>
+      {profId === null && (
+        <TouchableOpacity
+          onPress={openSelectProfessorModal}
+          style={styles.openSelectProfessorModalCover}
+        />
+      )}
       <TextInput
         value={feedContent}
         style={styles.textInput}
-        placeholder="자유롭게 의견을 작성해 주세요.."
+        placeholder="여러분의 자유로운 의견을 들려주세요."
         placeholderTextColor={COLORS.GRAY_400}
         multiline
         maxLength={500}
@@ -40,5 +52,14 @@ const styles = StyleSheet.create({
     padding: 10,
     textAlignVertical: 'top',
     lineHeight: 20,
+  },
+  openSelectProfessorModalCover: {
+    position: 'absolute',
+    backgroundColor: 'transparent',
+    width: '100%',
+    height: '100%',
+    top: 0,
+    left: 16,
+    zIndex: 1,
   },
 });

@@ -12,6 +12,7 @@ import GSText from '@components/common/GSText';
 import { COLORS } from '@styles/colors';
 import { type Feed } from 'types/searchTypes';
 
+import icon_view from '@assets/icon_view.png';
 import icon_comment from '@assets/icon_comment.png';
 import icon_thumbsup from '@assets/icon_thumbsup.png';
 import icon_dots_vertical from '@assets/icon_dots_vertical.png';
@@ -35,6 +36,8 @@ export default function FeedContent({
     postId,
     memberNickname,
     isLike,
+    commentCount,
+    clickCount,
   } = feedData;
 
   return (
@@ -53,6 +56,8 @@ export default function FeedContent({
         postId={postId}
         isLike={isLike}
         setUpdateFeed={setUpdateFeed}
+        clickCount={clickCount}
+        commentCount={commentCount}
       />
     </View>
   );
@@ -101,11 +106,15 @@ const FeedContentFooter = ({
   postId,
   setUpdateFeed,
   isLike,
+  clickCount,
+  commentCount,
 }: {
   likeCount: number;
   postId: number;
   setUpdateFeed: Dispatch<SetStateAction<boolean>>;
   isLike: boolean;
+  clickCount: number;
+  commentCount: number;
 }) => {
   const iconTextGap = 3;
 
@@ -125,10 +134,28 @@ const FeedContentFooter = ({
         style={{ flexDirection: 'row', alignItems: 'center' }}
         onPress={handleLikePress}
       >
-        <Image source={icon_thumbsup} style={{ width: 20, height: 20 }} />
+        <Image
+          source={icon_thumbsup}
+          style={{
+            width: 20,
+            height: 20,
+            tintColor: isLike ? COLORS.BLUE_PRIMARY : COLORS.GRAY_400,
+          }}
+        />
         <Spacer type="width" value={iconTextGap} />
         <GSText style={styles.iconText}>{likeCount}</GSText>
       </TouchableOpacity>
+      <Spacer type="width" value={15} />
+
+      <Image source={icon_comment} style={{ width: 20, height: 20 }} />
+      <Spacer type="width" value={iconTextGap} />
+      <GSText style={styles.iconText}>{commentCount}</GSText>
+
+      <Spacer type="width" value={15} />
+
+      <Image source={icon_view} style={{ width: 20, height: 20 }} />
+      <Spacer type="width" value={iconTextGap} />
+      <GSText style={styles.iconText}>{clickCount}</GSText>
     </View>
   );
 };
@@ -166,6 +193,7 @@ const styles = StyleSheet.create({
   iconText: {
     fontSize: 14,
     fontWeight: '500',
+    fontVariant: ['tabular-nums'],
   },
   timeText: {
     fontSize: 12,

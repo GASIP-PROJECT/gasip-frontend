@@ -58,14 +58,14 @@ export default function HomeFeedList({
       {/* 피드 목록 */}
       <View style={styles.feedsContainer}>
         {data.map((feed, index) => (
-          <>
+          <View key={feed.postId}>
             <FeedListItem
               content={feed.content}
               likeCount={feed.likeCount}
               commentCount={feed.commentCount}
             />
             {index !== data.length - 1 && <Spacer type="height" value={10} />}
-          </>
+          </View>
         ))}
       </View>
     </View>

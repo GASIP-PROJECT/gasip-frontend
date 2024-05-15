@@ -1,4 +1,4 @@
-import React, { useState, Dispatch, SetStateAction } from 'react';
+import React, { useState, Dispatch, SetStateAction, useEffect } from 'react';
 import {
   Image,
   Keyboard,
@@ -36,6 +36,7 @@ export default function FeedReplyInput({
   const { bottom: bottomSafeAreaPadding } = useSafeAreaInsets();
 
   const [newComment, setNewComment] = useState('');
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
   const handleCommentSubmit = async () => {
     if (newComment === '') return;
@@ -58,8 +59,28 @@ export default function FeedReplyInput({
     setUpdateFeed(prev => !prev);
   };
 
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardWillShow',
+      () => {
+        setKeyboardVisible(true); // or some other action
+      },
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardWillHide',
+      () => {
+        setKeyboardVisible(false); // or some other action
+      },
+    );
+
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
+  }, []);
+
   return (
-    <View style={[styles.container]}>
+    <View style={[styles.container, { height: isKeyboardVisible ? 56 : 90 }]}>
       {Platform.OS === 'ios' ? (
         <View style={styles.textInputContainer}>
           <Spacer type="width" value={20} />
@@ -118,14 +139,15 @@ export default function FeedReplyInput({
         </View>
       )}
 
-      <Spacer type="height" value={bottomSafeAreaPadding} />
+      {!isKeyboardVisible && (
+        <Spacer type="height" value={bottomSafeAreaPadding} />
+      )}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    height: 90,
     paddingHorizontal: 16,
     justifyContent: 'center',
     backgroundColor: COLORS.WHITE,

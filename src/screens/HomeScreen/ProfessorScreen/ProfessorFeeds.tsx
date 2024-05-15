@@ -1,8 +1,8 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, FlatList, Image } from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
 
 import { getProfessorFeeds } from '@api/index';
+import useNewFeedStore from '@store/newFeedStore';
 
 import FeedSummary from '@screens/HomeScreen/FeedsScreen/FeedSummary';
 
@@ -13,7 +13,6 @@ import { COLORS } from '@styles/colors';
 import { type Feed } from 'types/searchTypes';
 
 import icon_write from '@assets/icon_write.png';
-import useNewFeedStore from '@store/newFeedStore';
 
 export default function ProfessorFeeds({ profId }: { profId: number }) {
   const toggleToUpdateFeedsList = useNewFeedStore(

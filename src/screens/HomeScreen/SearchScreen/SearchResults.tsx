@@ -18,7 +18,7 @@ import Spacer from '@components/common/Spacer';
 import { SEARCH_CATEGORY } from '../../../constants';
 
 import { COLORS } from '@styles/colors';
-import icon_serach from '@assets/icon_search.png';
+import icon_search from '@assets/icon_search.png';
 import { type Feed, type Professor } from 'types/searchTypes';
 
 // TODO - 컴포넌트 구조 뭔가 이상함. 수정 필요한 상태
@@ -77,7 +77,7 @@ const ProfessorInfo = ({ professorData }: { professorData: Professor }) => {
       onPress={handleProfessorPress}
       style={styles.searchResultItemContainer}
     >
-      <Image source={icon_serach} style={{ width: 24, height: 24 }} />
+      <Image source={icon_search} style={{ width: 24, height: 24 }} />
       <Spacer type="width" value={10} />
       <GSText style={styles.professorInfo}>
         {majorName} - {profName} 교수님
