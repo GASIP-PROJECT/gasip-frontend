@@ -7,6 +7,8 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
+import { changePassword } from '@api/index';
+
 import GSText from '@components/common/GSText';
 import Spacer from '@components/common/Spacer';
 import GSHeader from '@components/common/GSHeader';
@@ -25,7 +27,9 @@ export default function ChangePasswordScreen({ navigation }) {
   const [isNewPasswordConfirmFocused, setIsNewPasswordConfirmFocused] =
     useState(false);
 
-  const handlePressChangePassword = () => {};
+  const handlePressChangePassword = async () => {
+    await changePassword(newPassword);
+  };
 
   const isAnyInputEmpty =
     !currentPassword || !newPassword || !newPasswordConfirm;

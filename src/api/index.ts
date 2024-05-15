@@ -358,3 +358,15 @@ export const rateProfessor = async (profId: number, rating: number) => {
     console.log('rateProfessor error: ', error);
   }
 };
+
+export const changePassword = async (newPassword: string) => {
+  try {
+    const response = await GSBackendClient.put('/members/passwords', {
+      password: newPassword,
+    });
+
+    console.log(response.data.response);
+  } catch (error) {
+    console.log('changePassword error: ', error);
+  }
+};
