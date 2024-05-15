@@ -3,7 +3,7 @@ import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import icon_user from '@assets/icon_user.png';
-import gasip_logo from '@assets/gasip_logo.png';
+import gasip_text from '@assets/gasip_text.png';
 import icon_goback from '@assets/icon_goback.png';
 
 export default function SearchScreenHeader() {
@@ -19,7 +19,7 @@ export default function SearchScreenHeader() {
       </TouchableOpacity>
 
       <Image
-        source={gasip_logo}
+        source={gasip_text}
         style={{ width: 100, height: 40 }}
         resizeMode="contain"
       />
