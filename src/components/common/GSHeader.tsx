@@ -11,6 +11,7 @@ interface GSHeaderProps {
   onLeftComponentPress?: (() => void) | null;
   rightComponent?: React.ReactNode | null;
   onRightComponentPress?: (() => void) | null;
+  paddingHorizontal?: number;
 }
 
 export default function GSHeader({
@@ -19,11 +20,14 @@ export default function GSHeader({
   onLeftComponentPress = null,
   rightComponent = null,
   onRightComponentPress = null,
+  paddingHorizontal = 16,
 }: GSHeaderProps) {
   return (
     <>
       <Spacer type="height" value={10} />
-      <View style={styles.container}>
+      <View
+        style={[styles.container, { paddingHorizontal: paddingHorizontal }]}
+      >
         <HeaderLeftComponent
           component={leftComponent}
           onPress={onLeftComponentPress}
@@ -90,7 +94,6 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 16,
   },
   titleContainer: {
     flex: 1,
