@@ -145,15 +145,15 @@ export default function LoginScreen() {
               justifyContent: 'flex-end',
             }}
           >
-            <GSText style={styles.text}>
-              아직 회원이 아니신가요?
+            <View style={{ flexDirection: 'row' }}>
+              <GSText style={styles.text}>아직 회원이 아니신가요?</GSText>
               <TouchableOpacity onPress={handleSignup}>
                 <GSText style={styles.signUp} onPress={handleSignup}>
                   {' '}
                   학교 이메일로 회원가입
                 </GSText>
               </TouchableOpacity>
-            </GSText>
+            </View>
           </View>
         </View>
       </SafeAreaLayout>
@@ -188,6 +188,7 @@ const styles = StyleSheet.create({
     color: COLORS.BLUE_PRIMARY,
     fontWeight: '400',
     textDecorationLine: 'underline',
+    textAlign: 'center',
   },
 
   mainForm: {
@@ -198,6 +199,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: COLORS.GRAY_400,
     fontWeight: '400',
+    textAlign: 'center',
   },
 
   forgotPasswordLink: {
