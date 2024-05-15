@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import {
-  Text,
   TextInput,
   Image,
   View,
@@ -24,6 +23,7 @@ import SafeAreaLayout from '@components/common/SafeAreaLayout';
 import { COLORS } from '@styles/colors';
 import gasip_logo from '@assets/gasip_logo.png';
 import icon_show_password from '@assets/icon_show_password.png';
+import icon_hide_password from '@assets/icon_hide_password.png';
 
 export default function LoginScreen() {
   const navigation = useNavigation();
@@ -140,10 +140,17 @@ export default function LoginScreen() {
                 <TouchableOpacity
                   onPress={() => setShowPassword(prev => !prev)}
                 >
-                  <Image
-                    source={icon_show_password}
-                    style={{ width: 24, height: 24 }}
-                  />
+                  {showPassword ? (
+                    <Image
+                      source={icon_hide_password}
+                      style={{ width: 24, height: 24 }}
+                    />
+                  ) : (
+                    <Image
+                      source={icon_show_password}
+                      style={{ width: 24, height: 24 }}
+                    />
+                  )}
                 </TouchableOpacity>
               </View>
               <Spacer type="height" value={12} />
