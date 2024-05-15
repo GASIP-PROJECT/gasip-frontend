@@ -20,6 +20,8 @@ import ProfessorDetailScreen from '@screens/HomeScreen/ProfessorScreen/Professor
 import SearchScreenWithContext from '@screens/HomeScreen/SearchScreen/SearchScreenWithContext';
 import ChangeNicknameScreen from '@screens/MypageScreen/ChangeNicknameScreen/ChangeNicknameScreen';
 import ChangePasswordScreen from '@screens/MypageScreen/ChangePasswordScreen/ChangePasswordScreen';
+import Step1_VerifyEmailScreen from '@screens/SignUpScreen/Step1_VerifyEmailScreen/Step1_VerifyEmailScreen';
+import Step2_CreatePasswordScreen from '@screens/SignUpScreen/Step2_CreatePasswordScreen/Step2_CreatePasswordScreen';
 
 import { COLORS } from '@styles/colors';
 
@@ -93,6 +95,16 @@ export default function Root() {
             <RootStack.Screen
               name="ResetPasswordScreen"
               component={ResetPasswordScreen}
+              options={{ headerShown: false }}
+            />
+            <RootStack.Screen
+              name="SignIn_Step1"
+              component={Step1_VerifyEmailScreen}
+              options={{ headerShown: false }}
+            />
+            <RootStack.Screen
+              name="SignIn_Step2"
+              component={Step2_CreatePasswordScreen}
               options={{ headerShown: false }}
             />
           </RootStack.Group>

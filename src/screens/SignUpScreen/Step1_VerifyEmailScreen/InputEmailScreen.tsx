@@ -159,9 +159,8 @@ const styles = StyleSheet.create({
     color: COLORS.GRAY_400,
   },
   button: {
-    backgroundColor: 'white',
     borderRadius: 16,
-    borderColor: '#9EA4AA',
+    borderColor: COLORS.GRAY_400,
     borderStyle: 'solid',
     height: 60,
     alignItems: 'center',

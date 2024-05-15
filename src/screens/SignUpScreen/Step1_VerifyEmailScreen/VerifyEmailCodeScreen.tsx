@@ -22,6 +22,7 @@ export default function VerifyEmailCodeScreen({
   emailToVerifyCode,
 }: VerifyEmailCodeScreenProps) {
   const navigation = useNavigation();
+
   const [verificationCode, setVerificationCode] = useState<string>('');
   const [remainingTime, setRemainingTime] = useState<number>(180);
   const [isTimerRunning, setIsTimerRunning] = useState<boolean>(true);
@@ -54,7 +55,7 @@ export default function VerifyEmailCodeScreen({
   };
 
   const handleConfirmPress = async () => {
-    // navigation.replace('Step2_SetPasswordScreen');
+    navigation.replace('SignIn_Step2');
     // try {
     //   const url = `https://gasip.site/members/emails/verifications?email=${verifiedEmail}&code=${verificationCode}`;
     //   console.log(url);
@@ -65,7 +66,7 @@ export default function VerifyEmailCodeScreen({
     //     },
     //   });
     //   if (response.ok) {
-    //     navigation.navigate();
+    // navigation.replace('SignIn_Step2');
     //   } else {
     //     throw new Error('인증 실패');
     //   }
