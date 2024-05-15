@@ -301,17 +301,26 @@ const SignUpScreen = () => {
       )}
 
       {step === 2 && (
-        <View style={styles.header}>
-          <TouchableOpacity onPress={() => setStep(prevStep => prevStep - 1)}>
+          <View style={{ width: '100%' }}>
+            <View style={styles.headerContainer}>
+              <TouchableOpacity
+                onPress={() => setStep(prevStep => prevStep - 1)}
+              >
             <Image
               source={require('@assets/chevron-left.png')}
               style={styles.left}
               resizeMode="contain"
             />
           </TouchableOpacity>
-          <Text style={styles.headerText}>회원가입하기</Text>
+              <View style={{ flex: 1, alignItems: 'center' }}>
+                <GSText style={styles.headerText}>회원가입하기</GSText>
+              </View>
+              <View style={{ height: 28, width: 28 }} />
+            </View>
           <Text style={styles.stepText}>1/3</Text>
+            <Spacer type="height" value={28} />
           <Text style={styles.subText2}>인증번호</Text>
+            <Spacer type="height" value={8} />
           <TextInput
             style={[
               styles.step2,
@@ -328,10 +337,20 @@ const SignUpScreen = () => {
             placeholder="인증번호 6자리를 입력해주세요"
             onChangeText={handleCodeChange}
           />
+            <Spacer type="height" value={12} />
 
+            <View
+              style={{
+                justifyContent: 'space-between',
+                flexDirection: 'row',
+              }}
+            >
+              <View />
+              <View style={{ justifyContent: 'flex-end' }}>
           <TouchableOpacity onPress={handleResendCode}>
             <Text style={styles.reNum}>인증번호 다시받기</Text>
           </TouchableOpacity>
+                <Spacer type="height" value={6} />
           <View style={styles.timerContainer}>
             <Text style={styles.timerText}>
               {' '}
@@ -339,6 +358,10 @@ const SignUpScreen = () => {
               {timer % 60 < 10 ? `0${timer % 60}` : timer % 60}초
             </Text>
           </View>
+              </View>
+            </View>
+            <Spacer type="height" value={42} />
+
           <EmailCodeBtn
             style={[
               styles.button2,
