@@ -1,5 +1,15 @@
 import React, { useState } from 'react';
-import { Text, TextInput, Image, View, StyleSheet, Alert } from 'react-native';
+import {
+  Text,
+  TextInput,
+  Image,
+  View,
+  StyleSheet,
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
+  TouchableOpacity,
+} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { resetToken } from '@api/index';
@@ -7,6 +17,7 @@ import { setMMKVStorageAuthData } from '@api/mmkv';
 import { useAuth } from '@contexts/AuthContext';
 
 import Spacer from '@components/common/Spacer';
+import GSText from '@components/common/GSText';
 import GSButton from '@components/common/GSButton';
 import SafeAreaLayout from '@components/common/SafeAreaLayout';
 
@@ -70,73 +81,95 @@ export default function LoginScreen() {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.formContainer}>
-        <View style={styles.logo}>
-          <Image
-            source={gasip_logo}
-            style={styles.gasipLogo}
-            resizeMode="contain"
-          />
-          <Image
-            source={require('@assets/gasip_text.png')}
-            style={styles.gasipLogoText}
-            resizeMode="contain"
-          />
-          <Text style={styles.gasipSupText}>
-            가천인을 위한 교수님 전문 리뷰앱
-          </Text>
-        </View>
-        <View style={styles.mainForm}>
-          <TextInput
-            style={styles.input}
-            placeholder="이메일"
-            value={useremail}
-            onChangeText={setUseremail}
-            autoCapitalize="none"
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="비밀번호"
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-          />
-          <Text style={styles.resetPw} onPress={ResetPw}>
-            비밀번호 찾기
-          </Text>
-          <GSButton onPress={handleLogin} buttonText="로그인" />
-          <Text style={styles.Text}>
-            아직 회원이 아니신가요?
-            <Text style={styles.signUp} onPress={handleSignup}>
-              {' '}
-              학교 이메일로 회원가입
-            </Text>
-          </Text>
-        </View>
-      </View>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      style={{ flex: 1 }}
+      enabled
+      keyboardVerticalOffset={Platform.select({
+        ios: 0,
+        android: 500,
+      })}
+    >
+      <SafeAreaLayout backgroundColor={COLORS.WHITE}>
+        <View style={styles.container}>
+          <View style={styles.formContainer}>
+            <Spacer type="height" value={0} />
+            <View style={styles.logo}>
+              <Image
+                source={gasip_logo}
+                style={styles.gasipLogo}
+                resizeMode="contain"
+              />
+              <Image
+                source={require('@assets/gasip_text.png')}
+                style={styles.gasipLogoText}
+              />
+              <Spacer type="height" value={12} />
+              <GSText style={styles.gasipSupText}>
+                가천인을 위한 교수님 전문 리뷰앱
+              </GSText>
+            </View>
+            <Spacer type="height" value={50} />
+            <View style={styles.mainForm}>
+              <TextInput
+                style={styles.input}
+                placeholder=" 이메일"
+                value={useremail}
+                onChangeText={setUseremail}
+                autoCapitalize="none"
+              />
+              <Spacer type="height" value={12} />
+              <TextInput
+                style={styles.input}
+                placeholder=" 비밀번호"
+                value={password}
+                onChangeText={setPassword}
+                secureTextEntry
+              />
+              <Spacer type="height" value={12} />
+              <TouchableOpacity
+                onPress={ResetPw}
+                style={{ alignSelf: 'flex-end' }}
+              >
+                <GSText style={styles.resetPw}>비밀번호 찾기</GSText>
+              </TouchableOpacity>
+              <Spacer type="height" value={36} />
+            </View>
+            <GSButton onPress={handleLogin} buttonText="로그인" fontSize={18} />
+          </View>
 
-      <GSButton
-        onPress={handleSignup}
-        buttonText="학교 이메일로 회원가입"
-        bgColor={COLORS.WHITE}
-        btnTextColor={COLORS.BTN_MAIN}
-      />
-    </View>
+          <View
+            style={{
+              flex: 1,
+              alignItems: 'center',
+              justifyContent: 'flex-end',
+            }}
+          >
+            <GSText style={styles.text}>
+              아직 회원이 아니신가요?
+              <TouchableOpacity onPress={handleSignup}>
+                <GSText style={styles.signUp} onPress={handleSignup}>
+                  {' '}
+                  학교 이메일로 회원가입
+                </GSText>
+              </TouchableOpacity>
+            </GSText>
+          </View>
+        </View>
+      </SafeAreaLayout>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#fff',
+    justifyContent: 'flex-end',
   },
 
   formContainer: {
-    width: '80%',
+    width: '100%',
+    paddingHorizontal: 32,
   },
 
   input: {
@@ -146,30 +179,28 @@ const styles = StyleSheet.create({
     borderStyle: 'solid',
     borderWidth: 1,
     borderColor: '#9EA4AA',
-    marginBottom: 8,
-    paddingHorizontal: 10,
     backgroundColor: '#ffffff',
+    paddingHorizontal: 24,
   },
 
   signUp: {
+    fontSize: 14,
+    color: COLORS.BLUE_PRIMARY,
+    fontWeight: '400',
     textDecorationLine: 'underline',
-    color: '#007AFF',
   },
 
   mainForm: {
-    position: 'relative',
-    bottom: 190,
+    // backgroundColor: 'blue',
   },
 
-  Text: {
-    position: 'relative',
-    top: '20%',
-    textAlign: 'center',
-    color: '#9EA3B2',
+  text: {
+    fontSize: 14,
+    color: COLORS.GRAY_400,
+    fontWeight: '400',
   },
 
   forgotPasswordLink: {
-    marginTop: 10,
     textAlign: 'center',
     color: '#FFFFFF',
     fontSize: 13,
@@ -180,28 +211,25 @@ const styles = StyleSheet.create({
   },
 
   gasipLogo: {
-    position: 'relative',
-    top: 90,
-    width: '100%',
+    width: 220,
+    height: 220,
   },
 
   gasipLogoText: {
-    position: 'relative',
-    bottom: 100,
-    width: '30%',
+    width: 90,
+    height: 40,
   },
 
   gasipSupText: {
-    position: 'relative',
-    bottom: 265,
     fontSize: 16,
     color: '#007AFF',
     letterSpacing: -0.4,
+    fontWeight: '600',
   },
 
   resetPw: {
-    position: 'relative',
-    left: 240,
-    marginBottom: 20,
+    fontSize: 14,
+    color: COLORS.GRAY_400,
+    fontWeight: '400',
   },
 });
