@@ -64,6 +64,7 @@ export default function SearchBar() {
       <Spacer type="height" value={16} />
 
       <View style={{ flexDirection: 'row' }}>
+        <Spacer type="width" value={10} />
         <SearchResultTypeSelector category={SEARCH_CATEGORY.PROFESSOR} />
         <Spacer type="width" value={10} />
         <SearchResultTypeSelector category={SEARCH_CATEGORY.MAJOR} />

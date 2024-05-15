@@ -16,12 +16,11 @@ import { COLORS } from '@styles/colors';
 import icon_x_face from '@assets/icon_x_face.png';
 
 export default function SearchScreen() {
-  const { searchResults, noSearchResult, setNoSearchResult } =
-    useSearchContext();
+  const { searchResults, noSearchResult } = useSearchContext();
 
   return (
     <SafeAreaLayout noBottomPadding>
-      <View style={{ paddingHorizontal: 16 }}>
+      <View style={{ paddingHorizontal: 24, zIndex: 1 }}>
         <Spacer type="height" value={10} />
         <SearchScreenHeader />
         <Spacer type="height" value={24} />
@@ -51,7 +50,11 @@ const styles = StyleSheet.create({
   noSearchResultContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    flex: 1,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
   },
   noSearchResultText: {
     fontSize: 16,

@@ -189,6 +189,7 @@ const styles = StyleSheet.create({
   },
   footerContainer: {
     flexDirection: 'row',
+    alignItems: 'center',
   },
   iconText: {
     fontSize: 14,

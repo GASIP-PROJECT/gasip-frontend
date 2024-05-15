@@ -129,9 +129,10 @@ const SearchBar = () => {
         )}
       </View>
 
-      <Spacer type="height" value={16} />
+      <Spacer type="height" value={8} />
 
       <View style={{ flexDirection: 'row' }}>
+        <Spacer type="width" value={10} />
         <SearchResultTypeSelector category={SEARCH_CATEGORY.PROFESSOR} />
         <Spacer type="width" value={10} />
         <SearchResultTypeSelector category={SEARCH_CATEGORY.MAJOR} />
