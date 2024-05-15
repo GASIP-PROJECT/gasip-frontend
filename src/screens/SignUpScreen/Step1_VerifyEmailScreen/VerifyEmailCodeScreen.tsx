@@ -59,26 +59,25 @@ export default function VerifyEmailCodeScreen({
   };
 
   const handleConfirmPress = async () => {
-    setVerifiedEmail(emailToVerifyCode);
-    navigation.replace('SignUp_Step2');
-    // try {
-    //   const url = `https://gasip.site/members/emails/verifications?email=${verifiedEmail}&code=${verificationCode}`;
-    //   console.log(url);
-    //   const response = await fetch(url.toString(), {
-    //     method: 'GET',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //   });
-    //   if (response.ok) {
-    // navigation.replace('SignIn_Step2');
-    //   } else {
-    //     throw new Error('인증 실패');
-    //   }
-    // } catch (error: any) {
-    //   console.error('인증 요청에 실패했습니다:', error.message);
-    //   Alert.alert('인증 실패', '인증에 실패했습니다. 인증번호를 확인해주세요.');
-    // }
+    try {
+      const url = `https://gasip.site/members/emails/verifications?email=${verifiedEmail}&code=${verificationCode}`;
+      console.log(url);
+      const response = await fetch(url.toString(), {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (response.ok) {
+        setVerifiedEmail(emailToVerifyCode);
+        navigation.replace('SignUp_Step2');
+      } else {
+        throw new Error('인증 실패');
+      }
+    } catch (error: any) {
+      console.error('인증 요청에 실패했습니다:', error.message);
+      Alert.alert('인증 실패', '인증에 실패했습니다. 인증번호를 확인해주세요.');
+    }
   };
 
   const getRemainingTimeText = () => {

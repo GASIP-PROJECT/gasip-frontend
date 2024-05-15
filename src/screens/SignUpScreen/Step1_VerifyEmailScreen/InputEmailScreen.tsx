@@ -38,38 +38,36 @@ export default function InputEmailScreen({
   const isValidEmail = validateEmail(emailToVerifyCode);
 
   const handleVerifyEmailPress = async () => {
-    setIsWaitingForCodeVerification(true);
-    // try {
-    //   const userEmailPrefix = userEmail;
-    //   const defaultEmailSuffix = '@nweal.com'; // 기본 이메일 도메인 나중에 @gachon.ac.kr 로 변경하기
-    //   // TODO - 테스트용으로 우선 Prefix를 전체 이메일로 입력받도록 수정(가천 이메일 없는 경우를 대비해서)
-    //   // const userEmail = `${userEmailPrefix}${defaultEmailSuffix}`;
-    //   // const userEmail = `${userEmailPrefix}`;
-    //   const response = await fetch(
-    //     `https://gasip.site/members/emails/verification-requests?email=${encodeURIComponent(
-    //       userEmail,
-    //     )}`,
-    //     {
-    //       method: 'POST',
-    //       headers: {
-    //         'Content-Type': 'application/json',
-    //       },
-    //       body: JSON.stringify({
-    //         email: userEmail,
-    //       }),
-    //     },
-    //   );
-    //   console.log(userEmail);
-    //   if (!response.ok) {
-    //     throw new Error('이메일 인증 요청에 실패했습니다.');
-    //   }
-    //   // setVerifiedEmail(userEmail);
-    //   // startTimer();
-    //   // setStep(2);
-    // } catch (error: any) {
-    //   console.error('이메일 인증 요청에 실패했습니다:', error.message);
-    //   Alert.alert('이메일 인증 요청 실패', error.message);
-    // }
+    try {
+      const userEmailPrefix = emailToVerifyCode;
+      const defaultEmailSuffix = '@nweal.com'; // 기본 이메일 도메인 나중에 @gachon.ac.kr 로 변경하기
+
+      // const userEmail = `${userEmailPrefix}${defaultEmailSuffix}`;
+
+      // TODO - 테스트용으로 우선 입력한 이메일을 전체 이메일로 처리
+      const response = await fetch(
+        `https://gasip.site/members/emails/verification-requests?email=${encodeURIComponent(
+          emailToVerifyCode,
+        )}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: emailToVerifyCode,
+          }),
+        },
+      );
+      console.log(emailToVerifyCode);
+      if (!response.ok) {
+        throw new Error('이메일 인증 요청에 실패했습니다.');
+      }
+      setIsWaitingForCodeVerification(true);
+    } catch (error: any) {
+      console.error('이메일 인증 요청에 실패했습니다:', error.message);
+      Alert.alert('이메일 인증 요청 실패', error.message);
+    }
   };
 
   return (

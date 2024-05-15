@@ -52,8 +52,6 @@ export default function Step2_CreatePasswordScreen({ navigation }) {
     setShowPasswordDontMatchError(false);
     storePassword(password);
     navigation.replace('SignUp_Step3');
-
-    // store에 password set하는 처리
   };
 
   const handleBackButtonPress = () => {

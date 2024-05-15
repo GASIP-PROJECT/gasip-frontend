@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import {
   StyleSheet,
-  Text,
   View,
   TouchableOpacity,
   TextInput,
+  Alert,
 } from 'react-native';
 
 import useSignUpDataStore from '@store/signUpDataStore';
@@ -30,7 +30,36 @@ export default function Step3_CreateUserInfoScreen({ navigation }) {
   const isUserInfoValid = isNameValid && isNicknameValid;
 
   const handleConfirmButtonPress = async () => {
-    console.log(verifiedEmail, password, name, nickname);
+    // console.log(verifiedEmail, password, name, nickname);
+    try {
+      const userData = {
+        email: verifiedEmail,
+        password: password,
+        name: name,
+        nickname: nickname,
+      };
+      // console.log(userData);
+      const response = await fetch('https://gasip.site/members/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+      });
+      // console.log(response);
+      if (response.ok) {
+        // 회원가입 성공하면
+        navigation.goBack();
+      } else {
+        throw new Error('회원가입 실패');
+      }
+    } catch (error: any) {
+      console.error('회원가입 요청에 실패했습니다:', error.message);
+      Alert.alert(
+        '회원가입 실패',
+        '회원가입에 실패했습니다. 다시 시도해주세요.',
+      );
+    }
   };
 
   const handleBackButtonPress = () => {
