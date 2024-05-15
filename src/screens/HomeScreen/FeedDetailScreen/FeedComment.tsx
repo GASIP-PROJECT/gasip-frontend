@@ -73,8 +73,8 @@ export default function FeedComment({
           borderColor: COLORS.GRAY_200,
         };
 
-  const handleLikePress = async () => {
-    if (isCommentLike) {
+  const handleLikePress = async (isLike: boolean, commentId: number) => {
+    if (isLike) {
       await likeCommentCancel(commentId, postId);
     } else {
       await likeComment(commentId, postId);
@@ -144,8 +144,9 @@ export default function FeedComment({
         <CommentFooter
           likeCount={commentLike}
           commentChildrenCount={commentChildren.length}
-          handleLikePress={handleLikePress}
+          handleLikePress={() => handleLikePress(isCommentLike, commentId)}
           handleReplyButtonPress={handleReplyButtonPress}
+          isCommentLike={isCommentLike}
         />
       </View>
 
@@ -158,7 +159,10 @@ export default function FeedComment({
               borderBottomColor: COLORS.GRAY_200,
             }}
           >
-            <FeedCommentReply reply={commentChild} />
+            <FeedCommentReply
+              reply={commentChild}
+              handleLikePress={handleLikePress}
+            />
           </View>
         );
       })}
@@ -238,11 +242,13 @@ const CommentFooter = ({
   commentChildrenCount,
   handleLikePress,
   handleReplyButtonPress,
+  isCommentLike,
 }: {
   likeCount: number | null;
   commentChildrenCount: number;
   handleLikePress: () => void;
   handleReplyButtonPress: () => void;
+  isCommentLike: boolean;
 }) => {
   const iconTextGap = 3;
 
@@ -252,7 +258,14 @@ const CommentFooter = ({
         style={{ flexDirection: 'row', alignItems: 'center' }}
         onPress={handleLikePress}
       >
-        <Image source={icon_thumbsup} style={{ width: 20, height: 20 }} />
+        <Image
+          source={icon_thumbsup}
+          style={{
+            width: 20,
+            height: 20,
+            tintColor: isCommentLike ? COLORS.BLUE_PRIMARY : COLORS.GRAY_400,
+          }}
+        />
         <Spacer type="width" value={iconTextGap} />
         <GSText style={styles.iconText}>{likeCount || 0}</GSText>
       </TouchableOpacity>
@@ -312,8 +325,7 @@ const ActionMenuTransparendBackdrop = ({ onPress }) => {
         left: -100,
         width: 1000,
         height: 1000,
-        backgroundColor: 'coral',
-        // backgroundColor: 'transparent',
+        backgroundColor: 'transparent',
         zIndex: 1,
       }}
     >

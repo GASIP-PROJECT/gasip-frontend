@@ -29,7 +29,7 @@ export interface FeedComment {
   postId: number;
   regDate: string;
   updateDate: string;
-  isCommentLike: boolean | null;
+  isCommentLike: boolean;
   nickName: string;
 }
 

@@ -316,8 +316,7 @@ const ActionMenuTransparendBackdrop = ({ onPress }) => {
         left: -100,
         width: 1000,
         height: 1000,
-        // backgroundColor: 'transparent',
-        backgroundColor: 'coral',
+        backgroundColor: 'transparent',
         zIndex: 1,
       }}
     >

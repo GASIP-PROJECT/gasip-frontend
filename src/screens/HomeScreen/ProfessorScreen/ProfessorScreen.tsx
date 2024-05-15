@@ -108,11 +108,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: COLORS.BLUE_LIGHT_200,
   },
-  reviewsContainer: {
-    flex: 1,
-    alignItems: 'center',
-    backgroundColor: 'coral',
-  },
   introduceText: {
     fontSize: 12,
     fontWeight: '400',
