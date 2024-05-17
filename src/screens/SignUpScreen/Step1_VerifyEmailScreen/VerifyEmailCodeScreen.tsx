@@ -60,7 +60,7 @@ export default function VerifyEmailCodeScreen({
 
   const handleConfirmPress = async () => {
     try {
-      const url = `https://gasip.site/members/emails/verifications?email=${verifiedEmail}&code=${verificationCode}`;
+      const url = `https://gasip.site/members/emails/verifications?email=${emailToVerifyCode}&code=${verificationCode}`;
       console.log(url);
       const response = await fetch(url.toString(), {
         method: 'GET',
