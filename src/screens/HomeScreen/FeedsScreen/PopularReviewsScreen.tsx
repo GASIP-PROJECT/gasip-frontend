@@ -55,12 +55,6 @@ export default function PopularReviewsScreen() {
     fetchFeeds();
   }, [toggleToUpdateFeedsList]);
 
-  useFocusEffect(
-    React.useCallback(() => {
-      fetchFeeds();
-    }, []),
-  );
-
   const onRefresh = async () => {
     setRefreshing(true);
     fetchFeeds();

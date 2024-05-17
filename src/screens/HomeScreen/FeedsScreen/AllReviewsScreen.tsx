@@ -55,14 +55,6 @@ export default function AllReviewsScreen() {
     scrollToTop();
   }, [toggleToUpdateFeedsList]);
 
-  useFocusEffect(
-    React.useCallback(() => {
-      fetchFeedsAndSetFeedList();
-      resetFetchPage();
-      scrollToTop();
-    }, []),
-  );
-
   const onRefresh = async () => {
     setRefreshing(true);
     fetchFeedsAndSetFeedList();
