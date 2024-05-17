@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { FlatList, RefreshControl } from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
 
 import { getPopularFeeds } from '@api/index';
 import useNewFeedStore from '@store/newFeedStore';
@@ -15,12 +14,12 @@ import { type Feed } from 'types/searchTypes';
 import icon_fire from '@assets/icon_fire.png';
 
 export default function PopularReviewsScreen() {
+  const page = useRef(0);
   const flatListRef = useRef(null);
   const toggleToUpdateFeedsList = useNewFeedStore(
     state => state.toggleToUpdateFeedsList,
   );
 
-  const [page, setPage] = useState(0);
   const [popularFeedsList, setPopularFeedsList] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
 
@@ -31,26 +30,26 @@ export default function PopularReviewsScreen() {
   };
 
   const onListEndReached = async () => {
-    setPage(prev => prev + 1);
+    page.current += 1;
 
-    const posts: [] = await getPopularFeeds(page);
+    const posts: [] = await getPopularFeeds(page.current);
 
     if (posts.length > 0) {
       setPopularFeedsList([...popularFeedsList, ...posts]);
     }
   };
 
+  const resetFetchPage = () => {
+    page.current = 0;
+  };
+
   const fetchFeeds = async () => {
-    setPage(0);
-
+    resetFetchPage();
     const posts = await getPopularFeeds(0, 10);
-
     setPopularFeedsList(posts);
-
     scrollToTop();
   };
 
-  // TODO - fetch하는 조건 설정 필요
   useEffect(() => {
     fetchFeeds();
   }, [toggleToUpdateFeedsList]);
@@ -60,7 +59,7 @@ export default function PopularReviewsScreen() {
     fetchFeeds();
     setTimeout(() => {
       setRefreshing(false);
-    }, 1000); // Refresh indicator will be visible for at least 1 second
+    }, 1000);
   };
 
   return (

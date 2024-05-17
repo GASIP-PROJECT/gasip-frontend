@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { FlatList, RefreshControl } from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
 
 import { getAllFeeds } from '@api/index';
 import useNewFeedStore from '@store/newFeedStore';
@@ -15,12 +14,12 @@ import { type Feed } from 'types/searchTypes';
 import icon_papers from '@assets/icon_papers.png';
 
 export default function AllReviewsScreen() {
+  const page = useRef(0);
   const flatListRef = useRef(null);
   const toggleToUpdateFeedsList = useNewFeedStore(
     state => state.toggleToUpdateFeedsList,
   );
 
-  const [page, setPage] = useState(0);
   const [feedsList, setFeedsList] = useState<Feed[] | []>([]);
   const [refreshing, setRefreshing] = useState(false);
 
@@ -31,9 +30,9 @@ export default function AllReviewsScreen() {
   };
 
   const onListEndReached = async () => {
-    setPage(prev => prev + 1);
+    page.current += 1;
 
-    const posts: Feed[] = await getAllFeeds(page);
+    const posts: Feed[] = await getAllFeeds(page.current);
 
     if (posts.length > 0) {
       setFeedsList([...feedsList, ...posts]);
@@ -41,7 +40,7 @@ export default function AllReviewsScreen() {
   };
 
   const resetFetchPage = () => {
-    setPage(0);
+    page.current = 0;
   };
 
   const fetchFeedsAndSetFeedList = async () => {
@@ -62,7 +61,7 @@ export default function AllReviewsScreen() {
     scrollToTop();
     setTimeout(() => {
       setRefreshing(false);
-    }, 1000); // Refresh indicator will be visible for at least 1 second
+    }, 1000);
   };
 
   return (
