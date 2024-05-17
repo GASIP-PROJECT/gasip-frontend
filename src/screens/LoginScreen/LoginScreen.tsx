@@ -50,8 +50,8 @@ export default function LoginScreen() {
 
       const loginResult = await response.json();
 
-      const { accessToken, userNickname, memberId } = loginResult.response;
-      setMMKVStorageAuthData(accessToken, userNickname, memberId);
+      const { accessToken, nickname, memberId } = loginResult.response;
+      setMMKVStorageAuthData(accessToken, nickname, memberId);
       resetToken();
 
       dispatch({
