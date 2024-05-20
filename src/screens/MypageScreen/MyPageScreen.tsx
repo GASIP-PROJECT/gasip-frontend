@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { StyleSheet, View, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Image, TouchableOpacity, Alert } from 'react-native';
 import { useMMKVString } from 'react-native-mmkv';
 
 import { useAuth } from '@contexts/AuthContext';
@@ -41,6 +41,21 @@ export default function MyPageScreen({ navigation }) {
       fetchUserData();
     }
   }, []);
+
+  const handleSignOutPress = () => {
+    Alert.alert('로그아웃', '로그아웃 하시겠습니까?', [
+      {
+        text: '취소',
+        style: 'cancel',
+      },
+      {
+        text: '확인',
+        onPress: () => {
+          signOut();
+        },
+      },
+    ]);
+  };
 
   return (
     <SafeAreaLayout backgroundColor={COLORS.GRAY_100}>
@@ -99,7 +114,7 @@ export default function MyPageScreen({ navigation }) {
             <GSText style={styles.elementText}>비밀번호 변경</GSText>
           </TouchableOpacity>
           <Divider />
-          <TouchableOpacity onPress={signOut} style={styles.element}>
+          <TouchableOpacity onPress={handleSignOutPress} style={styles.element}>
             <GSText style={styles.elementText}>로그아웃</GSText>
           </TouchableOpacity>
           <Divider />
