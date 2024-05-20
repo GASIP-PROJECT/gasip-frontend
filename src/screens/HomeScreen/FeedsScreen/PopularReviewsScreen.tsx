@@ -45,8 +45,8 @@ export default function PopularReviewsScreen() {
 
   const fetchFeeds = async () => {
     resetFetchPage();
-    const posts = await getPopularFeeds(0, 10);
-    setPopularFeedsList(posts);
+    const posts: [] = await getPopularFeeds(0, 10);
+    setPopularFeedsList([...posts]);
     scrollToTop();
   };
 
@@ -72,6 +72,7 @@ export default function PopularReviewsScreen() {
           <FeedSummary feedData={item} />
         )}
         onEndReached={onListEndReached}
+        onEndReachedThreshold={0.5}
         refreshControl={
           <RefreshControl
             refreshing={refreshing}

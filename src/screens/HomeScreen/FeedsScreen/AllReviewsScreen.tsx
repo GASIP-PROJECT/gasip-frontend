@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { FlatList, RefreshControl } from 'react-native';
+import { FlatList, RefreshControl, View } from 'react-native';
 
 import { getAllFeeds } from '@api/index';
 import useNewFeedStore from '@store/newFeedStore';
@@ -64,6 +64,10 @@ export default function AllReviewsScreen() {
     }, 1000);
   };
 
+  // console.log('length: ', feedsList.length);
+  // feedsList.forEach(feed => console.log(feed.postId));
+  // console.log('-----------');
+
   return (
     <FeedsListContainer title="전체 리뷰" titleIcon={icon_papers}>
       <FlatList
@@ -82,6 +86,7 @@ export default function AllReviewsScreen() {
             tintColor={COLORS.BLUE_LIGHT_200}
           />
         }
+        onEndReachedThreshold={0.5}
         keyExtractor={(item, index) => index.toString()}
         ItemSeparatorComponent={() => <Spacer type="height" value={15} />}
         ListFooterComponent={() => <Spacer type="height" value={150} />}
