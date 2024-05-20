@@ -74,7 +74,7 @@ export default function Root() {
     // keychain에 저장된 토큰 값 존재 검사 및 유효성 확인
     setTimeout(() => {
       hideBootSplash();
-    }, 500);
+    }, 1000);
   }, []);
 
   return (
