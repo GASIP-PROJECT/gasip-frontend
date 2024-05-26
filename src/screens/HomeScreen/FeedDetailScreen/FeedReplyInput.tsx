@@ -90,7 +90,6 @@ export default function FeedReplyInput({
             placeholder="댓글을 입력해주세요."
             placeholderTextColor={COLORS.GRAY_400}
             onChangeText={text => setNewComment(text)}
-            onSubmitEditing={handleCommentSubmit}
             value={newComment}
           />
 
