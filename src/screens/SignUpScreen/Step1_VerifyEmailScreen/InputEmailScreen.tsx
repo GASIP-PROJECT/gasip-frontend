@@ -1,5 +1,6 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import {
+  ActivityIndicator,
   Alert,
   Image,
   StyleSheet,
@@ -26,6 +27,9 @@ export default function InputEmailScreen({
   setEmailToVerifyCode,
   setIsWaitingForCodeVerification,
 }: InputEmailScreenProps) {
+  const [isSendEmailRequestProcessing, setIsSendEmailRequestProcessing] =
+    useState(false);
+
   const handleEmailChange = (text: string) => {
     setEmailToVerifyCode(text);
   };
@@ -35,15 +39,18 @@ export default function InputEmailScreen({
     return emailPattern.test(email);
   };
 
-  const isValidEmail = validateEmail(emailToVerifyCode);
+  // TODO - 프로덕션 시 validateEmail 함수 실행하는 형태로 변경
+  // const isValidEmail = validateEmail(emailToVerifyCode);
+  const isValidEmail = true;
 
   const handleVerifyEmailPress = async () => {
     try {
       const userEmailPrefix = emailToVerifyCode;
       const defaultEmailSuffix = '@nweal.com'; // 기본 이메일 도메인 나중에 @gachon.ac.kr 로 변경하기
 
+      // TODO - 테스트용으로 우선 입력한 이메일을 전체 이메일로 처리
       // const userEmail = `${userEmailPrefix}${defaultEmailSuffix}`;
-
+      setIsSendEmailRequestProcessing(true);
       // TODO - 테스트용으로 우선 입력한 이메일을 전체 이메일로 처리
       const response = await fetch(
         `https://gasip.site/members/emails/verification-requests?email=${encodeURIComponent(
@@ -59,11 +66,12 @@ export default function InputEmailScreen({
           }),
         },
       );
-      console.log(emailToVerifyCode);
       if (!response.ok) {
         throw new Error('이메일 인증 요청에 실패했습니다.');
       }
+      console.log('요청 전송에 대한 response 받음');
       setIsWaitingForCodeVerification(true);
+      setIsSendEmailRequestProcessing(false);
     } catch (error: any) {
       console.error('이메일 인증 요청에 실패했습니다:', error.message);
       Alert.alert('이메일 인증 요청 실패', error.message);
@@ -117,16 +125,20 @@ export default function InputEmailScreen({
           },
         ]}
         onPress={handleVerifyEmailPress}
-        disabled={!isValidEmail}
+        disabled={!isValidEmail || isSendEmailRequestProcessing}
       >
-        <GSText
-          style={[
-            styles.buttonText,
-            { color: isValidEmail ? COLORS.WHITE : COLORS.GRAY_400 },
-          ]}
-        >
-          이메일 인증하기
-        </GSText>
+        {isSendEmailRequestProcessing ? (
+          <ActivityIndicator size={'small'} color={COLORS.WHITE} />
+        ) : (
+          <GSText
+            style={[
+              styles.buttonText,
+              { color: isValidEmail ? COLORS.WHITE : COLORS.GRAY_400 },
+            ]}
+          >
+            이메일 인증하기
+          </GSText>
+        )}
       </TouchableOpacity>
     </View>
   );
