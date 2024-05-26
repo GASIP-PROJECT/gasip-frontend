@@ -135,6 +135,8 @@ export default function LoginScreen() {
                   value={password}
                   onChangeText={setPassword}
                   secureTextEntry={!showPassword}
+                  autoCorrect={false}
+                  textContentType="oneTimeCode"
                 />
                 <Spacer type="width" value={5} />
                 <TouchableOpacity
