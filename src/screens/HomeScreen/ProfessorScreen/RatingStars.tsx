@@ -8,15 +8,16 @@ import { COLORS } from '@styles/colors';
 export default function RatingStars({
   currentRating,
 }: {
-  currentRating: number | null;
+  currentRating: number | 'null';
 }) {
+  const rating = currentRating === 'null' ? 0 : currentRating;
   return (
     <View style={styles.container}>
-      <RatingStar currentRating={currentRating || 0} compareRating={1} />
-      <RatingStar currentRating={currentRating || 0} compareRating={2} />
-      <RatingStar currentRating={currentRating || 0} compareRating={3} />
-      <RatingStar currentRating={currentRating || 0} compareRating={4} />
-      <RatingStar currentRating={currentRating || 0} compareRating={5} />
+      <RatingStar currentRating={rating} compareRating={1} />
+      <RatingStar currentRating={rating} compareRating={2} />
+      <RatingStar currentRating={rating} compareRating={3} />
+      <RatingStar currentRating={rating} compareRating={4} />
+      <RatingStar currentRating={rating} compareRating={5} />
     </View>
   );
 }

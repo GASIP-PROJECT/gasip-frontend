@@ -38,7 +38,7 @@ export interface Professor {
   majorName: string;
   profId: number;
   profName: string;
-  professorAverageGradePoint: number | null;
+  professorAverageGradePoint: number | 'null';
   collegeName: string;
   isGrade: boolean;
 }

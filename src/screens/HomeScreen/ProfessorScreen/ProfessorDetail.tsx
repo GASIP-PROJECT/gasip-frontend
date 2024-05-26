@@ -39,11 +39,17 @@ export default function ProfessorDetail({
       <View style={styles.professorRatingContainer}>
         <DetailElement
           title="평점"
-          content={`${professorAverageGradePoint || 0}`}
+          content={
+            professorAverageGradePoint !== 'null'
+              ? professorAverageGradePoint
+              : '아직 등록된 평점이 없습니다.'
+          }
         />
         <Spacer type="width" value={8} />
         <View style={styles.ratingStarAndButtonContainer}>
-          <RatingStars currentRating={professorAverageGradePoint} />
+          {professorAverageGradePoint !== 'null' && (
+            <RatingStars currentRating={professorAverageGradePoint} />
+          )}
           {!isGrade && (
             <TouchableOpacity style={styles.rateButton} onPress={openRateModal}>
               <GSText style={styles.rateButtonText}>평점 입력하기</GSText>
@@ -67,10 +73,10 @@ const DetailElement = ({
     <View style={styles.elementContainer}>
       <View style={styles.elementTitleContainer}>
         <Spacer type="width" value={5} />
-        <Text style={styles.elementTitle}>{title}</Text>
+        <GSText style={styles.elementTitle}>{title}</GSText>
       </View>
       <Spacer type="width" value={10} />
-      <Text style={styles.elementContent}>{content}</Text>
+      <GSText style={styles.elementContent}>{content}</GSText>
     </View>
   );
 };
