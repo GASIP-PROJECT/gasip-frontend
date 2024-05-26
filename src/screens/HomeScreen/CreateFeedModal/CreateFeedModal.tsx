@@ -14,6 +14,7 @@ import SelectProfessorModal from './SelectProfessorModal';
 import CreateFeedModalHeader from './CreateFeedModalHeader';
 import CreateFeedModalPolicy from './CreateFeedModalPolicy';
 import CreateFeedModalTextInput from './CreateFeedModalTextInput';
+
 import { COLORS } from '@styles/colors';
 
 export default function CreateFeedModal() {
@@ -27,8 +28,10 @@ export default function CreateFeedModal() {
     isFreeFeed,
     closeNewFeedModal,
     triggerFeedListUpdate,
+    setIsFreeFeed,
   } = useNewFeedStore();
 
+  // TODO - 함수 로직 벗어나는 케이스 없는지 검증 필요
   const handleCreateFeedPress = async () => {
     if (feedContent === '') {
       Alert.alert('내용을 입력해주세요.');
@@ -36,14 +39,15 @@ export default function CreateFeedModal() {
     }
 
     if (profId !== null) {
+      // 교수님 리뷰인 경우
       await createProfessorFeed(feedContent, profId);
       triggerFeedListUpdate();
-      closeNewFeedModal();
+      closeModal();
     } else {
-      // TODO - null인 경우에 대해 처리
+      // 일반 피드인 경우
       await createFeed(feedContent);
       triggerFeedListUpdate();
-      closeNewFeedModal();
+      closeModal();
     }
   };
 
@@ -59,6 +63,11 @@ export default function CreateFeedModal() {
     setIsSelectProfessorModalVisible(false);
   };
 
+  const closeModal = () => {
+    setIsFreeFeed(false);
+    closeNewFeedModal();
+  };
+
   return (
     <Modal
       visible={showCreateFeedModal}
@@ -69,6 +78,7 @@ export default function CreateFeedModal() {
         <View style={styles.container}>
           <CreateFeedModalHeader
             handleCreateFeedPress={handleCreateFeedPress}
+            closeModal={closeModal}
           />
           {profName !== '' && (
             <>

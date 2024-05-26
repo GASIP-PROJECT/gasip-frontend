@@ -33,12 +33,14 @@ export default function FeedsListContainer({
   const { bottom } = useSafeAreaInsets();
 
   const openNewFeedModal = useNewFeedStore(state => state.openNewFeedModal);
+  const setIsFreeFeed = useNewFeedStore(state => state.setIsFreeFeed);
 
   const handleWriteReviewPress = () => {
     if (isProfessorReview) {
       openNewFeedModal();
     } else {
-      openNewFeedModal(true);
+      setIsFreeFeed(true);
+      openNewFeedModal();
     }
   };
 

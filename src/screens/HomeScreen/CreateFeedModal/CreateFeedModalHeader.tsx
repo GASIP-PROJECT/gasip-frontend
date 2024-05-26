@@ -11,11 +11,12 @@ import { COLORS } from '@styles/colors';
 
 export default function CreateFeedModalHeader({
   handleCreateFeedPress,
+  closeModal,
 }: {
   handleCreateFeedPress: () => void;
+  closeModal: () => void;
 }) {
   const isFreeFeed = useNewFeedStore(state => state.isFreeFeed);
-  const closeNewFeedModal = useNewFeedStore(state => state.closeNewFeedModal);
 
   return (
     <View
@@ -35,7 +36,7 @@ export default function CreateFeedModalHeader({
           }}
         >
           <TouchableOpacity
-            onPress={closeNewFeedModal}
+            onPress={closeModal}
             hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
           >
             <GSIcon
