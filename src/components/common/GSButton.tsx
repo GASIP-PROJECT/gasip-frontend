@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 16,
+    borderRadius: 100,
   },
   buttonShadow: {
     shadowColor: COLORS.BLACK,
