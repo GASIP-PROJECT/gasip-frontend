@@ -17,6 +17,7 @@ import Spacer from '@components/common/Spacer';
 import SafeAreaLayout from '@components/common/SafeAreaLayout';
 
 import icon_fire from '@assets/icon_fire.png';
+import icon_chat from '@assets/icon_chat.png';
 import icon_papers from '@assets/icon_papers.png';
 
 import { Feed } from '@types/searchTypes';
@@ -28,6 +29,7 @@ export default function HomeScreen({ navigation }) {
 
   const [allReviews, setAllReviews] = useState<Feed[] | []>([]);
   const [popularReviews, setPopularReviews] = useState<Feed[] | []>([]);
+  const [allFreeFeeds, setAllFreeFeeds] = useState<Feed[] | []>([]);
 
   useFocusEffect(
     useCallback(() => {
@@ -39,9 +41,14 @@ export default function HomeScreen({ navigation }) {
         const reviews = await getPopularFeedsForHomeScreen();
         setPopularReviews([...reviews]);
       };
+      const fetchAllFreeFeeds = async () => {
+        const freeFeeds = await getAllFeedsForHomeScreen();
+        setAllFreeFeeds([...freeFeeds]);
+      };
 
       fetchAllReviews();
       fetchPopularReviews();
+      fetchAllFreeFeeds();
     }, [toggleToUpdateFeedsList]),
   );
 
@@ -56,17 +63,24 @@ export default function HomeScreen({ navigation }) {
         <WriteProfessorReview />
         <Spacer type="height" value={28} />
         <HomeFeedList
-          title="전체 피드"
+          title="전체 리뷰"
           headerIcon={icon_papers}
           onSeeMorePress={() => navigation.navigate('AllReviewsScreen')}
           data={allReviews}
         />
         <Spacer type="height" value={24} />
         <HomeFeedList
-          title="인기글"
+          title="인기 리뷰"
           headerIcon={icon_fire}
           onSeeMorePress={() => navigation.navigate('PopularReviewsScreen')}
           data={popularReviews}
+        />
+        <Spacer type="height" value={24} />
+        <HomeFeedList
+          title="자유게시판"
+          headerIcon={icon_chat}
+          onSeeMorePress={() => navigation.navigate('FreeFeedsScreen')}
+          data={allFreeFeeds}
         />
         <Spacer type="height" value={100} />
       </ScrollView>

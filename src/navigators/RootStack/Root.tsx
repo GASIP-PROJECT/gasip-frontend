@@ -9,8 +9,8 @@ import { useAuth } from '@contexts/AuthContext';
 import HomeScreen from '@screens/HomeScreen/HomeScreen';
 import LoginScreen from '@screens/LoginScreen/LoginScreen';
 import MyPageScreen from '@screens/MypageScreen/MyPageScreen';
-import SignUpScreen from '@screens/SignUpScreen/SignUpScreen';
 import ResetPasswordScreen from '@screens/LoginScreen/ResetPasswordScreen';
+import FreeFeedsScreen from '@screens/HomeScreen/FeedsScreen/FreeFeedsScreen';
 import AllReviewsScreen from '@screens/HomeScreen/FeedsScreen/AllReviewsScreen';
 import CreateFeedModal from '@screens/HomeScreen/CreateFeedModal/CreateFeedModal';
 import MyFeedsScreen from '@screens/MypageScreen/MyFeedsScreen.tsx/MyFeedsScreen';
@@ -89,11 +89,6 @@ export default function Root() {
               options={{ headerShown: false }}
             />
             <RootStack.Screen
-              name="SignUpScreen"
-              component={SignUpScreen}
-              options={{ headerShown: false }}
-            />
-            <RootStack.Screen
               name="ResetPasswordScreen"
               component={ResetPasswordScreen}
               options={{ headerShown: false }}
@@ -158,6 +153,11 @@ export default function Root() {
             <RootStack.Screen
               name="PopularReviewsScreen"
               component={PopularReviewsScreen}
+              options={{ headerShown: false }}
+            />
+            <RootStack.Screen
+              name="FreeFeedsScreen"
+              component={FreeFeedsScreen}
               options={{ headerShown: false }}
             />
             <RootStack.Screen

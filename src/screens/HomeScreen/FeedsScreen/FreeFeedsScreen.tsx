@@ -13,7 +13,7 @@ import { COLORS } from '@styles/colors';
 import { type Feed } from 'types/searchTypes';
 import icon_papers from '@assets/icon_papers.png';
 
-export default function AllReviewsScreen() {
+export default function FreeFeedsScreen() {
   const page = useRef(0);
   const flatListRef = useRef(null);
   const toggleToUpdateFeedsList = useNewFeedStore(
