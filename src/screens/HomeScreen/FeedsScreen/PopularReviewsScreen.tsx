@@ -63,7 +63,7 @@ export default function PopularReviewsScreen() {
   };
 
   return (
-    <FeedsListContainer title="인기글" titleIcon={icon_fire}>
+    <FeedsListContainer title="인기글" titleIcon={icon_fire} showButton={false}>
       <FlatList
         ref={flatListRef}
         data={popularFeedsList}
