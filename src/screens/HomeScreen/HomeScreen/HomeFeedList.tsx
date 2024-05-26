@@ -158,6 +158,7 @@ const styles = StyleSheet.create({
   feedIconText: {
     fontSize: 12,
     fontWeight: '500',
+    fontVariant: ['tabular-nums'],
   },
   seeMoreButtonContainer: {
     flexDirection: 'row',
