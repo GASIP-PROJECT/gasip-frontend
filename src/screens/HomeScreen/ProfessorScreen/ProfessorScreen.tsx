@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, View, Image } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { rateProfessor } from '@api/index';
+import { getProfessorData, rateProfessor } from '@api/index';
 import useNewFeedStore from '@store/newFeedStore';
 
 import ProfessorFeeds from './ProfessorFeeds';
@@ -26,11 +26,13 @@ export default function ProfessorDetailScreen({ route, navigation }) {
     state => state.setSelectedProfData,
   );
 
-  const { professorData } = route.params;
-  const { profId, profName } = professorData;
-
   const [currentRating, setCurrentRating] = useState(3);
   const [isRateModalVisible, setIsRateModalVisible] = useState(false);
+  const [professorData, setProfessorData] = useState(
+    route.params?.professorData,
+  );
+
+  const { profId, profName } = professorData;
 
   const openRateModal = () => {
     setIsRateModalVisible(true);
@@ -38,12 +40,19 @@ export default function ProfessorDetailScreen({ route, navigation }) {
 
   const rate = async () => {
     await rateProfessor(profId, currentRating);
+    await refreshProfessorData();
     setIsRateModalVisible(false);
   };
 
   const handleWriteReviewPress = () => {
     setSelctedProfData(profId, profName); // 피드 작성 시 필요한 교수님 정보 set
     openNewFeedModal();
+  };
+
+  const refreshProfessorData = async () => {
+    // 교수님 정보 갱신
+    const newProfessorData = await getProfessorData(profId);
+    setProfessorData(newProfessorData);
   };
 
   return (
