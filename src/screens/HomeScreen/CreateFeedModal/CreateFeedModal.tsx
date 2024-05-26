@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Alert, Modal, StyleSheet, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
-import { createFeed, createProfessorFeed } from '@api/index';
+import { createFeed, createProfessorFeed, getProfessorData } from '@api/index';
 import { SearchContextProvider } from '@contexts/SearchContext';
 import useNewFeedStore from '@store/newFeedStore';
 
@@ -18,6 +19,8 @@ import CreateFeedModalTextInput from './CreateFeedModalTextInput';
 import { COLORS } from '@styles/colors';
 
 export default function CreateFeedModal() {
+  const navigation = useNavigation();
+
   const [feedContent, setFeedContent] = useState('');
   const [isSelectProfessorModalVisible, setIsSelectProfessorModalVisible] =
     useState(false);
@@ -41,8 +44,14 @@ export default function CreateFeedModal() {
     if (profId !== null) {
       // 교수님 리뷰인 경우
       await createProfessorFeed(feedContent, profId);
+      const professorData = await getProfessorData(profId);
+
       triggerFeedListUpdate();
       closeModal();
+      // 해당 교수님 상세화면으로 이동
+      navigation.navigate('ProfessorDetailScreen', {
+        professorData: professorData,
+      });
     } else {
       // 일반 피드인 경우
       await createFeed(feedContent);

@@ -10,6 +10,7 @@ interface NewFeedStore {
   openNewFeedModal: (isFreeFeed?: boolean) => void;
   closeNewFeedModal: () => void;
   triggerFeedListUpdate: () => void;
+  setIsFreeFeed: (isFreeFeed: boolean) => void;
 }
 
 const useNewFeedStore = create<NewFeedStore>(set => ({
@@ -25,10 +26,9 @@ const useNewFeedStore = create<NewFeedStore>(set => ({
       profName: profName,
     }));
   },
-  openNewFeedModal: (isFreeFeed = false) => {
+  openNewFeedModal: () => {
     set(() => ({
       showCreateFeedModal: true,
-      isFreeFeed: isFreeFeed,
     }));
   },
   closeNewFeedModal: () => {
@@ -40,6 +40,11 @@ const useNewFeedStore = create<NewFeedStore>(set => ({
   },
   triggerFeedListUpdate: () => {
     set(state => ({ toggleToUpdateFeedsList: !state.toggleToUpdateFeedsList }));
+  },
+  setIsFreeFeed: (isFreeFeed: boolean) => {
+    set(() => ({
+      isFreeFeed: isFreeFeed,
+    }));
   },
 }));
 
