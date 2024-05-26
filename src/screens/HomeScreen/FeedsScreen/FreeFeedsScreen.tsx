@@ -11,7 +11,7 @@ import Spacer from '@components/common/Spacer';
 
 import { COLORS } from '@styles/colors';
 import { type Feed } from 'types/searchTypes';
-import icon_papers from '@assets/icon_papers.png';
+import icon_chat from '@assets/icon_chat.png';
 
 export default function FreeFeedsScreen() {
   const page = useRef(0);
@@ -64,12 +64,12 @@ export default function FreeFeedsScreen() {
     }, 1000);
   };
 
-  // console.log('length: ', feedsList.length);
-  // feedsList.forEach(feed => console.log(feed.postId));
-  // console.log('-----------');
-
   return (
-    <FeedsListContainer title="전체 리뷰" titleIcon={icon_papers}>
+    <FeedsListContainer
+      title="자유게시판"
+      titleIcon={icon_chat}
+      isProfessorReview={false}
+    >
       <FlatList
         ref={flatListRef}
         data={feedsList}

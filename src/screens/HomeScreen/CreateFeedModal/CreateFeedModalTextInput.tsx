@@ -17,10 +17,11 @@ export default function CreateFeedModalTextInput({
   openSelectProfessorModal = () => {},
 }: CreateFeedModalTextInputProps) {
   const profId = useNewFeedStore(state => state.profId);
+  const isFreeFeed = useNewFeedStore(state => state.isFreeFeed);
 
   return (
     <View style={styles.container}>
-      {profId === null && (
+      {profId === null && !isFreeFeed && (
         <TouchableOpacity
           onPress={openSelectProfessorModal}
           style={styles.openSelectProfessorModalCover}

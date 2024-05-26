@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Alert, Modal, StyleSheet, View } from 'react-native';
 
-import { createProfessorFeed } from '@api/index';
+import { createFeed, createProfessorFeed } from '@api/index';
 import { SearchContextProvider } from '@contexts/SearchContext';
 import useNewFeedStore from '@store/newFeedStore';
 
@@ -24,6 +24,7 @@ export default function CreateFeedModal() {
     profId,
     profName,
     showCreateFeedModal,
+    isFreeFeed,
     closeNewFeedModal,
     triggerFeedListUpdate,
   } = useNewFeedStore();
@@ -40,6 +41,9 @@ export default function CreateFeedModal() {
       closeNewFeedModal();
     } else {
       // TODO - null인 경우에 대해 처리
+      await createFeed(feedContent);
+      triggerFeedListUpdate();
+      closeNewFeedModal();
     }
   };
 

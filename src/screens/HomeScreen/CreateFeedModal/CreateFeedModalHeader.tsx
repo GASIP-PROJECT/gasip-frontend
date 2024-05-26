@@ -14,6 +14,7 @@ export default function CreateFeedModalHeader({
 }: {
   handleCreateFeedPress: () => void;
 }) {
+  const isFreeFeed = useNewFeedStore(state => state.isFreeFeed);
   const closeNewFeedModal = useNewFeedStore(state => state.closeNewFeedModal);
 
   return (
@@ -47,7 +48,9 @@ export default function CreateFeedModalHeader({
         </View>
 
         <View style={styles.titleContainer}>
-          <Text style={styles.title}>리뷰 작성</Text>
+          <GSText style={styles.title}>
+            {isFreeFeed ? '피드 작성' : '리뷰 작성'}
+          </GSText>
         </View>
 
         <View

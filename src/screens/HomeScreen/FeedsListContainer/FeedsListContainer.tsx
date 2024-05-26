@@ -21,11 +21,13 @@ export default function FeedsListContainer({
   children,
   titleIcon = null,
   showButton = true,
+  isProfessorReview = true,
 }: {
   title: string;
   children: React.ReactNode;
   titleIcon?: ImageSourcePropType | null;
   showButton?: boolean;
+  isProfessorReview?: boolean;
 }) {
   const navigation = useNavigation();
   const { bottom } = useSafeAreaInsets();
@@ -33,7 +35,11 @@ export default function FeedsListContainer({
   const openNewFeedModal = useNewFeedStore(state => state.openNewFeedModal);
 
   const handleWriteReviewPress = () => {
-    openNewFeedModal();
+    if (isProfessorReview) {
+      openNewFeedModal();
+    } else {
+      openNewFeedModal(true);
+    }
   };
 
   return (
@@ -70,7 +76,9 @@ export default function FeedsListContainer({
           }}
         >
           <GSButton
-            buttonText="교수님 리뷰 작성하기 "
+            buttonText={
+              isProfessorReview ? '교수님 리뷰 작성하기' : '피드 작성하기'
+            }
             onPress={handleWriteReviewPress}
             fontSize={16}
           />
