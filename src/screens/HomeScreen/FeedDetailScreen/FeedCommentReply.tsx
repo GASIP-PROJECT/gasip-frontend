@@ -19,7 +19,7 @@ export default function FeedCommentReply({
   reply: FeedComment;
   handleLikePress: (isLike: boolean, commentId: number) => void;
 }) {
-  const { content, commentLike, regDate, memberName, isCommentLike } = reply;
+  const { content, commentLike, regDate, nickName, isCommentLike } = reply;
 
   const handleReplyLikePress = () => {
     handleLikePress(isCommentLike, reply.commentId);
@@ -28,7 +28,7 @@ export default function FeedCommentReply({
   return (
     <View style={styles.container}>
       <Spacer type="height" value={5} />
-      <ReplyHeader regDate={regDate} replierNickname={memberName} />
+      <ReplyHeader regDate={regDate} replierNickname={nickName} />
       <Spacer type="height" value={6} />
       <View style={{ paddingHorizontal: 20 }}>
         <ReplyBody content={content} />
