@@ -1,10 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { StyleSheet, View, Image, TouchableOpacity, Alert } from 'react-native';
 import { useMMKVString } from 'react-native-mmkv';
 
 import { useAuth } from '@contexts/AuthContext';
-import { MMKVStorage, clearMMKVStorageAuthData } from '@api/mmkv';
-import { getUserData } from '@api/index';
+import { clearMMKVStorageAuthData } from '@api/mmkv';
 
 import Spacer from '@components/common/Spacer';
 import GSText from '@components/common/GSText';
@@ -27,20 +26,6 @@ export default function MyPageScreen({ navigation }) {
     });
     clearMMKVStorageAuthData();
   };
-
-  useEffect(() => {
-    const fetchUserData = async () => {
-      const result = await getUserData();
-
-      if (result) {
-        MMKVStorage.set('userNickname', result.nickname);
-      }
-    };
-
-    if (MMKVStorage.getString('userNickname') === null) {
-      fetchUserData();
-    }
-  }, []);
 
   const handleSignOutPress = () => {
     Alert.alert('로그아웃', '로그아웃 하시겠습니까?', [
