@@ -29,20 +29,23 @@ export default function SearchResults() {
     return <View />;
   }
 
-  if (searchCategory === SEARCH_CATEGORY.PROFESSOR) {
-    return (
-      <View style={styles.container}>
-        <Spacer type="height" value={24} />
-        <ProfessorResults />
-      </View>
-    );
-  }
-
   return (
-    <View>
-      <FeedResults />
+    <View style={styles.container}>
+      <Spacer type="height" value={24} />
+      <ProfessorResults />
     </View>
   );
+
+  // TODO - 피드 검색 기능 추가 시 필요한 처리
+  // if (searchCategory === SEARCH_CATEGORY.PROFESSOR) {
+
+  // }
+
+  // return (
+  //   <View>
+  //     <FeedResults />
+  //   </View>
+  // );
 }
 
 const ProfessorResults = () => {

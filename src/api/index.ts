@@ -370,3 +370,16 @@ export const changePassword = async (newPassword: string) => {
     console.log('changePassword error: ', error);
   }
 };
+
+export const searchProfessorsByMajor = async (searchedMajor: string) => {
+  try {
+    const response = await GSBackendClient.get(
+      `/professors/major-search?majorName=${searchedMajor}`,
+    );
+
+    return response.data.response;
+  } catch (error) {
+    console.log('searchProfessorsByMajor error: ', error);
+    return [];
+  }
+};

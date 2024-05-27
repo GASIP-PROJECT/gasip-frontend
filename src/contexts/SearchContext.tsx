@@ -8,7 +8,7 @@ import {
 } from 'react';
 import { SearchCategoryType, SearchResult } from '@types/searchTypes';
 
-import { searchFeeds, searchProfessors } from '@api/index';
+import { searchProfessors, searchProfessorsByMajor } from '@api/index';
 
 import { SEARCH_CATEGORY } from '../constants';
 
@@ -64,13 +64,14 @@ export const SearchContextProvider = ({
     }
 
     if (searchCategory === SEARCH_CATEGORY.MAJOR) {
-      const feeds = await searchFeeds(searchText);
-      if (feeds.length === 0) {
+      const professors = await searchProfessorsByMajor(searchText);
+
+      if (professors.length === 0) {
         setNoSearchResult(true);
       } else {
         setNoSearchResult(false);
       }
-      setSearchResults([...feeds]);
+      setSearchResults([...professors]);
     }
   };
 
