@@ -15,15 +15,14 @@ import FeedSummary from '@screens/HomeScreen/FeedsScreen/FeedSummary';
 import GSText from '@components/common/GSText';
 import Spacer from '@components/common/Spacer';
 
-import { SEARCH_CATEGORY } from '../../../constants';
-
 import { COLORS } from '@styles/colors';
 import icon_search from '@assets/icon_search.png';
 import { type Feed, type Professor } from 'types/searchTypes';
+import GSTopIndicator from '@components/common/GSTopIndicator';
 
 // TODO - 컴포넌트 구조 뭔가 이상함. 수정 필요한 상태
 export default function SearchResults() {
-  const { searchResults, searchCategory } = useSearchContext();
+  const { searchResults } = useSearchContext();
 
   if (searchResults.length === 0) {
     return <View />;
@@ -31,21 +30,12 @@ export default function SearchResults() {
 
   return (
     <View style={styles.container}>
-      <Spacer type="height" value={24} />
+      <Spacer type="height" value={12} />
+      <GSTopIndicator />
+      <Spacer type="height" value={22} />
       <ProfessorResults />
     </View>
   );
-
-  // TODO - 피드 검색 기능 추가 시 필요한 처리
-  // if (searchCategory === SEARCH_CATEGORY.PROFESSOR) {
-
-  // }
-
-  // return (
-  //   <View>
-  //     <FeedResults />
-  //   </View>
-  // );
 }
 
 const ProfessorResults = () => {

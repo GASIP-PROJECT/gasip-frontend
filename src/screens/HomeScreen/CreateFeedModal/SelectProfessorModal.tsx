@@ -15,6 +15,7 @@ import useNewFeedStore from '@store/newFeedStore';
 import GSText from '@components/common/GSText';
 import Spacer from '@components/common/Spacer';
 import GSRadioButton from '@components/common/GSRadioButton';
+import GSTopIndicator from '@components/common/GSTopIndicator';
 
 import { COLORS } from '@styles/colors';
 import { SEARCH_CATEGORY } from '@constants';
@@ -47,7 +48,7 @@ export default function SelectProfessorModal({
     >
       <View style={styles.container}>
         <Spacer type="height" value={12} />
-        <Indicator />
+        <GSTopIndicator />
         <Spacer type="height" value={12} />
         <SearchBar />
         <Spacer type="height" value={28} />
@@ -63,10 +64,6 @@ export default function SelectProfessorModal({
     </Modal>
   );
 }
-
-const Indicator = () => {
-  return <View style={styles.indicator} />;
-};
 
 const Divider = () => {
   return <View style={styles.divider} />;
@@ -180,7 +177,7 @@ const NoSearchResult = () => {
 };
 
 const SearchResults = ({ closeModal }) => {
-  const { searchResults, searchCategory } = useSearchContext();
+  const { searchResults } = useSearchContext();
 
   if (searchResults.length === 0) {
     return <View />;
@@ -260,13 +257,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     margin: 0,
   },
-  indicator: {
-    width: 40,
-    height: 4,
-    borderRadius: 100,
-    backgroundColor: '#DBDBDB',
-    alignSelf: 'center',
-  },
+
   divider: {
     width: '100%',
     height: 1,
