@@ -11,6 +11,7 @@ interface NewFeedStore {
   closeNewFeedModal: () => void;
   triggerFeedListUpdate: () => void;
   setIsFreeFeed: (isFreeFeed: boolean) => void;
+  resetProfData: () => void;
 }
 
 const useNewFeedStore = create<NewFeedStore>(set => ({
@@ -44,6 +45,12 @@ const useNewFeedStore = create<NewFeedStore>(set => ({
   setIsFreeFeed: (isFreeFeed: boolean) => {
     set(() => ({
       isFreeFeed: isFreeFeed,
+    }));
+  },
+  resetProfData: () => {
+    set(() => ({
+      profId: null,
+      profName: '',
     }));
   },
 }));
