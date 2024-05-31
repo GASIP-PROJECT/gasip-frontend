@@ -190,6 +190,7 @@ export default function FeedDetailScreen({ route, navigation }) {
                   {feedData.comments.map((comment, index) => (
                     <FeedComment
                       key={index.toString()}
+                      isLastElement={index === feedData.comments.length - 1}
                       commentData={comment}
                       setUpdateFeed={setUpdateFeed}
                       handleReplyCommentPress={handleReplyCommentPress}
@@ -377,6 +378,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: '500',
     paddingLeft: 16,
+    lineHeight: 24,
   },
   actionMenuContainer: {
     position: 'absolute',

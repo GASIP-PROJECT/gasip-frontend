@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useRef, useState } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import {
   StyleSheet,
   TouchableOpacity,
@@ -24,6 +24,7 @@ import icon_thumbsup from '@assets/icon_thumbsup.png';
 import icon_dots_vertical from '@assets/icon_dots_vertical.png';
 
 interface FeedCommentProps {
+  isLastElement: boolean;
   commentData: FeedComment;
   setUpdateFeed: Dispatch<SetStateAction<boolean>>;
   handleReplyCommentPress: (commentId: number, commentNickname: string) => void;
@@ -37,6 +38,7 @@ interface FeedCommentProps {
 }
 
 export default function FeedComment({
+  isLastElement,
   commentData,
   setUpdateFeed,
   handleReplyCommentPress,
@@ -64,12 +66,18 @@ export default function FeedComment({
 
   const [showCommentActionMenu, setShowCommentActionMenu] = useState(false);
 
+  const getBorderBottomWidth = () => {
+    if (commentChildren.length !== 0) return 1;
+
+    return isLastElement ? 1 : 0;
+  };
+
   const commentContainerBorderStyle =
     isCommentEditing && isSelectedForEditing
       ? { borderWidth: 1, borderColor: COLORS.BLUE_PRIMARY }
       : {
           borderTopWidth: 1,
-          borderBottomWidth: 1,
+          borderBottomWidth: getBorderBottomWidth(),
           borderColor: COLORS.GRAY_200,
         };
 
