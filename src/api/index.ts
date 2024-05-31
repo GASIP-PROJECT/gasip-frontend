@@ -180,7 +180,7 @@ export const searchProfessors = async (searchText: string) => {
 
   try {
     const posts = await GSBackendClient.get(
-      `/professors/search?profName=${searchText}`,
+      `/professors/prof-search?profName=${searchText}`,
     );
 
     return posts.data.response;
