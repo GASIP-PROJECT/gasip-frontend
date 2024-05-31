@@ -3,6 +3,7 @@ import { StyleSheet, View, Image, TouchableOpacity, Alert } from 'react-native';
 import { useMMKVString } from 'react-native-mmkv';
 
 import { useAuth } from '@contexts/AuthContext';
+import { deleteAccount } from '@api/index';
 import { clearMMKVStorageAuthData } from '@api/mmkv';
 
 import Spacer from '@components/common/Spacer';
@@ -36,6 +37,22 @@ export default function MyPageScreen({ navigation }) {
       {
         text: '확인',
         onPress: () => {
+          signOut();
+        },
+      },
+    ]);
+  };
+
+  const handleAccountDeletePress = () => {
+    Alert.alert('서비스 탈퇴', '정말 탈퇴 하시겠습니까?', [
+      {
+        text: '취소',
+        style: 'cancel',
+      },
+      {
+        text: '확인',
+        onPress: async () => {
+          await deleteAccount();
           signOut();
         },
       },
@@ -103,9 +120,12 @@ export default function MyPageScreen({ navigation }) {
             <GSText style={styles.elementText}>로그아웃</GSText>
           </TouchableOpacity>
           <Divider />
-          <TouchableOpacity onPress={() => {}} style={styles.element}>
+          <TouchableOpacity
+            onPress={handleAccountDeletePress}
+            style={styles.element}
+          >
             <GSText style={[styles.elementText, { color: COLORS.RED }]}>
-              서비스 탈퇴
+              서비스 탈퇴하기
             </GSText>
           </TouchableOpacity>
         </View>

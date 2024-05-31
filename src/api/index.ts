@@ -395,3 +395,11 @@ export const searchProfessorsByMajor = async (searchedMajor: string) => {
     return [];
   }
 };
+
+export const deleteAccount = async () => {
+  try {
+    await GSBackendClient.delete('/member');
+  } catch (error) {
+    console.log('deleteAccount error: ', error);
+  }
+};
