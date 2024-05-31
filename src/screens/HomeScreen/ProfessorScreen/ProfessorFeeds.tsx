@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, FlatList, Image } from 'react-native';
 
-import { getProfessorFeeds } from '@api/index';
+import { getAllProfssorFeedCount, getProfessorFeeds } from '@api/index';
 import useNewFeedStore from '@store/newFeedStore';
 
 import FeedSummary from '@screens/HomeScreen/FeedsScreen/FeedSummary';
@@ -21,6 +21,7 @@ export default function ProfessorFeeds({ profId }: { profId: number }) {
 
   const [feeds, setFeeds] = useState<Feed[] | []>([]);
   const [page, setPage] = useState(0);
+  const [feedCount, setFeedCount] = useState(0);
 
   const onListEndReached = async () => {
     setPage(prev => prev + 1);
@@ -37,13 +38,20 @@ export default function ProfessorFeeds({ profId }: { profId: number }) {
     setFeeds([...posts]);
   };
 
+  const getFeedsCount = async () => {
+    // 교수님 피드 개수 조회
+    const professorFeedCount = await getAllProfssorFeedCount(profId);
+    setFeedCount(professorFeedCount);
+  };
+
   useEffect(() => {
     fetchFeeds();
+    getFeedsCount();
   }, [toggleToUpdateFeedsList]);
 
   return (
     <View style={styles.container}>
-      <Header />
+      <Header feedCount={feedCount} />
       <FlatList
         data={feeds}
         extraData={toggleToUpdateFeedsList}
@@ -60,7 +68,7 @@ export default function ProfessorFeeds({ profId }: { profId: number }) {
   );
 }
 
-const Header = () => {
+const Header = ({ feedCount }: { feedCount: number }) => {
   return (
     <>
       <Spacer type="height" value={20} />
@@ -69,7 +77,7 @@ const Header = () => {
         <Spacer type="width" value={6} />
         <GSText style={styles.headerTitleText}>솔직한 리뷰 둘러보기</GSText>
       </View>
-      <GSText style={styles.feedCountText}>게시글(12개)</GSText>
+      <GSText style={styles.feedCountText}>게시글({feedCount}개)</GSText>
       <Spacer type="height" value={10} />
     </>
   );

@@ -99,6 +99,18 @@ export const getProfessorFeeds = async (
   }
 };
 
+export const getAllProfssorFeedCount = async (profId: number) => {
+  try {
+    const response = await GSBackendClient.get(`/boards/${profId}`);
+    const count = response.data.response.length;
+
+    return count;
+  } catch (error) {
+    console.log('getAllProfssorFeedCount error: ', error);
+    return 0;
+  }
+};
+
 export const createFeed = async (content: string) => {
   try {
     const response = await GSBackendClient.post('/boards/0', {
