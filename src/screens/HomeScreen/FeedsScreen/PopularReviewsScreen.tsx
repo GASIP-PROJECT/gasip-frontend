@@ -63,7 +63,12 @@ export default function PopularReviewsScreen() {
   };
 
   return (
-    <FeedsListContainer title="인기글" titleIcon={icon_fire} showButton={false}>
+    <FeedsListContainer
+      title="인기글"
+      titleIcon={icon_fire}
+      showButton={false}
+      subText="인기가 많은 리뷰를 볼 수 있는 게시판이에요."
+    >
       <FlatList
         ref={flatListRef}
         data={popularFeedsList}

@@ -64,12 +64,12 @@ export default function AllReviewsScreen() {
     }, 1000);
   };
 
-  // console.log('length: ', feedsList.length);
-  // feedsList.forEach(feed => console.log(feed.postId));
-  // console.log('-----------');
-
   return (
-    <FeedsListContainer title="전체 리뷰" titleIcon={icon_papers}>
+    <FeedsListContainer
+      title="전체 리뷰"
+      titleIcon={icon_papers}
+      subText="모든 리뷰가 모여있는 게시판이에요."
+    >
       <FlatList
         ref={flatListRef}
         data={feedsList}

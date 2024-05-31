@@ -1,5 +1,11 @@
 import React from 'react';
-import { Image, ImageSourcePropType, StyleSheet, View } from 'react-native';
+import {
+  Image,
+  ImageSourcePropType,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -11,19 +17,21 @@ import GSButton from '@components/common/GSButton';
 import GSHeader from '@components/common/GSHeader';
 import SafeAreaLayout from '@components/common/SafeAreaLayout';
 
-import icon_house from '@assets/icon_house.png';
 import icon_goback from '@assets/icon_goback.png';
+import icon_search from '@assets/icon_search.png';
 
 import { COLORS } from '@styles/colors';
 
 export default function FeedsListContainer({
   title,
+  subText = '',
   children,
   titleIcon = null,
   showButton = true,
   isProfessorReview = true,
 }: {
   title: string;
+  subText?: string;
   children: React.ReactNode;
   titleIcon?: ImageSourcePropType | null;
   showButton?: boolean;
@@ -52,16 +60,15 @@ export default function FeedsListContainer({
           <Image source={icon_goback} style={{ width: 28, height: 28 }} />
         }
         onLeftComponentPress={navigation.goBack}
-        rightComponent={
-          <Image source={icon_house} style={{ width: 28, height: 28 }} />
-        }
-        onRightComponentPress={() => {
-          navigation.navigate('HomeScreen');
-        }}
       />
       <View style={styles.container}>
         <Spacer type="height" value={30} />
-        <Title title={title} titleIcon={titleIcon} />
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+          <Title title={title} titleIcon={titleIcon} subText={subText} />
+          <TouchableOpacity style={{ marginTop: 8 }}>
+            <Image source={icon_search} style={{ width: 28, height: 28 }} />
+          </TouchableOpacity>
+        </View>
         <Spacer type="height" value={24} />
       </View>
 
@@ -88,7 +95,7 @@ export default function FeedsListContainer({
       )}
 
       <View style={styles.feedsContainer}>
-        <Spacer type="height" value={16} />
+        <Spacer type="height" value={20} />
         {children}
       </View>
     </SafeAreaLayout>
@@ -98,16 +105,30 @@ export default function FeedsListContainer({
 const Title = ({
   title,
   titleIcon = null,
+  subText,
 }: {
   title: string;
   titleIcon: ImageSourcePropType | null;
+  subText: string;
 }) => {
   if (titleIcon) {
     return (
-      <View style={{ flexDirection: 'row' }}>
-        <Image source={titleIcon} style={{ width: 28, height: 28 }} />
-        <Spacer type="width" value={4} />
-        <GSText style={styles.titleText}>{title}</GSText>
+      <View>
+        <View style={{ flexDirection: 'row' }}>
+          <Image source={titleIcon} style={{ width: 28, height: 28 }} />
+          <Spacer type="width" value={4} />
+          <GSText style={styles.titleText}>{title}</GSText>
+        </View>
+
+        <Spacer type="height" value={6} />
+
+        {subText !== '' && (
+          <GSText
+            style={{ fontSize: 10, fontWeight: '400', color: COLORS.GRAY_400 }}
+          >
+            {subText}
+          </GSText>
+        )}
       </View>
     );
   }

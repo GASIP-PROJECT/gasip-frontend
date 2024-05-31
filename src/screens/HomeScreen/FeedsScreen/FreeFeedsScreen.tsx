@@ -68,6 +68,7 @@ export default function FreeFeedsScreen() {
     <FeedsListContainer
       title="자유게시판"
       titleIcon={icon_chat}
+      subText="가천인들과 리뷰, 교수님 상관없이 자유롭게 소통할 수 있는 게시판이에요"
       isProfessorReview={false}
     >
       <FlatList
