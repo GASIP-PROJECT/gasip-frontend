@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { getTimeDifference } from '@utils/timeUtil';
@@ -27,6 +27,7 @@ export default function FeedSummary({ feedData }: { feedData: Feed }) {
     memberNickname,
     commentCount,
     clickCount,
+    profName,
   } = feedData;
 
   const goToFeed = () => {
@@ -35,7 +36,16 @@ export default function FeedSummary({ feedData }: { feedData: Feed }) {
 
   return (
     <TouchableOpacity style={styles.container} onPress={goToFeed}>
-      <SummaryContent content={content} />
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}
+      >
+        <SummaryContent content={content} />
+        <ProfessorNameTag profName={profName} />
+      </View>
       <Spacer type="height" value={10} />
       <SummaryFooter
         likeCount={likeCount}
@@ -114,6 +124,16 @@ const SummaryFooter = ({
   );
 };
 
+const ProfessorNameTag = ({ profName }: { profName: string }) => {
+  return (
+    <View style={styles.professorNameTagContainer}>
+      <GSText style={{ color: COLORS.GRAY_500, fontSize: 12 }}>
+        {profName} 교수님
+      </GSText>
+    </View>
+  );
+};
+
 const styles = StyleSheet.create({
   container: {
     paddingVertical: 15,
@@ -152,10 +172,19 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: '500',
   },
-
   nicknameText: {
     fontSize: 12,
     fontWeight: '500',
     color: COLORS.GRAY_500,
+  },
+  professorNameTagContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderRadius: 100,
+    justifyContent: 'center',
+    paddingHorizontal: 10,
+    height: 24,
+    borderWidth: 1,
+    borderColor: COLORS.GRAY_500,
   },
 });
