@@ -371,6 +371,16 @@ export const rateProfessor = async (profId: number, rating: number) => {
   }
 };
 
+export const editProfessorRating = async (profId: number, rating: number) => {
+  try {
+    await GSBackendClient.put(`/grades/${profId}`, {
+      gradepoint: rating,
+    });
+  } catch (error) {
+    console.log('editProfessorRating error: ', error);
+  }
+};
+
 export const changePassword = async (newPassword: string) => {
   try {
     const response = await GSBackendClient.put('/members/passwords', {

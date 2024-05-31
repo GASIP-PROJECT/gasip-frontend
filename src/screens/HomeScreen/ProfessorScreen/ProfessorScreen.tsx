@@ -2,7 +2,11 @@ import React, { useState } from 'react';
 import { StyleSheet, View, Image } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { getProfessorData, rateProfessor } from '@api/index';
+import {
+  editProfessorRating,
+  getProfessorData,
+  rateProfessor,
+} from '@api/index';
 import useNewFeedStore from '@store/newFeedStore';
 
 import ProfessorFeeds from './ProfessorFeeds';
@@ -40,6 +44,12 @@ export default function ProfessorDetailScreen({ route, navigation }) {
 
   const rate = async () => {
     await rateProfessor(profId, currentRating);
+    await refreshProfessorData();
+    setIsRateModalVisible(false);
+  };
+
+  const editRating = async () => {
+    await editProfessorRating(profId, currentRating);
     await refreshProfessorData();
     setIsRateModalVisible(false);
   };
@@ -104,6 +114,8 @@ export default function ProfessorDetailScreen({ route, navigation }) {
         currentRating={currentRating}
         setCurrentRating={setCurrentRating}
         rate={rate}
+        editRating={editRating}
+        isFirstRating={professorData.isGrade === false}
         isVisible={isRateModalVisible}
         setIsVisible={setIsRateModalVisible}
       />

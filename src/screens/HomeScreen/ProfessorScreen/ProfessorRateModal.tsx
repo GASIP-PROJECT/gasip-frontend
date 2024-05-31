@@ -13,15 +13,18 @@ interface ProfessorRateModalProps {
   currentRating: number;
   setCurrentRating: Dispatch<SetStateAction<number>>;
   rate: () => void;
+  editRating: () => void;
+  isFirstRating: boolean;
   isVisible: boolean;
   setIsVisible: Dispatch<SetStateAction<boolean>>;
 }
 
-// TODO - Blurry background 구현할 방법 찾기
 export default function ProfessorRateModal({
   currentRating,
   setCurrentRating,
   rate,
+  editRating,
+  isFirstRating,
   isVisible,
   setIsVisible,
 }: ProfessorRateModalProps) {
@@ -33,7 +36,8 @@ export default function ProfessorRateModal({
     <Modal
       isVisible={isVisible}
       onBackdropPress={closeModal}
-      backdropOpacity={0.8}
+      backdropOpacity={0.7}
+      backdropColor={COLORS.GRAY_200}
     >
       <View style={styles.rateActionSheetContainer}>
         <View style={styles.contentContainer}>
@@ -50,7 +54,7 @@ export default function ProfessorRateModal({
           </View>
 
           <GSText style={styles.infoText}>
-            평점은 공정성을 위해 한 번만 입력할 수 있어요 :)
+            평점은 나중에 수정할 수 있어요 :)
           </GSText>
 
           <Spacer type="height" value={20} />
@@ -111,7 +115,11 @@ export default function ProfessorRateModal({
             alignItems: 'center',
           }}
         >
-          <GSButton buttonText="제출하기" onPress={rate} fontSize={20} />
+          <GSButton
+            buttonText="제출하기"
+            onPress={isFirstRating ? rate : editRating}
+            fontSize={20}
+          />
         </View>
       </View>
     </Modal>

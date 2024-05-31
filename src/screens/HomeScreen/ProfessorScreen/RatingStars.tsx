@@ -2,7 +2,6 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import GSIcon from '@components/common/GSIcon';
-import Spacer from '@components/common/Spacer';
 import { COLORS } from '@styles/colors';
 
 export default function RatingStars({

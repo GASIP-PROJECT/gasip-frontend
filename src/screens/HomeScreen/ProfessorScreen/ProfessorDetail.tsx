@@ -45,16 +45,43 @@ export default function ProfessorDetail({
               : '아직 등록된 평점이 없습니다.'
           }
         />
-        <Spacer type="width" value={8} />
+
         <View style={styles.ratingStarAndButtonContainer}>
           {professorAverageGradePoint !== 'null' && (
-            <RatingStars currentRating={professorAverageGradePoint} />
+            <View style={{ flexDirection: 'row' }}>
+              <Spacer type="width" value={8} />
+              <RatingStars currentRating={professorAverageGradePoint} />
+            </View>
           )}
           {!isGrade && (
-            <TouchableOpacity style={styles.rateButton} onPress={openRateModal}>
-              <GSText style={styles.rateButtonText}>평점 입력하기</GSText>
-              <Image source={icon_pencil} style={{ width: 18, height: 18 }} />
-            </TouchableOpacity>
+            <>
+              <Spacer type="width" value={8} />
+              <TouchableOpacity
+                style={styles.rateButton}
+                onPress={openRateModal}
+              >
+                <GSText style={styles.rateButtonText}>평점 입력하기</GSText>
+                <Image source={icon_pencil} style={{ width: 18, height: 18 }} />
+              </TouchableOpacity>
+            </>
+          )}
+          {isGrade && (
+            <>
+              <Spacer type="width" value={8} />
+              <TouchableOpacity
+                style={styles.editRatingButton}
+                onPress={openRateModal}
+              >
+                <GSText style={styles.editRatingButtonText}>
+                  평점 수정하기
+                </GSText>
+                <Image
+                  source={icon_pencil}
+                  style={{ width: 18, height: 18 }}
+                  tintColor={'#111111'}
+                />
+              </TouchableOpacity>
+            </>
           )}
         </View>
       </View>
@@ -122,8 +149,10 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   professorRatingContainer: {
+    width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
   },
   ratingStarAndButtonContainer: {
     flex: 1,
@@ -133,7 +162,8 @@ const styles = StyleSheet.create({
   },
   rateButton: {
     flexDirection: 'row',
-    paddingHorizontal: 14,
+    paddingLeft: 14,
+    paddingRight: 12,
     alignItems: 'center',
     height: 28,
     borderRadius: 20,
@@ -144,5 +174,20 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '500',
     color: COLORS.BLUE_PRIMARY,
+  },
+  editRatingButton: {
+    flexDirection: 'row',
+    paddingLeft: 14,
+    paddingRight: 12,
+    alignItems: 'center',
+    height: 28,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: '#111111',
+  },
+  editRatingButtonText: {
+    fontSize: 14,
+    fontWeight: '500',
+    color: '#111111',
   },
 });
