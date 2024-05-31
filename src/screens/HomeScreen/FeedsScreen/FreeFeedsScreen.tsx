@@ -89,7 +89,7 @@ export default function FreeFeedsScreen() {
         }
         onEndReachedThreshold={0.5}
         keyExtractor={(item, index) => index.toString()}
-        ItemSeparatorComponent={() => <Spacer type="height" value={15} />}
+        ItemSeparatorComponent={() => <Spacer type="height" value={8} />}
         ListFooterComponent={() => <Spacer type="height" value={150} />}
       />
     </FeedsListContainer>
