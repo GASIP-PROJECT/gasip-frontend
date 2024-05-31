@@ -113,13 +113,13 @@ const styles = StyleSheet.create({
 
   createFeedButton: {
     backgroundColor: COLORS.BLUE_PRIMARY,
-    height: 28,
-    paddingHorizontal: 16,
+    height: 36,
+    paddingHorizontal: 24,
     borderRadius: 100,
     justifyContent: 'center',
   },
   createFeedButtonText: {
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: '600',
     color: COLORS.WHITE,
   },
