@@ -58,7 +58,7 @@ export default function ProfessorDetailScreen({ route, navigation }) {
   return (
     <SafeAreaLayout backgroundColor={COLORS.WHITE} noBottomPadding>
       <GSHeader
-        title={'교수님 정보'}
+        title={''}
         leftComponent={
           <Image source={icon_goback} style={{ width: 28, height: 28 }} />
         }

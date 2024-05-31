@@ -56,11 +56,11 @@ export default function ProfessorFeeds({ profId }: { profId: number }) {
         data={feeds}
         extraData={toggleToUpdateFeedsList}
         renderItem={({ item }: { item: Feed }) => (
-          <FeedSummary feedData={item} />
+          <FeedSummary feedData={item} showProfNameTag={false} />
         )}
         onEndReached={onListEndReached}
         keyExtractor={(item, index) => index.toString()}
-        ItemSeparatorComponent={() => <Spacer type="height" value={6} />}
+        ItemSeparatorComponent={() => <Spacer type="height" value={8} />}
         ListFooterComponent={() => <Spacer type="height" value={150} />}
         showsVerticalScrollIndicator={false}
       />

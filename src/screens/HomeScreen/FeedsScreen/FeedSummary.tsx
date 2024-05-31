@@ -14,7 +14,13 @@ import icon_comment from '@assets/icon_comment.png';
 import icon_thumbsup from '@assets/icon_thumbsup.png';
 
 // TODO - navigation 관련 버그 해결
-export default function FeedSummary({ feedData }: { feedData: Feed }) {
+export default function FeedSummary({
+  feedData,
+  showProfNameTag = true,
+}: {
+  feedData: Feed;
+  showProfNameTag?: boolean;
+}) {
   if (!feedData) return null;
 
   const navigation = useNavigation();
@@ -45,7 +51,7 @@ export default function FeedSummary({ feedData }: { feedData: Feed }) {
       >
         <SummaryContent content={content} />
         <Spacer type="width" value={10} />
-        <ProfessorNameTag profName={profName} />
+        {showProfNameTag && <ProfessorNameTag profName={profName} />}
       </View>
       <Spacer type="height" value={10} />
       <SummaryFooter
