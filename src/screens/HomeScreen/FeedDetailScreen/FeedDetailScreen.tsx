@@ -12,7 +12,12 @@ import {
   Alert,
 } from 'react-native';
 
-import { deleteFeed, editComment, getFeedData } from '@api/index';
+import {
+  deleteFeed,
+  editComment,
+  getFeedData,
+  getProfessorData,
+} from '@api/index';
 
 import FeedContent from './FeedContent';
 import FeedComment from './FeedComment';
@@ -102,6 +107,16 @@ export default function FeedDetailScreen({ route, navigation }) {
     setNewComment('');
   };
 
+  const handleProfNamePress = async () => {
+    if (feedData?.profId === undefined) return;
+
+    const professorData = await getProfessorData(feedData?.profId);
+
+    navigation.navigate('ProfessorDetailScreen', {
+      professorData: professorData,
+    });
+  };
+
   useEffect(() => {
     const fetchFeedData = async () => {
       const feedData = await getFeedData(postId);
@@ -147,9 +162,11 @@ export default function FeedDetailScreen({ route, navigation }) {
             <>
               {/* 교수님에 대한 글인 경우 표시되는 교수님 이름 */}
               {feedData.profId !== 0 && (
-                <GSText style={styles.professorNameText}>
-                  {feedData.profName} 교수님
-                </GSText>
+                <TouchableOpacity onPress={handleProfNamePress}>
+                  <GSText style={styles.professorNameText}>
+                    {feedData.profName} 교수님
+                  </GSText>
+                </TouchableOpacity>
               )}
               <Spacer type="height" value={14} />
 
