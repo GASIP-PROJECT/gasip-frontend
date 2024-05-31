@@ -29,7 +29,7 @@ export default function WriteProfessorReview() {
         <GSButton
           buttonText="작성하기"
           onPress={openNewFeedModal}
-          height={40}
+          height={46}
         />
       </View>
       <Spacer type="height" value={6} />
