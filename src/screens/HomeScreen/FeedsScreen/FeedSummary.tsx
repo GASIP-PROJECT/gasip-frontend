@@ -44,6 +44,7 @@ export default function FeedSummary({ feedData }: { feedData: Feed }) {
         }}
       >
         <SummaryContent content={content} />
+        <Spacer type="width" value={10} />
         <ProfessorNameTag profName={profName} />
       </View>
       <Spacer type="height" value={10} />
@@ -154,6 +155,7 @@ const styles = StyleSheet.create({
   feedContentText: {
     fontSize: 14,
     fontWeight: '500',
+    flex: 1,
   },
   timeText: {
     fontSize: 11,
