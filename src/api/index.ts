@@ -18,10 +18,13 @@ const GSBackendClient = axios.create({
 });
 
 // TODO - 함수 데이터에 따라서 typing(모든 함수)
-export const getAllFeeds = async (page: number, dataCount: number = 5) => {
+export const getAllProfessorReviews = async (
+  page: number,
+  dataCount: number = 5,
+) => {
   try {
     const posts = await GSBackendClient.get(
-      `/boards/all-boards?page=${page}&size=${dataCount}`,
+      `/boards/professor-boards?page=${page}&size=${dataCount}`,
     );
 
     return posts.data.response;
@@ -59,7 +62,7 @@ export const getPopularFeedsForHomeScreen = async () => {
 export const getGeneralFeeds = async (page: number, dataCount: number = 5) => {
   try {
     const posts = await GSBackendClient.get(
-      `/boards/0?page=${page}&size=${dataCount}`,
+      `/boards/free-boards?page=${page}&size=${dataCount}&profId == 0`,
     );
 
     return posts.data.response;

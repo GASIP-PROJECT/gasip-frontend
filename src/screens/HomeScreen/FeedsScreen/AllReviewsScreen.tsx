@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { FlatList, RefreshControl } from 'react-native';
+import { FlatList, RefreshControl, View } from 'react-native';
 
-import { getAllFeeds } from '@api/index';
+import { getAllProfessorReviews } from '@api/index';
 import useNewFeedStore from '@store/newFeedStore';
 
 import FeedSummary from './FeedSummary';
@@ -32,7 +32,7 @@ export default function AllReviewsScreen() {
   const onListEndReached = async () => {
     page.current += 1;
 
-    const posts: Feed[] = await getAllFeeds(page.current);
+    const posts: Feed[] = await getAllProfessorReviews(page.current, 10);
 
     if (posts.length > 0) {
       setFeedsList([...feedsList, ...posts]);
@@ -44,15 +44,19 @@ export default function AllReviewsScreen() {
   };
 
   const fetchFeedsAndSetFeedList = async () => {
-    const posts: Feed[] = await getAllFeeds(0, 10);
+    const posts: Feed[] = await getAllProfessorReviews(0, 10);
     setFeedsList([...posts]);
   };
 
+  // TODO - 행동 이상한 부분 수정 필요
+  // resetFetchPage가 최초 렌더링 시 실행되는 것이 이슈가 아닌지 확인 필요
   useEffect(() => {
     fetchFeedsAndSetFeedList();
-    resetFetchPage();
+    // resetFetchPage();
     scrollToTop();
   }, [toggleToUpdateFeedsList]);
+
+  console.log('feedsList length: ', feedsList.length);
 
   const onRefresh = async () => {
     setRefreshing(true);
@@ -77,6 +81,7 @@ export default function AllReviewsScreen() {
         renderItem={({ item }: { item: Feed }) => (
           <FeedSummary feedData={item} />
         )}
+        ListEmptyComponent={() => <View />}
         onEndReached={onListEndReached}
         refreshControl={
           <RefreshControl

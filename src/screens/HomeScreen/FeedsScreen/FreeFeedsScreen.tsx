@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { FlatList, RefreshControl } from 'react-native';
 
-import { getAllFeeds } from '@api/index';
+import { getGeneralFeeds } from '@api/index';
 import useNewFeedStore from '@store/newFeedStore';
 
 import FeedSummary from './FeedSummary';
@@ -32,7 +32,7 @@ export default function FreeFeedsScreen() {
   const onListEndReached = async () => {
     page.current += 1;
 
-    const posts: Feed[] = await getAllFeeds(page.current);
+    const posts: Feed[] = await getGeneralFeeds(page.current, 10);
 
     if (posts.length > 0) {
       setFeedsList([...feedsList, ...posts]);
@@ -44,7 +44,7 @@ export default function FreeFeedsScreen() {
   };
 
   const fetchFeedsAndSetFeedList = async () => {
-    const posts: Feed[] = await getAllFeeds(0, 10);
+    const posts: Feed[] = await getGeneralFeeds(0, 10);
     setFeedsList([...posts]);
   };
 
@@ -76,7 +76,7 @@ export default function FreeFeedsScreen() {
         data={feedsList}
         extraData={toggleToUpdateFeedsList}
         renderItem={({ item }: { item: Feed }) => (
-          <FeedSummary feedData={item} />
+          <FeedSummary feedData={item} showProfNameTag={false} />
         )}
         onEndReached={onListEndReached}
         refreshControl={

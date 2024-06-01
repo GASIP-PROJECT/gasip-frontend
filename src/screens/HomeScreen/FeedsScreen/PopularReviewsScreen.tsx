@@ -32,7 +32,7 @@ export default function PopularReviewsScreen() {
   const onListEndReached = async () => {
     page.current += 1;
 
-    const posts: [] = await getPopularFeeds(page.current);
+    const posts: [] = await getPopularFeeds(page.current, 10);
 
     if (posts.length > 0) {
       setPopularFeedsList([...popularFeedsList, ...posts]);
