@@ -1,5 +1,12 @@
 import React from 'react';
-import { StyleSheet, View, Image, TouchableOpacity, Alert } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Image,
+  TouchableOpacity,
+  Alert,
+  Linking,
+} from 'react-native';
 import { useMMKVString } from 'react-native-mmkv';
 
 import { useAuth } from '@contexts/AuthContext';
@@ -57,6 +64,10 @@ export default function MyPageScreen({ navigation }) {
         },
       },
     ]);
+  };
+
+  const handleInquirePress = () => {
+    Linking.openURL('https://pf.kakao.com/_PxjxheG');
   };
 
   return (
@@ -140,7 +151,7 @@ export default function MyPageScreen({ navigation }) {
             <GSText style={styles.elementText}>공지사항</GSText>
           </TouchableOpacity>
           <Divider />
-          <TouchableOpacity onPress={() => {}} style={styles.element}>
+          <TouchableOpacity onPress={handleInquirePress} style={styles.element}>
             <GSText style={styles.elementText}>문의하기</GSText>
           </TouchableOpacity>
           <Divider />
