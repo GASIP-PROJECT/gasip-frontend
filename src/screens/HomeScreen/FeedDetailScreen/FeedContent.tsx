@@ -163,15 +163,10 @@ const FeedContentFooter = ({
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    paddingVertical: 20,
+    paddingTop: 20,
+    paddingBottom: 10,
     paddingHorizontal: 16,
     borderRadius: 5,
-    backgroundColor: COLORS.WHITE,
-    shadowColor: COLORS.BLUE_PRIMARY,
-    shadowOffset: { width: 0, height: 5 },
-    shadowOpacity: 0.05,
-    shadowRadius: 10,
-    elevation: 5,
   },
   feedHeaderContainer: {
     width: '100%',

@@ -126,6 +126,8 @@ export default function FeedDetailScreen({ route, navigation }) {
     fetchFeedData();
   }, [updateFeed]);
 
+  if (feedData === null) return <View />;
+
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
@@ -137,87 +139,105 @@ export default function FeedDetailScreen({ route, navigation }) {
         android: 500,
       })}
     >
-      <SafeAreaLayout noBottomPadding>
-        <GSHeader
-          title={`${feedData?.memberNickname} 님의 게시글` || ''}
-          leftComponent={
-            <Image source={icon_goback} style={{ width: 28, height: 28 }} />
-          }
-          onLeftComponentPress={navigation.goBack}
-        />
-        <ScrollView style={styles.container}>
-          {showFeedActionMenu && (
-            <ActionMenuTransparendBackdrop
-              onPress={() => setShowFeedActionMenu(false)}
-            />
+      <SafeAreaLayout noBottomPadding backgroundColor={COLORS.WHITE}>
+        <View style={{ paddingHorizontal: 24 }}>
+          <GSHeader
+            title={`${feedData?.memberNickname} 님의 게시글` || ''}
+            leftComponent={
+              <Image source={icon_goback} style={{ width: 28, height: 28 }} />
+            }
+            onLeftComponentPress={navigation.goBack}
+            paddingHorizontal={0}
+          />
+
+          {/* 교수님에 대한 글인 경우 표시되는 교수님 이름 */}
+          {feedData?.profId !== 0 && (
+            <TouchableOpacity onPress={handleProfNamePress}>
+              <GSText style={styles.professorNameText}>
+                {feedData?.profName} 교수님
+              </GSText>
+            </TouchableOpacity>
           )}
 
+          <Spacer type="height" value={14} />
+
+          <View
+            style={{
+              height: 1,
+              backgroundColor: COLORS.GRAY_100,
+            }}
+          />
+        </View>
+
+        <ScrollView style={styles.container}>
+          {/* 피드 내용 */}
+          {/* TODO - shadow 제대로 된건가..? */}
+          <View
+            style={{
+              overflow: 'hidden',
+              backgroundColor: COLORS.WHITE,
+              paddingBottom: 5,
+            }}
+          >
+            <View style={styles.feedContentCotainer}>
+              <FeedContent
+                feedData={feedData}
+                setUpdateFeed={setUpdateFeed}
+                openFeedActionsModal={openFeedActionsModal}
+              />
+            </View>
+          </View>
+
+          <View
+            style={{
+              backgroundColor: COLORS.BG_MAIN,
+              paddingHorizontal: 24,
+              borderTopWidth: 1,
+              borderColor: COLORS.BLUE_PRIMARY,
+            }}
+          >
+            <Spacer type="height" value={8} />
+            <GSText style={styles.commentTitleText}>
+              댓글 {`(${feedData.commentCount}개)`}
+            </GSText>
+            <Spacer type="height" value={6} />
+
+            {feedData.comments.map((comment, index) => (
+              <FeedComment
+                key={index.toString()}
+                isLastElement={index === feedData.comments.length - 1}
+                commentData={comment}
+                setUpdateFeed={setUpdateFeed}
+                handleReplyCommentPress={handleReplyCommentPress}
+                isCommentEditing={isCommentEditing}
+                setIsCommentEditing={setIsCommentEditing}
+                setSelectedCommentId={setSelectedCommentId}
+                handleCommentEditConfirm={handleCommentEditConfirmPress}
+                newComment={newComment}
+                setNewComment={setNewComment}
+                isSelectedForEditing={
+                  // TODO - optional 로 처리하지 않으면 null로 뜨는 이슈 체크
+                  comment?.commentId === selectedCommentId
+                }
+              />
+            ))}
+          </View>
+
+          {/* 피드 액션메뉴 컴포넌트들은 position absolute로 처리되어 있음.(디자인) backdrop은 현재 전체 화면을 가리지 못하는 이슈가 있음. */}
+          {/* 피드 관련 액션메뉴(수정/삭제) */}
           {showFeedActionMenu && (
             <ActionMenu
               handleFeedEditPress={handleFeedEditPress}
               handleFeedDeletePress={handleFeedDeletePress}
             />
           )}
-          {feedData !== null ? (
-            <>
-              {/* 교수님에 대한 글인 경우 표시되는 교수님 이름 */}
-              {feedData.profId !== 0 && (
-                <TouchableOpacity onPress={handleProfNamePress}>
-                  <GSText style={styles.professorNameText}>
-                    {feedData.profName} 교수님
-                  </GSText>
-                </TouchableOpacity>
-              )}
-              <Spacer type="height" value={14} />
-
-              {/* 피드 내용 */}
-              <FeedContent
-                feedData={feedData}
-                setUpdateFeed={setUpdateFeed}
-                openFeedActionsModal={openFeedActionsModal}
-              />
-
-              <Spacer type="height" value={10} />
-
-              {/* 댓글  */}
-              {feedData?.comments.length > 0 && (
-                <View>
-                  <GSText style={styles.commentTitleText}>
-                    댓글 {`(${feedData.commentCount}개)`}
-                  </GSText>
-                  <Spacer type="height" value={6} />
-
-                  {feedData.comments.map((comment, index) => (
-                    <FeedComment
-                      key={index.toString()}
-                      isLastElement={index === feedData.comments.length - 1}
-                      commentData={comment}
-                      setUpdateFeed={setUpdateFeed}
-                      handleReplyCommentPress={handleReplyCommentPress}
-                      isCommentEditing={isCommentEditing}
-                      setIsCommentEditing={setIsCommentEditing}
-                      setSelectedCommentId={setSelectedCommentId}
-                      handleCommentEditConfirm={handleCommentEditConfirmPress}
-                      newComment={newComment}
-                      setNewComment={setNewComment}
-                      isSelectedForEditing={
-                        // TODO - optional 로 처리하지 않으면 null로 뜨는 이슈 체크
-                        comment?.commentId === selectedCommentId
-                      }
-                    />
-                  ))}
-                </View>
-              )}
-            </>
-          ) : (
-            <Text>로딩중...</Text>
-          )}
-          <Spacer type="height" value={100} />
+          {/* 피드 관련 액션메뉴 켜져있을 때 배경을 눌러서 꺼지도록 하기 위해서 필요한 backdrop */}
           {showFeedActionMenu && (
             <ActionMenuTransparendBackdrop
               onPress={() => setShowFeedActionMenu(false)}
             />
           )}
+          <Spacer type="height" value={100} />
         </ScrollView>
 
         {replyCommentNickname && (
@@ -350,8 +370,8 @@ const ActionMenuTransparendBackdrop = ({ onPress }) => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 24,
     flex: 1,
+    backgroundColor: COLORS.WHITE,
   },
   commentReplyIndicatorContainer: {
     width: '100%',
@@ -369,10 +389,11 @@ const styles = StyleSheet.create({
     color: COLORS.WHITE,
   },
   professorNameText: {
-    fontSize: 12,
-    fontWeight: '400',
-    color: COLORS.GRAY_500,
+    fontSize: 13,
+    fontWeight: '600',
+    color: COLORS.BLUE_PRIMARY,
     alignSelf: 'center',
+    textDecorationLine: 'underline',
   },
   commentTitleText: {
     fontSize: 12,
@@ -407,5 +428,13 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: '500',
     color: COLORS.BLUE_LIGHT_100,
+  },
+  feedContentCotainer: {
+    backgroundColor: COLORS.WHITE,
+    shadowColor: COLORS.BLUE_PRIMARY,
+    shadowOffset: { width: 0, height: -5 },
+    shadowOpacity: 0.05,
+    elevation: 5,
+    paddingHorizontal: 24,
   },
 });
