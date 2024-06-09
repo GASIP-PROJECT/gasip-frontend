@@ -75,9 +75,14 @@ export default function FreeFeedsScreen() {
         ref={flatListRef}
         data={feedsList}
         extraData={toggleToUpdateFeedsList}
-        renderItem={({ item }: { item: Feed }) => (
-          <FeedSummary feedData={item} showProfNameTag={false} />
-        )}
+        renderItem={({ item, index }: { item: Feed; index: number }) => {
+          return (
+            <FeedSummary
+              feedData={item}
+              isLastElement={index === feedsList.length - 1}
+            />
+          );
+        }}
         onEndReached={onListEndReached}
         refreshControl={
           <RefreshControl
@@ -90,7 +95,6 @@ export default function FreeFeedsScreen() {
         onEndReachedThreshold={0.5}
         keyExtractor={(item, index) => index.toString()}
         ItemSeparatorComponent={() => <Spacer type="height" value={8} />}
-        ListFooterComponent={() => <Spacer type="height" value={150} />}
       />
     </FeedsListContainer>
   );

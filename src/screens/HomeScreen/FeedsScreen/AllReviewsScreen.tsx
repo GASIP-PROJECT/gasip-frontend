@@ -52,11 +52,8 @@ export default function AllReviewsScreen() {
   // resetFetchPage가 최초 렌더링 시 실행되는 것이 이슈가 아닌지 확인 필요
   useEffect(() => {
     fetchFeedsAndSetFeedList();
-    // resetFetchPage();
     scrollToTop();
   }, [toggleToUpdateFeedsList]);
-
-  console.log('feedsList length: ', feedsList.length);
 
   const onRefresh = async () => {
     setRefreshing(true);
@@ -78,9 +75,14 @@ export default function AllReviewsScreen() {
         ref={flatListRef}
         data={feedsList}
         extraData={toggleToUpdateFeedsList}
-        renderItem={({ item }: { item: Feed }) => (
-          <FeedSummary feedData={item} />
-        )}
+        renderItem={({ item, index }: { item: Feed; index: number }) => {
+          return (
+            <FeedSummary
+              feedData={item}
+              isLastElement={index === feedsList.length - 1}
+            />
+          );
+        }}
         ListEmptyComponent={() => <View />}
         onEndReached={onListEndReached}
         refreshControl={
@@ -94,7 +96,6 @@ export default function AllReviewsScreen() {
         onEndReachedThreshold={0.5}
         keyExtractor={(item, index) => index.toString()}
         ItemSeparatorComponent={() => <Spacer type="height" value={8} />}
-        ListFooterComponent={() => <Spacer type="height" value={150} />}
       />
     </FeedsListContainer>
   );

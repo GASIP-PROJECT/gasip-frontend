@@ -73,9 +73,14 @@ export default function PopularReviewsScreen() {
         ref={flatListRef}
         data={popularFeedsList}
         extraData={toggleToUpdateFeedsList}
-        renderItem={({ item }: { item: Feed }) => (
-          <FeedSummary feedData={item} />
-        )}
+        renderItem={({ item, index }: { item: Feed; index: number }) => {
+          return (
+            <FeedSummary
+              feedData={item}
+              isLastElement={index === popularFeedsList.length - 1}
+            />
+          );
+        }}
         onEndReached={onListEndReached}
         onEndReachedThreshold={0.5}
         refreshControl={
@@ -88,7 +93,6 @@ export default function PopularReviewsScreen() {
         }
         keyExtractor={(item, index) => index.toString()}
         ItemSeparatorComponent={() => <Spacer type="height" value={8} />}
-        ListFooterComponent={() => <Spacer type="height" value={150} />}
       />
     </FeedsListContainer>
   );
