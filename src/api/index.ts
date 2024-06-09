@@ -35,10 +35,10 @@ export const getAllProfessorReviews = async (
 };
 
 // 홈에서 표시할 4개의 피드 데이터 가져오는 함수
-export const getAllFeedsForHomeScreen = async () => {
+export const getAllProfessorReviewsForHomeScreen = async () => {
   try {
     const posts = await GSBackendClient.get(
-      `/boards/all-boards?page=${0}&size=${4}`,
+      `/boards/professor-boards?page=${0}&size=${4}`,
     );
 
     return posts.data.response;
@@ -55,6 +55,19 @@ export const getPopularFeedsForHomeScreen = async () => {
     return posts.data.response;
   } catch (error) {
     console.log('getPopularFeeds error: ', error);
+    return [];
+  }
+};
+
+export const getAllGeneralFeedsForHomeScreen = async () => {
+  try {
+    const posts = await GSBackendClient.get(
+      `/boards/free-boards?page=${0}&size=${4}&profId == 0`,
+    );
+
+    return posts.data.response;
+  } catch (error) {
+    console.log('getAllGeneralFeeds error: ', error);
     return [];
   }
 };

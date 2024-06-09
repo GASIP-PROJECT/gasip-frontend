@@ -3,7 +3,8 @@ import { ScrollView, StyleSheet } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 
 import {
-  getAllFeedsForHomeScreen,
+  getAllProfessorReviewsForHomeScreen,
+  getAllGeneralFeedsForHomeScreen,
   getPopularFeedsForHomeScreen,
 } from '@api/index';
 import useNewFeedStore from '@store/newFeedStore';
@@ -34,7 +35,7 @@ export default function HomeScreen({ navigation }) {
   useFocusEffect(
     useCallback(() => {
       const fetchAllReviews = async () => {
-        const reviews = await getAllFeedsForHomeScreen();
+        const reviews = await getAllProfessorReviewsForHomeScreen();
         setAllReviews([...reviews]);
       };
       const fetchPopularReviews = async () => {
@@ -42,7 +43,7 @@ export default function HomeScreen({ navigation }) {
         setPopularReviews([...reviews]);
       };
       const fetchAllFreeFeeds = async () => {
-        const freeFeeds = await getAllFeedsForHomeScreen();
+        const freeFeeds = await getAllGeneralFeedsForHomeScreen();
         setAllFreeFeeds([...freeFeeds]);
       };
 
