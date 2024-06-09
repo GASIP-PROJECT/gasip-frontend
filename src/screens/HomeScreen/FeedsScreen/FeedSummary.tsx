@@ -17,9 +17,11 @@ import icon_thumbsup from '@assets/icon_thumbsup.png';
 export default function FeedSummary({
   feedData,
   showProfNameTag = true,
+  isLastElement,
 }: {
   feedData: Feed;
   showProfNameTag?: boolean;
+  isLastElement: boolean;
 }) {
   if (!feedData) return null;
 
@@ -41,27 +43,31 @@ export default function FeedSummary({
   };
 
   return (
-    <TouchableOpacity style={styles.container} onPress={goToFeed}>
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}
-      >
-        <SummaryContent content={content} />
-        <Spacer type="width" value={10} />
-        {showProfNameTag && <ProfessorNameTag profName={profName} />}
-      </View>
-      <Spacer type="height" value={10} />
-      <SummaryFooter
-        likeCount={likeCount}
-        commentCount={commentCount || 0}
-        clickCount={clickCount}
-        regDate={regDate}
-        memberNickname={memberNickname}
-      />
-    </TouchableOpacity>
+    <>
+      <TouchableOpacity style={styles.container} onPress={goToFeed}>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}
+        >
+          <SummaryContent content={content} />
+          <Spacer type="width" value={10} />
+          {showProfNameTag && <ProfessorNameTag profName={profName} />}
+        </View>
+        <Spacer type="height" value={10} />
+        <SummaryFooter
+          likeCount={likeCount}
+          commentCount={commentCount || 0}
+          clickCount={clickCount}
+          regDate={regDate}
+          memberNickname={memberNickname}
+        />
+      </TouchableOpacity>
+      {/* FeedSummary가 사용되는 FlatList에서 listFooterComponent가 존재하는 경우 최초 렌더링 시 onEndReached가 바로 호출되는 이슈가 있어 대신 마지막 요소인 경우 Spacer를 렌더링하는 방식으로 임시 수정 */}
+      {isLastElement && <Spacer type="height" value={150} />}
+    </>
   );
 }
 
