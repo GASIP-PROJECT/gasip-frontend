@@ -1,15 +1,14 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { StyleSheet, View, Modal, Alert } from 'react-native';
+import { StyleSheet, View, Modal, Alert, TextInput } from 'react-native';
 
 import { editFeed } from '@api/index';
 
 import Spacer from '@components/common/Spacer';
-import GSButton from '@components/common/GSButton';
 import SafeAreaLayout from '@components/common/SafeAreaLayout';
 
 import FeedEditModalHeader from './FeedEditModalHeader';
-import CreateFeedModalTextInput from '@screens/HomeScreen/CreateFeedModal/CreateFeedModalTextInput';
-import CreateFeedModalHeader from '../CreateFeedModal/CreateFeedModalHeader';
+
+import { COLORS } from '@styles/colors';
 
 interface FeedEditModalProps {
   isVisible: boolean;
@@ -60,10 +59,17 @@ export default function FeedEditModal({
           />
 
           <Spacer type="height" value={10} />
-          <CreateFeedModalTextInput
-            feedContent={feedContent}
-            setFeedContent={setFeedContent}
-          />
+          <View style={styles.textInputContainer}>
+            <TextInput
+              value={feedContent}
+              style={styles.textInput}
+              placeholder="여러분의 자유로운 의견을 들려주세요."
+              placeholderTextColor={COLORS.GRAY_400}
+              multiline
+              maxLength={500}
+              onChangeText={text => setFeedContent(text)}
+            />
+          </View>
           <Spacer type="height" value={40} />
         </View>
       </SafeAreaLayout>
@@ -75,5 +81,18 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
+  },
+  textInputContainer: {
+    flex: 1,
+    width: '100%',
+    paddingHorizontal: 16,
+  },
+  textInput: {
+    flex: 1,
+    fontSize: 14,
+    borderColor: 'white',
+    padding: 10,
+    textAlignVertical: 'top',
+    lineHeight: 20,
   },
 });
