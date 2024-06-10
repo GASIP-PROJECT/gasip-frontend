@@ -197,6 +197,7 @@ export default function FeedDetailScreen({ route, navigation }) {
             }}
           >
             <Spacer type="height" value={8} />
+
             <GSText style={styles.commentTitleText}>
               댓글 {`(${feedData.commentCount}개)`}
             </GSText>
@@ -308,8 +309,12 @@ const CommentReplyIndicator = ({
 }) => {
   return (
     <View style={styles.commentReplyIndicatorContainer}>
-      <GSText style={styles.commentReplyIndicatorText}>
-        {commentNickname} 님에게 남기는 답글
+      <GSText
+        style={styles.commentReplyIndicatorText}
+        numberOfLines={2}
+        adjustFontSizeToFit
+      >
+        {commentNickname} 님의 댓글에 답글 다는 중
       </GSText>
       <TouchableOpacity onPress={resetReplyCommentData}>
         <GSIcon name="close-outline" size={20} color={COLORS.WHITE} />
@@ -375,18 +380,21 @@ const styles = StyleSheet.create({
   },
   commentReplyIndicatorContainer: {
     width: '100%',
-    backgroundColor: '#3e3b3b',
-    opacity: 0.5,
-    height: 50,
+    backgroundColor: COLORS.WHITE,
+    height: 34,
     justifyContent: 'space-between',
     paddingHorizontal: 25,
     flexDirection: 'row',
     alignItems: 'center',
+    borderTopColor: COLORS.BLUE_PRIMARY,
+    borderBottomColor: COLORS.BLUE_PRIMARY,
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
   },
   commentReplyIndicatorText: {
-    fontSize: 16,
+    fontSize: 12,
     fontWeight: '500',
-    color: COLORS.WHITE,
+    color: COLORS.GRAY_500,
   },
   professorNameText: {
     fontSize: 13,
