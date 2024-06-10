@@ -23,9 +23,10 @@ export default function ProfessorFeeds({ profId }: { profId: number }) {
   const [page, setPage] = useState(0);
   const [feedCount, setFeedCount] = useState(0);
 
+  // TODO - 로직 섬세하게 수정 필요
   const onListEndReached = async () => {
+    const posts: Feed[] = await getProfessorFeeds(profId, page + 1);
     setPage(prev => prev + 1);
-    const posts: Feed[] = await getProfessorFeeds(profId, page);
 
     if (posts.length > 0) {
       setFeeds([...feeds, ...posts]);
@@ -55,13 +56,17 @@ export default function ProfessorFeeds({ profId }: { profId: number }) {
       <FlatList
         data={feeds}
         extraData={toggleToUpdateFeedsList}
-        renderItem={({ item }: { item: Feed }) => (
-          <FeedSummary feedData={item} showProfNameTag={false} />
+        renderItem={({ item, index }: { item: Feed; index: number }) => (
+          <FeedSummary
+            feedData={item}
+            showProfNameTag={false}
+            isLastElement={index === feeds.length - 1}
+          />
         )}
+        onEndReachedThreshold={0.5}
         onEndReached={onListEndReached}
         keyExtractor={(item, index) => index.toString()}
         ItemSeparatorComponent={() => <Spacer type="height" value={8} />}
-        ListFooterComponent={() => <Spacer type="height" value={150} />}
         showsVerticalScrollIndicator={false}
       />
     </View>
