@@ -10,15 +10,13 @@ import { useNavigation } from '@react-navigation/native';
 
 import { useSearchContext } from '@contexts/SearchContext';
 
-import FeedSummary from '@screens/HomeScreen/FeedsScreen/FeedSummary';
-
 import GSText from '@components/common/GSText';
 import Spacer from '@components/common/Spacer';
+import GSTopIndicator from '@components/common/GSTopIndicator';
 
 import { COLORS } from '@styles/colors';
 import icon_search from '@assets/icon_search.png';
-import { type Feed, type Professor } from 'types/searchTypes';
-import GSTopIndicator from '@components/common/GSTopIndicator';
+import { type Professor } from 'types/searchTypes';
 
 // TODO - 컴포넌트 구조 뭔가 이상함. 수정 필요한 상태
 export default function SearchResults() {
@@ -72,26 +70,14 @@ const ProfessorInfo = ({ professorData }: { professorData: Professor }) => {
     >
       <Image source={icon_search} style={{ width: 24, height: 24 }} />
       <Spacer type="width" value={10} />
-      <GSText style={styles.professorInfo}>
+      <GSText
+        style={styles.professorInfo}
+        adjustsFontSizeToFit
+        numberOfLines={2}
+      >
         {majorName} - {profName} 교수님
       </GSText>
     </TouchableOpacity>
-  );
-};
-
-const FeedResults = () => {
-  const { searchResults } = useSearchContext();
-
-  return (
-    <FlatList
-      data={searchResults as Feed[]}
-      renderItem={({ item }: { item: Feed }) => {
-        return <FeedSummary feedData={item} />;
-      }}
-      keyExtractor={(item, index) => index.toString()}
-      ItemSeparatorComponent={() => <Spacer type="height" value={12} />}
-      ListFooterComponent={() => <Spacer type="height" value={150} />}
-    />
   );
 };
 
@@ -100,6 +86,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '500',
     color: COLORS.BLACK,
+    flexWrap: 'wrap',
+    flex: 1,
   },
   searchResultItemContainer: {
     flexDirection: 'row',
