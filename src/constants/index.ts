@@ -11,5 +11,6 @@ export const FEED_CATEGORIES = {
 
 export const SEARCH_CATEGORY = {
   PROFESSOR: '교수님',
-  MAJOR: '학과/학부',
+  MAJOR: '학부/학과',
+  FEED: '게시글',
 };

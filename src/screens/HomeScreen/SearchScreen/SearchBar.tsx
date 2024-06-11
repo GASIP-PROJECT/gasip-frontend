@@ -69,6 +69,8 @@ export default function SearchBar() {
         <SearchResultTypeSelector category={SEARCH_CATEGORY.PROFESSOR} />
         <Spacer type="width" value={10} />
         <SearchResultTypeSelector category={SEARCH_CATEGORY.MAJOR} />
+        <Spacer type="width" value={10} />
+        <SearchResultTypeSelector category={SEARCH_CATEGORY.FEED} />
       </View>
     </>
   );

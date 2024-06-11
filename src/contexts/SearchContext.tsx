@@ -8,7 +8,11 @@ import {
 } from 'react';
 import { SearchCategoryType, SearchResult } from '@types/searchTypes';
 
-import { searchProfessors, searchProfessorsByMajor } from '@api/index';
+import {
+  searchFeeds,
+  searchProfessors,
+  searchProfessorsByMajor,
+} from '@api/index';
 
 import { SEARCH_CATEGORY } from '../constants';
 
@@ -72,6 +76,18 @@ export const SearchContextProvider = ({
         setNoSearchResult(false);
       }
       setSearchResults([...professors]);
+    }
+
+    if (searchCategory === SEARCH_CATEGORY.FEED) {
+      const searchedFeeds = await searchFeeds(searchText);
+
+      if (searchedFeeds.length === 0) {
+        setNoSearchResult(true);
+      } else {
+        setNoSearchResult(false);
+      }
+      // setSearchResults([...searchedFeeds]);
+      console.log(searchedFeeds);
     }
   };
 
