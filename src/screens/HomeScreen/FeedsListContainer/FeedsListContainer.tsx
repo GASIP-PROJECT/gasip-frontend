@@ -65,9 +65,10 @@ export default function FeedsListContainer({
         <Spacer type="height" value={30} />
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <Title title={title} titleIcon={titleIcon} subText={subText} />
-          <TouchableOpacity style={{ marginTop: 8 }}>
+          {/* TODO - 임시로 주석처리한 검색 UI에 대해서 팀 논의 후 최종 처리 필요 */}
+          {/* <TouchableOpacity style={{ marginTop: 8 }}>
             <Image source={icon_search} style={{ width: 28, height: 28 }} />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
         <Spacer type="height" value={24} />
       </View>
