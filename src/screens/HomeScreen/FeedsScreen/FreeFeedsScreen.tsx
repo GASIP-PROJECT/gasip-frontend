@@ -80,6 +80,7 @@ export default function FreeFeedsScreen() {
             <FeedSummary
               feedData={item}
               isLastElement={index === feedsList.length - 1}
+              showProfNameTag={false}
             />
           );
         }}
