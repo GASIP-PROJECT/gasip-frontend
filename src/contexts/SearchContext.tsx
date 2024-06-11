@@ -86,8 +86,7 @@ export const SearchContextProvider = ({
       } else {
         setNoSearchResult(false);
       }
-      // setSearchResults([...searchedFeeds]);
-      console.log(searchedFeeds);
+      setSearchResults([...searchedFeeds]);
     }
   };
 
