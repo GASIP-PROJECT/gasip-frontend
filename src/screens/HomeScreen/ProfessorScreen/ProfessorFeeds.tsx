@@ -13,6 +13,7 @@ import { COLORS } from '@styles/colors';
 import { type Feed } from 'types/searchTypes';
 
 import icon_write from '@assets/icon_write.png';
+import icon_smile_blank from '@assets/icon_smile_blank.png';
 
 export default function ProfessorFeeds({ profId }: { profId: number }) {
   const toggleToUpdateFeedsList = useNewFeedStore(
@@ -68,6 +69,7 @@ export default function ProfessorFeeds({ profId }: { profId: number }) {
         keyExtractor={(item, index) => index.toString()}
         ItemSeparatorComponent={() => <Spacer type="height" value={8} />}
         showsVerticalScrollIndicator={false}
+        ListEmptyComponent={<NoReviews />}
       />
     </View>
   );
@@ -85,6 +87,19 @@ const Header = ({ feedCount }: { feedCount: number }) => {
       <GSText style={styles.feedCountText}>게시글({feedCount}개)</GSText>
       <Spacer type="height" value={10} />
     </>
+  );
+};
+
+const NoReviews = () => {
+  return (
+    <View style={styles.noReviewsContainer}>
+      <Spacer type="height" value={100} />
+      <Image source={icon_smile_blank} style={{ width: 80, height: 80 }} />
+      <Spacer type="height" value={16} />
+      <GSText style={styles.noReviewsText}>
+        아직 교수님 리뷰가 없어요{`\n`}첫번째 리뷰를 작성해보세요!
+      </GSText>
+    </View>
   );
 };
 
@@ -106,5 +121,14 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     color: COLORS.GRAY_500,
     alignSelf: 'flex-end',
+  },
+  noReviewsContainer: {
+    alignItems: 'center',
+  },
+  noReviewsText: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: COLORS.GRAY_400,
+    textAlign: 'center',
   },
 });
