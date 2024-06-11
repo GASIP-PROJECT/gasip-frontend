@@ -317,7 +317,7 @@ const CommentReplyIndicator = ({
         {commentNickname} 님의 댓글에 답글 다는 중
       </GSText>
       <TouchableOpacity onPress={resetReplyCommentData}>
-        <GSIcon name="close-outline" size={20} color={COLORS.WHITE} />
+        <GSIcon name="close-outline" size={20} color={COLORS.GRAY_500} />
       </TouchableOpacity>
     </View>
   );
