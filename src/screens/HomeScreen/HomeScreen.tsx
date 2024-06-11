@@ -64,17 +64,17 @@ export default function HomeScreen({ navigation }) {
         <WriteProfessorReview />
         <Spacer type="height" value={28} />
         <HomeFeedList
-          title="전체 리뷰"
-          headerIcon={icon_papers}
-          onSeeMorePress={() => navigation.navigate('AllReviewsScreen')}
-          data={allReviews}
-        />
-        <Spacer type="height" value={24} />
-        <HomeFeedList
           title="인기 리뷰"
           headerIcon={icon_fire}
           onSeeMorePress={() => navigation.navigate('PopularReviewsScreen')}
           data={popularReviews}
+        />
+        <Spacer type="height" value={24} />
+        <HomeFeedList
+          title="전체 리뷰"
+          headerIcon={icon_papers}
+          onSeeMorePress={() => navigation.navigate('AllReviewsScreen')}
+          data={allReviews}
         />
         <Spacer type="height" value={24} />
         <HomeFeedList
