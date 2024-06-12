@@ -424,7 +424,7 @@ export const searchProfessorsByMajor = async (searchedMajor: string) => {
 
 export const deleteAccount = async () => {
   try {
-    await GSBackendClient.delete('/member');
+    await GSBackendClient.delete('/members');
   } catch (error) {
     console.log('deleteAccount error: ', error);
   }
