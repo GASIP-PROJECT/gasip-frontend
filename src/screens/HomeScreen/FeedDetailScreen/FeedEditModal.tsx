@@ -3,6 +3,8 @@ import { StyleSheet, View, Modal, Alert, TextInput } from 'react-native';
 
 import { editFeed } from '@api/index';
 
+import useCommentEditStore from '@store/commentEditStore';
+
 import Spacer from '@components/common/Spacer';
 import SafeAreaLayout from '@components/common/SafeAreaLayout';
 
@@ -14,7 +16,6 @@ interface FeedEditModalProps {
   isVisible: boolean;
   prevContent: string;
   postId: number;
-  setUpdateFeed: Dispatch<SetStateAction<boolean>>;
   setIsVisible: Dispatch<SetStateAction<boolean>>;
 }
 
@@ -22,10 +23,10 @@ export default function FeedEditModal({
   isVisible,
   prevContent,
   postId,
-  setUpdateFeed,
   setIsVisible,
 }: FeedEditModalProps) {
   const [feedContent, setFeedContent] = useState('');
+  const toggleUpdateFeed = useCommentEditStore(state => state.toggleUpdateFeed);
 
   const handleFeedEditPress = async () => {
     if (feedContent === '') {
@@ -34,7 +35,7 @@ export default function FeedEditModal({
     }
     await editFeed(postId, feedContent);
 
-    setUpdateFeed(prev => !prev);
+    toggleUpdateFeed();
     setIsVisible(false);
   };
 

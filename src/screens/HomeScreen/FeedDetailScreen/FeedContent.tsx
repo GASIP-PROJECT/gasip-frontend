@@ -1,11 +1,12 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { MMKVStorage } from '@api/mmkv';
 import { likeFeed, likeFeedCancel } from '@api/index';
 import { getTimeDifference } from '@utils/timeUtil';
 
-import GSIcon from '@components/common/GSIcon';
+import useCommentEditStore from '@store/commentEditStore';
+
 import Spacer from '@components/common/Spacer';
 import GSText from '@components/common/GSText';
 
@@ -19,11 +20,9 @@ import icon_dots_vertical from '@assets/icon_dots_vertical.png';
 
 export default function FeedContent({
   feedData,
-  setUpdateFeed,
   openFeedActionsModal,
 }: {
   feedData: Feed | null;
-  setUpdateFeed: Dispatch<SetStateAction<boolean>>;
   openFeedActionsModal: () => void;
 }) {
   if (feedData === null) return <View />;
@@ -55,7 +54,6 @@ export default function FeedContent({
         likeCount={likeCount}
         postId={postId}
         isLike={isLike}
-        setUpdateFeed={setUpdateFeed}
         clickCount={clickCount}
         commentCount={commentCount}
       />
@@ -104,18 +102,17 @@ const FeedContentText = ({ content }: { content: string }) => {
 const FeedContentFooter = ({
   likeCount,
   postId,
-  setUpdateFeed,
   isLike,
   clickCount,
   commentCount,
 }: {
   likeCount: number;
   postId: number;
-  setUpdateFeed: Dispatch<SetStateAction<boolean>>;
   isLike: boolean;
   clickCount: number;
   commentCount: number;
 }) => {
+  const toggleUpdateFeed = useCommentEditStore(state => state.toggleUpdateFeed);
   const iconTextGap = 3;
 
   const handleLikePress = async () => {
@@ -125,7 +122,7 @@ const FeedContentFooter = ({
       await likeFeed(postId);
     }
 
-    setUpdateFeed(prev => !prev);
+    toggleUpdateFeed();
   };
 
   return (

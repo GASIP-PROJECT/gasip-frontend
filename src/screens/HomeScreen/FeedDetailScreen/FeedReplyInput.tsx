@@ -12,6 +12,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { createComment, createCommentReply } from '@api/index';
 
+import useCommentEditStore from '@store/commentEditStore';
+
 import Spacer from '@components/common/Spacer';
 
 import { COLORS } from '@styles/colors';
@@ -22,7 +24,6 @@ interface FeedReplyInputProps {
   postId: number;
   replyCommentId: number | null;
   commentTextInputRef: React.RefObject<TextInput>;
-  setUpdateFeed: Dispatch<SetStateAction<boolean>>;
   resetReplyCommentData: () => void;
 }
 
@@ -30,10 +31,10 @@ export default function FeedReplyInput({
   postId,
   replyCommentId,
   commentTextInputRef,
-  setUpdateFeed,
   resetReplyCommentData,
 }: FeedReplyInputProps) {
   const { bottom: bottomSafeAreaPadding } = useSafeAreaInsets();
+  const toggleUpdateFeed = useCommentEditStore(state => state.toggleUpdateFeed);
 
   const [newComment, setNewComment] = useState('');
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
@@ -56,7 +57,7 @@ export default function FeedReplyInput({
     }
 
     setNewComment('');
-    setUpdateFeed(prev => !prev);
+    toggleUpdateFeed();
   };
 
   useEffect(() => {

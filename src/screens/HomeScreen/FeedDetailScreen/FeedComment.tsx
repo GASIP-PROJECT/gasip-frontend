@@ -8,8 +8,10 @@ import {
 } from 'react-native';
 
 import { MMKVStorage } from '@api/mmkv';
-import { deleteComment, likeComment, likeCommentCancel } from '@api/index';
+import { likeComment, likeCommentCancel } from '@api/index';
 import { getTimeDifference } from '@utils/timeUtil';
+
+import useCommentEditStore from '@store/commentEditStore';
 
 import FeedCommentReply from './FeedCommentReply';
 
@@ -26,28 +28,16 @@ import icon_dots_vertical from '@assets/icon_dots_vertical.png';
 interface FeedCommentProps {
   isLastElement: boolean;
   commentData: FeedComment;
-  setUpdateFeed: Dispatch<SetStateAction<boolean>>;
   handleReplyCommentPress: (commentId: number, commentNickname: string) => void;
-  isCommentEditing: boolean;
-  setIsCommentEditing: Dispatch<SetStateAction<boolean>>;
-  setSelectedCommentId: Dispatch<SetStateAction<number | null>>;
   handleCommentEditConfirm: () => void;
-  newComment: string;
-  setNewComment: Dispatch<SetStateAction<string>>;
   isSelectedForEditing: boolean;
 }
 
 export default function FeedComment({
   isLastElement,
   commentData,
-  setUpdateFeed,
   handleReplyCommentPress,
-  isCommentEditing,
-  setIsCommentEditing,
-  setSelectedCommentId,
   handleCommentEditConfirm,
-  newComment,
-  setNewComment,
   isSelectedForEditing,
 }: FeedCommentProps) {
   if (commentData === null) return <View />;
@@ -63,6 +53,16 @@ export default function FeedComment({
     nickName,
     memberId,
   } = commentData;
+
+  const {
+    isCommentEditing,
+
+    deleteComment,
+    setNewComment,
+    toggleUpdateFeed,
+    setIsCommentEditing,
+    setSelectedCommentId,
+  } = useCommentEditStore();
 
   const [showCommentActionMenu, setShowCommentActionMenu] = useState(false);
 
@@ -88,7 +88,7 @@ export default function FeedComment({
       await likeComment(commentId, postId);
     }
 
-    setUpdateFeed(prev => !prev);
+    toggleUpdateFeed();
   };
 
   const handleReplyButtonPress = () => {
@@ -104,12 +104,11 @@ export default function FeedComment({
     setShowCommentActionMenu(false);
   };
 
-  const handleCommentDeletePress = async () => {
-    setShowCommentActionMenu(false);
-    await deleteComment(commentId);
-    setUpdateFeed(prev => !prev);
+  const handleCommentDeletePress = () => {
+    deleteComment(commentId);
   };
 
+  // 수정 버튼을 눌렀을 때 이뤄져야 하는 처리
   const handleCommentEditPress = () => {
     setShowCommentActionMenu(false);
     setNewComment(content);
@@ -141,11 +140,7 @@ export default function FeedComment({
         <Spacer type="height" value={6} />
         <CommentBody
           content={content}
-          isCommentEditing={isCommentEditing}
-          setIsCommentEditing={setIsCommentEditing}
           handleCommentEditConfirm={handleCommentEditConfirm}
-          newComment={newComment}
-          setNewComment={setNewComment}
           isSelectedForEditing={isSelectedForEditing}
         />
         <Spacer type="height" value={16} />
@@ -215,21 +210,16 @@ const CommentHeader = ({
 
 const CommentBody = ({
   content,
-  isCommentEditing,
-  setIsCommentEditing,
   handleCommentEditConfirm,
-  newComment,
-  setNewComment,
   isSelectedForEditing,
 }: {
   content: string;
-  isCommentEditing: boolean;
-  setIsCommentEditing: Dispatch<SetStateAction<boolean>>;
   handleCommentEditConfirm: () => void;
-  newComment: string;
-  setNewComment: Dispatch<SetStateAction<string>>;
   isSelectedForEditing: boolean;
 }) => {
+  const { newComment, isCommentEditing, setIsCommentEditing, setNewComment } =
+    useCommentEditStore();
+
   if (isCommentEditing && isSelectedForEditing)
     return (
       <TextInput

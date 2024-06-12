@@ -2,22 +2,17 @@ import React, { useEffect, useRef, useState } from 'react';
 import {
   StyleSheet,
   View,
-  Text,
   ScrollView,
   TextInput,
   TouchableOpacity,
   Image,
   KeyboardAvoidingView,
   Platform,
-  Alert,
 } from 'react-native';
 
-import {
-  deleteFeed,
-  editComment,
-  getFeedData,
-  getProfessorData,
-} from '@api/index';
+import { deleteFeed, getFeedData, getProfessorData } from '@api/index';
+
+import useCommentEditStore from '@store/commentEditStore';
 
 import FeedContent from './FeedContent';
 import FeedComment from './FeedComment';
@@ -40,9 +35,15 @@ export default function FeedDetailScreen({ route, navigation }) {
   const { postId } = route.params;
 
   const commentTextInputRef = useRef<TextInput>(null);
+  const {
+    updateFeed,
+    newComment,
+    isCommentEditing,
+    selectedCommentId,
+    editComment,
+  } = useCommentEditStore();
 
   const [feedData, setFeedData] = useState<Feed | null>(null);
-  const [updateFeed, setUpdateFeed] = useState(false);
 
   const [replyCommentId, setReplyCommentId] = useState<number | null>(null);
   const [replyCommentNickname, setReplyCommentNickname] = useState<
@@ -51,12 +52,6 @@ export default function FeedDetailScreen({ route, navigation }) {
 
   const [showFeedActionMenu, setShowFeedActionMenu] = useState(false);
   const [showFeedEditModal, setShowFeedEditModal] = useState(false);
-  const [isCommentEditing, setIsCommentEditing] = useState(false);
-  const [selectedCommentId, setSelectedCommentId] = useState<number | null>(
-    null,
-  );
-
-  const [newComment, setNewComment] = useState('');
 
   const handleReplyCommentPress = (
     commentId: number,
@@ -94,17 +89,8 @@ export default function FeedDetailScreen({ route, navigation }) {
     }, 0);
   };
 
-  const handleCommentEditConfirmPress = async () => {
-    if (newComment === '') {
-      Alert.alert('내용을 입력해주세요.');
-      return;
-    }
-    if (selectedCommentId === null) return;
-
-    await editComment(selectedCommentId, newComment);
-    setUpdateFeed(prev => !prev);
-    setIsCommentEditing(false);
-    setNewComment('');
+  const handleCommentEditConfirmPress = () => {
+    editComment(newComment, selectedCommentId);
   };
 
   const handleProfNamePress = async () => {
@@ -182,7 +168,6 @@ export default function FeedDetailScreen({ route, navigation }) {
             <View style={styles.feedContentCotainer}>
               <FeedContent
                 feedData={feedData}
-                setUpdateFeed={setUpdateFeed}
                 openFeedActionsModal={openFeedActionsModal}
               />
             </View>
@@ -208,14 +193,8 @@ export default function FeedDetailScreen({ route, navigation }) {
                 key={index.toString()}
                 isLastElement={index === feedData.comments.length - 1}
                 commentData={comment}
-                setUpdateFeed={setUpdateFeed}
                 handleReplyCommentPress={handleReplyCommentPress}
-                isCommentEditing={isCommentEditing}
-                setIsCommentEditing={setIsCommentEditing}
-                setSelectedCommentId={setSelectedCommentId}
                 handleCommentEditConfirm={handleCommentEditConfirmPress}
-                newComment={newComment}
-                setNewComment={setNewComment}
                 isSelectedForEditing={
                   // TODO - optional 로 처리하지 않으면 null로 뜨는 이슈 체크
                   comment?.commentId === selectedCommentId
@@ -283,7 +262,6 @@ export default function FeedDetailScreen({ route, navigation }) {
             postId={postId}
             replyCommentId={replyCommentId}
             commentTextInputRef={commentTextInputRef}
-            setUpdateFeed={setUpdateFeed}
             resetReplyCommentData={resetReplyCommentData}
           />
         )}
@@ -292,7 +270,6 @@ export default function FeedDetailScreen({ route, navigation }) {
           postId={postId}
           prevContent={feedData?.content || ''}
           isVisible={showFeedEditModal}
-          setUpdateFeed={setUpdateFeed}
           setIsVisible={setShowFeedEditModal}
         />
       </SafeAreaLayout>
