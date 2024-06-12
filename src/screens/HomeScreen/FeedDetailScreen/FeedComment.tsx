@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   TouchableOpacity,
@@ -140,7 +140,6 @@ export default function FeedComment({
         <Spacer type="height" value={6} />
         <CommentBody
           content={content}
-          handleCommentEditConfirm={handleCommentEditConfirm}
           isSelectedForEditing={isSelectedForEditing}
         />
         <Spacer type="height" value={16} />
@@ -210,11 +209,9 @@ const CommentHeader = ({
 
 const CommentBody = ({
   content,
-  handleCommentEditConfirm,
   isSelectedForEditing,
 }: {
   content: string;
-  handleCommentEditConfirm: () => void;
   isSelectedForEditing: boolean;
 }) => {
   const { newComment, isCommentEditing, setIsCommentEditing, setNewComment } =
@@ -228,7 +225,6 @@ const CommentBody = ({
         style={{ flex: 1 }}
         multiline
         autoFocus
-        onSubmitEditing={handleCommentEditConfirm}
         onBlur={() => setIsCommentEditing(false)}
       />
     );
