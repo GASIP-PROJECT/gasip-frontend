@@ -95,6 +95,7 @@ export default function FeedComment({
 
   const handleReplyButtonPress = () => {
     handleReplyCommentPress(commentId, nickName);
+    scrollTo(positionY);
   };
 
   // TODO - commentAction과 feedAction 분리 필요
