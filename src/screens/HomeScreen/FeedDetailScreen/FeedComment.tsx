@@ -31,6 +31,7 @@ interface FeedCommentProps {
   handleReplyCommentPress: (commentId: number, commentNickname: string) => void;
   handleCommentEditConfirm: () => void;
   isSelectedForEditing: boolean;
+  scrollTo: (y: number) => void;
 }
 
 export default function FeedComment({
@@ -39,6 +40,7 @@ export default function FeedComment({
   handleReplyCommentPress,
   handleCommentEditConfirm,
   isSelectedForEditing,
+  scrollTo,
 }: FeedCommentProps) {
   if (commentData === null) return <View />;
 
@@ -108,16 +110,29 @@ export default function FeedComment({
     deleteComment(commentId);
   };
 
+  const [positionY, setPositionY] = useState(0);
+
+  // TODO - 대댓글에 대해서는 각 댓글에서 객체 형태로 positionY를 저장하고 이를 Scroll하기 위해서 사용
+  // 배열을 사용해서 Index로 접근하려고 했으나, 배열에 컴포넌트의 onLayout으로 계산된 y값이 데이터 순서대로 입력되지 않았음.
+  // 객체를 활용해서 commentId를 key로 하여 y값을 저장하고 사용함.
+  const [replyYpositions, setReplyYPositions] = useState({});
+
   // 수정 버튼을 눌렀을 때 이뤄져야 하는 처리
   const handleCommentEditPress = () => {
     setShowCommentActionMenu(false);
     setNewComment(content);
     setSelectedCommentId(commentId);
     setIsCommentEditing(true);
+    scrollTo(positionY);
   };
 
   return (
-    <View>
+    <View
+      onLayout={e => {
+        const { y } = e.nativeEvent.layout;
+        setPositionY(y);
+      }}
+    >
       <View style={[styles.contentContainer, commentContainerBorderStyle]}>
         <CommentHeader
           regDate={regDate}
@@ -160,10 +175,20 @@ export default function FeedComment({
               borderBottomWidth: index !== commentChildren.length - 1 ? 1 : 0,
               borderBottomColor: COLORS.GRAY_200,
             }}
+            onLayout={e => {
+              const { y } = e.nativeEvent.layout;
+              setReplyYPositions(prevState => ({
+                ...prevState,
+                [commentChild.commentId]: y + positionY,
+              }));
+            }}
           >
             <FeedCommentReply
               reply={commentChild}
               handleLikePress={handleLikePress}
+              scrollTo={() => {
+                scrollTo(replyYpositions[commentChild.commentId]);
+              }}
             />
           </View>
         );

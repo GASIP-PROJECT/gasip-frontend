@@ -112,6 +112,14 @@ export default function FeedDetailScreen({ route, navigation }) {
     fetchFeedData();
   }, [updateFeed]);
 
+  const scrollViewRef = useRef(null);
+
+  const scrollTo = (y: number) => {
+    if (scrollViewRef.current) {
+      scrollViewRef.current.scrollTo({ y: y, animated: true });
+    }
+  };
+
   if (feedData === null) return <View />;
 
   return (
@@ -155,7 +163,7 @@ export default function FeedDetailScreen({ route, navigation }) {
           />
         </View>
 
-        <ScrollView style={styles.container}>
+        <ScrollView style={styles.container} ref={scrollViewRef}>
           {/* 피드 내용 */}
           {/* TODO - shadow 제대로 된건가..? */}
           <View
@@ -199,6 +207,7 @@ export default function FeedDetailScreen({ route, navigation }) {
                   // TODO - optional 로 처리하지 않으면 null로 뜨는 이슈 체크
                   comment?.commentId === selectedCommentId
                 }
+                scrollTo={scrollTo}
               />
             ))}
           </View>
@@ -217,7 +226,7 @@ export default function FeedDetailScreen({ route, navigation }) {
               onPress={() => setShowFeedActionMenu(false)}
             />
           )}
-          <Spacer type="height" value={100} />
+          <Spacer type="height" value={350} />
         </ScrollView>
 
         {replyCommentNickname && (

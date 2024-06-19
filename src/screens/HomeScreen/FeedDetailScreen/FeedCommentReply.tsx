@@ -26,9 +26,11 @@ import icon_dots_vertical from '@assets/icon_dots_vertical.png';
 export default function FeedCommentReply({
   reply,
   handleLikePress,
+  scrollTo,
 }: {
   reply: FeedComment;
   handleLikePress: (isLike: boolean, commentId: number) => void;
+  scrollTo: () => void;
 }) {
   const {
     content,
@@ -83,6 +85,7 @@ export default function FeedCommentReply({
     setNewComment(content);
     setSelectedCommentId(commentId);
     setIsCommentEditing(true);
+    scrollTo();
   };
 
   return (
