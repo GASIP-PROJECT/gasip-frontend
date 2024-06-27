@@ -64,7 +64,7 @@ export default function HomeScreen({ navigation }) {
         <WriteProfessorReview />
         <Spacer type="height" value={28} />
         <HomeFeedList
-          title="인기 리뷰"
+          title="실시간 인기글"
           headerIcon={icon_fire}
           onSeeMorePress={() => navigation.navigate('PopularReviewsScreen')}
           data={popularReviews}
