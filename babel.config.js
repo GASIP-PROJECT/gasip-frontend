@@ -19,6 +19,7 @@ module.exports = {
           '@types': './src/types',
           '@contexts': './src/contexts',
           '@store': './src/store',
+          '@hooks': './src/hooks',
         },
       },
     ],

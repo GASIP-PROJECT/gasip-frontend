@@ -14,7 +14,8 @@
       "@utils/*": ["utils/*"],
       "@types/*": ["types/*"],
       "@contexts/*": ["contexts/*"],
-      "@store/*": ["store/*"]
+      "@store/*": ["store/*"],
+      "@hooks/*": ["hooks/*"]
     }
   }
 }
