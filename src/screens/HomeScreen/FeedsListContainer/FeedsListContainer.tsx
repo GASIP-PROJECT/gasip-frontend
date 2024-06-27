@@ -1,15 +1,9 @@
 import React from 'react';
-import {
-  Image,
-  ImageSourcePropType,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { Image, ImageSourcePropType, StyleSheet, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import useNewFeedStore from '@store/newFeedStore';
+import useGetBottomButtonGap from '@hooks/useGetBottomButtonGap';
 
 import Spacer from '@components/common/Spacer';
 import GSText from '@components/common/GSText';
@@ -38,7 +32,7 @@ export default function FeedsListContainer({
   isProfessorReview?: boolean;
 }) {
   const navigation = useNavigation();
-  const { bottom } = useSafeAreaInsets();
+  const { bottomButtonGap } = useGetBottomButtonGap();
 
   const openNewFeedModal = useNewFeedStore(state => state.openNewFeedModal);
   const setIsFreeFeed = useNewFeedStore(state => state.setIsFreeFeed);
@@ -80,7 +74,7 @@ export default function FeedsListContainer({
             justifyContent: 'center',
             alignItems: 'center',
             position: 'absolute',
-            bottom: bottom,
+            bottom: bottomButtonGap,
             width: '100%',
             zIndex: 100,
           }}
