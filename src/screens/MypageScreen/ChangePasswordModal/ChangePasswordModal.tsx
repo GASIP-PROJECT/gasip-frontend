@@ -2,7 +2,6 @@ import React, { useState, Dispatch, SetStateAction } from 'react';
 import {
   Image,
   StyleSheet,
-  Text,
   TextInput,
   TouchableOpacity,
   View,
@@ -17,6 +16,7 @@ import SafeAreaLayout from '@components/common/SafeAreaLayout';
 import { COLORS } from '@styles/colors';
 
 import icon_hand from '@assets/icon_hand.png';
+import GSText from '@components/common/GSText';
 
 interface ChangePasswordModalProps {
   isVisible: boolean;
@@ -72,9 +72,9 @@ const Header = ({
 
 const ChangeNicknameText = () => {
   return (
-    <Text style={styles.changeNicknameText}>
+    <GSText style={styles.changeNicknameText}>
       변경할 비밀번호를 입력해주세요!
-    </Text>
+    </GSText>
   );
 };
 
@@ -102,7 +102,7 @@ const ChangeNickNameTextInput = ({ setNewNickname }) => {
 const Button = ({ buttonText, onPress }) => {
   return (
     <TouchableOpacity style={[styles.btnContainer]} onPress={onPress}>
-      <Text style={styles.text}>{buttonText}</Text>
+      <GSText style={styles.text}>{buttonText}</GSText>
     </TouchableOpacity>
   );
 };

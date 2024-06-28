@@ -175,6 +175,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     alignItems: 'center',
     paddingHorizontal: 26,
+    color: COLORS.BLACK,
   },
   button: {
     borderRadius: 16,

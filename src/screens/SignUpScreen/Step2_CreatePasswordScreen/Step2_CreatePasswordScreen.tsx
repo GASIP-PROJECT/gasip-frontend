@@ -86,7 +86,7 @@ export default function Step2_CreatePasswordScreen({ navigation }) {
           <Image source={icon_lock} style={{ tintColor: COLORS.GRAY_400 }} />
           <Spacer type="width" value={6} />
           <TextInput
-            style={{ flex: 1 }}
+            style={{ flex: 1, color: COLORS.BLACK }}
             placeholder=" 비밀번호를 입력해주세요"
             value={password}
             onChangeText={text => setPassword(text)}
@@ -135,7 +135,7 @@ export default function Step2_CreatePasswordScreen({ navigation }) {
           <Image source={icon_lock} style={{ tintColor: COLORS.GRAY_400 }} />
           <Spacer type="width" value={6} />
           <TextInput
-            style={{ flex: 1 }}
+            style={{ flex: 1, color: COLORS.BLACK }}
             placeholder=" 비밀번호를 재입력해주세요"
             value={confirmPassword}
             onChangeText={text => setConfirmPassword(text)}

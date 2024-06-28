@@ -130,7 +130,7 @@ export default function LoginScreen() {
                 ]}
               >
                 <TextInput
-                  style={{ flex: 1 }}
+                  style={{ flex: 1, color: COLORS.BLACK }}
                   placeholder=" 비밀번호"
                   value={password}
                   onChangeText={setPassword}
@@ -211,6 +211,7 @@ const styles = StyleSheet.create({
     borderColor: '#9EA4AA',
     backgroundColor: '#ffffff',
     paddingHorizontal: 24,
+    color: COLORS.BLACK,
   },
 
   signUp: {

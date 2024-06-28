@@ -152,7 +152,7 @@ const ResetPasswordScreen = () => {
           /> */}
           <Spacer type="width" value={6} />
           <TextInput
-            style={{ flex: 1 }}
+            style={{ flex: 1, color: COLORS.BLACK }}
             placeholder="새로운 비밀번호로 재설정해주세요."
             secureTextEntry={true}
             onChangeText={handlePasswordChange}
@@ -189,7 +189,7 @@ const ResetPasswordScreen = () => {
           /> */}
           <Spacer type="width" value={6} />
           <TextInput
-            style={{ flex: 1 }}
+            style={{ flex: 1, color: COLORS.BLACK }}
             placeholder="비밀번호를 재입력해주세요"
             secureTextEntry={true}
             onChangeText={handleConfirmPasswordChange}

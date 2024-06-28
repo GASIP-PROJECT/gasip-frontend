@@ -196,6 +196,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     backgroundColor: 'white',
     borderRadius: 16,
+    color: COLORS.BLACK,
   },
   resendCodeText: {
     color: COLORS.BLUE_PRIMARY,

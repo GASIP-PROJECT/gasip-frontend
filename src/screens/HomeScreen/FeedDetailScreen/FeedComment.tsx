@@ -248,7 +248,7 @@ const CommentBody = ({
       <TextInput
         value={newComment}
         onChangeText={text => setNewComment(text)}
-        style={{ flex: 1 }}
+        style={{ flex: 1, color: COLORS.BLACK }}
         multiline
         autoFocus
         onBlur={() => setIsCommentEditing(false)}

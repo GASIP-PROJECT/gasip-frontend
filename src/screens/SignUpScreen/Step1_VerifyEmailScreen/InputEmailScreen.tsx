@@ -96,7 +96,7 @@ export default function InputEmailScreen({
         />
         <Spacer type="width" value={2} />
         <TextInput
-          style={{ height: 60, flex: 1 }}
+          style={{ height: 60, flex: 1, color: COLORS.BLACK }}
           placeholder=" 학교 아이디 입력"
           value={emailToVerifyCode}
           onChangeText={handleEmailChange}

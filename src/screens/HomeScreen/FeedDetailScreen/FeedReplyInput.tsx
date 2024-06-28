@@ -111,7 +111,7 @@ export default function FeedReplyInput({
           <Spacer type="width" value={10} />
         </View>
       ) : (
-        <View>
+        <View style={styles.textInputContainer}>
           <Spacer type="width" value={20} />
           <TextInput
             ref={commentTextInputRef}
@@ -158,18 +158,23 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
     elevation: 5,
   },
+  // TODO: 안드로이드에서 font가 잘리는 케이스
   textInputContainer: {
-    height: 40,
+    height: Platform.OS === 'android' ? 45 : 40,
     borderRadius: 20,
     borderColor: COLORS.BLUE_LIGHT_100,
     borderWidth: 1,
     flexDirection: 'row',
   },
   textInput: {
+    fontFamily: 'Pretendard',
     flex: 1,
     height: '100%',
     fontSize: 16,
     textAlignVertical: 'center',
+    fontWeight: '400',
+    fontStyle: 'normal',
+    color: COLORS.BLACK,
   },
   submitButtonContainer: {
     justifyContent: 'center',

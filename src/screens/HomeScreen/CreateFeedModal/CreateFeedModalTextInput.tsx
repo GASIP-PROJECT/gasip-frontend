@@ -53,6 +53,7 @@ const styles = StyleSheet.create({
     padding: 10,
     textAlignVertical: 'top',
     lineHeight: 20,
+    color: COLORS.BLACK,
   },
   openSelectProfessorModalCover: {
     position: 'absolute',
