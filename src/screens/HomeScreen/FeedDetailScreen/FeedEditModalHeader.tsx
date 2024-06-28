@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import GSIcon from '@components/common/GSIcon';
 import GSText from '@components/common/GSText';
@@ -47,7 +47,7 @@ export default function FeedEditModalHeader({
         </View>
 
         <View style={styles.titleContainer}>
-          <Text style={styles.title}>게시글 수정</Text>
+          <GSText style={styles.title}>게시글 수정</GSText>
         </View>
 
         <View

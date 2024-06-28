@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { MMKVStorage } from '@api/mmkv';
 import { likeFeed, likeFeedCancel } from '@api/index';
@@ -96,7 +96,7 @@ const FeedContentHeader = ({
 };
 
 const FeedContentText = ({ content }: { content: string }) => {
-  return <Text style={styles.feedContentText}>{content}</Text>;
+  return <GSText style={styles.feedContentText}>{content}</GSText>;
 };
 
 const FeedContentFooter = ({

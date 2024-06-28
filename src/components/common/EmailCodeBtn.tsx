@@ -1,23 +1,28 @@
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { TouchableOpacity, StyleSheet } from 'react-native';
+
+import GSText from '@components/common/GSText';
 
 interface EmailCodeBtnProps {
   onPress: () => void;
   disabled?: boolean;
-  style?: any; 
-  children?: React.ReactNode; 
+  style?: any;
+  children?: React.ReactNode;
 }
 
-const EmailCodeBtn: React.FC<EmailCodeBtnProps> = ({ onPress, disabled = false, style, children }) => {
+const EmailCodeBtn: React.FC<EmailCodeBtnProps> = ({
+  onPress,
+  disabled = false,
+  style,
+  children,
+}) => {
   return (
     <TouchableOpacity
       style={[styles.button, style, disabled && styles.disabledButton]}
       onPress={onPress}
       disabled={disabled}
     >
-      <Text 
-      disabled={disabled}
-      style={styles.buttonText}>{children}</Text>
+      <GSText style={styles.buttonText}>{children}</GSText>
     </TouchableOpacity>
   );
 };
@@ -34,7 +39,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  
+
   buttonText: {
     color: '#ffffff',
     fontSize: 16,

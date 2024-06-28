@@ -1,7 +1,8 @@
 import React from 'react';
-import { Image, StyleSheet, Text } from 'react-native';
+import { Image, StyleSheet } from 'react-native';
 
 import Spacer from '@components/common/Spacer';
+import GSText from '@components/common/GSText';
 import GSHeader from '@components/common/GSHeader';
 
 import { COLORS } from '@styles/colors';
@@ -27,7 +28,7 @@ export default function SignUpProcessHeader({
         onLeftComponentPress={onBackButtonPress}
         paddingHorizontal={0}
       />
-      <Text style={styles.stepText}>{step}/3</Text>
+      <GSText style={styles.stepText}>{step}/3</GSText>
       <Spacer type="height" value={28} />
     </>
   );

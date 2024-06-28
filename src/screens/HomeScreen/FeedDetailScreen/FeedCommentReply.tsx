@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import {
   Image,
   StyleSheet,
-  Text,
   TextInput,
   TouchableOpacity,
   View,
@@ -217,7 +216,7 @@ const ReplyFooter = ({
           }}
         />
         <Spacer type="width" value={iconTextGap} />
-        <Text style={styles.iconText}>{likeCount || 0}</Text>
+        <GSText style={styles.iconText}>{likeCount || 0}</GSText>
       </TouchableOpacity>
     </View>
   );

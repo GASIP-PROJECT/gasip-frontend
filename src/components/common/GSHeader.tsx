@@ -1,9 +1,9 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+
+import GSText from '@components/common/GSText';
 
 import Spacer from './Spacer';
-
-import { COLORS } from '@styles/colors';
 
 interface GSHeaderProps {
   title: string;
@@ -63,9 +63,9 @@ const HeaderLeftComponent = ({
 const HeaderTitle = ({ title }: { title: string }) => {
   return (
     <View style={styles.titleContainer}>
-      <Text style={styles.title} adjustsFontSizeToFit numberOfLines={1}>
+      <GSText style={styles.title} adjustsFontSizeToFit numberOfLines={1}>
         {title}
-      </Text>
+      </GSText>
     </View>
   );
 };
@@ -90,7 +90,6 @@ const HeaderRightComponent = ({
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    // height: 50,
     width: '100%',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -101,9 +100,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 18,
-    fontWeight: '700',
     textAlign: 'center',
-    // color: COLORS.WHITE,
   },
 
   leftComponentContainer: {

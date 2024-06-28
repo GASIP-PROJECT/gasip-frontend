@@ -1,10 +1,12 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+
+import GSText from '@components/common/GSText';
 
 export default function CreateFeedModalPolicy() {
   return (
     <View style={styles.container}>
-      <Text>정책</Text>
+      <GSText>정책</GSText>
     </View>
   );
 }

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
-  Text,
   View,
   TouchableOpacity,
   TextInput,
@@ -148,7 +147,7 @@ export default function VerifyEmailCodeScreen({
         <View />
         <View style={{ justifyContent: 'flex-end' }}>
           <TouchableOpacity onPress={handleResendCodePress}>
-            <Text style={styles.resendCodeText}>인증번호 다시받기</Text>
+            <GSText style={styles.resendCodeText}>인증번호 다시받기</GSText>
           </TouchableOpacity>
           <Spacer type="height" value={6} />
           <View style={styles.timerContainer}>
