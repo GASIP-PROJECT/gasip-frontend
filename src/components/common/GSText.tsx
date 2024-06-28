@@ -5,7 +5,7 @@ const defaultTextStyle = {
   color: 'black',
   fontSize: 16,
   fontWeight: 'normal',
-  fontFamily: 'Pretendard-Regular',
+  fontFamily: 'Pretendard',
 };
 
 export default function GSText({
