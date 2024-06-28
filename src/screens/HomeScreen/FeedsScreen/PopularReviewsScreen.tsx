@@ -75,9 +75,11 @@ export default function PopularReviewsScreen() {
         extraData={toggleToUpdateFeedsList}
         renderItem={({ item, index }: { item: Feed; index: number }) => {
           return (
+            // 교수님에 대한 글이 아닌 경우 인기글에서 교수님 이름 태그가 보이지 않도록 처리
             <FeedSummary
               feedData={item}
               isLastElement={index === popularFeedsList.length - 1}
+              showProfNameTag={item?.profName !== '전체'}
             />
           );
         }}
