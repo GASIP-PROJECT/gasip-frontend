@@ -428,7 +428,6 @@ const styles = StyleSheet.create({
     shadowColor: COLORS.BLUE_PRIMARY,
     shadowOffset: { width: 0, height: -5 },
     shadowOpacity: 0.05,
-    elevation: 5,
     paddingHorizontal: 24,
   },
 });

@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 5 },
     shadowOpacity: 0.05,
     shadowRadius: 10,
-    elevation: 5,
+    elevation: 1,
   },
   footerContainer: {
     flex: 1,
