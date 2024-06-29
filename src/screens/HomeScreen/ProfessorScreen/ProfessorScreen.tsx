@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Image } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import {
   editProfessorRating,
@@ -22,9 +21,10 @@ import SafeAreaLayout from '@components/common/SafeAreaLayout';
 import { COLORS } from '@styles/colors';
 
 import icon_goback from '@assets/icon_goback.png';
+import useGetBottomButtonGap from '@hooks/useGetBottomButtonGap';
 
 export default function ProfessorDetailScreen({ route, navigation }) {
-  const { bottom } = useSafeAreaInsets();
+  const { bottomButtonGap } = useGetBottomButtonGap();
   const openNewFeedModal = useNewFeedStore(state => state.openNewFeedModal);
   const setSelctedProfData = useNewFeedStore(
     state => state.setSelectedProfData,
@@ -95,7 +95,7 @@ export default function ProfessorDetailScreen({ route, navigation }) {
           justifyContent: 'center',
           alignItems: 'center',
           position: 'absolute',
-          bottom: bottom,
+          bottom: bottomButtonGap,
           width: '100%',
           zIndex: 100,
         }}
