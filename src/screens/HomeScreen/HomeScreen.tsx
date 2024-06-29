@@ -9,6 +9,7 @@ import {
 } from '@api/index';
 import useNewFeedStore from '@store/newFeedStore';
 
+import CampusMenus from './HomeScreen/CampusMenus';
 import SearchButton from './HomeScreen/SearchButton';
 import HomeFeedList from './HomeScreen/HomeFeedList';
 import HomeScreenHeader from './HomeScreen/HomeScreenHeader';
@@ -60,9 +61,11 @@ export default function HomeScreen({ navigation }) {
       <Spacer type="height" value={24} />
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <SearchButton />
-        <Spacer type="height" value={32} />
+        <Spacer type="height" value={20} />
+        <CampusMenus />
+        <Spacer type="height" value={18} />
         <WriteProfessorReview />
-        <Spacer type="height" value={28} />
+        <Spacer type="height" value={16} />
         <HomeFeedList
           title="실시간 인기글"
           headerIcon={icon_fire}
