@@ -1,11 +1,10 @@
 import React from 'react';
-import { Image, StyleSheet, View } from 'react-native';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import useNeewFeedStore from '@store/newFeedStore';
 
 import GSText from '@components/common/GSText';
 import Spacer from '@components/common/Spacer';
-import GSButton from '@components/common/GSButton';
 
 import { COLORS } from '@styles/colors';
 import icon_write from '@assets/icon_write.png';
@@ -15,24 +14,16 @@ export default function WriteProfessorReview() {
 
   return (
     <View>
-      <GSText style={styles.titleText}>교수님 리뷰 작성하기</GSText>
-      <Spacer type="height" value={10} />
-      <View
-        style={[
-          styles.buttonContainer,
-          styles.buttonContainerElevation,
-          styles.buttonContainerShadow,
-        ]}
+      <TouchableOpacity
+        style={[styles.button, styles.buttonElevation, styles.buttonShadow]}
+        onPress={openNewFeedModal}
       >
         <Image source={icon_write} style={styles.writeIcon} />
-        <Spacer type="height" value={18} />
-        <GSButton
-          buttonText="작성하기"
-          onPress={openNewFeedModal}
-          height={46}
-        />
-      </View>
-      <Spacer type="height" value={6} />
+        <Spacer type="width" value={6} />
+        <GSText style={styles.buttonText}>교수님 리뷰 작성하기</GSText>
+      </TouchableOpacity>
+
+      <Spacer type="height" value={8} />
       <GSText style={styles.askForReviewText}>
         가천대 학생분들의 소중한 의견이 모여 교수님 리뷰가 정확해져요 :)
       </GSText>
@@ -62,8 +53,8 @@ const styles = StyleSheet.create({
     zIndex: 99,
   },
   writeIcon: {
-    width: 68,
-    height: 64,
+    width: 18,
+    height: 17,
   },
   titleText: {
     fontSize: 18,
@@ -74,5 +65,29 @@ const styles = StyleSheet.create({
     color: COLORS.GRAY_400,
     fontWeight: '400',
     alignSelf: 'center',
+  },
+  button: {
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 100,
+    backgroundColor: COLORS.BLUE_PRIMARY,
+    height: 56,
+    flexDirection: 'row',
+  },
+  buttonShadow: {
+    shadowColor: COLORS.BLACK,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+  },
+  buttonElevation: {
+    elevation: 3,
+    elevationColor: COLORS.BLACK,
+  },
+  buttonText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: COLORS.WHITE,
   },
 });
