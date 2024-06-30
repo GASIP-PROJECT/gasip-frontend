@@ -29,6 +29,10 @@ export default function Step3_CreateUserInfoScreen({ navigation }) {
 
   const isUserInfoValid = isNameValid && isNicknameValid;
 
+  const alertSignInSuccess = () => {
+    Alert.alert('회원가입 성공', '회원가입이 완료되었습니다. 로그인해주세요.');
+  };
+
   const handleConfirmButtonPress = async () => {
     // console.log(verifiedEmail, password, name, nickname);
     try {
@@ -49,6 +53,7 @@ export default function Step3_CreateUserInfoScreen({ navigation }) {
       // console.log(response);
       if (response.ok) {
         // 회원가입 성공하면
+        alertSignInSuccess();
         navigation.goBack();
       } else {
         throw new Error('회원가입 실패');
@@ -115,7 +120,9 @@ export default function Step3_CreateUserInfoScreen({ navigation }) {
               borderWidth: 1,
               backgroundColor: 'white',
               borderRadius: 16,
-              borderColor: '#9EA4AA',
+              borderColor: isNicknameValid
+                ? COLORS.BLUE_PRIMARY
+                : COLORS.GRAY_400,
             },
           ]}
           placeholder="닉네임을 입력해주세요"
@@ -125,10 +132,7 @@ export default function Step3_CreateUserInfoScreen({ navigation }) {
 
         <Spacer type="height" value={10} />
 
-        {!isNicknameValid && (
-          <GSText style={styles.informText}>2~12자 이내로 설정해주세요.</GSText>
-        )}
-
+        <GSText style={styles.informText}>2~12자 이내로 설정해주세요.</GSText>
         <Spacer type="height" value={50} />
 
         <TouchableOpacity
