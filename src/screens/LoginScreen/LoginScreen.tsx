@@ -121,6 +121,7 @@ export default function LoginScreen() {
                 value={useremail}
                 onChangeText={setUseremail}
                 autoCapitalize="none"
+                placeholderTextColor={COLORS.GRAY_400}
               />
               <Spacer type="height" value={12} />
               <View
@@ -132,6 +133,7 @@ export default function LoginScreen() {
                 <TextInput
                   style={{ flex: 1, color: COLORS.BLACK }}
                   placeholder=" 비밀번호"
+                  placeholderTextColor={COLORS.GRAY_400}
                   value={password}
                   onChangeText={setPassword}
                   secureTextEntry={!showPassword}
@@ -170,6 +172,7 @@ export default function LoginScreen() {
               buttonText="로그인"
               fontSize={18}
               borderRadius={16}
+              height={60}
             />
           </View>
 
@@ -180,7 +183,7 @@ export default function LoginScreen() {
               justifyContent: 'flex-end',
             }}
           >
-            <View style={{ flexDirection: 'row' }}>
+            <View style={{ flexDirection: 'row', marginBottom: 20 }}>
               <GSText style={styles.text}>아직 회원이 아니신가요?</GSText>
               <TouchableOpacity onPress={handleSignup}>
                 <GSText style={styles.signUp} onPress={handleSignup}>
