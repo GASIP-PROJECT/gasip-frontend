@@ -59,6 +59,22 @@ export default function Step2_CreatePasswordScreen({ navigation }) {
     resetSignUpData();
   };
 
+  const getPasswodConfirmTextInputBorderColor = () => {
+    if (showPasswordDontMatchError) return COLORS.RED;
+    if (isPasswordValid) return COLORS.BLUE_PRIMARY;
+    return COLORS.GRAY_400;
+  };
+
+  const handlePasswordInputChange = (text: string) => {
+    setPassword(text);
+    if (showPasswordDontMatchError) setShowPasswordDontMatchError(false);
+  };
+
+  const handlePasswordConfirmInputChange = (text: string) => {
+    setConfirmPassword(text);
+    if (showPasswordDontMatchError) setShowPasswordDontMatchError(false);
+  };
+
   return (
     <SafeAreaLayout>
       <View style={styles.container}>
@@ -68,11 +84,8 @@ export default function Step2_CreatePasswordScreen({ navigation }) {
         />
 
         <Spacer type="height" value={12} />
-
         <GSText style={styles.inputLabelText}>비밀번호</GSText>
-
         <Spacer type="height" value={8} />
-
         <View
           style={[
             {
@@ -89,7 +102,7 @@ export default function Step2_CreatePasswordScreen({ navigation }) {
             style={{ flex: 1, color: COLORS.BLACK }}
             placeholder=" 비밀번호를 입력해주세요"
             value={password}
-            onChangeText={text => setPassword(text)}
+            onChangeText={text => handlePasswordInputChange(text)}
             secureTextEntry={!showPassword}
           />
           <Spacer type="width" value={6} />
@@ -125,9 +138,7 @@ export default function Step2_CreatePasswordScreen({ navigation }) {
         <View
           style={[
             {
-              borderColor: isPasswordValid
-                ? COLORS.BLUE_PRIMARY
-                : COLORS.GRAY_400,
+              borderColor: getPasswodConfirmTextInputBorderColor(),
             },
             styles.inputContainer,
           ]}
@@ -138,7 +149,7 @@ export default function Step2_CreatePasswordScreen({ navigation }) {
             style={{ flex: 1, color: COLORS.BLACK }}
             placeholder=" 비밀번호를 재입력해주세요"
             value={confirmPassword}
-            onChangeText={text => setConfirmPassword(text)}
+            onChangeText={text => handlePasswordConfirmInputChange(text)}
             secureTextEntry={!showConfirmPassword}
           />
           <Spacer type="width" value={6} />
@@ -161,13 +172,15 @@ export default function Step2_CreatePasswordScreen({ navigation }) {
 
         <Spacer type="height" value={10} />
 
-        {showPasswordDontMatchError && (
-          <GSText
-            style={{ fontSize: 12, fontWeight: '400', color: COLORS.RED }}
-          >
-            비밀번호가 일치하지 않습니다.
-          </GSText>
-        )}
+        <View style={{ height: 12 }}>
+          {showPasswordDontMatchError && (
+            <GSText
+              style={{ fontSize: 12, fontWeight: '400', color: COLORS.RED }}
+            >
+              비밀번호가 일치하지 않습니다.
+            </GSText>
+          )}
+        </View>
 
         <Spacer type="height" value={76} />
 
