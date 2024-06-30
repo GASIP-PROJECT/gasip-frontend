@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -19,6 +19,9 @@ interface VerifyEmailCodeScreenProps {
   emailToVerifyCode: string;
 }
 
+// TODO(피드백) - no magic number
+const VERIFICATION_WATING_TIME = 180; // 3분 타이머로 인증대기
+
 export default function VerifyEmailCodeScreen({
   emailToVerifyCode,
 }: VerifyEmailCodeScreenProps) {
@@ -27,17 +30,23 @@ export default function VerifyEmailCodeScreen({
   const setVerifiedEmail = useSignUpDataStore(state => state.setVerifiedEmail);
 
   const [verificationCode, setVerificationCode] = useState<string>('');
-  const [remainingTime, setRemainingTime] = useState<number>(180);
-  const [isTimerRunning, setIsTimerRunning] = useState<boolean>(true);
+  const [remainingTime, setRemainingTime] = useState<number>(
+    VERIFICATION_WATING_TIME,
+  );
+  const [isInvalidVerificationCode, setIsInvalidVerificationCode] =
+    useState<boolean>(false);
 
   const isValidCode = verificationCode.length === 6;
 
   const handleCodeChange = (text: string) => {
+    setIsInvalidVerificationCode(false);
     setVerificationCode(text);
   };
 
   const handleResendCodePress = async () => {
     try {
+      setVerificationCode('');
+      setIsInvalidVerificationCode(false);
       resetTimer();
       const url = `https://gasip.site/members/emails/verification-requests?email=${emailToVerifyCode}`;
       const response = await fetch(url, {
@@ -75,6 +84,7 @@ export default function VerifyEmailCodeScreen({
       }
     } catch (error: any) {
       console.error('인증 요청에 실패했습니다:', error.message);
+      setIsInvalidVerificationCode(true);
       Alert.alert('인증 실패', '인증에 실패했습니다. 인증번호를 확인해주세요.');
     }
   };
@@ -88,53 +98,71 @@ export default function VerifyEmailCodeScreen({
     return `${minutes}분 ${seconds}초`;
   };
 
-  // Function to stop the timer
   const stopTimer = () => {
-    setIsTimerRunning(false);
+    clearVerificationTimer();
   };
 
-  // Function to reset the timer to 180 seconds
   const resetTimer = () => {
-    setRemainingTime(180);
-    setIsTimerRunning(true);
+    clearVerificationTimer();
+    startVerficationTimer();
   };
 
   const alertTimeExpired = () => {
     Alert.alert('시간 초과', '인증 시간이 초과되었습니다. 다시 시도해주세요.');
   };
 
-  useEffect(() => {
-    let interval;
-    if (isTimerRunning) {
-      interval = setInterval(() => {
-        setRemainingTime(prev => {
-          if (prev === 0) {
-            stopTimer();
-            alertTimeExpired();
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000); // Update every second
-    } else {
-      clearInterval(interval);
+  // 인증 시간 3분 카운트하는 interval.
+  const verificationTimerInterval = useRef<NodeJS.Timeout | null>(null);
+
+  const startVerficationTimer = () => {
+    setRemainingTime(VERIFICATION_WATING_TIME);
+    // interval set
+    verificationTimerInterval.current = setInterval(() => {
+      setRemainingTime(prev => {
+        if (prev === 0) {
+          stopTimer();
+          alertTimeExpired();
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  };
+
+  const clearVerificationTimer = () => {
+    if (verificationTimerInterval.current) {
+      clearInterval(verificationTimerInterval.current);
+      verificationTimerInterval.current = null;
     }
-    return () => clearInterval(interval);
-  }, [isTimerRunning]);
+  };
+
+  const getTextInputBorderColor = () => {
+    if (isInvalidVerificationCode) {
+      return COLORS.RED;
+    }
+    if (isValidCode) {
+      return COLORS.BLUE_PRIMARY;
+    }
+    return COLORS.GRAY_400;
+  };
+
+  useEffect(() => {
+    startVerficationTimer();
+    return clearVerificationTimer;
+  }, []);
 
   return (
     <View>
       <GSText style={styles.inputLabelText}>인증번호</GSText>
       <Spacer type="height" value={8} />
       <TextInput
-        style={[
-          styles.input,
-          { borderColor: isValidCode ? COLORS.BLUE_PRIMARY : COLORS.GRAY_400 },
-        ]}
+        style={[styles.input, { borderColor: getTextInputBorderColor() }]}
+        // 텍스트가 너무 앞에 딱 붙어서 커서랑 겹치지 않도록 앞에 space추가
         placeholder=" 인증번호 6자리를 입력해주세요"
         onChangeText={handleCodeChange}
         maxLength={6}
         keyboardType="numeric"
+        value={verificationCode}
       />
       <Spacer type="height" value={12} />
 
@@ -144,8 +172,15 @@ export default function VerifyEmailCodeScreen({
           flexDirection: 'row',
         }}
       >
-        <View />
-        <View style={{ justifyContent: 'flex-end' }}>
+        {isInvalidVerificationCode ? (
+          <GSText style={styles.invalidCodeText}>
+            인증번호가 맞지 않습니다.
+          </GSText>
+        ) : (
+          <View />
+        )}
+
+        <View style={{ justifyContent: 'space-between' }}>
           <TouchableOpacity onPress={handleResendCodePress}>
             <GSText style={styles.resendCodeText}>인증번호 다시받기</GSText>
           </TouchableOpacity>
@@ -203,6 +238,11 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: '400',
     textDecorationLine: 'underline',
+  },
+  invalidCodeText: {
+    color: COLORS.RED,
+    fontSize: 12,
+    fontWeight: '400',
   },
   timerContainer: {
     alignSelf: 'flex-end',
