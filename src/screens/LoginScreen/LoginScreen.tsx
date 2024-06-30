@@ -165,7 +165,12 @@ export default function LoginScreen() {
               </TouchableOpacity>
               <Spacer type="height" value={36} />
             </View>
-            <GSButton onPress={handleLogin} buttonText="로그인" fontSize={18} />
+            <GSButton
+              onPress={handleLogin}
+              buttonText="로그인"
+              fontSize={18}
+              borderRadius={16}
+            />
           </View>
 
           <View

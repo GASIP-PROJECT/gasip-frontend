@@ -14,6 +14,7 @@ interface GSButtonProps {
   disabled?: boolean;
   height?: number;
   fontSize?: number;
+  borderRadius?: number;
 }
 
 // 태헌님 이 공통으로 사용할 버튼 컴포넌트입니다.
@@ -28,6 +29,7 @@ export default function GSButton({
   disabled = false,
   height = 52,
   fontSize = 14,
+  borderRadius = 100,
 }: GSButtonProps) {
   return (
     <TouchableOpacity
@@ -39,6 +41,7 @@ export default function GSButton({
           marginHorizontal: marginHorizontal,
           backgroundColor: disabled ? 'gray' : bgColor,
           height: height,
+          borderRadius: borderRadius,
         },
       ]}
       onPress={onPress}
@@ -58,7 +61,6 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 100,
   },
   buttonShadow: {
     shadowColor: COLORS.BLACK,
