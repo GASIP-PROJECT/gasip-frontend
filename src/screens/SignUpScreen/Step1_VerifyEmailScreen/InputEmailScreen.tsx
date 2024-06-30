@@ -74,6 +74,7 @@ export default function InputEmailScreen({
       setIsSendEmailRequestProcessing(false);
     } catch (error: any) {
       console.error('이메일 인증 요청에 실패했습니다:', error.message);
+      setIsSendEmailRequestProcessing(false);
       Alert.alert('이메일 인증 요청 실패', error.message);
     }
   };
