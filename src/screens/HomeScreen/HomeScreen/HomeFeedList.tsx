@@ -56,7 +56,7 @@ export default function HomeFeedList({
       <Spacer type="height" value={10} />
 
       {/* 피드 목록 */}
-      <View style={styles.feedsContainer}>
+      <TouchableOpacity style={styles.feedsContainer} onPress={onSeeMorePress}>
         {data.map((feed, index) => (
           <View key={feed.postId}>
             <FeedListItem
@@ -67,7 +67,7 @@ export default function HomeFeedList({
             {index !== data.length - 1 && <Spacer type="height" value={10} />}
           </View>
         ))}
-      </View>
+      </TouchableOpacity>
     </View>
   );
 }
