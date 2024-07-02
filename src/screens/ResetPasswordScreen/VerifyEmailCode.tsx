@@ -17,18 +17,16 @@ import { COLORS } from '@styles/colors';
 
 interface VerifyEmailCodeScreenProps {
   emailToVerifyCode: string;
+  onVerificationSuccess: () => void;
 }
 
 // TODO(피드백) - no magic number
 const VERIFICATION_WATING_TIME = 180; // 3분 타이머로 인증대기
 
-export default function VerifyEmailCodeScreen({
+export default function VerifyEmailCode({
   emailToVerifyCode,
+  onVerificationSuccess,
 }: VerifyEmailCodeScreenProps) {
-  const navigation = useNavigation();
-
-  const setVerifiedEmail = useSignUpDataStore(state => state.setVerifiedEmail);
-
   const [verificationCode, setVerificationCode] = useState<string>('');
   const [remainingTime, setRemainingTime] = useState<number>(
     VERIFICATION_WATING_TIME,
@@ -48,7 +46,7 @@ export default function VerifyEmailCodeScreen({
       setVerificationCode('');
       setIsInvalidVerificationCode(false);
       resetTimer();
-      const url = `https://gasip.site/members/emails/verification-requests?email=${emailToVerifyCode}`;
+      const url = `https://gasip.site/members/emails/verification-requests/exist?email=${emailToVerifyCode}`;
       const response = await fetch(url, {
         method: 'POST',
         headers: {
@@ -56,7 +54,7 @@ export default function VerifyEmailCodeScreen({
         },
       });
       // console.log(response.formData);
-      console.log(await response.json());
+      // console.log(await response.json());
       if (!response.ok) {
         throw new Error('새로운 인증번호 요청 실패');
       }
@@ -69,7 +67,6 @@ export default function VerifyEmailCodeScreen({
   const handleConfirmPress = async () => {
     try {
       const url = `https://gasip.site/members/emails/verifications?email=${emailToVerifyCode}&code=${verificationCode}`;
-      console.log(url);
       const response = await fetch(url.toString(), {
         method: 'GET',
         headers: {
@@ -77,8 +74,7 @@ export default function VerifyEmailCodeScreen({
         },
       });
       if (response.ok) {
-        setVerifiedEmail(emailToVerifyCode);
-        navigation.replace('SignUp_Step2');
+        onVerificationSuccess();
       } else {
         throw new Error('인증 실패');
       }

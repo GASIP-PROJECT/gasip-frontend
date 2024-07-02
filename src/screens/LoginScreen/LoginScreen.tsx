@@ -81,7 +81,7 @@ export default function LoginScreen() {
   };
 
   const ResetPw = () => {
-    navigation.navigate('ResetPasswordScreen');
+    navigation.navigate('ResetPassword_Step1');
   };
 
   return (

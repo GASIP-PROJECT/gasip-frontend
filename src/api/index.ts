@@ -429,3 +429,14 @@ export const deleteAccount = async () => {
     console.log('deleteAccount error: ', error);
   }
 };
+
+export const resetPassword = async (email: string, newPassword: string) => {
+  try {
+    await GSBackendClient.put('/members/passwords/noauth', {
+      email,
+      password: newPassword,
+    });
+  } catch (error) {
+    console.log('resetPassword error: ', error);
+  }
+};

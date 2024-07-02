@@ -9,11 +9,12 @@ import { useAuth } from '@contexts/AuthContext';
 import HomeScreen from '@screens/HomeScreen/HomeScreen';
 import LoginScreen from '@screens/LoginScreen/LoginScreen';
 import MyPageScreen from '@screens/MypageScreen/MyPageScreen';
-import ResetPasswordScreen from '@screens/LoginScreen/ResetPasswordScreen';
 import FreeFeedsScreen from '@screens/HomeScreen/FeedsScreen/FreeFeedsScreen';
 import AllReviewsScreen from '@screens/HomeScreen/FeedsScreen/AllReviewsScreen';
 import CreateFeedModal from '@screens/HomeScreen/CreateFeedModal/CreateFeedModal';
 import MyFeedsScreen from '@screens/MypageScreen/MyFeedsScreen.tsx/MyFeedsScreen';
+import ResetPassword_Step1 from '@screens/ResetPasswordScreen/ResetPassword_Step1';
+import ResetPassword_Step2 from '@screens/ResetPasswordScreen/ResetPassword_Step2';
 import FeedDetailScreen from '@screens/HomeScreen/FeedDetailScreen/FeedDetailScreen';
 import PopularReviewsScreen from '@screens/HomeScreen/FeedsScreen/PopularReviewsScreen';
 import ProfessorDetailScreen from '@screens/HomeScreen/ProfessorScreen/ProfessorScreen';
@@ -89,8 +90,13 @@ export default function Root() {
               options={{ headerShown: false }}
             />
             <RootStack.Screen
-              name="ResetPasswordScreen"
-              component={ResetPasswordScreen}
+              name="ResetPassword_Step1"
+              component={ResetPassword_Step1}
+              options={{ headerShown: false }}
+            />
+            <RootStack.Screen
+              name="ResetPassword_Step2"
+              component={ResetPassword_Step2}
               options={{ headerShown: false }}
             />
             <RootStack.Screen
