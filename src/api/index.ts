@@ -1,21 +1,17 @@
 import axios from 'axios';
 import { MMKVStorage } from './mmkv';
 
-let userToken = MMKVStorage.getString('userToken');
-
-export const resetToken = () => {
-  const newToken = MMKVStorage.getString('userToken');
-  console.log(newToken);
-  userToken = newToken;
-};
-
 const GSBackendClient = axios.create({
   baseURL: 'https://gasip.site',
   headers: {
     'Content-Type': 'application/json',
-    Authorization: `Bearer ${userToken}`,
+    Authorization: `Bearer ${MMKVStorage.getString('userToken')}`,
   },
 });
+
+export const updateAxiosClientHeaderAuthorization = (newUserToken: string) => {
+  GSBackendClient.defaults.headers.Authorization = `Bearer ${newUserToken}`;
+};
 
 // TODO - 함수 데이터에 따라서 typing(모든 함수)
 export const getAllProfessorReviews = async (

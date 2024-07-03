@@ -11,8 +11,8 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import { resetToken } from '@api/index';
 import { setMMKVStorageAuthData } from '@api/mmkv';
+import { updateAxiosClientHeaderAuthorization } from '@api/index';
 import { useAuth } from '@contexts/AuthContext';
 
 import Spacer from '@components/common/Spacer';
@@ -52,7 +52,9 @@ export default function LoginScreen() {
 
       const { accessToken, nickname, memberId } = loginResult.response;
       setMMKVStorageAuthData(accessToken, nickname, memberId);
-      resetToken();
+
+      // Axios 인스턴스 authorization 헤더를 로그인 한 user의 accessToken으로 재설정
+      updateAxiosClientHeaderAuthorization(accessToken);
 
       dispatch({
         type: 'SIGN_IN',
