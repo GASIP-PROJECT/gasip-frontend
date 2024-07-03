@@ -29,13 +29,7 @@ export default function ResetPassword_Step1({ navigation }) {
             <Image source={icon_goback} style={{ width: 28, height: 28 }} />
           }
           onLeftComponentPress={navigation.goBack}
-          rightComponent={
-            <Image
-              source={icon_goback}
-              style={{ width: 28, height: 28 }}
-              tintColor={'transparent'}
-            />
-          }
+          rightComponent={<View style={{ width: 28, height: 28 }} />}
           paddingHorizontal={0}
         />
 

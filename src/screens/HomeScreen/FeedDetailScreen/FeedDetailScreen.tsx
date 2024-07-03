@@ -142,6 +142,7 @@ export default function FeedDetailScreen({ route, navigation }) {
             }
             onLeftComponentPress={navigation.goBack}
             paddingHorizontal={0}
+            rightComponent={<View style={{ width: 28, height: 28 }} />}
           />
 
           {/* 교수님에 대한 글인 경우 표시되는 교수님 이름 */}

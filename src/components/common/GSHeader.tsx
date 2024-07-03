@@ -14,6 +14,8 @@ interface GSHeaderProps {
   paddingHorizontal?: number;
 }
 
+// TODO - 범용적으로 적용가능한 구조 만들기
+// rightComponent를 꼭 전달해야하만 하는 구조에서 어떻게 개선할 수 있을지?
 export default function GSHeader({
   title,
   leftComponent = null,
@@ -53,7 +55,7 @@ const HeaderLeftComponent = ({
 
   return (
     <View style={styles.leftComponentContainer}>
-      <TouchableOpacity style={{ flex: 1 }} onPress={onPress || undefined}>
+      <TouchableOpacity onPress={onPress || undefined}>
         {component}
       </TouchableOpacity>
     </View>
@@ -77,11 +79,16 @@ const HeaderRightComponent = ({
   component: React.ReactNode;
   onPress: (() => void) | null;
 }) => {
-  if (component === null)
+  if (component === null) {
     return <View style={styles.rightComponentContainer} />;
+  }
 
   return (
-    <TouchableOpacity style={styles.rightComponentContainer} onPress={onPress}>
+    <TouchableOpacity
+      style={styles.rightComponentContainer}
+      onPress={onPress || undefined}
+      disabled={!onPress}
+    >
       {component}
     </TouchableOpacity>
   );
@@ -100,16 +107,14 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 18,
+    fontWeight: '600',
     textAlign: 'center',
   },
-
   leftComponentContainer: {
-    flex: 1,
     justifyContent: 'center',
     flexDirection: 'row',
   },
   rightComponentContainer: {
-    flex: 1,
     flexDirection: 'row-reverse',
   },
 });

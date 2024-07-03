@@ -3,7 +3,6 @@ import {
   ReactNode,
   createContext,
   useContext,
-  useEffect,
   useReducer,
 } from 'react';
 
@@ -16,7 +15,6 @@ type AuthAction =
   | { type: 'SIGN_IN'; payload: AuthState }
   | { type: 'SIGN_OUT'; payload: AuthState }
   | { type: 'RESTORE_TOKEN'; payload: AuthState };
-// | { type: 'setCount'; payload: number };
 
 const authReducer = (prevState: AuthState, action: AuthAction): AuthState => {
   const { type } = action;

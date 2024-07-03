@@ -78,6 +78,7 @@ export default function MyPageScreen({ navigation }) {
           <Image source={icon_goback} style={{ width: 28, height: 28 }} />
         }
         onLeftComponentPress={navigation.goBack}
+        rightComponent={<View style={{ width: 28, height: 28 }} />}
       />
       <View style={styles.container}>
         <Spacer type="height" value={43} />
