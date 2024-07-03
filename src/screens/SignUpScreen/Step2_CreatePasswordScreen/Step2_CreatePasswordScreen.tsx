@@ -51,7 +51,7 @@ export default function Step2_CreatePasswordScreen({ navigation }) {
 
     setShowPasswordDontMatchError(false);
     storePassword(password);
-    navigation.replace('SignUp_Step3');
+    navigation.navigate('SignUp_Step3');
   };
 
   const handleBackButtonPress = () => {
