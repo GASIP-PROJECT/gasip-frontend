@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { FlatList, RefreshControl } from 'react-native';
+import { RefreshControl } from 'react-native';
+import { FlashList } from '@shopify/flash-list';
 
 import { getPopularFeeds } from '@api/index';
 import useNewFeedStore from '@store/newFeedStore';
@@ -30,6 +31,9 @@ export default function PopularReviewsScreen() {
   };
 
   const onListEndReached = async () => {
+    // TODO - 요소가 하나일 때 call되는게 이슈인데, 일단 해결 방법을 찾지 못해서 당장 page가0이고 길이가 10보다 작을 때, 즉 다음 페이지를 불러올 만큼의 데이터가 없을 때 이상하게 처리되지 않도록 하였음.
+    // 비슷한 형태의 게시글 화면들은 다 수정되어야 한다.
+    if (page.current === 0 && popularFeedsList.length < 10) return;
     page.current += 1;
 
     const posts: [] = await getPopularFeeds(page.current, 10);
@@ -69,7 +73,7 @@ export default function PopularReviewsScreen() {
       showButton={false}
       subText="인기가 많은 리뷰를 볼 수 있는 게시판이에요."
     >
-      <FlatList
+      <FlashList
         ref={flatListRef}
         data={popularFeedsList}
         extraData={toggleToUpdateFeedsList}
@@ -95,6 +99,7 @@ export default function PopularReviewsScreen() {
         }
         keyExtractor={(item, index) => index.toString()}
         ItemSeparatorComponent={() => <Spacer type="height" value={8} />}
+        estimatedItemSize={72}
       />
     </FeedsListContainer>
   );

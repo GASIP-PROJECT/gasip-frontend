@@ -30,6 +30,7 @@ export default function AllReviewsScreen() {
   };
 
   const onListEndReached = async () => {
+    if (page.current === 0 && feedsList.length < 10) return;
     page.current += 1;
 
     const posts: Feed[] = await getAllProfessorReviews(page.current, 10);

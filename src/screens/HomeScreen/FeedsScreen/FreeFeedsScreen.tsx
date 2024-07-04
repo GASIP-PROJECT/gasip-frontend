@@ -30,6 +30,7 @@ export default function FreeFeedsScreen() {
   };
 
   const onListEndReached = async () => {
+    if (page.current === 0 && feedsList.length < 10) return;
     page.current += 1;
 
     const posts: Feed[] = await getGeneralFeeds(page.current, 10);
