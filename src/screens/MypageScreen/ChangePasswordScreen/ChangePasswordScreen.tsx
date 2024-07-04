@@ -5,6 +5,7 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 
 import { changePassword } from '@api/index';
@@ -27,14 +28,34 @@ export default function ChangePasswordScreen({ navigation }) {
   const [isNewPasswordConfirmFocused, setIsNewPasswordConfirmFocused] =
     useState(false);
 
+  const alertPasswordChangeSuccess = () => {
+    Alert.alert('비밀번호 변경 완료', '비밀번호가 성공적으로 변경되었습니다.', [
+      {
+        text: '확인',
+        onPress: () => navigation.goBack(),
+      },
+    ]);
+  };
+
   const handlePressChangePassword = async () => {
-    await changePassword(newPassword);
+    const result = await changePassword(newPassword);
+    if (result) {
+      alertPasswordChangeSuccess();
+    }
   };
 
   const isAnyInputEmpty =
     !currentPassword || !newPassword || !newPasswordConfirm;
   const confirmButtonDisabled =
     isAnyInputEmpty || newPassword !== newPasswordConfirm;
+
+  console.log('confirm', confirmButtonDisabled);
+  console.log(newPassword);
+  console.log(newPasswordConfirm);
+  console.log(newPassword !== newPasswordConfirm);
+  console.log(newPassword === newPasswordConfirm);
+  console.log(isAnyInputEmpty);
+  console.log('');
 
   return (
     <SafeAreaLayout>
@@ -58,7 +79,7 @@ export default function ChangePasswordScreen({ navigation }) {
         <PasswordTextInput
           labelText="현재 비밀번호"
           setText={setCurrentPassword}
-          placeholderText="기존 비밀번호를 입력해주세요."
+          placeholderText=" 기존 비밀번호를 입력해주세요."
           isFocused={isCurrentPasswordFocused}
           setIsFocused={setIsCurrentPasswordFocused}
         />
@@ -68,7 +89,7 @@ export default function ChangePasswordScreen({ navigation }) {
         <PasswordTextInput
           labelText="새 비밀번호"
           setText={setNewPassword}
-          placeholderText="새로운 비밀번호를 입력해주세요."
+          placeholderText=" 새로운 비밀번호를 입력해주세요."
           isFocused={isNewPasswordFocused}
           setIsFocused={setIsNewPasswordFocused}
         />
@@ -78,7 +99,7 @@ export default function ChangePasswordScreen({ navigation }) {
         <PasswordTextInput
           labelText="새 비밀번호 확인"
           setText={setNewPasswordConfirm}
-          placeholderText="새로운 비밀번호를 재입력해주세요."
+          placeholderText=" 새로운 비밀번호를 재입력해주세요."
           isFocused={isNewPasswordConfirmFocused}
           setIsFocused={setIsNewPasswordConfirmFocused}
         />
@@ -122,7 +143,7 @@ const PasswordTextInput = ({
           borderRadius: 10,
           backgroundColor: COLORS.WHITE,
           paddingHorizontal: 16,
-          color: COLORS.BTN_MAIN,
+          color: COLORS.BLACK,
         }}
         onChangeText={text => setText(text)}
         onSubmitEditing={undefined}

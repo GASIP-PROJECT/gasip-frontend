@@ -399,7 +399,7 @@ export const changePassword = async (newPassword: string) => {
       password: newPassword,
     });
 
-    console.log(response.data.response);
+    return response.data.response;
   } catch (error) {
     console.log('changePassword error: ', error);
   }
