@@ -28,7 +28,6 @@ export default function CreateFeedModal() {
     profId,
     profName,
     showCreateFeedModal,
-    isFreeFeed,
     closeNewFeedModal,
     triggerFeedListUpdate,
     setIsFreeFeed,
@@ -46,8 +45,7 @@ export default function CreateFeedModal() {
       await createProfessorFeed(feedContent, profId);
       const professorData = await getProfessorData(profId);
 
-      triggerFeedListUpdate();
-      closeModal();
+      updateFeedListAndCloseModal();
       // 해당 교수님 상세화면으로 이동
       navigation.navigate('ProfessorDetailScreen', {
         professorData: professorData,
@@ -55,12 +53,17 @@ export default function CreateFeedModal() {
     } else {
       // 일반 피드인 경우
       await createFeed(feedContent);
-      triggerFeedListUpdate();
-      closeModal();
+      updateFeedListAndCloseModal();
     }
   };
 
-  const resetStateOnDismiss = () => {
+  // TODO - 이런 식으로 업데이트를 trigger하는 것이 좋은 선택인지에 대해서 생각해봐야함.
+  const updateFeedListAndCloseModal = () => {
+    triggerFeedListUpdate(); // 새롭게 추가된 피드를 반영하기 위해서 피드 목록 업데이트 처리
+    closeModal();
+  };
+
+  const resetFeedContent = () => {
     setFeedContent('');
   };
 
@@ -74,15 +77,12 @@ export default function CreateFeedModal() {
 
   const closeModal = () => {
     setIsFreeFeed(false);
+    resetFeedContent();
     closeNewFeedModal();
   };
 
   return (
-    <Modal
-      visible={showCreateFeedModal}
-      animationType="slide"
-      onDismiss={resetStateOnDismiss}
-    >
+    <Modal visible={showCreateFeedModal} animationType="slide">
       <SafeAreaLayout>
         <View style={styles.container}>
           <CreateFeedModalHeader
