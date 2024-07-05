@@ -170,6 +170,7 @@ const styles = StyleSheet.create({
   currentRatingText: {
     fontSize: 24,
     fontWeight: '500',
+    fontVariant: ['tabular-nums'],
   },
   ratingContainer: {
     flexDirection: 'row',
