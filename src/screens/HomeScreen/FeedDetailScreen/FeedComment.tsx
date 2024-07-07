@@ -112,6 +112,7 @@ export default function FeedComment({
   };
 
   const handleCommentDeletePress = () => {
+    closeBackdrop();
     deleteComment(commentId);
   };
 
@@ -125,6 +126,7 @@ export default function FeedComment({
   // 수정 버튼을 눌렀을 때 이뤄져야 하는 처리
   const handleCommentEditPress = () => {
     setShowCommentActionMenu(false);
+    closeBackdrop();
     setNewComment(content);
     setSelectedCommentId(commentId);
     setIsCommentEditing(true);

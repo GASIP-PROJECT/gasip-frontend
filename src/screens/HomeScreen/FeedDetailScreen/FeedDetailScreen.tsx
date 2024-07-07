@@ -82,12 +82,14 @@ export default function FeedDetailScreen({ route, navigation }) {
 
   const handleFeedDeletePress = async () => {
     setShowFeedActionMenu(false);
+    closeBackdrop();
     await deleteFeed(feedData?.postId);
     navigation.goBack();
   };
 
   const handleFeedEditPress = () => {
     setShowFeedActionMenu(false);
+    closeBackdrop();
 
     // TODO - setTimeout 제거 필요
     setTimeout(() => {
