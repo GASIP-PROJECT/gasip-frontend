@@ -290,6 +290,11 @@ export default function FeedDetailScreen({ route, navigation }) {
           setIsVisible={setShowFeedEditModal}
         />
         {showCommentActionMenuBackdrop && <FeedActionMenuBackdrop />}
+        {showFeedActionMenu && (
+          <ActionMenuTransparentOuterBackdrop
+            onPress={() => setShowFeedActionMenu(false)}
+          />
+        )}
       </SafeAreaLayout>
       {/* 댓글 수정/삭제 모달 표시될 때 백그라운드 눌러서 닫기 위한 Component */}
     </KeyboardAvoidingView>
@@ -345,7 +350,7 @@ const ActionMenu = ({ handleFeedEditPress, handleFeedDeletePress }) => {
   );
 };
 
-// TODO - height 100%에도 ScrollView 만큼 안가는 이유가 뭐야?
+// TODO - Backdrop관련 구조 수정 필요
 const ActionMenuTransparentBackdrop = ({ onPress }) => {
   return (
     <View
@@ -355,6 +360,29 @@ const ActionMenuTransparentBackdrop = ({ onPress }) => {
         left: -100,
         width: 1000,
         height: 1000,
+        backgroundColor: 'transparent',
+        zIndex: 1000,
+      }}
+    >
+      <TouchableOpacity
+        style={{ width: '100%', height: '100%' }}
+        onPress={onPress}
+      >
+        <View />
+      </TouchableOpacity>
+    </View>
+  );
+};
+
+const ActionMenuTransparentOuterBackdrop = ({ onPress }) => {
+  return (
+    <View
+      style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
         backgroundColor: 'transparent',
         zIndex: 1,
       }}
@@ -435,7 +463,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.12,
     shadowRadius: 10,
     elevation: 5,
-    zIndex: 2,
+    zIndex: 1002,
     borderWidth: 1,
     borderColor: COLORS.BLUE_LIGHT_200,
   },
