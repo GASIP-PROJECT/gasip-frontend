@@ -71,7 +71,8 @@ export const getAllGeneralFeedsForHomeScreen = async () => {
 export const getGeneralFeeds = async (page: number, dataCount: number = 5) => {
   try {
     const posts = await GSBackendClient.get(
-      `/boards/free-boards?page=${page}&size=${dataCount}&profId == 0`,
+      // `/boards/free-boards?page=${page}&size=${dataCount}&profId == 0`,
+      `/boards/free-boards?page=${page}&size=${20}`,
     );
 
     return posts.data.response;
