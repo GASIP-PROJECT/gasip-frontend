@@ -12,8 +12,10 @@ import { likeComment, likeCommentCancel } from '@api/index';
 import { getTimeDifference } from '@utils/timeUtil';
 
 import useCommentEditStore from '@store/commentEditStore';
+import useCommentActionMenuBackdropStore from '@store/commentActionMenuBackdropStore';
 
 import FeedCommentReply from './FeedCommentReply';
+import FeedActionMenuBackdrop from './FeedActionMenuBackdrop';
 
 import GSText from '@components/common/GSText';
 import Spacer from '@components/common/Spacer';
@@ -29,7 +31,6 @@ interface FeedCommentProps {
   isLastElement: boolean;
   commentData: FeedComment;
   handleReplyCommentPress: (commentId: number, commentNickname: string) => void;
-  handleCommentEditConfirm: () => void;
   isSelectedForEditing: boolean;
   scrollTo: (y: number) => void;
 }
@@ -38,7 +39,6 @@ export default function FeedComment({
   isLastElement,
   commentData,
   handleReplyCommentPress,
-  handleCommentEditConfirm,
   isSelectedForEditing,
   scrollTo,
 }: FeedCommentProps) {
@@ -65,6 +65,13 @@ export default function FeedComment({
     setIsCommentEditing,
     setSelectedCommentId,
   } = useCommentEditStore();
+
+  const {
+    showCommentActionMenuBackdrop,
+    showBackdrop,
+    closeBackdrop,
+    setCloseCommentActionMenu,
+  } = useCommentActionMenuBackdropStore();
 
   const [showCommentActionMenu, setShowCommentActionMenu] = useState(false);
 
@@ -98,13 +105,10 @@ export default function FeedComment({
     scrollTo(positionY);
   };
 
-  // TODO - commentAction과 feedAction 분리 필요
   const openCommentActionsModal = () => {
     setShowCommentActionMenu(true);
-  };
-
-  const closeCommentActionsModal = () => {
-    setShowCommentActionMenu(false);
+    showBackdrop();
+    setCloseCommentActionMenu(() => setShowCommentActionMenu(false));
   };
 
   const handleCommentDeletePress = () => {
@@ -133,7 +137,16 @@ export default function FeedComment({
         const { y } = e.nativeEvent.layout;
         setPositionY(y);
       }}
+      style={{ zIndex: 2 }}
     >
+      {showCommentActionMenu && (
+        <ActionMenu
+          handleEditPress={handleCommentEditPress}
+          handleDeletePress={handleCommentDeletePress}
+        />
+      )}
+      {showCommentActionMenuBackdrop && <FeedActionMenuBackdrop />}
+
       <View style={[styles.contentContainer, commentContainerBorderStyle]}>
         <CommentHeader
           regDate={regDate}
@@ -141,17 +154,6 @@ export default function FeedComment({
           memberId={memberId}
           openCommentActionsModal={openCommentActionsModal}
         />
-
-        {showCommentActionMenu && (
-          <ActionMenu
-            handleEditPress={handleCommentEditPress}
-            handleDeletePress={handleCommentDeletePress}
-          />
-        )}
-
-        {showCommentActionMenu && (
-          <ActionMenuTransparendBackdrop onPress={closeCommentActionsModal} />
-        )}
 
         <Spacer type="height" value={6} />
         <CommentBody
@@ -167,7 +169,6 @@ export default function FeedComment({
           isCommentLike={isCommentLike}
         />
       </View>
-
       {commentChildren.map((commentChild, index) => {
         return (
           <View
@@ -336,29 +337,6 @@ const ActionMenu = ({ handleEditPress, handleDeletePress }) => {
   );
 };
 
-const ActionMenuTransparendBackdrop = ({ onPress }) => {
-  return (
-    <View
-      style={{
-        position: 'absolute',
-        top: -500,
-        left: -100,
-        width: 1000,
-        height: 1000,
-        backgroundColor: 'transparent',
-        zIndex: 1,
-      }}
-    >
-      <TouchableOpacity
-        style={{ width: '100%', height: '100%' }}
-        onPress={onPress}
-      >
-        <View />
-      </TouchableOpacity>
-    </View>
-  );
-};
-
 const styles = StyleSheet.create({
   contentContainer: {
     paddingVertical: 16,
@@ -406,7 +384,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.12,
     shadowRadius: 10,
     elevation: 5,
-    zIndex: 2,
+    zIndex: 1000,
     borderWidth: 1,
     borderColor: COLORS.BLUE_LIGHT_200,
   },

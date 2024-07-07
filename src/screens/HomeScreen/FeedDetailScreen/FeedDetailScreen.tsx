@@ -13,11 +13,13 @@ import {
 import { deleteFeed, getFeedData, getProfessorData } from '@api/index';
 
 import useCommentEditStore from '@store/commentEditStore';
+import useCommentActionMenuBackdropStore from '@store/commentActionMenuBackdropStore';
 
 import FeedContent from './FeedContent';
 import FeedComment from './FeedComment';
 import FeedEditModal from './FeedEditModal';
 import FeedReplyInput from './FeedReplyInput';
+import FeedActionMenuBackdrop from './FeedActionMenuBackdrop';
 
 import Spacer from '@components/common/Spacer';
 import GSText from '@components/common/GSText';
@@ -52,6 +54,10 @@ export default function FeedDetailScreen({ route, navigation }) {
 
   const [showFeedActionMenu, setShowFeedActionMenu] = useState(false);
   const [showFeedEditModal, setShowFeedEditModal] = useState(false);
+
+  // 댓글 모달 표시 관련 변수
+  const { showCommentActionMenuBackdrop, closeBackdrop } =
+    useCommentActionMenuBackdropStore();
 
   const handleReplyCommentPress = (
     commentId: number,
@@ -147,11 +153,10 @@ export default function FeedDetailScreen({ route, navigation }) {
 
           {/* 교수님에 대한 글인 경우 표시되는 교수님 이름 */}
           {feedData?.profId !== 0 && (
-            <TouchableOpacity onPress={handleProfNamePress}>
-              <GSText style={styles.professorNameText}>
-                {feedData?.profName} 교수님
-              </GSText>
-            </TouchableOpacity>
+            <ProfessorNameButton
+              name={feedData?.profName}
+              onPress={handleProfNamePress}
+            />
           )}
 
           <Spacer type="height" value={14} />
@@ -165,6 +170,7 @@ export default function FeedDetailScreen({ route, navigation }) {
         </View>
 
         <ScrollView style={styles.container} ref={scrollViewRef}>
+          {showCommentActionMenuBackdrop && <FeedActionMenuBackdrop />}
           {/* 피드 내용 */}
           {/* TODO - shadow 제대로 된건가..? */}
           <View
@@ -174,7 +180,7 @@ export default function FeedDetailScreen({ route, navigation }) {
               paddingBottom: 5,
             }}
           >
-            <View style={styles.feedContentCotainer}>
+            <View style={styles.feedContentContainer}>
               <FeedContent
                 feedData={feedData}
                 openFeedActionsModal={openFeedActionsModal}
@@ -188,8 +194,10 @@ export default function FeedDetailScreen({ route, navigation }) {
               paddingHorizontal: 24,
               borderTopWidth: 1,
               borderColor: COLORS.BLUE_PRIMARY,
+              zIndex: 4,
             }}
           >
+            {showCommentActionMenuBackdrop && <FeedActionMenuBackdrop />}
             <Spacer type="height" value={8} />
 
             <GSText style={styles.commentTitleText}>
@@ -203,7 +211,6 @@ export default function FeedDetailScreen({ route, navigation }) {
                 isLastElement={index === feedData.comments.length - 1}
                 commentData={comment}
                 handleReplyCommentPress={handleReplyCommentPress}
-                handleCommentEditConfirm={handleCommentEditConfirmPress}
                 isSelectedForEditing={
                   // TODO - optional 로 처리하지 않으면 null로 뜨는 이슈 체크
                   comment?.commentId === selectedCommentId
@@ -223,7 +230,7 @@ export default function FeedDetailScreen({ route, navigation }) {
           )}
           {/* 피드 관련 액션메뉴 켜져있을 때 배경을 눌러서 꺼지도록 하기 위해서 필요한 backdrop */}
           {showFeedActionMenu && (
-            <ActionMenuTransparendBackdrop
+            <ActionMenuTransparentBackdrop
               onPress={() => setShowFeedActionMenu(false)}
             />
           )}
@@ -282,7 +289,9 @@ export default function FeedDetailScreen({ route, navigation }) {
           isVisible={showFeedEditModal}
           setIsVisible={setShowFeedEditModal}
         />
+        {showCommentActionMenuBackdrop && <FeedActionMenuBackdrop />}
       </SafeAreaLayout>
+      {/* 댓글 수정/삭제 모달 표시될 때 백그라운드 눌러서 닫기 위한 Component */}
     </KeyboardAvoidingView>
   );
 }
@@ -337,7 +346,7 @@ const ActionMenu = ({ handleFeedEditPress, handleFeedDeletePress }) => {
 };
 
 // TODO - height 100%에도 ScrollView 만큼 안가는 이유가 뭐야?
-const ActionMenuTransparendBackdrop = ({ onPress }) => {
+const ActionMenuTransparentBackdrop = ({ onPress }) => {
   return (
     <View
       style={{
@@ -360,10 +369,25 @@ const ActionMenuTransparendBackdrop = ({ onPress }) => {
   );
 };
 
+const ProfessorNameButton = ({
+  name,
+  onPress,
+}: {
+  name: string;
+  onPress: () => void;
+}) => {
+  return (
+    <TouchableOpacity onPress={onPress}>
+      <GSText style={styles.professorNameText}>{name} 교수님</GSText>
+    </TouchableOpacity>
+  );
+};
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.WHITE,
+    zIndex: 3,
   },
   commentReplyIndicatorContainer: {
     width: '100%',
@@ -424,7 +448,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: COLORS.BLUE_LIGHT_100,
   },
-  feedContentCotainer: {
+  feedContentContainer: {
     backgroundColor: COLORS.WHITE,
     shadowColor: COLORS.BLUE_PRIMARY,
     shadowOffset: { width: 0, height: -5 },
