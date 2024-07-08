@@ -11,6 +11,7 @@ import { MMKVStorage } from '@api/mmkv';
 import { getTimeDifference } from '@utils/timeUtil';
 
 import useCommentEditStore from '@store/commentEditStore';
+import useCommentActionMenuBackdropStore from '@store/commentActionMenuBackdropStore';
 
 import GSText from '@components/common/GSText';
 import Spacer from '@components/common/Spacer';
@@ -26,10 +27,12 @@ export default function FeedCommentReply({
   reply,
   handleLikePress,
   scrollTo,
+  index,
 }: {
   reply: FeedComment;
   handleLikePress: (isLike: boolean, commentId: number) => void;
   scrollTo: () => void;
+  index: number;
 }) {
   const {
     content,
@@ -47,10 +50,17 @@ export default function FeedCommentReply({
 
     deleteComment,
     setNewComment,
-    toggleUpdateFeed,
     setIsCommentEditing,
     setSelectedCommentId,
   } = useCommentEditStore();
+
+  const {
+    showReplyBackdrop,
+    showCommentReplyBackdrop,
+    setCloseReplyActionMenu,
+    closeReplyBackdrop,
+    setSelectedReplyIndex,
+  } = useCommentActionMenuBackdropStore();
 
   const isSelectedForEditing = commentId === selectedCommentId;
 
@@ -65,22 +75,40 @@ export default function FeedCommentReply({
     handleLikePress(isCommentLike, commentId);
   };
 
-  // TODO - commentAction과 feedAction 분리 필요
+  // backdrop을 처리하기 위해서 필요한 작업은?
+  // 모달 열 때 backdrop도 같이 연다.
+  // backdrop을 눌렀을 때 모달이 같이 닫혀야 한다.
+
   const openCommentActionsModal = () => {
     setShowActionMenu(true);
+
+    setSelectedReplyIndex(index);
+    // backdrop을 열고,
+    showReplyBackdrop(); // backdrop을 눌렀을 때 실행되어야 하는 모달 닫는 함수 저장
+    // backdrop을 눌렀을 때 실행되어야 하는 모달 닫는 함수 저장
+    setCloseReplyActionMenu(closeCommentActionsModal);
   };
 
+  // 닫을 때,
+  // 액션 메뉴 닫고,
+  // backdrop 닫는데,
+  // 이 때 closeReplyBackdrop이 실행되면
+  // backdrop관리하는 상태 false + closeReplyActionMenu null로 초기화
+  // TODO - 함수가 실행 중인데 null로 초기화하는게 안전한 접근인가?
   const closeCommentActionsModal = () => {
     setShowActionMenu(false);
+    closeReplyBackdrop();
   };
 
   const handleCommentDeletePress = () => {
     deleteComment(commentId);
+    closeReplyBackdrop();
   };
 
   // 수정 버튼을 눌렀을 때 이뤄져야 하는 처리
   const handleCommentEditPress = () => {
     setShowActionMenu(false);
+    closeReplyBackdrop();
     setNewComment(content);
     setSelectedCommentId(commentId);
     setIsCommentEditing(true);
@@ -98,7 +126,7 @@ export default function FeedCommentReply({
         />
       )}
 
-      {showActionMenu && (
+      {showCommentReplyBackdrop && (
         <ActionMenuTransparendBackdrop onPress={closeCommentActionsModal} />
       )}
 
@@ -258,7 +286,7 @@ const ActionMenuTransparendBackdrop = ({ onPress }) => {
         width: 1000,
         height: 1000,
         backgroundColor: 'transparent',
-        zIndex: 1,
+        zIndex: 4,
       }}
     >
       <TouchableOpacity
@@ -317,7 +345,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.12,
     shadowRadius: 10,
     elevation: 5,
-    zIndex: 2,
+    zIndex: 1000,
     borderWidth: 1,
     borderColor: COLORS.BLUE_LIGHT_200,
   },

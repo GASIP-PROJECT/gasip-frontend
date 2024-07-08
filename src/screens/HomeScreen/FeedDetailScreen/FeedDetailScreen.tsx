@@ -56,8 +56,11 @@ export default function FeedDetailScreen({ route, navigation }) {
   const [showFeedEditModal, setShowFeedEditModal] = useState(false);
 
   // 댓글 모달 표시 관련 변수
-  const { showCommentActionMenuBackdrop, closeBackdrop } =
-    useCommentActionMenuBackdropStore();
+  const {
+    showCommentActionMenuBackdrop,
+    closeBackdrop,
+    showCommentReplyBackdrop,
+  } = useCommentActionMenuBackdropStore();
 
   const handleReplyCommentPress = (
     commentId: number,
@@ -291,7 +294,9 @@ export default function FeedDetailScreen({ route, navigation }) {
           isVisible={showFeedEditModal}
           setIsVisible={setShowFeedEditModal}
         />
-        {showCommentActionMenuBackdrop && <FeedActionMenuBackdrop />}
+        {(showCommentActionMenuBackdrop || showCommentReplyBackdrop) && (
+          <FeedActionMenuBackdrop />
+        )}
         {showFeedActionMenu && (
           <ActionMenuTransparentOuterBackdrop
             onPress={() => setShowFeedActionMenu(false)}

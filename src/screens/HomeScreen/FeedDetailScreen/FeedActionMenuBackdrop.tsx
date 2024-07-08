@@ -4,12 +4,18 @@ import { TouchableOpacity } from 'react-native';
 import useCommentActionMenuBackdropStore from '@store/commentActionMenuBackdropStore';
 
 export default function FeedActionMenuBackdrop() {
-  const { closeBackdrop, closeCommentActionMenu } =
-    useCommentActionMenuBackdropStore();
+  const {
+    closeBackdrop,
+    closeCommentActionMenu,
+    closeReplyActionMenu,
+    closeReplyBackdrop,
+  } = useCommentActionMenuBackdropStore();
 
   const handleOnBackdropPress = () => {
     closeBackdrop();
+    closeReplyBackdrop();
     closeCommentActionMenu && closeCommentActionMenu();
+    closeReplyActionMenu && closeReplyActionMenu();
   };
 
   return (

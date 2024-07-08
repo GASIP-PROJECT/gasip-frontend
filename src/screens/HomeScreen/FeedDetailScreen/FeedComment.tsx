@@ -71,6 +71,8 @@ export default function FeedComment({
     showBackdrop,
     closeBackdrop,
     setCloseCommentActionMenu,
+    showCommentReplyBackdrop,
+    selectedReplyIndex,
   } = useCommentActionMenuBackdropStore();
 
   const [showCommentActionMenu, setShowCommentActionMenu] = useState(false);
@@ -105,10 +107,16 @@ export default function FeedComment({
     scrollTo(positionY);
   };
 
+  const closeCommentActionsModal = () => {
+    setShowCommentActionMenu(false);
+  };
+
   const openCommentActionsModal = () => {
     setShowCommentActionMenu(true);
     showBackdrop();
-    setCloseCommentActionMenu(() => setShowCommentActionMenu(false));
+    // backdrop을 눌렀을 때 실행될 함수를 store에 저장(모달 닫는 함수)
+    // backdrop을 여러 뎁스에 걸쳐서 여기저기 구현했기 때문에, store에 backdrop을 눌렀을 때 실행될 함수를 별도 저장해서 처리
+    setCloseCommentActionMenu(closeCommentActionsModal);
   };
 
   const handleCommentDeletePress = () => {
@@ -147,7 +155,9 @@ export default function FeedComment({
           handleDeletePress={handleCommentDeletePress}
         />
       )}
-      {showCommentActionMenuBackdrop && <FeedActionMenuBackdrop />}
+      {(showCommentActionMenuBackdrop || showCommentReplyBackdrop) && (
+        <FeedActionMenuBackdrop />
+      )}
 
       <View style={[styles.contentContainer, commentContainerBorderStyle]}>
         <CommentHeader
@@ -178,6 +188,12 @@ export default function FeedComment({
             style={{
               borderBottomWidth: index !== commentChildren.length - 1 ? 1 : 0,
               borderBottomColor: COLORS.GRAY_200,
+              // 특정 대댓글의 수정/삭제 모달 렌더되었을 때, backdrop에 의해서 다른 댓글/대댓글 가려지도록 조건부 zIndex설정
+              // 상시 3으로 설정할 수 없는 이유는, 다른 댓글 수정시에 문제가 됨
+              zIndex:
+                showCommentReplyBackdrop && selectedReplyIndex === index
+                  ? 3
+                  : 1,
             }}
             onLayout={e => {
               const { y } = e.nativeEvent.layout;
@@ -193,6 +209,7 @@ export default function FeedComment({
               scrollTo={() => {
                 scrollTo(replyYpositions[commentChild.commentId]);
               }}
+              index={index}
             />
           </View>
         );
