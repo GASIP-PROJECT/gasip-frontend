@@ -39,7 +39,9 @@ export default function FeedSummary({
   } = feedData;
 
   const goToFeed = () => {
-    navigation.navigate('FeedDetailScreen', { postId: postId });
+    // 같은 이름의 화면이 stack의 직전 화면인 상태에서 navigate함수로 이동 시도 시, 다음 화면으로 이동하는 것이 아니라 이전화면으로 이동함.
+    // 그래서 push를 통해서 강제로 새 화면이 Stack에 추가되도록 구현
+    navigation.push('FeedDetailScreen', { postId: postId });
   };
 
   return (
