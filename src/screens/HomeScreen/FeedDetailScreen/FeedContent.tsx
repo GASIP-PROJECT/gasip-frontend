@@ -21,9 +21,11 @@ import icon_dots_vertical from '@assets/icon_dots_vertical.png';
 export default function FeedContent({
   feedData,
   openFeedActionsModal,
+  handleCommentButtonPress,
 }: {
   feedData: Feed | null;
   openFeedActionsModal: () => void;
+  handleCommentButtonPress: () => void;
 }) {
   if (feedData === null) return <View />;
 
@@ -56,6 +58,7 @@ export default function FeedContent({
         isLike={isLike}
         clickCount={clickCount}
         commentCount={commentCount}
+        handleCommentButtonPress={handleCommentButtonPress}
       />
     </View>
   );
@@ -105,12 +108,14 @@ const FeedContentFooter = ({
   isLike,
   clickCount,
   commentCount,
+  handleCommentButtonPress,
 }: {
   likeCount: number;
   postId: number;
   isLike: boolean;
   clickCount: number;
   commentCount: number;
+  handleCommentButtonPress: () => void;
 }) => {
   const toggleUpdateFeed = useCommentEditStore(state => state.toggleUpdateFeed);
   const iconTextGap = 3;
@@ -144,9 +149,14 @@ const FeedContentFooter = ({
       </TouchableOpacity>
       <Spacer type="width" value={15} />
 
-      <Image source={icon_comment} style={{ width: 20, height: 20 }} />
-      <Spacer type="width" value={iconTextGap} />
-      <GSText style={styles.iconText}>{commentCount}</GSText>
+      <TouchableOpacity
+        style={{ flexDirection: 'row', alignItems: 'center' }}
+        onPress={handleCommentButtonPress}
+      >
+        <Image source={icon_comment} style={{ width: 20, height: 20 }} />
+        <Spacer type="width" value={iconTextGap} />
+        <GSText style={styles.iconText}>{commentCount}</GSText>
+      </TouchableOpacity>
 
       <Spacer type="width" value={15} />
 

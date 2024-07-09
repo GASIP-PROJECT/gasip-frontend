@@ -62,6 +62,13 @@ export default function FeedDetailScreen({ route, navigation }) {
     showCommentReplyBackdrop,
   } = useCommentActionMenuBackdropStore();
 
+  // 상단 좋아요 버튼 옆 댓글 버튼 눌렀을 때 댓글창 focus되도록 기획하였음.
+  const handleCommentButtonPress = () => {
+    if (commentTextInputRef.current) {
+      commentTextInputRef.current.focus();
+    }
+  };
+
   const handleReplyCommentPress = (
     commentId: number,
     commentNickname: string,
@@ -189,6 +196,7 @@ export default function FeedDetailScreen({ route, navigation }) {
               <FeedContent
                 feedData={feedData}
                 openFeedActionsModal={openFeedActionsModal}
+                handleCommentButtonPress={handleCommentButtonPress}
               />
             </View>
           </View>
