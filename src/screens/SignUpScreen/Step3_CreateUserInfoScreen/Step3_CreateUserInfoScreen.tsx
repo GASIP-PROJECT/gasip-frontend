@@ -34,7 +34,6 @@ export default function Step3_CreateUserInfoScreen({ navigation }) {
   };
 
   const handleConfirmButtonPress = async () => {
-    // console.log(verifiedEmail, password, name, nickname);
     try {
       const userData = {
         email: verifiedEmail,
@@ -50,11 +49,10 @@ export default function Step3_CreateUserInfoScreen({ navigation }) {
         },
         body: JSON.stringify(userData),
       });
-      // console.log(response);
       if (response.ok) {
         // 회원가입 성공하면
         alertSignInSuccess();
-        navigation.goBack();
+        navigation.popToTop(); // 로그인 화면으로 이동
       } else {
         throw new Error('회원가입 실패');
       }
@@ -153,7 +151,7 @@ export default function Step3_CreateUserInfoScreen({ navigation }) {
               { color: isUserInfoValid ? COLORS.WHITE : COLORS.GRAY_400 },
             ]}
           >
-            회원가입 완료!
+            회원가입 완료
           </GSText>
         </TouchableOpacity>
       </View>
