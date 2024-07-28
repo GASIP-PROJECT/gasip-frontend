@@ -40,21 +40,21 @@ export default function InputEmailScreen({
   };
 
   // TODO - 프로덕션 시 validateEmail 함수 실행하는 형태로 변경
-  // const isValidEmail = validateEmail(emailToVerifyCode);
-  const isValidEmail = true;
+  const isValidEmail = validateEmail(emailToVerifyCode);
+  // const isValidEmail = true;
 
   const handleVerifyEmailPress = async () => {
     try {
       const userEmailPrefix = emailToVerifyCode;
-      const defaultEmailSuffix = '@nweal.com'; // 기본 이메일 도메인 나중에 @gachon.ac.kr 로 변경하기
+      // 기본 도메인 - 가천대학교 학교 전용 이메일 도메인
+      const defaultEmailSuffix = '@gachon.ac.kr';
+      const emailToVerify = `${userEmailPrefix}${defaultEmailSuffix}`;
 
-      // TODO - 테스트용으로 우선 입력한 이메일을 전체 이메일로 처리
-      // const userEmail = `${userEmailPrefix}${defaultEmailSuffix}`;
       setIsSendEmailRequestProcessing(true);
-      // TODO - 테스트용으로 우선 입력한 이메일을 전체 이메일로 처리
+
       const response = await fetch(
         `https://gasip.site/members/emails/verification-requests?email=${encodeURIComponent(
-          emailToVerifyCode,
+          emailToVerify,
         )}`,
         {
           method: 'POST',
@@ -69,7 +69,7 @@ export default function InputEmailScreen({
       if (!response.ok) {
         throw new Error('이메일 인증 요청에 실패했습니다.');
       }
-      console.log('요청 전송에 대한 response 받음');
+      // console.log('요청 전송에 대한 response 받음');
       setIsWaitingForCodeVerification(true);
       setIsSendEmailRequestProcessing(false);
     } catch (error: any) {
