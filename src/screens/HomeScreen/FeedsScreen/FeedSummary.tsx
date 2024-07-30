@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Alert, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { getTimeDifference } from '@utils/timeUtil';
@@ -39,9 +39,16 @@ export default function FeedSummary({
   } = feedData;
 
   const goToFeed = () => {
+    // Alert.alert('오류가 발생했습니다. 다시 시도해주세요.', 'hell!!!');
     // 같은 이름의 화면이 stack의 직전 화면인 상태에서 navigate함수로 이동 시도 시, 다음 화면으로 이동하는 것이 아니라 이전화면으로 이동함.
     // 그래서 push를 통해서 강제로 새 화면이 Stack에 추가되도록 구현
-    navigation.push('FeedDetailScreen', { postId: postId });
+    try {
+      // throw new Error('erorrooror');
+      navigation.push('FeedDetailScreen', { postId: postId });
+    } catch (e) {
+      console.log(e);
+      Alert.alert('오류가 발생했습니다. 다시 시도해주세요.', e.message);
+    }
   };
 
   return (
