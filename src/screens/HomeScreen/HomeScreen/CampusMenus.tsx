@@ -42,7 +42,7 @@ const MENU_DATA = [
   {
     title: '포탈',
     icon: icon_portal,
-    linkUrl: 'https://sso.gachon.ac.kr/svc/tk/Auth.do?',
+    linkUrl: 'https://portal.gachon.ac.kr',
   },
 ];
 
