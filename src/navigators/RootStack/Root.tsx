@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import BootSplash from 'react-native-bootsplash';
+import { useMMKVBoolean } from 'react-native-mmkv';
 
 import { MMKVStorage } from '@api/mmkv';
 import { useAuth } from '@contexts/AuthContext';
@@ -9,6 +10,7 @@ import { useAuth } from '@contexts/AuthContext';
 import HomeScreen from '@screens/HomeScreen/HomeScreen';
 import LoginScreen from '@screens/LoginScreen/LoginScreen';
 import MyPageScreen from '@screens/MypageScreen/MyPageScreen';
+import OnboardingScreen from '@screens/Onboarding/OnboardingScreen';
 import FreeFeedsScreen from '@screens/HomeScreen/FeedsScreen/FreeFeedsScreen';
 import AllReviewsScreen from '@screens/HomeScreen/FeedsScreen/AllReviewsScreen';
 import CreateFeedModal from '@screens/HomeScreen/CreateFeedModal/CreateFeedModal';
@@ -38,6 +40,10 @@ const themeColor = {
 };
 
 export default function Root() {
+  const [hasUserSeenOnboarding, setHasUserSeenOnboarding] = useMMKVBoolean(
+    'userHasSeenOnboarding',
+  );
+
   const { authState, dispatch } = useAuth();
 
   const checkUserToken = () => {
@@ -77,6 +83,8 @@ export default function Root() {
       hideBootSplash();
     }, 1000);
   }, []);
+
+  if (hasUserSeenOnboarding === false) return <OnboardingScreen />;
 
   return (
     <NavigationContainer theme={themeColor}>

@@ -7,6 +7,8 @@ import {
   View,
 } from 'react-native';
 
+import { MMKVStorage } from '@api/mmkv';
+
 import GSText from '@components/common/GSText';
 import Spacer from '@components/common/Spacer';
 import OnboardingSwiper from './OnboardingSwiper';
@@ -16,6 +18,10 @@ import { COLORS } from '@styles/colors';
 import backgroundImage from '@assets/img_background_onboarding.png';
 
 export default function OnboardingScreen() {
+  const handleStartOrSkipPress = () => {
+    MMKVStorage.set('userHasSeenOnboarding', true);
+  };
+
   return (
     <ImageBackground
       source={backgroundImage}
@@ -24,28 +30,26 @@ export default function OnboardingScreen() {
     >
       <SafeAreaView style={{ flex: 1 }}>
         <Spacer type="height" value={10} />
-
-        <SkipButton />
+        <SkipButton onPress={handleStartOrSkipPress} />
         <Spacer type="height" value={40} />
         <OnboardingSwiper />
-        <StartButton />
+        <StartButton onPress={handleStartOrSkipPress} />
       </SafeAreaView>
     </ImageBackground>
   );
 }
 
-const SkipButton = () => {
+const SkipButton = ({ onPress }: { onPress: () => void }) => {
   return (
     <View style={{ flexDirection: 'row-reverse', paddingHorizontal: 32 }}>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={onPress}>
         <GSText style={{ color: COLORS.GRAY_100 }}>건너뛰기</GSText>
       </TouchableOpacity>
     </View>
   );
 };
 
-const StartButton = () => {
-  const onPress = () => {};
+const StartButton = ({ onPress }: { onPress: () => void }) => {
   return (
     <TouchableOpacity style={styles.button} onPress={onPress}>
       <GSText style={styles.buttonText}>시작하기</GSText>
