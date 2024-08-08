@@ -84,7 +84,7 @@ export default function Root() {
     }, 1000);
   }, []);
 
-  if (hasUserSeenOnboarding === false) return <OnboardingScreen />;
+  if (hasUserSeenOnboarding === undefined) return <OnboardingScreen />;
 
   return (
     <NavigationContainer theme={themeColor}>
