@@ -69,7 +69,7 @@ export default function OnboardingSwiper() {
   };
 
   const handleOnViewableItemsChanged = useRef(({ viewableItems }) => {
-    setIndex(viewableItems);
+    setIndex(viewableItems[0].index);
   }).current;
 
   const viewabilityConfig = useRef({
