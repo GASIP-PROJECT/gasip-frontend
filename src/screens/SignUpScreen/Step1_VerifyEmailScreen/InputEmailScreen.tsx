@@ -39,9 +39,7 @@ export default function InputEmailScreen({
     return emailPattern.test(email);
   };
 
-  // TODO - 프로덕션 시 validateEmail 함수 실행하는 형태로 변경
   const isValidEmail = validateEmail(emailToVerifyCode);
-  // const isValidEmail = true;
 
   const handleVerifyEmailPress = async () => {
     try {
@@ -69,7 +67,7 @@ export default function InputEmailScreen({
       if (!response.ok) {
         throw new Error('이메일 인증 요청에 실패했습니다.');
       }
-      // console.log('요청 전송에 대한 response 받음');
+
       setIsWaitingForCodeVerification(true);
       setIsSendEmailRequestProcessing(false);
     } catch (error: any) {

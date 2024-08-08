@@ -41,20 +41,22 @@ export default function VerifyEmailCode({
     setVerificationCode(text);
   };
 
+  // TODO - emailToVerifyCode -> 사용자가 입력한 이메일 값을 담을 변수인데, 엄밀히 말하면 사용자가 입력한 이메일 주소가 아니라 사용자가 입력한 이메일 주소의 prefix를 담고 있는 변수이다.
+  // 변수명만 보면 전체 이메일 처럼 생각할 수 있기 때문에 수정이 필요하다. 수정시에는 prefix라고 해서 처리하고 마지막에 API 호출 시에 뒤에 이메일 도메인을 추가하는 형식이 덜 헷갈릴 것 같음.
+
+  // 그에 따라 이메일 입력 및 인증 관련 로직 전반에 걸쳐서 이메일 주소가 포함된 로직이 수정되어야 한다.
   const handleResendCodePress = async () => {
     try {
       setVerificationCode('');
       setIsInvalidVerificationCode(false);
       resetTimer();
-      const url = `https://gasip.site/members/emails/verification-requests/exist?email=${emailToVerifyCode}`;
+      const url = `https://gasip.site/members/emails/verification-requests/exist?email=${emailToVerifyCode}@gachon.ac.kr`;
       const response = await fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
       });
-      // console.log(response.formData);
-      // console.log(await response.json());
       if (!response.ok) {
         throw new Error('새로운 인증번호 요청 실패');
       }
@@ -66,7 +68,7 @@ export default function VerifyEmailCode({
 
   const handleConfirmPress = async () => {
     try {
-      const url = `https://gasip.site/members/emails/verifications?email=${emailToVerifyCode}&code=${verificationCode}`;
+      const url = `https://gasip.site/members/emails/verifications?email=${emailToVerifyCode}@gachon.ac.kr&code=${verificationCode}`;
       const response = await fetch(url.toString(), {
         method: 'GET',
         headers: {
