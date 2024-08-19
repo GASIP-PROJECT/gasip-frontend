@@ -165,6 +165,7 @@ export default function FeedDetailScreen({ route, navigation }) {
       })}
     >
       <SafeAreaLayout noBottomPadding backgroundColor={COLORS.WHITE}>
+        {/* TODO(리팩토링) - Header를 FeedContentHeader로 분리 */}
         <View style={{ paddingHorizontal: 24 }}>
           <GSHeader
             title={`${feedData?.memberNickname} 님의 게시글` || ''}
@@ -186,6 +187,7 @@ export default function FeedDetailScreen({ route, navigation }) {
 
           <Spacer type="height" value={14} />
 
+          {/* TODO(리팩토링) - Divider같은 컴포넌트로 이름 지어서 분리(명시적으로) */}
           <View
             style={{
               height: 1,
@@ -197,6 +199,8 @@ export default function FeedDetailScreen({ route, navigation }) {
         <ScrollView style={styles.container} ref={scrollViewRef}>
           {showCommentActionMenuBackdrop && <FeedActionMenuBackdrop />}
           {/* 피드 내용 */}
+
+          {/* TODO(리팩토링) - 바깥쪽 container View들을 FeedContent 안으로 넣어도 됨. 왜냐하면 FeedContent는 여기서만 사용됨.  */}
           <View
             style={{
               overflow: 'hidden',
@@ -213,6 +217,7 @@ export default function FeedDetailScreen({ route, navigation }) {
             </View>
           </View>
 
+          {/* TODO(리팩토링) - 댓글 관련 컴포너넌트 FeedComments 로 분리 */}
           <View
             style={{
               backgroundColor: COLORS.BG_MAIN,
@@ -245,6 +250,8 @@ export default function FeedDetailScreen({ route, navigation }) {
             ))}
           </View>
 
+          {/* TODO(리팩토링) - 피드 액션 메뉴 관련 컴포넌트들 구조가 이해하기 어려운데 이 문제를 해결할 방법을 찾아야 함. */}
+
           {/* 피드 액션메뉴 컴포넌트들은 position absolute로 처리되어 있음.(디자인) backdrop은 현재 전체 화면을 가리지 못하는 이슈가 있음. */}
           {/* 피드 관련 액션메뉴(수정/삭제) */}
           {showFeedActionMenu && (
@@ -268,6 +275,7 @@ export default function FeedDetailScreen({ route, navigation }) {
             resetReplyCommentData={resetReplyCommentData}
           />
         )}
+        {/* TODO(리팩토링) - 별도 컴포넌트로 분리 */}
         {isCommentEditing ? (
           <View
             style={{
@@ -327,6 +335,8 @@ export default function FeedDetailScreen({ route, navigation }) {
     </KeyboardAvoidingView>
   );
 }
+
+// TODO(리팩토링) - 컴포넌트 안에 선언된 컴포넌트들 별도 컴포넌트 파일로 분리
 
 const CommentReplyIndicator = ({
   commentNickname,
