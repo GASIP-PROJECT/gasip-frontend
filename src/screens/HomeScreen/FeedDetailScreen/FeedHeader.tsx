@@ -2,8 +2,6 @@ import React from 'react';
 import { Image, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import { getProfessorData } from '@api/index';
-
 import ProfNameButton from './ProfNameButton';
 import Spacer from '@components/common/Spacer';
 import GSHeader from '@components/common/GSHeader';
@@ -24,16 +22,6 @@ export default function FeedHeader({
 }: FeedHeaderProps) {
   const navigation = useNavigation();
 
-  const handleProfNamePress = async () => {
-    if (profId === undefined) return;
-
-    const professorData = await getProfessorData(profId);
-
-    navigation.navigate('ProfessorDetailScreen', {
-      professorData: professorData,
-    });
-  };
-
   return (
     <View style={{ paddingHorizontal: 24 }}>
       <GSHeader
@@ -47,9 +35,7 @@ export default function FeedHeader({
       />
 
       {/* 교수님에 대한 글인 경우 표시되는 교수님 이름 */}
-      {profId !== 0 && (
-        <ProfNameButton name={profName} onPress={handleProfNamePress} />
-      )}
+      {profId !== 0 && <ProfNameButton name={profName} id={profId} />}
 
       <Spacer type="height" value={14} />
 
