@@ -5,16 +5,16 @@ import {
   ScrollView,
   TextInput,
   TouchableOpacity,
-  Image,
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
 
-import { deleteFeed, getFeedData, getProfessorData } from '@api/index';
+import { deleteFeed, getFeedData } from '@api/index';
 
 import useCommentEditStore from '@store/commentEditStore';
 import useCommentActionMenuBackdropStore from '@store/commentActionMenuBackdropStore';
 
+import FeedHeader from './FeedHeader';
 import FeedContent from './FeedContent';
 import FeedComment from './FeedComment';
 import FeedEditModal from './FeedEditModal';
@@ -24,13 +24,10 @@ import FeedActionMenuBackdrop from './FeedActionMenuBackdrop';
 import Spacer from '@components/common/Spacer';
 import GSText from '@components/common/GSText';
 import GSIcon from '@components/common/GSIcon';
-import GSHeader from '@components/common/GSHeader';
 import SafeAreaLayout from '@components/common/SafeAreaLayout';
 
 import { COLORS } from '@styles/colors';
 import { type Feed } from 'types/searchTypes';
-
-import icon_goback from '@assets/icon_goback.png';
 
 // 신고기능 및 UI를 추가하려고 하는데 복잡해서 수정이 어렵다. 코드에 문제가 있는 듯.
 // 문제부터 파악해보자.
@@ -124,16 +121,6 @@ export default function FeedDetailScreen({ route, navigation }) {
     editComment(newComment, selectedCommentId);
   };
 
-  const handleProfNamePress = async () => {
-    if (feedData?.profId === undefined) return;
-
-    const professorData = await getProfessorData(feedData?.profId);
-
-    navigation.navigate('ProfessorDetailScreen', {
-      professorData: professorData,
-    });
-  };
-
   useEffect(() => {
     const fetchFeedData = async () => {
       const feedData = await getFeedData(postId);
@@ -165,36 +152,11 @@ export default function FeedDetailScreen({ route, navigation }) {
       })}
     >
       <SafeAreaLayout noBottomPadding backgroundColor={COLORS.WHITE}>
-        {/* TODO(리팩토링) - Header를 FeedContentHeader로 분리 */}
-        <View style={{ paddingHorizontal: 24 }}>
-          <GSHeader
-            title={`${feedData?.memberNickname} 님의 게시글` || ''}
-            leftComponent={
-              <Image source={icon_goback} style={{ width: 28, height: 28 }} />
-            }
-            onLeftComponentPress={navigation.goBack}
-            paddingHorizontal={0}
-            rightComponent={<View style={{ width: 28, height: 28 }} />}
-          />
-
-          {/* 교수님에 대한 글인 경우 표시되는 교수님 이름 */}
-          {feedData?.profId !== 0 && (
-            <ProfessorNameButton
-              name={feedData?.profName}
-              onPress={handleProfNamePress}
-            />
-          )}
-
-          <Spacer type="height" value={14} />
-
-          {/* TODO(리팩토링) - Divider같은 컴포넌트로 이름 지어서 분리(명시적으로) */}
-          <View
-            style={{
-              height: 1,
-              backgroundColor: COLORS.GRAY_100,
-            }}
-          />
-        </View>
+        <FeedHeader
+          memberNickname={feedData?.memberNickname}
+          profId={feedData?.profId}
+          profName={feedData?.profName}
+        />
 
         <ScrollView style={styles.container} ref={scrollViewRef}>
           {showCommentActionMenuBackdrop && <FeedActionMenuBackdrop />}
