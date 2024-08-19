@@ -32,6 +32,19 @@ import { type Feed } from 'types/searchTypes';
 
 import icon_goback from '@assets/icon_goback.png';
 
+// 신고기능 및 UI를 추가하려고 하는데 복잡해서 수정이 어렵다. 코드에 문제가 있는 듯.
+// 문제부터 파악해보자.
+
+// 너무 이런 저런 함수가 많이 컴포넌트 안에서 선언되어 있음.
+// -> 컴포넌트가 길어지고 로직 보기가 어려움
+
+// 컴포넌트간 hierarchy 레벨이 맞지 않음.
+
+// 피드 상세 화면
+// 의도가 무엇인지? -> 피드 내용 및 댓글을 표시한다.
+// 컴포넌트의 기능은 무엇인지? -> 역할별로 일단 먼저 카테고라이징을 해보자.
+// 어떻게 표현해야되는지?
+
 // TODO - type 선언 필요
 export default function FeedDetailScreen({ route, navigation }) {
   const { postId } = route.params;
@@ -184,7 +197,6 @@ export default function FeedDetailScreen({ route, navigation }) {
         <ScrollView style={styles.container} ref={scrollViewRef}>
           {showCommentActionMenuBackdrop && <FeedActionMenuBackdrop />}
           {/* 피드 내용 */}
-          {/* TODO - shadow 제대로 된건가..? */}
           <View
             style={{
               overflow: 'hidden',
@@ -340,6 +352,8 @@ const CommentReplyIndicator = ({
 };
 
 const ActionMenu = ({ handleFeedEditPress, handleFeedDeletePress }) => {
+  // 누른 사람이 글 작성자인 경우 -> 삭제/수정하기 메뉴 표시
+  // 누른 사람이 글 작성자가 아닌 경우 -> 쪽지하기/신고하기 메뉴 표시
   return (
     <View style={styles.actionMenuContainer}>
       <TouchableOpacity
@@ -420,7 +434,7 @@ const ProfessorNameButton = ({
   onPress: () => void;
 }) => {
   return (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity onPress={onPress} style={{ backgroundColor: 'coral' }}>
       <GSText style={styles.professorNameText}>{name} 교수님</GSText>
     </TouchableOpacity>
   );
