@@ -179,18 +179,20 @@ export default function FeedDetailScreen({ route, navigation }) {
 
           {/* 피드 액션메뉴 컴포넌트들은 position absolute로 처리되어 있음.(디자인) backdrop은 현재 전체 화면을 가리지 못하는 이슈가 있음. */}
           {/* 피드 관련 액션메뉴(수정/삭제) */}
+
           {showFeedActionMenu && (
             <ActionMenu
               handleFeedEditPress={handleFeedEditPress}
               handleFeedDeletePress={handleFeedDeletePress}
             />
           )}
-          {/* 피드 관련 액션메뉴 켜져있을 때 배경을 눌러서 꺼지도록 하기 위해서 필요한 backdrop */}
           {showFeedActionMenu && (
             <ActionMenuTransparentBackdrop
               onPress={() => setShowFeedActionMenu(false)}
             />
           )}
+          {/* 피드 관련 액션메뉴 켜져있을 때 배경을 눌러서 꺼지도록 하기 위해서 필요한 backdrop */}
+
           <Spacer type="height" value={350} />
         </ScrollView>
 
@@ -201,6 +203,8 @@ export default function FeedDetailScreen({ route, navigation }) {
           />
         )}
         {/* TODO(리팩토링) - 별도 컴포넌트로 분리 */}
+        {/* 고민 포인트 - 처음에는 분기처리 자체를 FeedReplyInput 안에서 처리해야되나? 하는 생각이 들었음. 하지만 Comment를 수정중일 때 표시되어야 하는 버튼은 input이 아니므로 안에서 버튼 or input 형태로 처리하는 것은 맞지 않겠다고 판단하였다.  */}
+
         {isCommentEditing ? (
           <View
             style={{
