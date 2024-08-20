@@ -16,7 +16,7 @@ import useCommentActionMenuBackdropStore from '@store/commentActionMenuBackdropS
 
 import FeedHeader from './FeedHeader';
 import FeedContent from './FeedContent';
-import FeedComment from './FeedComment';
+import FeedComments from './FeedComments';
 import FeedEditModal from './FeedEditModal';
 import FeedReplyInput from './FeedReplyInput';
 import FeedActionMenuBackdrop from './FeedActionMenuBackdrop';
@@ -159,58 +159,21 @@ export default function FeedDetailScreen({ route, navigation }) {
         />
 
         <ScrollView style={styles.container} ref={scrollViewRef}>
+          {/* TODO(리팩토링) - 여러 layer로 구현되어 있는 이유에 대해서 주석 필요 */}
           {showCommentActionMenuBackdrop && <FeedActionMenuBackdrop />}
           {/* 피드 내용 */}
 
-          {/* TODO(리팩토링) - 바깥쪽 container View들을 FeedContent 안으로 넣어도 됨. 왜냐하면 FeedContent는 여기서만 사용됨.  */}
-          <View
-            style={{
-              overflow: 'hidden',
-              backgroundColor: COLORS.WHITE,
-              paddingBottom: 5,
-            }}
-          >
-            <View style={styles.feedContentContainer}>
-              <FeedContent
-                feedData={feedData}
-                openFeedActionsModal={openFeedActionsModal}
-                handleCommentButtonPress={handleCommentButtonPress}
-              />
-            </View>
-          </View>
+          <FeedContent
+            feedData={feedData}
+            openFeedActionsModal={openFeedActionsModal}
+            handleCommentButtonPress={handleCommentButtonPress}
+          />
 
-          {/* TODO(리팩토링) - 댓글 관련 컴포너넌트 FeedComments 로 분리 */}
-          <View
-            style={{
-              backgroundColor: COLORS.BG_MAIN,
-              paddingHorizontal: 24,
-              borderTopWidth: 1,
-              borderColor: COLORS.BLUE_PRIMARY,
-              zIndex: 4,
-            }}
-          >
-            {showCommentActionMenuBackdrop && <FeedActionMenuBackdrop />}
-            <Spacer type="height" value={8} />
-
-            <GSText style={styles.commentTitleText}>
-              댓글 {`(${feedData.commentCount}개)`}
-            </GSText>
-            <Spacer type="height" value={6} />
-
-            {feedData.comments.map((comment, index) => (
-              <FeedComment
-                key={index.toString()}
-                isLastElement={index === feedData.comments.length - 1}
-                commentData={comment}
-                handleReplyCommentPress={handleReplyCommentPress}
-                isSelectedForEditing={
-                  // TODO - optional 로 처리하지 않으면 null로 뜨는 이슈 체크
-                  comment?.commentId === selectedCommentId
-                }
-                scrollTo={scrollTo}
-              />
-            ))}
-          </View>
+          <FeedComments
+            comments={feedData.comments}
+            handleReplyCommentPress={handleReplyCommentPress}
+            scrollTo={scrollTo}
+          />
 
           {/* TODO(리팩토링) - 피드 액션 메뉴 관련 컴포넌트들 구조가 이해하기 어려운데 이 문제를 해결할 방법을 찾아야 함. */}
 
@@ -398,20 +361,6 @@ const ActionMenuTransparentOuterBackdrop = ({ onPress }) => {
   );
 };
 
-const ProfessorNameButton = ({
-  name,
-  onPress,
-}: {
-  name: string;
-  onPress: () => void;
-}) => {
-  return (
-    <TouchableOpacity onPress={onPress} style={{ backgroundColor: 'coral' }}>
-      <GSText style={styles.professorNameText}>{name} 교수님</GSText>
-    </TouchableOpacity>
-  );
-};
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -435,19 +384,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: '500',
     color: COLORS.GRAY_500,
-  },
-  professorNameText: {
-    fontSize: 13,
-    fontWeight: '600',
-    color: COLORS.BLUE_PRIMARY,
-    alignSelf: 'center',
-    textDecorationLine: 'underline',
-  },
-  commentTitleText: {
-    fontSize: 12,
-    fontWeight: '500',
-    paddingLeft: 16,
-    lineHeight: 24,
   },
   actionMenuContainer: {
     position: 'absolute',
@@ -476,12 +412,5 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: '500',
     color: COLORS.BLUE_LIGHT_100,
-  },
-  feedContentContainer: {
-    backgroundColor: COLORS.WHITE,
-    shadowColor: COLORS.BLUE_PRIMARY,
-    shadowOffset: { width: 0, height: -5 },
-    shadowOpacity: 0.05,
-    paddingHorizontal: 24,
   },
 });
