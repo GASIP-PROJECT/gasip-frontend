@@ -65,13 +65,13 @@ export default function FeedActionModalHeader({
 
           <TouchableOpacity
             onPress={handleActionButtonPress}
-            style={styles.createFeedButton}
+            style={styles.actionButton}
           >
-            <GSText style={styles.createFeedButtonText}>완료</GSText>
+            <GSText style={styles.actionButtonText}>완료</GSText>
           </TouchableOpacity>
         </View>
       </View>
-      <Spacer type="height" value={22} />
+      <Spacer type="height" value={12} />
 
       {/* TODO - border 관련 style수정 필요 */}
       <View
@@ -86,7 +86,7 @@ export default function FeedActionModalHeader({
             height: 1,
             backgroundColor: COLORS.BLUE_PRIMARY,
           }}
-        ></View>
+        />
       </View>
 
       <Spacer type="height" value={8} />
@@ -120,15 +120,15 @@ const styles = StyleSheet.create({
     color: COLORS.GRAY_400,
     alignSelf: 'flex-end',
   },
-  createFeedButton: {
+  actionButton: {
     backgroundColor: COLORS.BLUE_PRIMARY,
-    height: 28,
-    paddingHorizontal: 16,
+    height: 36,
+    paddingHorizontal: 24,
     borderRadius: 100,
     justifyContent: 'center',
   },
-  createFeedButtonText: {
-    fontSize: 12,
+  actionButtonText: {
+    fontSize: 14,
     fontWeight: '600',
     color: COLORS.WHITE,
   },
