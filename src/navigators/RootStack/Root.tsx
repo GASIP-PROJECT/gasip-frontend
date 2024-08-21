@@ -29,7 +29,27 @@ import Step3_CreateUserInfoScreen from '@screens/SignUpScreen/\bStep3_CreateUser
 
 import { COLORS } from '@styles/colors';
 
-const RootStack = createStackNavigator();
+export type RootStackParamList = {
+  ProfessorDetailScreen: { professorData: any };
+  HomeScreen: undefined;
+  LoginScreen: undefined;
+  MyPageScreen: undefined;
+  SearchScreen: undefined;
+  FeedDetailScreen: { postId: number };
+  MyFeedsScreen: undefined;
+  AllReviewsScreen: undefined;
+  PopularReviewsScreen: undefined;
+  FreeFeedsScreen: undefined;
+  ChangeNicknameScreen: undefined;
+  ChangePasswordScreen: undefined;
+  ResetPassword_Step1: undefined;
+  ResetPassword_Step2: undefined;
+  SignUp_Step1: undefined;
+  SignUp_Step2: undefined;
+  SignUp_Step3: undefined;
+};
+
+const RootStack = createStackNavigator<RootStackParamList>();
 
 const themeColor = {
   ...DefaultTheme,
