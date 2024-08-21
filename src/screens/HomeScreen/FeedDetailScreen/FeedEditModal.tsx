@@ -8,7 +8,7 @@ import useCommentEditStore from '@store/commentEditStore';
 import Spacer from '@components/common/Spacer';
 import SafeAreaLayout from '@components/common/SafeAreaLayout';
 
-import FeedEditModalHeader from './FeedEditModalHeader';
+import FeedActionModalHeader from './FeedActionModalHeader';
 
 import { COLORS } from '@styles/colors';
 
@@ -53,10 +53,12 @@ export default function FeedEditModal({
     <Modal visible={isVisible} animationType="slide">
       <SafeAreaLayout>
         <View style={styles.container}>
-          <FeedEditModalHeader
+          <FeedActionModalHeader
+            title="게시글 수정하기"
             feedContent={feedContent}
-            handleFeedEditPress={handleFeedEditPress}
-            closeFeedEditModal={closeFeedEditModal}
+            handleActionButtonPress={handleFeedEditPress}
+            closeModal={closeFeedEditModal}
+            showLetterCount
           />
 
           <Spacer type="height" value={10} />

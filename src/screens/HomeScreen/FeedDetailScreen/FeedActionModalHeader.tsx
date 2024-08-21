@@ -7,14 +7,18 @@ import Spacer from '@components/common/Spacer';
 
 import { COLORS } from '@styles/colors';
 
-export default function FeedEditModalHeader({
-  feedContent,
-  handleFeedEditPress,
-  closeFeedEditModal,
+export default function FeedActionModalHeader({
+  title,
+  feedContent = '',
+  handleActionButtonPress,
+  closeModal,
+  showLetterCount = false,
 }: {
+  title: string;
   feedContent: string;
-  handleFeedEditPress: () => Promise<void>;
-  closeFeedEditModal: () => void;
+  handleActionButtonPress: () => Promise<void>;
+  closeModal: () => void;
+  showLetterCount: boolean;
 }) {
   return (
     <View
@@ -34,7 +38,7 @@ export default function FeedEditModalHeader({
           }}
         >
           <TouchableOpacity
-            onPress={closeFeedEditModal}
+            onPress={closeModal}
             hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
           >
             <GSIcon
@@ -47,7 +51,7 @@ export default function FeedEditModalHeader({
         </View>
 
         <View style={styles.titleContainer}>
-          <GSText style={styles.title}>게시글 수정</GSText>
+          <GSText style={styles.title}>{title}</GSText>
         </View>
 
         <View
@@ -60,7 +64,7 @@ export default function FeedEditModalHeader({
           <View />
 
           <TouchableOpacity
-            onPress={handleFeedEditPress}
+            onPress={handleActionButtonPress}
             style={styles.createFeedButton}
           >
             <GSText style={styles.createFeedButtonText}>완료</GSText>
@@ -87,7 +91,9 @@ export default function FeedEditModalHeader({
 
       <Spacer type="height" value={8} />
 
-      <GSText style={styles.letterCountText}>{feedContent.length}/500</GSText>
+      {showLetterCount && (
+        <GSText style={styles.letterCountText}>{feedContent.length}/500</GSText>
+      )}
     </View>
   );
 }
