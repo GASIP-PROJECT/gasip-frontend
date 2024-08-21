@@ -9,6 +9,7 @@ import {
   Platform,
 } from 'react-native';
 
+import { MMKVStorage } from '@api/mmkv';
 import { deleteFeed, getFeedData } from '@api/index';
 
 import useCommentEditStore from '@store/commentEditStore';
@@ -18,12 +19,14 @@ import FeedHeader from './FeedHeader';
 import FeedContent from './FeedContent';
 import FeedComments from './FeedComments';
 import FeedEditModal from './FeedEditModal';
+import FeedActionMenu from './FeedActionMenu';
 import FeedReplyInput from './FeedReplyInput';
 import BottomAreaContainer from './BottomAreaContainer';
 import FeedActionMenuBackdrop from './FeedActionMenuBackdrop';
 import ReplyEditCompleteButton from './ReplyEditCompleteButton';
 
 import Spacer from '@components/common/Spacer';
+
 import GSText from '@components/common/GSText';
 import GSIcon from '@components/common/GSIcon';
 import SafeAreaLayout from '@components/common/SafeAreaLayout';
@@ -123,14 +126,7 @@ export default function FeedDetailScreen({ route, navigation }) {
     editComment(newComment, selectedCommentId);
   };
 
-  useEffect(() => {
-    const fetchFeedData = async () => {
-      const feedData = await getFeedData(postId);
-      setFeedData(feedData);
-    };
-
-    fetchFeedData();
-  }, [updateFeed]);
+  const handleFeedReportPress = () => {};
 
   const scrollViewRef = useRef(null);
 
@@ -139,6 +135,18 @@ export default function FeedDetailScreen({ route, navigation }) {
       scrollViewRef.current.scrollTo({ y: y, animated: true });
     }
   };
+
+  const isCurrentUserFeedAuthor =
+    feedData?.memberId === MMKVStorage.getNumber('memberId');
+
+  useEffect(() => {
+    const fetchFeedData = async () => {
+      const feedData = await getFeedData(postId);
+      setFeedData(feedData);
+    };
+
+    fetchFeedData();
+  }, [updateFeed]);
 
   if (feedData === null) return <View />;
 
@@ -183,9 +191,11 @@ export default function FeedDetailScreen({ route, navigation }) {
           {/* 피드 관련 액션메뉴(수정/삭제) */}
 
           {showFeedActionMenu && (
-            <ActionMenu
+            <FeedActionMenu
               handleFeedEditPress={handleFeedEditPress}
               handleFeedDeletePress={handleFeedDeletePress}
+              handleReportPress={() => {}}
+              isCurrentUserFeedAuthor={isCurrentUserFeedAuthor}
             />
           )}
           {showFeedActionMenu && (
@@ -198,6 +208,7 @@ export default function FeedDetailScreen({ route, navigation }) {
           <Spacer type="height" value={350} />
         </ScrollView>
 
+        {/* TODO - 조건이 왜 Nickname 을 기준으로 판별하게 되어있는지 명확하지 않음. */}
         {replyCommentNickname && (
           <CommentReplyIndicator
             commentNickname={replyCommentNickname}
@@ -207,16 +218,16 @@ export default function FeedDetailScreen({ route, navigation }) {
 
         {/* TextInput, Button이 렌더링 되는 영역을 동일하게 처리하기 위해서 Container컴포넌트 안에 렌더링 하는 형태로 처리 */}
         <BottomAreaContainer>
-        {isCommentEditing ? (
+          {isCommentEditing ? (
             <ReplyEditCompleteButton onPress={handleCommentEditConfirmPress} />
-        ) : (
-          <FeedReplyInput
-            postId={postId}
-            replyCommentId={replyCommentId}
-            commentTextInputRef={commentTextInputRef}
-            resetReplyCommentData={resetReplyCommentData}
-          />
-        )}
+          ) : (
+            <FeedReplyInput
+              postId={postId}
+              replyCommentId={replyCommentId}
+              commentTextInputRef={commentTextInputRef}
+              resetReplyCommentData={resetReplyCommentData}
+            />
+          )}
         </BottomAreaContainer>
 
         <FeedEditModal
@@ -239,8 +250,6 @@ export default function FeedDetailScreen({ route, navigation }) {
   );
 }
 
-// TODO(리팩토링) - 컴포넌트 안에 선언된 컴포넌트들 별도 컴포넌트 파일로 분리
-
 const CommentReplyIndicator = ({
   commentNickname,
   resetReplyCommentData,
@@ -259,34 +268,6 @@ const CommentReplyIndicator = ({
       </GSText>
       <TouchableOpacity onPress={resetReplyCommentData}>
         <GSIcon name="close-outline" size={20} color={COLORS.GRAY_500} />
-      </TouchableOpacity>
-    </View>
-  );
-};
-
-const ActionMenu = ({ handleFeedEditPress, handleFeedDeletePress }) => {
-  // 누른 사람이 글 작성자인 경우 -> 삭제/수정하기 메뉴 표시
-  // 누른 사람이 글 작성자가 아닌 경우 -> 쪽지하기/신고하기 메뉴 표시
-  return (
-    <View style={styles.actionMenuContainer}>
-      <TouchableOpacity
-        style={styles.actionMenuItemContainer}
-        onPress={handleFeedEditPress}
-      >
-        <GSText style={styles.actionMenuText}>수정하기</GSText>
-      </TouchableOpacity>
-      <View
-        style={{
-          height: 1,
-          backgroundColor: COLORS.BLUE_LIGHT_200,
-          width: '100%',
-        }}
-      />
-      <TouchableOpacity
-        style={styles.actionMenuItemContainer}
-        onPress={handleFeedDeletePress}
-      >
-        <GSText style={styles.actionMenuText}>삭제하기</GSText>
       </TouchableOpacity>
     </View>
   );

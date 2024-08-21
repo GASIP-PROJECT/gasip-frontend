@@ -1,7 +1,6 @@
 import React from 'react';
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 
-import { MMKVStorage } from '@api/mmkv';
 import { likeFeed, likeFeedCancel } from '@api/index';
 import { getTimeDifference } from '@utils/timeUtil';
 
@@ -18,6 +17,7 @@ import icon_comment from '@assets/icon_comment.png';
 import icon_thumbsup from '@assets/icon_thumbsup.png';
 import icon_dots_vertical from '@assets/icon_dots_vertical.png';
 
+// TODO - feedData값이 유효하지 않은 경우에 대해서 처리 필요
 export default function FeedContent({
   feedData,
   openFeedActionsModal,
@@ -42,24 +42,36 @@ export default function FeedContent({
   } = feedData;
 
   return (
-    <View style={styles.container}>
-      <FeedContentHeader
-        regDate={regDate}
-        memberNickname={memberNickname}
-        memberId={memberId}
-        openFeedActionsModal={openFeedActionsModal}
-      />
-      <Spacer type="height" value={10} />
-      <FeedContentText content={content} />
-      <Spacer type="height" value={28} />
-      <FeedContentFooter
-        likeCount={likeCount}
-        postId={postId}
-        isLike={isLike}
-        clickCount={clickCount}
-        commentCount={commentCount}
-        handleCommentButtonPress={handleCommentButtonPress}
-      />
+    // TODO - overflow: 'hidden'을 사용한 이유에 대해서 설명 필요
+    // TODO - View가 왜 3개로 중첩되어 있는지? 가능하다면 줄이고, 안되면 이유 주석 작성
+    <View
+      style={{
+        overflow: 'hidden',
+        backgroundColor: COLORS.WHITE,
+        paddingBottom: 5,
+      }}
+    >
+      <View style={styles.feedContentContainer}>
+        <View style={styles.container}>
+          <FeedContentHeader
+            regDate={regDate}
+            memberNickname={memberNickname}
+            memberId={memberId}
+            openFeedActionsModal={openFeedActionsModal}
+          />
+          <Spacer type="height" value={10} />
+          <FeedContentText content={content} />
+          <Spacer type="height" value={28} />
+          <FeedContentFooter
+            likeCount={likeCount}
+            postId={postId}
+            isLike={isLike}
+            clickCount={clickCount}
+            commentCount={commentCount}
+            handleCommentButtonPress={handleCommentButtonPress}
+          />
+        </View>
+      </View>
     </View>
   );
 }
@@ -75,8 +87,6 @@ const FeedContentHeader = ({
   openFeedActionsModal: () => void;
 }) => {
   const timeString = getTimeDifference(regDate);
-  const isCurrentUserCommentAuthor =
-    memberId === MMKVStorage.getNumber('memberId');
 
   return (
     <View style={styles.feedHeaderContainer}>
@@ -86,14 +96,10 @@ const FeedContentHeader = ({
         <GSText style={styles.timeText}>{timeString}</GSText>
       </View>
 
-      {isCurrentUserCommentAuthor && (
-        <TouchableOpacity onPress={openFeedActionsModal}>
-          <Image
-            source={icon_dots_vertical}
-            style={{ width: 20, height: 20 }}
-          />
-        </TouchableOpacity>
-      )}
+      {/* 유저가 글 작성한 사람인 경우에는 편집모달, 아닌 경우에는 쪽지하기/신고하기 모달이 표시됨. */}
+      <TouchableOpacity onPress={openFeedActionsModal}>
+        <Image source={icon_dots_vertical} style={{ width: 20, height: 20 }} />
+      </TouchableOpacity>
     </View>
   );
 };
@@ -174,6 +180,13 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     paddingHorizontal: 16,
     borderRadius: 5,
+  },
+  feedContentContainer: {
+    backgroundColor: COLORS.WHITE,
+    shadowColor: COLORS.BLUE_PRIMARY,
+    shadowOffset: { width: 0, height: -5 },
+    shadowOpacity: 0.05,
+    paddingHorizontal: 24,
   },
   feedHeaderContainer: {
     width: '100%',
