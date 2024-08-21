@@ -21,6 +21,7 @@ import FeedComments from './FeedComments';
 import FeedEditModal from './FeedEditModal';
 import FeedActionMenu from './FeedActionMenu';
 import FeedReplyInput from './FeedReplyInput';
+import FeedReportModal from './FeedReportModal';
 import BottomAreaContainer from './BottomAreaContainer';
 import FeedActionMenuBackdrop from './FeedActionMenuBackdrop';
 import ReplyEditCompleteButton from './ReplyEditCompleteButton';
@@ -69,6 +70,17 @@ export default function FeedDetailScreen({ route, navigation }) {
 
   const [showFeedActionMenu, setShowFeedActionMenu] = useState(false);
   const [showFeedEditModal, setShowFeedEditModal] = useState(false);
+  const [showFeedReportModal, setShowFeedReportModal] = useState(false);
+
+  const [reportData, setReportData] = useState<{
+    content: string;
+    authorNickname: string;
+    type: '게시글' | '댓글';
+  }>({
+    content: '',
+    authorNickname: '',
+    type: '게시글',
+  });
 
   // 댓글 모달 표시 관련 변수
   const {
@@ -126,7 +138,54 @@ export default function FeedDetailScreen({ route, navigation }) {
     editComment(newComment, selectedCommentId);
   };
 
-  const handleFeedReportPress = () => {};
+  // TODO - 에러처리 확인
+  // TODO - 게시글 타입 관련 코드 구조 개선 필요
+  const handleFeedReportPress = () => {
+    setReportData({
+      ...reportData,
+      content: feedData?.content || '',
+      authorNickname: feedData?.memberNickname || '',
+      type: '게시글',
+    });
+
+    setShowFeedActionMenu(false);
+    closeBackdrop();
+
+    // TODO - setTimeout 제거 필요
+    setTimeout(() => {
+      setShowFeedReportModal(true);
+    }, 0);
+  };
+
+  const handleCommentReportPress = (
+    content: string,
+    authorNickname: string,
+  ) => {
+    setReportData({
+      ...reportData,
+      content,
+      authorNickname,
+      type: '댓글',
+    });
+
+    setShowFeedActionMenu(false);
+    closeBackdrop();
+
+    // TODO - setTimeout 제거 필요
+    setTimeout(() => {
+      setShowFeedReportModal(true);
+    }, 0);
+  };
+
+  const closeFeedReportModal = () => {
+    setShowFeedReportModal(false);
+    setReportData({
+      ...reportData,
+      content: '',
+      authorNickname: '',
+      type: '게시글',
+    });
+  };
 
   const scrollViewRef = useRef(null);
 
@@ -183,6 +242,7 @@ export default function FeedDetailScreen({ route, navigation }) {
             comments={feedData.comments}
             handleReplyCommentPress={handleReplyCommentPress}
             scrollTo={scrollTo}
+            handleCommentReportPress={handleCommentReportPress}
           />
 
           {/* TODO(리팩토링) - 피드 액션 메뉴 관련 컴포넌트들 구조가 이해하기 어려운데 이 문제를 해결할 방법을 찾아야 함. */}
@@ -194,7 +254,7 @@ export default function FeedDetailScreen({ route, navigation }) {
             <FeedActionMenu
               handleFeedEditPress={handleFeedEditPress}
               handleFeedDeletePress={handleFeedDeletePress}
-              handleReportPress={() => {}}
+              handleReportPress={handleFeedReportPress}
               isCurrentUserFeedAuthor={isCurrentUserFeedAuthor}
             />
           )}
@@ -235,6 +295,11 @@ export default function FeedDetailScreen({ route, navigation }) {
           prevContent={feedData?.content || ''}
           isVisible={showFeedEditModal}
           setIsVisible={setShowFeedEditModal}
+        />
+        <FeedReportModal
+          isVisible={showFeedReportModal}
+          reportData={reportData}
+          closeModal={closeFeedReportModal}
         />
         {(showCommentActionMenuBackdrop || showCommentReplyBackdrop) && (
           <FeedActionMenuBackdrop />

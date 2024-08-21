@@ -26,6 +26,7 @@ import { type FeedComment } from 'types/searchTypes';
 import icon_comment from '@assets/icon_comment.png';
 import icon_thumbsup from '@assets/icon_thumbsup.png';
 import icon_dots_vertical from '@assets/icon_dots_vertical.png';
+import FeedActionMenu from './FeedActionMenu';
 
 interface FeedCommentProps {
   isLastElement: boolean;
@@ -33,6 +34,7 @@ interface FeedCommentProps {
   handleReplyCommentPress: (commentId: number, commentNickname: string) => void;
   isSelectedForEditing: boolean;
   scrollTo: (y: number) => void;
+  handleCommentReportPress: (content: string, authorNickname: string) => void;
 }
 
 export default function FeedComment({
@@ -41,6 +43,7 @@ export default function FeedComment({
   handleReplyCommentPress,
   isSelectedForEditing,
   scrollTo,
+  handleCommentReportPress,
 }: FeedCommentProps) {
   if (commentData === null) return <View />;
 
@@ -55,6 +58,9 @@ export default function FeedComment({
     nickName,
     memberId,
   } = commentData;
+
+  const isCurrentUserCommentAuthor =
+    memberId === MMKVStorage.getNumber('memberId');
 
   const {
     isCommentEditing,
@@ -150,9 +156,14 @@ export default function FeedComment({
       style={{ zIndex: 2 }}
     >
       {showCommentActionMenu && (
-        <ActionMenu
-          handleEditPress={handleCommentEditPress}
-          handleDeletePress={handleCommentDeletePress}
+        <FeedActionMenu
+          handleFeedEditPress={handleCommentEditPress}
+          handleFeedDeletePress={handleCommentDeletePress}
+          handleReportPress={() => {
+            setShowCommentActionMenu(false);
+            handleCommentReportPress(content, nickName);
+          }}
+          isCurrentUserFeedAuthor={isCurrentUserCommentAuthor}
         />
       )}
       {(showCommentActionMenuBackdrop || showCommentReplyBackdrop) && (
@@ -163,7 +174,6 @@ export default function FeedComment({
         <CommentHeader
           regDate={regDate}
           commenterNickname={nickName}
-          memberId={memberId}
           openCommentActionsModal={openCommentActionsModal}
         />
 
@@ -210,6 +220,7 @@ export default function FeedComment({
                 scrollTo(replyYpositions[commentChild.commentId]);
               }}
               index={index}
+              handleCommentReportPress={handleCommentReportPress}
             />
           </View>
         );
@@ -221,17 +232,13 @@ export default function FeedComment({
 const CommentHeader = ({
   regDate,
   commenterNickname,
-  memberId,
   openCommentActionsModal,
 }: {
   regDate: string;
   commenterNickname: string;
-  memberId: number;
   openCommentActionsModal: () => void;
 }) => {
   const timeString = getTimeDifference(regDate);
-  const isCurrentUserCommentAuthor =
-    memberId === MMKVStorage.getNumber('memberId');
 
   return (
     <View style={styles.commentHeaderContainer}>
@@ -241,14 +248,9 @@ const CommentHeader = ({
         <GSText style={styles.timeStringText}>{timeString}</GSText>
       </View>
 
-      {isCurrentUserCommentAuthor && (
-        <TouchableOpacity onPress={openCommentActionsModal}>
-          <Image
-            source={icon_dots_vertical}
-            style={{ width: 20, height: 20 }}
-          />
-        </TouchableOpacity>
-      )}
+      <TouchableOpacity onPress={openCommentActionsModal}>
+        <Image source={icon_dots_vertical} style={{ width: 20, height: 20 }} />
+      </TouchableOpacity>
     </View>
   );
 };
@@ -330,31 +332,31 @@ const CommentFooter = ({
   );
 };
 
-const ActionMenu = ({ handleEditPress, handleDeletePress }) => {
-  return (
-    <View style={styles.actionMenuContainer}>
-      <TouchableOpacity
-        style={styles.actionMenuItemContainer}
-        onPress={handleEditPress}
-      >
-        <GSText style={styles.actionMenuText}>수정하기</GSText>
-      </TouchableOpacity>
-      <View
-        style={{
-          height: 1,
-          backgroundColor: COLORS.BLUE_LIGHT_200,
-          width: '100%',
-        }}
-      />
-      <TouchableOpacity
-        style={styles.actionMenuItemContainer}
-        onPress={handleDeletePress}
-      >
-        <GSText style={styles.actionMenuText}>삭제하기</GSText>
-      </TouchableOpacity>
-    </View>
-  );
-};
+// const ActionMenu = ({ handleEditPress, handleDeletePress }) => {
+//   return (
+//     <View style={styles.actionMenuContainer}>
+//       <TouchableOpacity
+//         style={styles.actionMenuItemContainer}
+//         onPress={handleEditPress}
+//       >
+//         <GSText style={styles.actionMenuText}>수정하기</GSText>
+//       </TouchableOpacity>
+//       <View
+//         style={{
+//           height: 1,
+//           backgroundColor: COLORS.BLUE_LIGHT_200,
+//           width: '100%',
+//         }}
+//       />
+//       <TouchableOpacity
+//         style={styles.actionMenuItemContainer}
+//         onPress={handleDeletePress}
+//       >
+//         <GSText style={styles.actionMenuText}>삭제하기</GSText>
+//       </TouchableOpacity>
+//     </View>
+//   );
+// };
 
 const styles = StyleSheet.create({
   contentContainer: {

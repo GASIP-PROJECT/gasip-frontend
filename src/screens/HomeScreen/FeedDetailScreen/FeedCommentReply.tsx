@@ -13,6 +13,8 @@ import { getTimeDifference } from '@utils/timeUtil';
 import useCommentEditStore from '@store/commentEditStore';
 import useCommentActionMenuBackdropStore from '@store/commentActionMenuBackdropStore';
 
+import FeedActionMenu from './FeedActionMenu';
+
 import GSText from '@components/common/GSText';
 import Spacer from '@components/common/Spacer';
 
@@ -28,11 +30,13 @@ export default function FeedCommentReply({
   handleLikePress,
   scrollTo,
   index,
+  handleCommentReportPress,
 }: {
   reply: FeedComment;
   handleLikePress: (isLike: boolean, commentId: number) => void;
   scrollTo: () => void;
   index: number;
+  handleCommentReportPress: (content: string, authorNickname: string) => void;
 }) {
   const {
     content,
@@ -68,6 +72,9 @@ export default function FeedCommentReply({
     isCommentEditing && isSelectedForEditing
       ? { borderWidth: 1, borderColor: COLORS.BLUE_PRIMARY }
       : {};
+
+  const isCurrentUserCommentAuthor =
+    memberId === MMKVStorage.getNumber('memberId');
 
   const [showActionMenu, setShowActionMenu] = useState(false);
 
@@ -120,9 +127,14 @@ export default function FeedCommentReply({
       <Spacer type="height" value={5} />
 
       {showActionMenu && (
-        <ActionMenu
-          handleEditPress={handleCommentEditPress}
-          handleDeletePress={handleCommentDeletePress}
+        <FeedActionMenu
+          handleFeedEditPress={handleCommentEditPress}
+          handleFeedDeletePress={handleCommentDeletePress}
+          handleReportPress={() => {
+            closeCommentActionsModal();
+            handleCommentReportPress(content, nickName);
+          }}
+          isCurrentUserFeedAuthor={isCurrentUserCommentAuthor}
         />
       )}
 
@@ -133,7 +145,6 @@ export default function FeedCommentReply({
       <ReplyHeader
         regDate={regDate}
         replierNickname={nickName}
-        memberId={memberId}
         openCommentActionsModal={openCommentActionsModal}
       />
       <Spacer type="height" value={6} />
@@ -156,17 +167,13 @@ export default function FeedCommentReply({
 const ReplyHeader = ({
   regDate,
   replierNickname,
-  memberId,
   openCommentActionsModal,
 }: {
   regDate: string;
   replierNickname: string;
-  memberId: number;
   openCommentActionsModal: () => void;
 }) => {
   const timeString = getTimeDifference(regDate);
-  const isCurrentUserCommentAuthor =
-    memberId === MMKVStorage.getNumber('memberId');
 
   return (
     <View style={styles.headerContainer}>
@@ -180,14 +187,9 @@ const ReplyHeader = ({
         </View>
       </View>
 
-      {isCurrentUserCommentAuthor && (
-        <TouchableOpacity onPress={openCommentActionsModal}>
-          <Image
-            source={icon_dots_vertical}
-            style={{ width: 20, height: 20 }}
-          />
-        </TouchableOpacity>
-      )}
+      <TouchableOpacity onPress={openCommentActionsModal}>
+        <Image source={icon_dots_vertical} style={{ width: 20, height: 20 }} />
+      </TouchableOpacity>
     </View>
   );
 };

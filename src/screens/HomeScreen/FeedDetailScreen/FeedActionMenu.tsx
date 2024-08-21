@@ -5,10 +5,11 @@ import GSText from '@components/common/GSText';
 
 import { COLORS } from '@styles/colors';
 
+// TODO - 댓글에서도 같이 사용하므로 더 general하게 코딩할 방법을 찾아보자.
 interface FeedActionMenuProps {
   handleFeedEditPress: () => void;
   handleFeedDeletePress: () => void;
-  handleReportPress: () => void;
+  handleReportPress: (content?: string, authorNickname?: string) => void;
   isCurrentUserFeedAuthor: boolean;
 }
 

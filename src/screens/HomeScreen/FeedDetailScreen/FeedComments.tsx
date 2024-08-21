@@ -18,12 +18,16 @@ interface FeedCommentsProps {
   comments: any[];
   handleReplyCommentPress: (commentId: number, commentNickname: string) => void;
   scrollTo: (y: number) => void;
+  handleCommentReportPress: (content: string, authorNickname: string) => void;
 }
 
+// TODO - handleReplyComment는 액션-대상 순으로 네이밍되어있는데 handleCommentPress는 대상-액션 순으로 네이밍되어 있다.
+// 그때그때 손가는대로 네이밍하기 보다는 규칙을 정해서 일관성있게 네이밍이 필요함.
 export default function FeedComments({
   comments,
   handleReplyCommentPress,
   scrollTo,
+  handleCommentReportPress,
 }: FeedCommentsProps) {
   const { selectedCommentId } = useCommentEditStore();
   const { showCommentActionMenuBackdrop } = useCommentActionMenuBackdropStore();
@@ -50,6 +54,7 @@ export default function FeedComments({
             comment?.commentId === selectedCommentId
           }
           scrollTo={scrollTo}
+          handleCommentReportPress={handleCommentReportPress}
         />
       ))}
     </View>
