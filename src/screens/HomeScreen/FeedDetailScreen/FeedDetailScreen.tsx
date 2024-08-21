@@ -19,7 +19,9 @@ import FeedContent from './FeedContent';
 import FeedComments from './FeedComments';
 import FeedEditModal from './FeedEditModal';
 import FeedReplyInput from './FeedReplyInput';
+import BottomAreaContainer from './BottomAreaContainer';
 import FeedActionMenuBackdrop from './FeedActionMenuBackdrop';
+import ReplyEditCompleteButton from './ReplyEditCompleteButton';
 
 import Spacer from '@components/common/Spacer';
 import GSText from '@components/common/GSText';
@@ -202,61 +204,11 @@ export default function FeedDetailScreen({ route, navigation }) {
             resetReplyCommentData={resetReplyCommentData}
           />
         )}
-        {/* TODO(리팩토링) - 별도 컴포넌트로 분리 */}
-        {/* 고민 포인트 - 처음에는 분기처리 자체를 FeedReplyInput 안에서 처리해야되나? 하는 생각이 들었음. 하지만 Comment를 수정중일 때 표시되어야 하는 버튼은 input이 아니므로 안에서 버튼 or input 형태로 처리하는 것은 맞지 않겠다고 판단하였다.  */}
 
-        {/* 버튼을 별도 컴포넌트로 분리하는 작업이 필요 */}
-        {/* 버튼과 Input이 하단에서 동일한 간격만큼 띄워져 있도록 할 수 있는 구조가 필요 */}
-        {/* 동일한 Container 안에서 Button 이냐 Input 이냐가 되어야할 것 같음 */}
-        {/* BottomCTA.Container */}
-        {/* BottomCTA.ReplyInput */}
-        {/* BottomCTA.ReplyEditCompleteButton */}
-        {/* 으로 해서 Container를 먼저 정의해보는 것은 어떨지? */}
-        {/* 근데 그러면 일반적인 Container와 다른 컴포넌트를 만드는 것에 대비해서 어떤 차이가 있는지? */}
-        {/* 서로 더 강하게 결합된 구조로 만들 수 있음. */}
-        {/* 이 방법의 장점 - 서로 연관된 컴포넌트들이고 하나의 하단 구조를 구성하고 있음을 티낼 수 있음 */}
-        {/* 단점 - 재사용이 어려움. 재사용이 필요한 경우라면 개별적 컴포넌트들로 구성하는게 더 맞아보인다. */}
-
-        {/* 댓글 수정 창이 여러군데서 일단 사용되지 않고, 한동안은 여러군데서 사용될 일이 없으므로 일단 결합도가 좀 높은 형태로 가도 괜찮지 않을까? */}
-
-        {/* 근데 일단 Input 은 CTA가 아니고, 두 가지를 묶는다 해도 굳이 CTA라는 이름으로 묶을 필요는 없어보인다. */}
-
-        {/* 평범한 BottomAreaContainer, ReplyEditCompleteButton, ReplyInput으로 나눠서 처리하는게 나을 듯 함. */}
-        {/* 화면에 표시되는 영역으로 구분짓는게 맞는가? */}
-        {/* 화면 영역을 기준으로 나누는 것이 나중에 이해하기 더 쉬울 것 같음. */}
-
+        {/* TextInput, Button이 렌더링 되는 영역을 동일하게 처리하기 위해서 Container컴포넌트 안에 렌더링 하는 형태로 처리 */}
+        <BottomAreaContainer>
         {isCommentEditing ? (
-          <View
-            style={{
-              paddingHorizontal: 16,
-              justifyContent: 'center',
-              backgroundColor: COLORS.WHITE,
-              shadowColor: COLORS.BLUE_PRIMARY,
-              shadowOffset: { width: 0, height: -8 },
-              shadowOpacity: 0.05,
-              shadowRadius: 10,
-              elevation: 5,
-              paddingBottom: 40,
-              paddingTop: 20,
-            }}
-          >
-            <TouchableOpacity
-              style={{
-                height: 40,
-                backgroundColor: COLORS.BLUE_PRIMARY,
-                borderRadius: 100,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-              onPress={handleCommentEditConfirmPress}
-            >
-              <GSText
-                style={{ fontSize: 16, color: COLORS.WHITE, fontWeight: '600' }}
-              >
-                완료
-              </GSText>
-            </TouchableOpacity>
-          </View>
+            <ReplyEditCompleteButton onPress={handleCommentEditConfirmPress} />
         ) : (
           <FeedReplyInput
             postId={postId}
@@ -265,6 +217,7 @@ export default function FeedDetailScreen({ route, navigation }) {
             resetReplyCommentData={resetReplyCommentData}
           />
         )}
+        </BottomAreaContainer>
 
         <FeedEditModal
           postId={postId}

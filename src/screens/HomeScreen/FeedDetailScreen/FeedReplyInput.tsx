@@ -1,4 +1,4 @@
-import React, { useState, Dispatch, SetStateAction, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Image,
   Keyboard,
@@ -81,7 +81,7 @@ export default function FeedReplyInput({
   }, []);
 
   return (
-    <View style={[styles.container, { height: isKeyboardVisible ? 56 : 90 }]}>
+    <View style={{ height: isKeyboardVisible ? 56 : 90 }}>
       {Platform.OS === 'ios' ? (
         <View style={styles.textInputContainer}>
           <Spacer type="width" value={20} />
@@ -148,16 +148,6 @@ export default function FeedReplyInput({
 }
 
 const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 16,
-    justifyContent: 'center',
-    backgroundColor: COLORS.WHITE,
-    shadowColor: COLORS.BLUE_PRIMARY,
-    shadowOffset: { width: 0, height: -8 },
-    shadowOpacity: 0.05,
-    shadowRadius: 10,
-    elevation: 5,
-  },
   // TODO: 안드로이드에서 font가 잘리는 케이스
   textInputContainer: {
     height: Platform.OS === 'android' ? 45 : 40,
