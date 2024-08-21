@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
-import { StyleSheet, Modal, View, TextInput } from 'react-native';
+import { StyleSheet, Modal, View, TextInput, Alert } from 'react-native';
 
 import FeedActionModalHeader from './FeedActionModalHeader';
 
@@ -40,6 +40,10 @@ export default function FeedReportModal({
         <FeedActionModalHeader
           title="신고하기"
           handleActionButtonPress={() => {
+            if (!reasonForReporting) {
+              Alert.alert('신고 사유를 작성해주세요.');
+              return;
+            }
             console.log('신고 완료!!');
             handleCloseModalPress();
           }}
