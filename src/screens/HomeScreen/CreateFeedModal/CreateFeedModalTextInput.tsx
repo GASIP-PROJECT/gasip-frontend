@@ -30,7 +30,7 @@ export default function CreateFeedModalTextInput({
       <TextInput
         value={feedContent}
         style={styles.textInput}
-        placeholder="여러분의 자유로운 의견을 들려주세요."
+        placeholder={`여러분의 자유로운 의견을 들려주세요.\n\n부적절하거나 불쾌감을 줄 수 있는 컨텐츠는 제재를 받을 수 있습니다.`}
         placeholderTextColor={COLORS.GRAY_400}
         multiline
         maxLength={500}

@@ -41,11 +41,25 @@ export default function FeedReportModal({
           title="신고하기"
           handleActionButtonPress={() => {
             if (!reasonForReporting) {
-              Alert.alert('신고 사유를 작성해주세요.');
+              Alert.alert('신고 사유를 작성해주세요.', '', [
+                {
+                  text: '확인',
+                  onPress: () => {},
+                },
+              ]);
               return;
             }
-            console.log('신고 완료!!');
-            handleCloseModalPress();
+
+            Alert.alert(
+              '신고가 접수되었습니다. 검토까지는 최대 24시간이 소요됩니다.',
+              '',
+              [
+                {
+                  text: '확인',
+                  onPress: handleCloseModalPress,
+                },
+              ],
+            );
           }}
           closeModal={handleCloseModalPress}
         />
@@ -118,11 +132,7 @@ const ReportInformation = () => {
   return (
     <View style={styles.reportInformationContainer}>
       <GSText style={styles.reportInformationText}>
-        신고 건은 검토 후에 24시간 이내에 신속히 처리하겠습니다.
-      </GSText>
-      <Spacer type="height" value={3} />
-      <GSText style={styles.reportInformationText}>
-        5회 이상 신고당한 유저는 제재 처리 됩니다.
+        누적 신고 횟수가 5회 이상인 유저는 글 작성이 제한됩니다.
       </GSText>
       <Spacer type="height" value={3} />
       <GSText style={styles.reportInformationText}>
