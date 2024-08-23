@@ -437,3 +437,20 @@ export const resetPassword = async (email: string, newPassword: string) => {
     console.log('resetPassword error: ', error);
   }
 };
+
+export const validateEmailVerificationCode = async (
+  emailToVerifyCode: string,
+  verificationCode: string,
+) => {
+  try {
+    // email 값 뒤에 gachon.ac.kr 붙여줘야 한다.
+    const response = await GSBackendClient.get(
+      `/members/emails/verifications?email=${emailToVerifyCode}@gachon.ac.kr&code=${verificationCode}`,
+    );
+
+    return response.data.success || false;
+  } catch (error) {
+    console.log('validateVerificationCode error: ', error);
+    return false;
+  }
+};

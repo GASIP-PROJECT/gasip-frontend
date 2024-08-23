@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
+import { validateEmailVerificationCode } from '@api/index';
 import useSignUpDataStore from '@store/signUpDataStore';
 
 import GSText from '@components/common/GSText';
@@ -67,23 +68,15 @@ export default function VerifyEmailCodeScreen({
   };
 
   const handleConfirmPress = async () => {
-    try {
-      const url = `https://gasip.site/members/emails/verifications?email=${emailToVerifyCode}&code=${verificationCode}`;
-      console.log(url);
-      const response = await fetch(url.toString(), {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      if (response.ok) {
-        setVerifiedEmail(emailToVerifyCode);
-        navigation.replace('SignUp_Step2');
-      } else {
-        throw new Error('인증 실패');
-      }
-    } catch (error: any) {
-      console.error('인증 요청에 실패했습니다:', error.message);
+    const validationResult = await validateEmailVerificationCode(
+      emailToVerifyCode,
+      verificationCode,
+    );
+
+    if (validationResult === true) {
+      setVerifiedEmail(emailToVerifyCode);
+      navigation.replace('SignUp_Step2');
+    } else {
       setIsInvalidVerificationCode(true);
       Alert.alert('인증 실패', '인증에 실패했습니다. 인증번호를 확인해주세요.');
     }
