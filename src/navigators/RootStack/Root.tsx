@@ -60,9 +60,7 @@ const themeColor = {
 };
 
 export default function Root() {
-  const [hasUserSeenOnboarding, setHasUserSeenOnboarding] = useMMKVBoolean(
-    'userHasSeenOnboarding',
-  );
+  const [hasUserSeenOnboarding, _] = useMMKVBoolean('hasUserSeenOnboarding');
 
   const { authState, dispatch } = useAuth();
 

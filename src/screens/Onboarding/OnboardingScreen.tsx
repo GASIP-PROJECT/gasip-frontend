@@ -19,7 +19,7 @@ import backgroundImage from '@assets/img_background_onboarding.png';
 
 export default function OnboardingScreen() {
   const handleStartOrSkipPress = () => {
-    MMKVStorage.set('userHasSeenOnboarding', true);
+    MMKVStorage.set('hasUserSeenOnboarding', true);
   };
 
   return (
