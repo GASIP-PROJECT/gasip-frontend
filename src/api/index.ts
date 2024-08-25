@@ -1,8 +1,15 @@
 import axios from 'axios';
 import { MMKVStorage } from './mmkv';
 
+// TODO - 테스트 관련 API 호출 구조 잡는 방법 조사
+
+// stage 서버에 호출을 보내려면 IS_TEST_MODE를 true로 변경
+const IS_TEST_MODE = false;
+const GASIP_MAIN_SERVER_URL = 'https://gasip.site';
+const GASIP_STAGE_SERVER_URL = 'http://3.35.82.226:8080';
+
 const GSBackendClient = axios.create({
-  baseURL: 'https://gasip.site',
+  baseURL: IS_TEST_MODE ? GASIP_STAGE_SERVER_URL : GASIP_MAIN_SERVER_URL,
   headers: {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${MMKVStorage.getString('userToken')}`,
