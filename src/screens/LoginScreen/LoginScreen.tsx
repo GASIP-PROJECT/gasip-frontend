@@ -4,7 +4,6 @@ import {
   Image,
   View,
   StyleSheet,
-  Alert,
   KeyboardAvoidingView,
   Platform,
   TouchableOpacity,
@@ -12,8 +11,9 @@ import {
 import { useNavigation } from '@react-navigation/native';
 
 import { setMMKVStorageAuthData } from '@api/mmkv';
-import { updateAxiosClientHeaderAuthorization } from '@api/index';
+import { signIn, updateAxiosClientHeaderAuthorization } from '@api/index';
 import { useAuth } from '@contexts/AuthContext';
+import { showOneButtonAlert } from '@utils/showAlert';
 
 import Spacer from '@components/common/Spacer';
 import GSText from '@components/common/GSText';
@@ -34,48 +34,32 @@ export default function LoginScreen() {
 
   const { dispatch } = useAuth();
 
-  //   email: 'ji@test.com',
-  //   password: 'passwordtest1!',
-  //   // name: '마지혁',
+  const handleSignIn = async () => {
+    const result = await signIn(useremail, password);
 
-  const handleLogin = async () => {
-    try {
-      const response = await fetch('https://gasip.site/members/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email: useremail, password }),
-      });
-
-      const loginResult = await response.json();
-
-      const { accessToken, nickname, memberId } = loginResult.response;
-      setMMKVStorageAuthData(accessToken, nickname, memberId);
-
-      // Axios 인스턴스 authorization 헤더를 로그인 한 user의 accessToken으로 재설정
-      updateAxiosClientHeaderAuthorization(accessToken);
-
-      dispatch({
-        type: 'SIGN_IN',
-        payload: {
-          userToken: loginResult.response.accessToken,
-          isLoading: false,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error('이메일 or 비밀번호가 일치하지 않습니다');
-      }
-      console.log(response);
-    } catch (error: any) {
-      // TODO - 에러 핸들링 필요
-      Alert.alert(
+    if (!result) {
+      showOneButtonAlert(
         '로그인 실패',
-        // error.message || '알 수 없는 오류가 발생했습니다.',
-        '입력한 회원 정보를 다시 확인해주세요.',
+        '이메일과 비밀번호를 다시 확인해주세요',
+        '확인',
       );
+      return;
     }
+
+    const { accessToken, nickname, memberId } = result;
+
+    setMMKVStorageAuthData(accessToken, nickname, memberId);
+
+    // Axios 인스턴스 authorization 헤더를 로그인 한 user의 accessToken으로 재설정
+    updateAxiosClientHeaderAuthorization(accessToken);
+
+    dispatch({
+      type: 'SIGN_IN',
+      payload: {
+        userToken: accessToken,
+        isLoading: false,
+      },
+    });
   };
 
   const handleSignup = () => {
@@ -170,7 +154,7 @@ export default function LoginScreen() {
               <Spacer type="height" value={36} />
             </View>
             <GSButton
-              onPress={handleLogin}
+              onPress={handleSignIn}
               buttonText="로그인"
               fontSize={18}
               borderRadius={16}

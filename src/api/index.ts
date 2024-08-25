@@ -20,6 +20,20 @@ export const updateAxiosClientHeaderAuthorization = (newUserToken: string) => {
   GSBackendClient.defaults.headers.Authorization = `Bearer ${newUserToken}`;
 };
 
+export const signIn = async (email: string, password: string) => {
+  try {
+    const result = await GSBackendClient.post('/members/login', {
+      email,
+      password,
+    });
+
+    return result.data.response;
+  } catch (error) {
+    console.log('signIn error: ', error);
+    return null;
+  }
+};
+
 // TODO - 함수 데이터에 따라서 typing(모든 함수)
 export const getAllProfessorReviews = async (
   page: number,
@@ -461,3 +475,26 @@ export const validateEmailVerificationCode = async (
     return false;
   }
 };
+
+// 신고 기능 함수 - 게시글
+export const reportFeed = async (postId: number, content: string) => {
+  try {
+    // TODO - Stage 서버 엔드포인트 main 서버로 교체 필요
+    console.log(postId, content);
+    const response = await GSBackendClient.post(
+      'http://3.35.82.226:8080/boards/report',
+      {
+        postId,
+        content,
+      },
+    );
+
+    console.log('신고 완료!');
+    console.log(response.data);
+  } catch (error) {
+    console.log('reportFeed error: ', error);
+    return false;
+  }
+};
+
+// 신고 기능 함수 - 댓글
