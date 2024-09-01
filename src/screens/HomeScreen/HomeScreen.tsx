@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
+import { useMMKVString } from 'react-native-mmkv';
 
 import {
   getAllProfessorReviewsForHomeScreen,
@@ -33,19 +34,45 @@ export default function HomeScreen({ navigation }) {
   const [popularReviews, setPopularReviews] = useState<Feed[] | []>([]);
   const [allFreeFeeds, setAllFreeFeeds] = useState<Feed[] | []>([]);
 
+  const [blockedUserList, _] = useMMKVString('blockedUserList');
+
   useFocusEffect(
     useCallback(() => {
       const fetchAllReviews = async () => {
         const reviews = await getAllProfessorReviewsForHomeScreen();
-        setAllReviews([...reviews]);
+
+        const blockedUserIdArray = blockedUserList
+          ? JSON.parse(blockedUserList)
+          : [];
+
+        const filteredReviews = reviews.filter(
+          (review: Feed) => !blockedUserIdArray.includes(review.memberNickname),
+        );
+
+        setAllReviews([...filteredReviews]);
       };
       const fetchPopularReviews = async () => {
         const reviews = await getPopularFeedsForHomeScreen();
-        setPopularReviews([...reviews]);
+
+        const blockedUserIdArray = blockedUserList
+          ? JSON.parse(blockedUserList)
+          : [];
+
+        const filteredReviews = reviews.filter(
+          (review: Feed) => !blockedUserIdArray.includes(review.memberNickname),
+        );
+        setPopularReviews([...filteredReviews]);
       };
       const fetchAllFreeFeeds = async () => {
         const freeFeeds = await getAllGeneralFeedsForHomeScreen();
-        setAllFreeFeeds([...freeFeeds]);
+        const blockedUserIdArray = blockedUserList
+          ? JSON.parse(blockedUserList)
+          : [];
+
+        const filteredFeeds = freeFeeds.filter(
+          (review: Feed) => !blockedUserIdArray.includes(review.memberNickname),
+        );
+        setAllFreeFeeds([...filteredFeeds]);
       };
 
       fetchAllReviews();
