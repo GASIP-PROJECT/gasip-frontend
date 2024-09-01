@@ -106,101 +106,68 @@ export default function Root() {
 
   return (
     <NavigationContainer theme={themeColor}>
-      <RootStack.Navigator>
+      <RootStack.Navigator screenOptions={{ headerShown: false }}>
         {/* TODO - 조건 다시 수정, 작업 위해서 임시로 수정한 상태 */}
         {authState.userToken === null ? (
           <RootStack.Group>
-            <RootStack.Screen
-              name="LoginScreen"
-              component={LoginScreen}
-              options={{ headerShown: false }}
-            />
+            <RootStack.Screen name="LoginScreen" component={LoginScreen} />
             <RootStack.Screen
               name="ResetPassword_Step1"
               component={ResetPassword_Step1}
-              options={{ headerShown: false }}
             />
             <RootStack.Screen
               name="ResetPassword_Step2"
               component={ResetPassword_Step2}
-              options={{ headerShown: false }}
             />
             <RootStack.Screen
               name="SignUp_Step1"
               component={Step1_VerifyEmailScreen}
-              options={{ headerShown: false }}
             />
             <RootStack.Screen
               name="SignUp_Step2"
               component={Step2_CreatePasswordScreen}
-              options={{ headerShown: false }}
             />
             <RootStack.Screen
               name="SignUp_Step3"
               component={Step3_CreateUserInfoScreen}
-              options={{ headerShown: false }}
             />
           </RootStack.Group>
         ) : (
           <RootStack.Group>
-            <RootStack.Screen
-              name="HomeScreen"
-              component={HomeScreen}
-              options={{ headerShown: false }}
-            />
+            <RootStack.Screen name="HomeScreen" component={HomeScreen} />
             <RootStack.Screen
               name="SearchScreen"
               component={SearchScreenWithContext}
-              options={{
-                headerShown: false,
-              }}
             />
-            <RootStack.Screen
-              name="MyPageScreen"
-              component={MyPageScreen}
-              options={{
-                headerShown: false,
-              }}
-            />
+            <RootStack.Screen name="MyPageScreen" component={MyPageScreen} />
             <RootStack.Screen
               name="FeedDetailScreen"
               component={FeedDetailScreen}
-              options={{ headerShown: false }}
             />
             <RootStack.Screen
               name="ProfessorDetailScreen"
               component={ProfessorDetailScreen}
-              options={{ headerShown: false }}
             />
-            <RootStack.Screen
-              name="MyFeedsScreen"
-              component={MyFeedsScreen}
-              options={{ headerShown: false }}
-            />
+            <RootStack.Screen name="MyFeedsScreen" component={MyFeedsScreen} />
             <RootStack.Screen
               name="AllReviewsScreen"
               component={AllReviewsScreen}
-              options={{ headerShown: false }}
             />
             <RootStack.Screen
               name="PopularReviewsScreen"
               component={PopularReviewsScreen}
-              options={{ headerShown: false }}
             />
             <RootStack.Screen
               name="FreeFeedsScreen"
               component={FreeFeedsScreen}
-              options={{ headerShown: false }}
             />
             <RootStack.Screen
               name="ChangeNicknameScreen"
               component={ChangeNicknameScreen}
-              options={{ headerShown: false }}
             />
             <RootStack.Screen
               name="ChangePasswordScreen"
               component={ChangePasswordScreen}
-              options={{ headerShown: false }}
             />
           </RootStack.Group>
         )}
