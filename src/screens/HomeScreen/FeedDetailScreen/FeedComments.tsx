@@ -19,6 +19,7 @@ interface FeedCommentsProps {
   handleReplyCommentPress: (commentId: number, commentNickname: string) => void;
   scrollTo: (y: number) => void;
   handleCommentReportPress: (content: string, authorNickname: string) => void;
+  handleBlockPress: (contentType: '게시글' | '댓글', nickname?: string) => void;
 }
 
 // TODO - handleReplyComment는 액션-대상 순으로 네이밍되어있는데 handleCommentPress는 대상-액션 순으로 네이밍되어 있다.
@@ -28,6 +29,7 @@ export default function FeedComments({
   handleReplyCommentPress,
   scrollTo,
   handleCommentReportPress,
+  handleBlockPress,
 }: FeedCommentsProps) {
   const { selectedCommentId } = useCommentEditStore();
   const { showCommentActionMenuBackdrop } = useCommentActionMenuBackdropStore();
@@ -55,6 +57,7 @@ export default function FeedComments({
           }
           scrollTo={scrollTo}
           handleCommentReportPress={handleCommentReportPress}
+          handleBlockPress={handleBlockPress}
         />
       ))}
     </View>

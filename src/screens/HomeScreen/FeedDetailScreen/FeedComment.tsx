@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   TouchableOpacity,
@@ -6,6 +6,7 @@ import {
   Image,
   TextInput,
 } from 'react-native';
+import { useMMKVString } from 'react-native-mmkv';
 
 import { MMKVStorage } from '@api/mmkv';
 import { likeComment, likeCommentCancel } from '@api/index';
@@ -35,6 +36,7 @@ interface FeedCommentProps {
   isSelectedForEditing: boolean;
   scrollTo: (y: number) => void;
   handleCommentReportPress: (content: string, authorNickname: string) => void;
+  handleBlockPress: (contentType: '게시글' | '댓글', nickname?: string) => void;
 }
 
 export default function FeedComment({
@@ -44,6 +46,7 @@ export default function FeedComment({
   isSelectedForEditing,
   scrollTo,
   handleCommentReportPress,
+  handleBlockPress,
 }: FeedCommentProps) {
   if (commentData === null) return <View />;
 
@@ -147,6 +150,27 @@ export default function FeedComment({
     scrollTo(positionY);
   };
 
+  const handleCommentBlockPress = () => {
+    handleBlockPress('댓글', nickName);
+  };
+
+  const [commentReplies, setCommentReplies] = useState<FeedComment[]>([]);
+
+  const [blockedUserList, _] = useMMKVString('blockedUserList');
+
+  useEffect(() => {
+    const blockedUserIdArray = blockedUserList
+      ? JSON.parse(blockedUserList)
+      : [];
+
+    const filteredCommentChildren = commentChildren.filter(
+      (commentChild: FeedComment) =>
+        !blockedUserIdArray.includes(commentChild.nickName),
+    );
+
+    setCommentReplies([...filteredCommentChildren]);
+  }, [blockedUserList]);
+
   return (
     <View
       onLayout={e => {
@@ -164,6 +188,10 @@ export default function FeedComment({
             handleCommentReportPress(content, nickName);
           }}
           isCurrentUserFeedAuthor={isCurrentUserCommentAuthor}
+          handleBlockPress={() => {
+            setShowCommentActionMenu(false);
+            handleCommentBlockPress();
+          }}
         />
       )}
       {(showCommentActionMenuBackdrop || showCommentReplyBackdrop) && (
@@ -191,7 +219,7 @@ export default function FeedComment({
           isCommentLike={isCommentLike}
         />
       </View>
-      {commentChildren.map((commentChild, index) => {
+      {commentReplies.map((commentChild, index) => {
         return (
           <View
             key={index.toString()}
@@ -221,6 +249,7 @@ export default function FeedComment({
               }}
               index={index}
               handleCommentReportPress={handleCommentReportPress}
+              handleBlockPress={handleBlockPress}
             />
           </View>
         );

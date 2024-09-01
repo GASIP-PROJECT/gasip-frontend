@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Image,
   StyleSheet,
@@ -31,12 +31,14 @@ export default function FeedCommentReply({
   scrollTo,
   index,
   handleCommentReportPress,
+  handleBlockPress,
 }: {
   reply: FeedComment;
   handleLikePress: (isLike: boolean, commentId: number) => void;
   scrollTo: () => void;
   index: number;
   handleCommentReportPress: (content: string, authorNickname: string) => void;
+  handleBlockPress: (contentType: '게시글' | '댓글', nickname?: string) => void;
 }) {
   const {
     content,
@@ -82,10 +84,6 @@ export default function FeedCommentReply({
     handleLikePress(isCommentLike, commentId);
   };
 
-  // backdrop을 처리하기 위해서 필요한 작업은?
-  // 모달 열 때 backdrop도 같이 연다.
-  // backdrop을 눌렀을 때 모달이 같이 닫혀야 한다.
-
   const openCommentActionsModal = () => {
     setShowActionMenu(true);
 
@@ -96,11 +94,6 @@ export default function FeedCommentReply({
     setCloseReplyActionMenu(closeCommentActionsModal);
   };
 
-  // 닫을 때,
-  // 액션 메뉴 닫고,
-  // backdrop 닫는데,
-  // 이 때 closeReplyBackdrop이 실행되면
-  // backdrop관리하는 상태 false + closeReplyActionMenu null로 초기화
   // TODO - 함수가 실행 중인데 null로 초기화하는게 안전한 접근인가?
   const closeCommentActionsModal = () => {
     setShowActionMenu(false);
@@ -122,6 +115,11 @@ export default function FeedCommentReply({
     scrollTo();
   };
 
+  // // 댓글 차단
+  const handleCommentReplyBlockPress = () => {
+    handleBlockPress('댓글', nickName);
+  };
+
   return (
     <View style={[styles.container, commentContainerBorderStyle]}>
       <Spacer type="height" value={5} />
@@ -133,6 +131,10 @@ export default function FeedCommentReply({
           handleReportPress={() => {
             closeCommentActionsModal();
             handleCommentReportPress(content, nickName);
+          }}
+          handleBlockPress={() => {
+            closeCommentActionsModal();
+            handleCommentReplyBlockPress();
           }}
           isCurrentUserFeedAuthor={isCurrentUserCommentAuthor}
         />

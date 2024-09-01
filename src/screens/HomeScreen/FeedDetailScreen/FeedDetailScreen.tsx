@@ -8,6 +8,7 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
+import { useMMKVString } from 'react-native-mmkv';
 
 import { MMKVStorage } from '@api/mmkv';
 import { deleteFeed, getFeedData } from '@api/index';
@@ -68,6 +69,7 @@ export default function FeedDetailScreen({ route, navigation }) {
     authorNickname: '',
     type: '게시글',
   });
+  const [blockedUserList, _] = useMMKVString('blockedUserList');
 
   // 댓글 모달 표시 관련 변수
   const {
@@ -166,9 +168,16 @@ export default function FeedDetailScreen({ route, navigation }) {
   // 사용자 차단 함수
   // TODO - 백엔드 API 개발되면 연동 필요
   // Backend API 개발 시 feed 데이터에 memberId가 포함되도록 요청해야 한다.
-  const handleBlockUser = (contentType: '게시글' | '댓글') => {
+  const handleBlockUser = (
+    contentType: '게시글' | '댓글',
+    nickname: string = '',
+  ) => {
+    // console.log('실행');
+    // console.log(nickname);
     // MMKVStorage.set('blockedUserList', JSON.stringify([]));
     // return;
+
+    if (!nickname) return;
     // 백엔드 API 개발 전에는 mmkv storage에 저장하는 형식으로 업데이트 한다. (최대한 빨리 업데이트가 필요함.)
     // mmkv storage에 배열을 저장하려면 JSON string 으로 변경해서 저장하는 형태로 사용해야 한다.
     const storedBlockedUserListString =
@@ -178,13 +187,23 @@ export default function FeedDetailScreen({ route, navigation }) {
       ? JSON.parse(storedBlockedUserListString)
       : [];
 
+    if (contentType === '게시글') {
     blockedUserList.push(feedData?.memberNickname);
+    }
+    if (contentType === '댓글') {
+      blockedUserList.push(nickname);
+    }
 
     MMKVStorage.set('blockedUserList', JSON.stringify(blockedUserList));
 
     // 게시글인 경우에는 뒤로 나가져야한다.
     if (contentType === '게시글') {
       navigation.goBack();
+    }
+    if (contentType === '댓글') {
+      // 댓글인 경우에는 댓글을 삭제해야한다.
+      setShowFeedActionMenu(false);
+      closeBackdrop();
     }
   };
 
@@ -217,6 +236,21 @@ export default function FeedDetailScreen({ route, navigation }) {
 
     fetchFeedData();
   }, [updateFeed]);
+  useEffect(() => {
+    // TODO - 차단된 목록 업데이트 하는 로직 수정 필요
+    const blockedUserArray = blockedUserList ? JSON.parse(blockedUserList) : [];
+
+    const newCommentsList = feedData?.comments.filter(
+      comment => !blockedUserArray.includes(comment?.nickName),
+    );
+
+    if (newCommentsList) {
+      setFeedData({
+        ...feedData,
+        comments: [...newCommentsList],
+      });
+    }
+  }, [blockedUserList]);
 
   if (feedData === null) return <View />;
 
@@ -254,6 +288,7 @@ export default function FeedDetailScreen({ route, navigation }) {
             handleReplyCommentPress={handleReplyCommentPress}
             scrollTo={scrollTo}
             handleCommentReportPress={handleCommentReportPress}
+            handleBlockPress={handleBlockUser}
           />
 
           {/* TODO(리팩토링) - 피드 액션 메뉴 관련 컴포넌트들 구조가 이해하기 어려운데 이 문제를 해결할 방법을 찾아야 함. */}
@@ -266,7 +301,7 @@ export default function FeedDetailScreen({ route, navigation }) {
               handleFeedEditPress={handleFeedEditPress}
               handleFeedDeletePress={handleFeedDeletePress}
               handleReportPress={handleFeedReportPress}
-              handleBlockPress={handleBlockUser}
+              handleBlockPress={() => handleBlockUser('게시글')}
               isCurrentUserFeedAuthor={isCurrentUserFeedAuthor}
             />
           )}

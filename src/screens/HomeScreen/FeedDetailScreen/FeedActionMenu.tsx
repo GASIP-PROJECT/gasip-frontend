@@ -10,7 +10,7 @@ interface FeedActionMenuProps {
   handleFeedEditPress: () => void;
   handleFeedDeletePress: () => void;
   handleReportPress: (content?: string, authorNickname?: string) => void;
-  handleBlockPress: (contentType: '게시글' | '댓글') => void;
+  handleBlockPress: () => void;
   isCurrentUserFeedAuthor: boolean;
 }
 
@@ -102,7 +102,7 @@ const MenusForReader = ({
   handleBlockPress,
 }: {
   handleReportPress: () => void;
-  handleBlockPress: (contentType: '게시글' | '댓글') => void;
+  handleBlockPress: () => void;
 }) => {
   // height 값 동적으로 줄 수 있도록 수정되어야 한다.
   return (
@@ -119,7 +119,7 @@ const MenusForReader = ({
       />
 
       <ActionMenuItem
-        onPress={() => handleBlockPress('게시글')}
+        onPress={handleBlockPress}
         itemText="이 사용자의 글 차단하기"
       />
     </View>
