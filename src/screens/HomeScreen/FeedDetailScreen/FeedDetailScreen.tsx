@@ -165,6 +165,7 @@ export default function FeedDetailScreen({ route, navigation }) {
       setShowFeedReportModal(true);
     }, 0);
   };
+
   // 사용자 차단 함수
   // TODO - 백엔드 API 개발되면 연동 필요
   // Backend API 개발 시 feed 데이터에 memberId가 포함되도록 요청해야 한다.
@@ -172,12 +173,8 @@ export default function FeedDetailScreen({ route, navigation }) {
     contentType: '게시글' | '댓글',
     nickname: string = '',
   ) => {
-    // console.log('실행');
-    // console.log(nickname);
-    // MMKVStorage.set('blockedUserList', JSON.stringify([]));
-    // return;
-
-    if (!nickname) return;
+    // 댓글 제거 시 닉네임 없는 경우 차단 불가능함
+    if (contentType === '댓글' && !nickname) return;
     // 백엔드 API 개발 전에는 mmkv storage에 저장하는 형식으로 업데이트 한다. (최대한 빨리 업데이트가 필요함.)
     // mmkv storage에 배열을 저장하려면 JSON string 으로 변경해서 저장하는 형태로 사용해야 한다.
     const storedBlockedUserListString =
