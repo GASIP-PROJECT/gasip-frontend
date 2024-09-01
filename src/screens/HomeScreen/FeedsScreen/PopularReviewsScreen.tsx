@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { RefreshControl } from 'react-native';
+import { useMMKVString } from 'react-native-mmkv';
 import { FlashList } from '@shopify/flash-list';
 
 import { getPopularFeeds } from '@api/index';
@@ -24,6 +25,8 @@ export default function PopularReviewsScreen() {
   const [popularFeedsList, setPopularFeedsList] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
 
+  const [blockedUserList, _] = useMMKVString('blockedUserList');
+
   const scrollToTop = () => {
     if (flatListRef.current) {
       flatListRef.current.scrollToOffset({ offset: 0 });
@@ -38,8 +41,17 @@ export default function PopularReviewsScreen() {
 
     const posts: [] = await getPopularFeeds(page.current, 10);
 
+    // TODO - 차단된 유저글을 거르고 표시한다. 차후 백엔드에서 걸러서 내려줄 부분이라 프론트에서는 필터링 로직 제거되어야 한다.
+    const blockedUserIdArray = blockedUserList
+      ? JSON.parse(blockedUserList)
+      : [];
+
+    const filteredByBlockedUsers = posts.filter(
+      (post: Feed) => !blockedUserIdArray.includes(post.memberNickname),
+    );
+
     if (posts.length > 0) {
-      setPopularFeedsList([...popularFeedsList, ...posts]);
+      setPopularFeedsList([...popularFeedsList, ...filteredByBlockedUsers]);
     }
   };
 
@@ -50,13 +62,35 @@ export default function PopularReviewsScreen() {
   const fetchFeeds = async () => {
     resetFetchPage();
     const posts: [] = await getPopularFeeds(0, 10);
-    setPopularFeedsList([...posts]);
+
+    // TODO - 차단된 유저글을 거르고 표시한다. 차후 백엔드에서 걸러서 내려줄 부분이라 프론트에서는 필터링 로직 제거되어야 한다.
+    const blockedUserIdArray = blockedUserList
+      ? JSON.parse(blockedUserList)
+      : [];
+
+    const filteredByBlockedUsers = posts.filter(
+      (post: Feed) => !blockedUserIdArray.includes(post.memberNickname),
+    );
+
+    setPopularFeedsList([...filteredByBlockedUsers]);
     scrollToTop();
   };
 
   useEffect(() => {
     fetchFeeds();
   }, [toggleToUpdateFeedsList]);
+
+  useEffect(() => {
+    const blockedUserIdArray = blockedUserList
+      ? JSON.parse(blockedUserList)
+      : [];
+
+    const filteredByBlockedUsers = popularFeedsList.filter(
+      (post: Feed) => !blockedUserIdArray.includes(post.memberNickname),
+    );
+
+    setPopularFeedsList([...filteredByBlockedUsers]);
+  }, [blockedUserList]);
 
   const onRefresh = async () => {
     setRefreshing(true);

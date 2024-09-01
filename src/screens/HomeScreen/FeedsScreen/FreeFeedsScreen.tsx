@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { FlatList, RefreshControl } from 'react-native';
+import { useMMKVString } from 'react-native-mmkv';
 
 import { getGeneralFeeds } from '@api/index';
 import useNewFeedStore from '@store/newFeedStore';
@@ -23,6 +24,10 @@ export default function FreeFeedsScreen() {
   const [feedsList, setFeedsList] = useState<Feed[] | []>([]);
   const [refreshing, setRefreshing] = useState(false);
 
+  const [blockedUserList, _] = useMMKVString('blockedUserList');
+
+  useMMKVString;
+
   const scrollToTop = () => {
     if (flatListRef.current) {
       flatListRef.current.scrollToOffset({ offset: 0 });
@@ -35,8 +40,17 @@ export default function FreeFeedsScreen() {
 
     const posts: Feed[] = await getGeneralFeeds(page.current, 10);
 
+    // TODO - 차단된 유저글을 거르고 표시한다. 차후 백엔드에서 걸러서 내려줄 부분이라 프론트에서는 필터링 로직 제거되어야 한다.
+    const blockedUserIdArray = blockedUserList
+      ? JSON.parse(blockedUserList)
+      : [];
+
+    const filteredByBlockedUsers = posts.filter(
+      (post: Feed) => !blockedUserIdArray.includes(post.memberNickname),
+    );
+
     if (posts.length > 0) {
-      setFeedsList([...feedsList, ...posts]);
+      setFeedsList([...feedsList, ...filteredByBlockedUsers]);
     }
   };
 
@@ -46,7 +60,15 @@ export default function FreeFeedsScreen() {
 
   const fetchFeedsAndSetFeedList = async () => {
     const posts: Feed[] = await getGeneralFeeds(0, 10);
-    setFeedsList([...posts]);
+    // TODO - 차단된 유저글을 거르고 표시한다. 차후 백엔드에서 걸러서 내려줄 부분이라 프론트에서는 필터링 로직 제거되어야 한다.
+    const blockedUserIdArray = blockedUserList
+      ? JSON.parse(blockedUserList)
+      : [];
+
+    const filteredByBlockedUsers = posts.filter(
+      (post: Feed) => !blockedUserIdArray.includes(post.memberNickname),
+    );
+    setFeedsList([...filteredByBlockedUsers]);
   };
 
   useEffect(() => {
@@ -54,6 +76,18 @@ export default function FreeFeedsScreen() {
     resetFetchPage();
     scrollToTop();
   }, [toggleToUpdateFeedsList]);
+
+  useEffect(() => {
+    const blockedUserIdArray = blockedUserList
+      ? JSON.parse(blockedUserList)
+      : [];
+
+    const filteredByBlockedUsers = feedsList.filter(
+      (post: Feed) => !blockedUserIdArray.includes(post.memberNickname),
+    );
+
+    setFeedsList([...filteredByBlockedUsers]);
+  }, [blockedUserList]);
 
   const onRefresh = async () => {
     setRefreshing(true);

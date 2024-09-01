@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { FlatList, RefreshControl, View } from 'react-native';
+import { useMMKVString } from 'react-native-mmkv';
 
 import { getAllProfessorReviews } from '@api/index';
 import useNewFeedStore from '@store/newFeedStore';
@@ -23,6 +24,8 @@ export default function AllReviewsScreen() {
   const [feedsList, setFeedsList] = useState<Feed[] | []>([]);
   const [refreshing, setRefreshing] = useState(false);
 
+  const [blockedUserList, _] = useMMKVString('blockedUserList');
+
   const scrollToTop = () => {
     if (flatListRef.current) {
       flatListRef.current.scrollToOffset({ offset: 0 });
@@ -35,8 +38,16 @@ export default function AllReviewsScreen() {
 
     const posts: Feed[] = await getAllProfessorReviews(page.current, 10);
 
+    const blockedUserIdArray = blockedUserList
+      ? JSON.parse(blockedUserList)
+      : [];
+
+    const filteredByBlockedUsers = posts.filter(
+      (post: Feed) => !blockedUserIdArray.includes(post.memberNickname),
+    );
+
     if (posts.length > 0) {
-      setFeedsList([...feedsList, ...posts]);
+      setFeedsList([...feedsList, ...filteredByBlockedUsers]);
     }
   };
 
@@ -46,7 +57,14 @@ export default function AllReviewsScreen() {
 
   const fetchFeedsAndSetFeedList = async () => {
     const posts: Feed[] = await getAllProfessorReviews(0, 10);
-    setFeedsList([...posts]);
+    const blockedUserIdArray = blockedUserList
+      ? JSON.parse(blockedUserList)
+      : [];
+
+    const filteredByBlockedUsers = posts.filter(
+      (post: Feed) => !blockedUserIdArray.includes(post.memberNickname),
+    );
+    setFeedsList([...filteredByBlockedUsers]);
   };
 
   // TODO - 행동 이상한 부분 수정 필요
@@ -55,6 +73,18 @@ export default function AllReviewsScreen() {
     fetchFeedsAndSetFeedList();
     scrollToTop();
   }, [toggleToUpdateFeedsList]);
+
+  useEffect(() => {
+    const blockedUserIdArray = blockedUserList
+      ? JSON.parse(blockedUserList)
+      : [];
+
+    const filteredByBlockedUsers = feedsList.filter(
+      (post: Feed) => !blockedUserIdArray.includes(post.memberNickname),
+    );
+
+    setFeedsList([...filteredByBlockedUsers]);
+  }, [blockedUserList]);
 
   const onRefresh = async () => {
     setRefreshing(true);
