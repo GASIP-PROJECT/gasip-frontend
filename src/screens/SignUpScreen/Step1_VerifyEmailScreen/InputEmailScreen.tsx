@@ -3,6 +3,7 @@ import {
   ActivityIndicator,
   Alert,
   Image,
+  Linking,
   StyleSheet,
   TextInput,
   TouchableOpacity,
@@ -139,6 +140,28 @@ export default function InputEmailScreen({
           </GSText>
         )}
       </TouchableOpacity>
+
+      <Spacer type="height" value={8} />
+
+      <View style={{ flexDirection: 'row' }}>
+        <TouchableOpacity
+          onPress={() => {
+            Linking.openURL(
+              'https://stirring-stranger-d22.notion.site/Gasip-127f32cc6a464aa8b2d541b685b0dbe7',
+            );
+          }}
+        >
+          <GSText
+            style={{ ...styles.informText, textDecorationLine: 'underline' }}
+          >
+            서비스 이용약관
+          </GSText>
+        </TouchableOpacity>
+        <GSText style={styles.informText}>
+          {' '}
+          내용을 확인했으며, 동의한 것으로 간주합니다.
+        </GSText>
+      </View>
     </View>
   );
 }
