@@ -35,19 +35,6 @@ import SafeAreaLayout from '@components/common/SafeAreaLayout';
 import { COLORS } from '@styles/colors';
 import { type Feed } from 'types/searchTypes';
 
-// 신고기능 및 UI를 추가하려고 하는데 복잡해서 수정이 어렵다. 코드에 문제가 있는 듯.
-// 문제부터 파악해보자.
-
-// 너무 이런 저런 함수가 많이 컴포넌트 안에서 선언되어 있음.
-// -> 컴포넌트가 길어지고 로직 보기가 어려움
-
-// 컴포넌트간 hierarchy 레벨이 맞지 않음.
-
-// 피드 상세 화면
-// 의도가 무엇인지? -> 피드 내용 및 댓글을 표시한다.
-// 컴포넌트의 기능은 무엇인지? -> 역할별로 일단 먼저 카테고라이징을 해보자.
-// 어떻게 표현해야되는지?
-
 // TODO - type 선언 필요
 export default function FeedDetailScreen({ route, navigation }) {
   const { postId } = route.params;
@@ -176,6 +163,30 @@ export default function FeedDetailScreen({ route, navigation }) {
       setShowFeedReportModal(true);
     }, 0);
   };
+  // 사용자 차단 함수
+  // TODO - 백엔드 API 개발되면 연동 필요
+  // Backend API 개발 시 feed 데이터에 memberId가 포함되도록 요청해야 한다.
+  const handleBlockUser = (contentType: '게시글' | '댓글') => {
+    // MMKVStorage.set('blockedUserList', JSON.stringify([]));
+    // return;
+    // 백엔드 API 개발 전에는 mmkv storage에 저장하는 형식으로 업데이트 한다. (최대한 빨리 업데이트가 필요함.)
+    // mmkv storage에 배열을 저장하려면 JSON string 으로 변경해서 저장하는 형태로 사용해야 한다.
+    const storedBlockedUserListString =
+      MMKVStorage.getString('blockedUserList');
+
+    const blockedUserList = storedBlockedUserListString
+      ? JSON.parse(storedBlockedUserListString)
+      : [];
+
+    blockedUserList.push(feedData?.memberNickname);
+
+    MMKVStorage.set('blockedUserList', JSON.stringify(blockedUserList));
+
+    // 게시글인 경우에는 뒤로 나가져야한다.
+    if (contentType === '게시글') {
+      navigation.goBack();
+    }
+  };
 
   const closeFeedReportModal = () => {
     setShowFeedReportModal(false);
@@ -255,6 +266,7 @@ export default function FeedDetailScreen({ route, navigation }) {
               handleFeedEditPress={handleFeedEditPress}
               handleFeedDeletePress={handleFeedDeletePress}
               handleReportPress={handleFeedReportPress}
+              handleBlockPress={handleBlockUser}
               isCurrentUserFeedAuthor={isCurrentUserFeedAuthor}
             />
           )}

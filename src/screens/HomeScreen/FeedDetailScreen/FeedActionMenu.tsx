@@ -10,6 +10,7 @@ interface FeedActionMenuProps {
   handleFeedEditPress: () => void;
   handleFeedDeletePress: () => void;
   handleReportPress: (content?: string, authorNickname?: string) => void;
+  handleBlockPress: (contentType: '게시글' | '댓글') => void;
   isCurrentUserFeedAuthor: boolean;
 }
 
@@ -17,6 +18,7 @@ export default function FeedActionMenu({
   handleFeedEditPress,
   handleFeedDeletePress,
   handleReportPress,
+  handleBlockPress,
   isCurrentUserFeedAuthor,
 }: FeedActionMenuProps) {
   if (isCurrentUserFeedAuthor) {
@@ -28,7 +30,12 @@ export default function FeedActionMenu({
     );
   }
 
-  return <MenusForReader handleReportPress={handleReportPress} />;
+  return (
+    <MenusForReader
+      handleReportPress={handleReportPress}
+      handleBlockPress={handleBlockPress}
+    />
+  );
 }
 
 const styles = StyleSheet.create({
@@ -36,7 +43,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
     right: 35,
-    width: 120,
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
@@ -53,6 +59,7 @@ const styles = StyleSheet.create({
   actionMenuItemContainer: {
     flex: 1,
     justifyContent: 'center',
+    paddingHorizontal: 8,
   },
   actionMenuText: {
     fontSize: 12,
@@ -92,12 +99,29 @@ const MenusForAuthor = ({
 // 글 작성자가 아닌 경우 쪽지하기(추가예정), 신고하기 옵션 표시
 const MenusForReader = ({
   handleReportPress,
+  handleBlockPress,
 }: {
   handleReportPress: () => void;
+  handleBlockPress: (contentType: '게시글' | '댓글') => void;
 }) => {
+  // height 값 동적으로 줄 수 있도록 수정되어야 한다.
   return (
-    <View style={[styles.actionMenuContainer, { height: 36 }]}>
+    <View style={[styles.actionMenuContainer, { height: 72 }]}>
       <ActionMenuItem onPress={handleReportPress} itemText="신고하기" />
+
+      {/* 구분선 */}
+      <View
+        style={{
+          height: 1,
+          backgroundColor: COLORS.BLUE_LIGHT_200,
+          width: '100%',
+        }}
+      />
+
+      <ActionMenuItem
+        onPress={() => handleBlockPress('게시글')}
+        itemText="이 사용자의 글 차단하기"
+      />
     </View>
   );
 };
