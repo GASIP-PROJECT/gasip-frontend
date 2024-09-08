@@ -5,8 +5,9 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { AuthContextProvider } from '@contexts/AuthContext';
 
 import Root from '@navigators/RootStack/Root';
+import CodePush from 'react-native-code-push';
 
-export default function App() {
+let App = () => {
   return (
     <SafeAreaProvider>
       <AuthContextProvider>
@@ -16,4 +17,8 @@ export default function App() {
       </AuthContextProvider>
     </SafeAreaProvider>
   );
-}
+};
+
+App = CodePush(App);
+
+export default App;
