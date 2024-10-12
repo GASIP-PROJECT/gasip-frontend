@@ -1,5 +1,6 @@
 #import "AppDelegate.h"
 #import "RNBootSplash.h" // Boot Splash screen을 위한 import
+#import <CodePush/CodePush.h>
 
 
 #import <React/RCTBundleURLProvider.h>
@@ -21,7 +22,9 @@
 #if DEBUG
   return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index"];
 #else
-  return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
+//  코드푸시 적용을 위해서 26번째 줄을 27번째 줄로 교체
+//  return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
+  return [CodePush bundleURL];
 #endif
 }
 
