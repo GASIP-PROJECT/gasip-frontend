@@ -23,6 +23,8 @@ interface InputEmailScreenProps {
   setIsWaitingForCodeVerification: Dispatch<SetStateAction<boolean>>;
 }
 
+const defaultEmailSuffix = '@gachon.ac.kr';
+
 export default function InputEmailScreen({
   emailToVerifyCode,
   setEmailToVerifyCode,
@@ -46,7 +48,6 @@ export default function InputEmailScreen({
     try {
       const userEmailPrefix = emailToVerifyCode;
       // 기본 도메인 - 가천대학교 학교 전용 이메일 도메인
-      const defaultEmailSuffix = '@gachon.ac.kr';
       const emailToVerify = `${userEmailPrefix}${defaultEmailSuffix}`;
 
       setIsSendEmailRequestProcessing(true);
@@ -68,6 +69,9 @@ export default function InputEmailScreen({
       if (!response.ok) {
         throw new Error('이메일 인증 요청에 실패했습니다.');
       }
+
+      // 이메일 값 수정
+      setEmailToVerifyCode(emailToVerifyCode + defaultEmailSuffix);
 
       setIsWaitingForCodeVerification(true);
       setIsSendEmailRequestProcessing(false);
