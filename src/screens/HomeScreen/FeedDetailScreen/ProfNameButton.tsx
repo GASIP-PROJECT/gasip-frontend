@@ -36,13 +36,21 @@ export default function ProfNameButton({ name, id }: ProfNameButtonProps) {
   };
 
   return (
-    <TouchableOpacity onPress={handleProfNamePress}>
+    <TouchableOpacity
+      onPress={handleProfNamePress}
+      style={styles.professorNameButton}
+      hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+    >
       <GSText style={styles.professorNameText}>{name} 교수님</GSText>
     </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
+  professorNameButton: {
+    backgroundColor: 'coral',
+    alignSelf: 'center',
+  },
   professorNameText: {
     fontSize: 13,
     fontWeight: '600',
