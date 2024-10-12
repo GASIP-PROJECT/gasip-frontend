@@ -1,7 +1,8 @@
-import React from 'react';
-import { Alert, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import React, { useCallback, useState } from 'react';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
+import { getFeedData } from '@api/index';
 import { getTimeDifference } from '@utils/timeUtil';
 
 import GSText from '@components/common/GSText';
@@ -27,28 +28,12 @@ export default function FeedSummary({
 
   const navigation = useNavigation();
 
-  const {
-    content,
-    likeCount,
-    regDate,
-    postId,
-    memberNickname,
-    commentCount,
-    clickCount,
-    profName,
-  } = feedData;
+  const { content, postId, memberNickname, profName } = feedData;
 
   const goToFeed = () => {
-    // Alert.alert('오류가 발생했습니다. 다시 시도해주세요.', 'hell!!!');
     // 같은 이름의 화면이 stack의 직전 화면인 상태에서 navigate함수로 이동 시도 시, 다음 화면으로 이동하는 것이 아니라 이전화면으로 이동함.
     // 그래서 push를 통해서 강제로 새 화면이 Stack에 추가되도록 구현
     navigation.push('FeedDetailScreen', { postId: postId });
-    // try {
-    //   // throw new Error('erorrooror');
-    // } catch (e) {
-    //   console.log(e);
-    //   Alert.alert('오류가 발생했습니다. 다시 시도해주세요.', e.message);
-    // }
   };
 
   return (
@@ -66,13 +51,7 @@ export default function FeedSummary({
           {showProfNameTag && <ProfessorNameTag profName={profName} />}
         </View>
         <Spacer type="height" value={10} />
-        <SummaryFooter
-          likeCount={likeCount}
-          commentCount={commentCount || 0}
-          clickCount={clickCount}
-          regDate={regDate}
-          memberNickname={memberNickname}
-        />
+        <SummaryFooter memberNickname={memberNickname} postId={postId} />
       </TouchableOpacity>
       {/* FeedSummary가 사용되는 FlatList에서 listFooterComponent가 존재하는 경우 최초 렌더링 시 onEndReached가 바로 호출되는 이슈가 있어 대신 마지막 요소인 경우 Spacer를 렌더링하는 방식으로 임시 수정 */}
       {isLastElement && <Spacer type="height" value={150} />}
@@ -89,23 +68,38 @@ const SummaryContent = ({ content }: { content: string }) => {
 };
 
 const SummaryFooter = ({
-  likeCount,
-  commentCount,
-  clickCount,
-  regDate,
   memberNickname,
+  postId,
 }: {
-  likeCount: number;
-  commentCount: number | null;
-  clickCount: number;
-  regDate: string;
   memberNickname: string;
+  postId: number;
 }) => {
-  const timeString = getTimeDifference(regDate);
+  // 필요 시 값을 업데이트 하기 위해서 useState값으로 설정
+  const [postRegisterTime, setPostRegisterTime] = useState('');
+  const [likeCount, setLikeCount] = useState(0);
+  const [commentCount, setCommentCount] = useState(0);
+  const [clickCount, setClickCount] = useState(0);
+
+  useFocusEffect(
+    useCallback(() => {
+      const getData = async () => {
+        const data = await getFeedData(postId);
+
+        if (data) {
+          setPostRegisterTime(getTimeDifference(data.regDate));
+          setLikeCount(data.likeCount || 0);
+          setCommentCount(data.commentCount || 0);
+          setClickCount(data.clickCount || 0);
+        }
+      };
+
+      getData();
+    }, []),
+  );
 
   return (
     <View style={styles.footerContainer}>
-      <GSText style={styles.timeText}>{timeString}</GSText>
+      <GSText style={styles.timeText}>{postRegisterTime}</GSText>
 
       <Spacer type="width" value={10} />
 
