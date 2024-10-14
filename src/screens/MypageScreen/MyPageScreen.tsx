@@ -175,7 +175,7 @@ export default function MyPageScreen({ navigation }) {
             ]}
           >
             <GSText style={styles.elementText}>버전 정보</GSText>
-            <GSText style={styles.elementText}>1.0.0</GSText>
+            <GSText style={styles.elementText}>1.4.3</GSText>
           </View>
         </View>
       </View>
