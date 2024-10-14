@@ -466,7 +466,7 @@ export const validateEmailVerificationCode = async (
   try {
     // email 값 뒤에 gachon.ac.kr 붙여줘야 한다.
     const response = await GSBackendClient.get(
-      `/members/emails/verifications?email=${emailToVerifyCode}@gachon.ac.kr&code=${verificationCode}`,
+      `/members/emails/verifications?email=${emailToVerifyCode}&code=${verificationCode}`,
     );
 
     return response.data.success || false;
