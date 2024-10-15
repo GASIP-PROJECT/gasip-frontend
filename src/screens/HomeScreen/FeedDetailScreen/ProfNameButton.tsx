@@ -48,7 +48,6 @@ export default function ProfNameButton({ name, id }: ProfNameButtonProps) {
 
 const styles = StyleSheet.create({
   professorNameButton: {
-    backgroundColor: 'coral',
     alignSelf: 'center',
   },
   professorNameText: {
