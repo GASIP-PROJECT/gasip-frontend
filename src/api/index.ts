@@ -9,7 +9,7 @@ const GASIP_MAIN_SERVER_URL = 'https://gasip.site';
 const GASIP_STAGE_SERVER_URL = 'http://3.35.82.226:8080';
 
 const GSBackendClient = axios.create({
-  baseURL: IS_TEST_MODE ? GASIP_STAGE_SERVER_URL : GASIP_MAIN_SERVER_URL,
+  baseURL: GASIP_MAIN_SERVER_URL,
   headers: {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${MMKVStorage.getString('userToken')}`,
