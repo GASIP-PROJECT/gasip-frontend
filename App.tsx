@@ -1,24 +1,26 @@
 import React from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { AuthContextProvider } from '@contexts/AuthContext';
 
 import Root from '@navigators/RootStack/Root';
-import CodePush from 'react-native-code-push';
+
+const queryClient = new QueryClient();
 
 let App = () => {
   return (
-    <SafeAreaProvider>
-      <AuthContextProvider>
-        <GestureHandlerRootView>
-          <Root />
-        </GestureHandlerRootView>
-      </AuthContextProvider>
-    </SafeAreaProvider>
+    <QueryClientProvider client={queryClient}>
+      <SafeAreaProvider>
+        <AuthContextProvider>
+          <GestureHandlerRootView>
+            <Root />
+          </GestureHandlerRootView>
+        </AuthContextProvider>
+      </SafeAreaProvider>
+    </QueryClientProvider>
   );
 };
-
-App = CodePush(App);
 
 export default App;
